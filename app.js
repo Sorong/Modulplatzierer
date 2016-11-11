@@ -32,6 +32,8 @@ window.onload = function () {
         dragCoords.x += d3.event.dx;
         dragCoords.y += d3.event.dy;
 
+        console.log(d);
+
         d3.select(this).attr("transform", "translate(" + dragCoords.x + "," + dragCoords.y + ")");
         d.LatLng = d3Overlay.projection.layerPointToLatLng(new L.Point(dragCoords.x, dragCoords.y));
     }
@@ -124,13 +126,24 @@ window.onload = function () {
 
     var addBtn = document.getElementById("add");
     addBtn.onclick = function () {
-        g.append("rect")
+
+        var point = L.point(100, 100);
+        var panelData = {};
+        panelData.name = "Added Panel";
+        panelData.LatLng = d3Overlay.projection.layerPointToLatLng(point);
+
+        var select = d3.select(d3Overlay._svg._rootGroup);
+        select.data([panelData]).append("rect")
             .style("stroke", "black")
             .style("opacity", .6)
-            .style("fill", "blue")
-            .attr("width", Math.floor(Math.random() * 50) + 20)
-            .attr("height", Math.floor(Math.random() * 50) + 20)
-            .attr("transform", "translate(50,50)")
+            .style("fill", "yellow")
+            .attr("width", 30)
+            .attr("height", 50)
+            .attr("transform", "translate(" +
+                d3Overlay.projection.latLngToLayerPoint(panelData.LatLng).x + "," +
+                d3Overlay.projection.latLngToLayerPoint(panelData.LatLng).y +
+                ")"
+            )
             .call(drag);
     };
 
