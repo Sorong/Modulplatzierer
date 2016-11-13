@@ -118,7 +118,8 @@ window.onload = function () {
             map.removeLayer(layer);
         }
         layer = L.gridLayer.googleMutant({
-            type: 'satellite'
+            type: 'satellite',
+            maxZoom: 20
         });
         map.addLayer(layer);
     }
@@ -128,9 +129,21 @@ window.onload = function () {
     addBtn.onclick = function () {
 
         var point = L.point(100, 100);
+
         var panelData = {};
         panelData.name = "Added Panel";
         panelData.LatLng = d3Overlay.projection.layerPointToLatLng(point);
+
+        /* TESTABSCHNITT */
+        var solarpanel = createSolarpanel(panelData.LatLng,1,1);
+        var test = L.polygon([
+            [solarpanel.topleft],
+            [solarpanel.topright],
+            [solarpanel.bottomleft],
+            [solarpanel.bottomright]
+        ]).addTo(map);
+
+        /* Ende Testabschnitt */
 
         var select = d3.select(d3Overlay._svg._rootGroup);
         select.data([panelData]).append("rect")
