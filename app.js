@@ -137,10 +137,10 @@ window.onload = function () {
         /* TESTABSCHNITT */
         var solarpanel = createSolarpanel(panelData.LatLng,1,1);
         var test = L.polygon([
-            [solarpanel.topleft],
-            [solarpanel.topright],
-            [solarpanel.bottomleft],
-            [solarpanel.bottomright]
+            [solarpanel.topleft.lat, 		solarpanel.topleft.lng],
+            [solarpanel.topright.lat, 		solarpanel.topright.lng],
+            [solarpanel.bottomright.lat, 	solarpanel.bottomright.lng],
+            [solarpanel.bottomleft.lat, 	solarpanel.bottomleft.lng]
         ]).addTo(map);
 
         /* Ende Testabschnitt */
