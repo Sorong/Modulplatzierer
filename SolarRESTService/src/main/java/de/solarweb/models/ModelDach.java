@@ -1,8 +1,11 @@
 package de.solarweb.models;
 
-import de.solarweb.datamodel.TblDach;
+import de.solarweb.datamodel.*;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.ArrayList;
 
 /**
  * Created by Nils on 12.11.16.
@@ -16,6 +19,8 @@ public class ModelDach implements Serializable{
     int dachneigung;
     double koord_dachmitte_lng;
     double koord_dachmitte_lat;
+    private ArrayList<ModelSolarpanel> modelSolarpanelCollection;
+    ModelCookie cookie;
 
     public ModelDach(){
 
@@ -29,6 +34,11 @@ public class ModelDach implements Serializable{
         this.postleitzahl = tblDach.getPlz();
         this.koord_dachmitte_lat = tblDach.getKoord_dachmitte_lat();
         this.koord_dachmitte_lng = tblDach.getKoord_dachmitte_lng();
+        this.modelSolarpanelCollection = new ArrayList<ModelSolarpanel>();
+        for(TblSolarpanel tblSolarpanel : tblDach.getTblSolarpanelCollection() ){
+            modelSolarpanelCollection.add(new ModelSolarpanel(tblSolarpanel));
+        }
+
     }
 
     public int getDach_id() {
@@ -85,5 +95,21 @@ public class ModelDach implements Serializable{
 
     public void setKoord_dachmitte_lat(double koord_dachmitte_lat) {
         this.koord_dachmitte_lat = koord_dachmitte_lat;
+    }
+
+    public ArrayList<ModelSolarpanel> getModelSolarpanelCollection() {
+        return modelSolarpanelCollection;
+    }
+
+    public void setModelSolarpanelCollection(ArrayList<ModelSolarpanel> modelSolarpanelCollection) {
+        this.modelSolarpanelCollection = modelSolarpanelCollection;
+    }
+
+    public ModelCookie getCookie() {
+        return cookie;
+    }
+
+    public void setCookie(ModelCookie cookie) {
+        this.cookie = cookie;
     }
 }

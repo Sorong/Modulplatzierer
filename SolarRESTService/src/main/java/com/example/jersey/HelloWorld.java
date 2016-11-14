@@ -14,6 +14,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.annotation.Resource;
 import javax.transaction.UserTransaction;
+import java.util.Collection;
 
 @Path("/server")
 public class HelloWorld {

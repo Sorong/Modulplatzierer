@@ -5,6 +5,7 @@ package de.solarweb.datamodel;
  */
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.LinkedList;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,11 +35,16 @@ public class TblDach implements Serializable{
 
     @Id
     @Basic(optional = false)
-    @Column(nullable = false)
+    @Column(name = "dach_id", nullable = false)
     private Integer dach_id;
 
-    @OneToMany(mappedBy = "dach")
+    @OneToMany(mappedBy = "dach_id")
     private Collection<TblSolarpanel> tblSolarpanelCollection;
+
+    @JoinColumn(name = "dach_id", referencedColumnName = "cookie_id", nullable = false, insertable=false, updatable=false)
+    @ManyToOne(optional = false)
+    private TblCookie cookie;
+
 
     @Basic(optional = false)
     @Column(nullable = false)
@@ -63,6 +69,7 @@ public class TblDach implements Serializable{
     @Basic(optional = false)
     @Column(nullable = false)
     private double koord_dachmitte_lat;
+
 
     public TblDach(){
 
@@ -140,6 +147,14 @@ public class TblDach implements Serializable{
 
     public void setKoord_dachmitte_lat(double koord_dachmitte_lat) {
         this.koord_dachmitte_lat = koord_dachmitte_lat;
+    }
+
+    public TblCookie getCookie() {
+        return cookie;
+    }
+
+    public void setCookie(TblCookie cookie) {
+        this.cookie = cookie;
     }
 }
 

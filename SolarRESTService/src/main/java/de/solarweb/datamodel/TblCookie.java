@@ -4,6 +4,7 @@ package de.solarweb.datamodel;
  * Created by Nils on 10.11.16.
  */
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -23,7 +24,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 
 @Entity
-@Table(name = "cookie", schema = "scltest_sg_we2016_gr2a")
+@Table(name = "tbl_cookie")
 @XmlRootElement
 public class TblCookie implements Serializable{
 
@@ -33,10 +34,20 @@ public class TblCookie implements Serializable{
     private Integer cookie_id;
 
     @OneToMany(mappedBy = "cookie")
-    private Collection<TblSolarpanel> tblSolarpanelCollection;
+    private Collection<TblDach> tblDachCollection;
+
+
+    public Timestamp getAblaufdatum() {
+        return ablaufdatum;
+    }
+
+    public void setAblaufdatum(Timestamp ablaufdatum) {
+        this.ablaufdatum = ablaufdatum;
+    }
 
     @Basic(optional = false)
     @Column(nullable = false)
+
     private java.sql.Timestamp ablaufdatum;
 
 
@@ -56,4 +67,13 @@ public class TblCookie implements Serializable{
     public void setCookie_id(Integer cookie_id) {
         this.cookie_id = cookie_id;
     }
+
+    public Collection<TblDach> getTblDachCollection() {
+        return tblDachCollection;
+    }
+
+    public void setTblDachCollection(Collection<TblDach> tblDachCollection) {
+        this.tblDachCollection = tblDachCollection;
+    }
+
 }
