@@ -16,6 +16,17 @@ window.onload = function () {
         .on("dragstart", dragstarted)
         .on("drag", dragmove);
 
+    var dragPanel = d3.behavior.drag()
+        .origin(function () {
+            return {x: 0, y: 0};
+        })
+        .on("drag", dragmovePanel);
+
+    function dragmovePanel(d) {
+        console.log(d);
+        console.log("Draggg it");
+    }
+
     function dragstarted() {
         dragCoords = {x: 0, y: 0};
         d3.event.sourceEvent.stopPropagation();
@@ -142,7 +153,8 @@ window.onload = function () {
             [solarpanel.topright.lat, 		solarpanel.topright.lng],
             [solarpanel.bottomright.lat, 	solarpanel.bottomright.lng],
             [solarpanel.bottomleft.lat, 	solarpanel.bottomleft.lng]
-        ]).addTo(map);
+        ], {draggable: true}).addTo(map);
+        solarpolygon.on('drag', dragmovePanel);
 
         /* Ende Testabschnitt */
 
