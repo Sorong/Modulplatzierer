@@ -136,6 +136,7 @@ window.onload = function () {
 
         /* TESTABSCHNITT */
         var solarpanel = createSolarpanel(panelData.LatLng,1,1);
+        alignPanel(solarpanel,d3Overlay,-45,45);
         var test = L.polygon([
             [solarpanel.topleft.lat, 		solarpanel.topleft.lng],
             [solarpanel.topright.lat, 		solarpanel.topright.lng],
