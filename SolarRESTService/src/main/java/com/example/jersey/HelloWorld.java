@@ -5,6 +5,7 @@ import de.solarweb.datamodel.*;
 import de.solarweb.models.*;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.persistence.EntityManager;
@@ -12,9 +13,8 @@ import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
-import javax.annotation.Resource;
 import javax.transaction.UserTransaction;
-import java.util.Collection;
+import java.util.List;
 
 @Path("/server")
 public class HelloWorld {
@@ -36,13 +36,35 @@ public class HelloWorld {
         return "Hello world!";
     }
 
+
+
     @GET
-    @Path("/db")
+    @Path("/getRoof/{dach_id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ModelDach getRoof(){
-        Query query = this.em.createQuery("SELECT i FROM TblDach AS i");
-        TblDach tblDach = (TblDach) query.setMaxResults(1).getSingleResult();
+    public ModelDach getRoof(@PathParam("dach_id") int id){
+        Query queryRoofById = em.createNamedQuery("tblDach.findById");
+        queryRoofById.setParameter("id", id);
+        List resultRoofs = queryRoofById.getResultList();
+        if(resultRoofs.isEmpty()){
+            return null;
+        }
+        TblDach tblDach = (TblDach) queryRoofById.getSingleResult();
         return new ModelDach(tblDach);
+    }
+
+
+    @GET
+    @Path("/getCookie/{cookie}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ModelCookie getCookie(@PathParam("cookie") int id){
+        Query queryCookieById = em.createNamedQuery("tblCookie.findById");
+        queryCookieById.setParameter("id", id);
+        List resultRoofs = queryCookieById.getResultList();
+        if(resultRoofs.isEmpty()){
+            return null;
+        }
+        TblCookie tblCookie = (TblCookie) queryCookieById.getSingleResult();
+        return new ModelCookie(tblCookie);
     }
 }
 

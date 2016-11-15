@@ -38,6 +38,7 @@ public class ModelDach implements Serializable{
         for(TblSolarpanel tblSolarpanel : tblDach.getTblSolarpanelCollection() ){
             modelSolarpanelCollection.add(new ModelSolarpanel(tblSolarpanel));
         }
+        this.cookie = new ModelCookie(tblDach.getCookie());
 
     }
 

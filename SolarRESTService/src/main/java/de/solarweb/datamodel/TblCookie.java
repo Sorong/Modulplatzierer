@@ -26,6 +26,11 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "tbl_cookie")
 @XmlRootElement
+@NamedQueries({
+        @NamedQuery(name = "TblCookie.findAll", query = "SELECT t FROM TblCookie t"),
+        @NamedQuery(name = "tblCookie.findById", query = "SELECT t FROM TblCookie t WHERE t.cookie_id = :id")
+})
+
 public class TblCookie implements Serializable{
 
     @Id
