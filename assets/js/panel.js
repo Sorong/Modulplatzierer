@@ -37,8 +37,10 @@ function translateCoordinates(distance, point, angle) {
     distanceNorth = Math.sin(angle*Math.PI/180) * distance;
     distanceEast = Math.cos(angle*Math.PI/180) * distance;
     earthRadius = 6371000;
-    newLat = point.lat + (distanceNorth / earthRadius) * 180 / Math.PI;
-    newLon = point.lng + (distanceEast / (earthRadius * Math.cos(newLat * 180 / Math.PI))) * 180 / Math.PI;
+
+
+    newLat = point.lat + (distanceNorth / earthRadius) * (180 / Math.PI);
+    newLon = point.lng + (distanceEast / earthRadius) * (180 / Math.PI) / Math.cos(point.lat * Math.PI / 180) ;
 
     return L.latLng(newLat, newLon);
 }
