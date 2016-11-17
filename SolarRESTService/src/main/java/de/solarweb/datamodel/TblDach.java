@@ -41,7 +41,7 @@ public class TblDach implements Serializable{
     @OneToMany(mappedBy = "dach_id")
     private Collection<TblSolarpanel> tblSolarpanelCollection;
 
-    @JoinColumn(name = "cookie_id", nullable = false, insertable=false, updatable=false)
+    @JoinColumn(name = "cookie_id", nullable = false)
     @ManyToOne(optional = false)
     private TblCookie cookie;
 

@@ -36,7 +36,7 @@ public class TblSolarpanel implements Serializable{
     private Integer panel_id;
 
 
-    @JoinColumn(name = "dach_id", nullable = false, insertable=false, updatable=false)
+    @JoinColumn(name = "dach_id", nullable = false)
     @ManyToOne(optional = false)
     private TblDach dach_id;
 
@@ -85,7 +85,7 @@ public class TblSolarpanel implements Serializable{
     //Unten Rechts
     @Basic(optional = false)
     @Column(name = "unten_rechts_lat", nullable = false)
-    private double unten_recht_lat;
+    private double unten_rechts_lat;
 
     @Basic(optional = false)
     @Column(name = "unten_rechts_lng", nullable = false)
@@ -203,11 +203,11 @@ public class TblSolarpanel implements Serializable{
     }
 
     public double getUnten_recht_lat() {
-        return unten_recht_lat;
+        return unten_rechts_lat;
     }
 
-    public void setUnten_recht_lat(double unten_recht_lat) {
-        this.unten_recht_lat = unten_recht_lat;
+    public void setUnten_rechts_lat(double unten_recht_lat) {
+        this.unten_rechts_lat = unten_recht_lat;
     }
 
     public double getUnten_rechts_lng() {

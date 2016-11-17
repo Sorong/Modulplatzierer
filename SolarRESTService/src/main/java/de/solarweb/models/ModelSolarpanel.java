@@ -2,12 +2,14 @@ package de.solarweb.models;
 
 import de.solarweb.datamodel.TblSolarpanel;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 
 /**
  * Created by Nils on 13.11.16.
  */
+@XmlRootElement
 public class ModelSolarpanel implements Serializable{
 
     private int panel_id;
@@ -20,6 +22,7 @@ public class ModelSolarpanel implements Serializable{
     private int neigung;
     private int ausrichtung;
     private double rahmenbreite;
+    private int dach_id;
 
     public ModelSolarpanel(){
 
@@ -32,6 +35,7 @@ public class ModelSolarpanel implements Serializable{
         this.neigung = tblSolarpanel.getNeigung();
         this.ausrichtung = tblSolarpanel.getAusrichtung();
         this.rahmenbreite = tblSolarpanel.getRahmenbreite();
+        this.dach_id = tblSolarpanel.getDach().getDach_id();
 
         //Oben Links
         obenLinks[0] = tblSolarpanel.getOben_links_lat();
@@ -48,6 +52,22 @@ public class ModelSolarpanel implements Serializable{
         //UntenLinks
         untenLinks[0] = tblSolarpanel.getUnten_links_lat();
         untenLinks[1] = tblSolarpanel.getUnten_links_lng();
+    }
+
+    public ModelSolarpanel(int id, double[] obenLinks, double[] obenRechts,
+                           double[] untenRechts, double[] untenLinks,
+                           double breite, double laenge, int neigung, int ausrichtung, double rahmenbreite, int dach_id){
+        this.panel_id = id;
+        this.obenLinks = obenLinks;
+        this.obenRechts = obenRechts;
+        this.untenRechts = untenRechts;
+        this.untenLinks = untenLinks;
+        this.breite = breite;
+        this.laenge = laenge;
+        this.neigung = neigung;
+        this.ausrichtung = ausrichtung;
+        this.rahmenbreite = rahmenbreite;
+        this.dach_id = dach_id;
     }
 
     public int getPanel_id() {
@@ -128,5 +148,13 @@ public class ModelSolarpanel implements Serializable{
 
     public void setRahmenbreite(double rahmenbreite) {
         this.rahmenbreite = rahmenbreite;
+    }
+
+    public int getDach_id() {
+        return dach_id;
+    }
+
+    public void setDach_id(int dach_id) {
+        this.dach_id = dach_id;
     }
 }
