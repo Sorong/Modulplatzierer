@@ -10,6 +10,7 @@ The follwing paths should be working:
 #/getRoof/{id}
 The {id} is the primary key for the specific roof in the database.
 The finction returns a Roof JSON in the form of 
+```json
 {  
    "dach_id":0,
    "strasse":"Kohkamp",
@@ -45,6 +46,7 @@ The finction returns a Roof JSON in the form of
          "dach_id":0
       }
 }
+```
 
 The roof contains all solarpanels that are associated with that roof. The obenLinks, obenRechts etc are
 the points that mark the corners of the solarpanel. First value is the latiture, secound the longitude.
