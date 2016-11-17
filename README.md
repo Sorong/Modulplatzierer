@@ -57,6 +57,7 @@ Takes a JSON file in the body of a post request. The panel is saved in the datab
 Returns "ok" as a string if everything went fine.
 
 The JSON to post should be in this form:
+```json
 {  
    "panel_id":1,
    "obenLinks":[  
@@ -82,6 +83,7 @@ The JSON to post should be in this form:
    "rahmenbreite":0.200000003,
    "dach_id":0
 }
+```
 
 Any Integer can be used for panel_id can be used since it doesnt matter 
 because is thrown away and a new id for the panel is generated.
@@ -97,6 +99,7 @@ postet panel will override the panel in the database with the same panel_id
 Returns a Cookie, right now a stub with only an id and a timestamp.
 Will the expanded soon™.
 Right now, this will be return as a JSON:
+```json
 {
   "cookie_id": 0,
   "dach_ids": [
@@ -104,5 +107,5 @@ Right now, this will be return as a JSON:
   ],
   "ablaufdatum": 4070905200000
 }
-      
+```
   
