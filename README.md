@@ -4,7 +4,7 @@
 So I herd U liek soloaerpnaol?
 
 When the server is running, you can find it under 
-<IPAdress>:Port/http://localhost:8080/SolarRESTService_war_exploded/server
+IPAdress:Port/SolarRESTService_war_exploded/server
 The follwing paths should be working:
 
 #/getRoof/{id}
@@ -45,6 +45,14 @@ The finction returns a Roof JSON in the form of
          "rahmenbreite":0.200000003,
          "dach_id":0
       }
+     ],
+    "cookie": {
+    "cookie_id": 0,
+    "dach_ids": [
+      0
+    ],
+    "ablaufdatum": 4070905200000
+  }
 }
 ```
 
