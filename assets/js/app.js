@@ -1,5 +1,9 @@
 window.onload = function () {
 
+    var solarpanels = [];
+    var selectedSolarPolygon = null;
+    var toolsContainer = $("#tools");
+
     var mapHeight = document.getElementById("map").offsetHeight;
     var mapWidth = document.getElementById("map").offsetWidth;
     var dragCoords = {x: 0, y: 0};
@@ -23,8 +27,21 @@ window.onload = function () {
         .on("drag", dragmovePanel);
 
     function dragmovePanel(d) {
-        console.log(d);
-        console.log("Draggg it");
+
+        console.log("Drag Panel: " + d.target.panel.name);
+
+        d.target.panel.topleft.lat = d.target._latlngs[0][0].lat;
+        d.target.panel.topleft.lng = d.target._latlngs[0][0].lng;
+
+        d.target.panel.topright.lat = d.target._latlngs[0][1].lat;
+        d.target.panel.topright.lng = d.target._latlngs[0][1].lng;
+
+        d.target.panel.bottomright.lat = d.target._latlngs[0][2].lat;
+        d.target.panel.bottomright.lng = d.target._latlngs[0][2].lng;
+
+        d.target.panel.bottomleft.lat = d.target._latlngs[0][3].lat;
+        d.target.panel.bottomleft.lng = d.target._latlngs[0][3].lng;
+
     }
 
     function dragstarted() {
@@ -135,7 +152,7 @@ window.onload = function () {
         map.addLayer(layer);
     }
 
-
+    var count = 0;
     var addBtn = document.getElementById("add");
     addBtn.onclick = function () {
 
@@ -144,34 +161,70 @@ window.onload = function () {
         var panelData = {};
         panelData.name = "Added Panel";
         panelData.LatLng = d3Overlay.projection.layerPointToLatLng(point);
+        var solarpanel = createSolarpanel(panelData.LatLng, 10, 10);
 
-        /* TESTABSCHNITT */
-        var solarpanel = createSolarpanel(panelData.LatLng,1,1);
-        alignPanel(solarpanel,d3Overlay,-45,45);
-        var test = L.polygon([
-            [solarpanel.topleft.lat, 		solarpanel.topleft.lng],
-            [solarpanel.topright.lat, 		solarpanel.topright.lng],
-            [solarpanel.bottomright.lat, 	solarpanel.bottomright.lng],
-            [solarpanel.bottomleft.lat, 	solarpanel.bottomleft.lng]
-        ], {draggable: true}).addTo(map);
-        solarpolygon.on('drag', dragmovePanel);
+        solarpanel.name = "Panel_" + (count++);
+        alignPanel(solarpanel, d3Overlay, 0, 45);
 
-        /* Ende Testabschnitt */
+        var solarpanelpolygon = L.polygon([
+                [solarpanel.topleft.lat, solarpanel.topleft.lng],
+                [solarpanel.topright.lat, solarpanel.topright.lng],
+                [solarpanel.bottomright.lat, solarpanel.bottomright.lng],
+                [solarpanel.bottomleft.lat, solarpanel.bottomleft.lng]
+            ], {
+                color: '#f00',
+                draggable: true
+            }
+        ).addTo(map);
 
-        var select = d3.select(d3Overlay._svg._rootGroup);
-        select.data([panelData]).append("rect")
-            .style("stroke", "black")
-            .style("opacity", .6)
-            .style("fill", "yellow")
-            .attr("width", 30)
-            .attr("height", 50)
-            .attr("transform", "translate(" +
-                d3Overlay.projection.latLngToLayerPoint(panelData.LatLng).x + "," +
-                d3Overlay.projection.latLngToLayerPoint(panelData.LatLng).y +
-                ")"
-            )
-            .call(drag);
+        solarpanelpolygon.panel = solarpanel;
+        solarpanelpolygon.on('click', function () {
+
+            selectedSolarPolygon = this;
+            console.log("Click Panel: " + selectedSolarPolygon.panel.name);
+
+            var panel = new PanelTools(selectedSolarPolygon);
+            panel.tilt().on("change mousemove", function () {
+
+                var val = $(this).val();
+
+                alignPanel(selectedSolarPolygon.panel, d3Overlay, val, selectedSolarPolygon.panel.pitch);
+
+                selectedSolarPolygon.setLatLngs([
+                    [selectedSolarPolygon.panel.topleft.lat, selectedSolarPolygon.panel.topleft.lng],
+                    [selectedSolarPolygon.panel.topright.lat, selectedSolarPolygon.panel.topright.lng],
+                    [selectedSolarPolygon.panel.bottomright.lat, selectedSolarPolygon.panel.bottomright.lng],
+                    [selectedSolarPolygon.panel.bottomleft.lat, selectedSolarPolygon.panel.bottomleft.lng]
+                ]);
+
+            }).change(function () {
+
+                var val = $(this).val();
+                // Data changed
+
+            });
+
+            panel.height().on("change mousemove", function () {
+
+                var val = $(this).val();
+                console.log("Panel: " + selectedSolarPolygon.panel.name + " set height: " + val);
+
+            });
+
+            panel.width().on("change mousemove", function () {
+
+                var val = $(this).val();
+                console.log("Panel: " + selectedSolarPolygon.panel.name + " set width: " + val);
+
+            });
+
+        });
+
+        solarpanelpolygon.on('drag', dragmovePanel);
+        solarpanels.push(solarpanel);
+
     };
+
 
     var googleMapButton = document.getElementById("googleMap");
     googleMapButton.onclick = function () {
