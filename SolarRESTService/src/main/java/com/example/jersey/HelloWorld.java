@@ -48,7 +48,61 @@ public class HelloWorld {
     @Path("/getRoof/{dach_id}")
     @Produces(MediaType.APPLICATION_JSON)
     public ModelDach getRoof(@PathParam("dach_id") int id){
-        return new ModelDach(getRoofById(id));
+        TblDach tblDach = getRoofById(id);
+        if (tblDach == null){
+            return null;
+        }
+        return new ModelDach(tblDach);
+    }
+
+
+
+    @POST
+    @Path("/postRoof")
+    @Produces(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String setRoof(ModelDach dach) throws Exception{
+        int lastId = this.em.createQuery("select max(u.dach_id) from TblDach u", Integer.class).getSingleResult();
+        Query getCookieById = em.createNamedQuery("tblCookie.findById");
+        getCookieById.setParameter("id", dach.getCookie().getCookie_id());
+        TblCookie tblCookie = (TblCookie) getCookieById.getSingleResult();
+        TblDach tblDach = new TblDach();
+        tblDach.setDach_id(lastId+1);
+        tblDach.setHausnummer(dach.getHausnummer());
+        tblDach.setPlz(dach.getPostleitzahl());
+        tblDach.setStrasse(dach.getStrasse());
+        tblDach.setDachneigung(dach.getDachneigung());
+        tblDach.setKoord_dachmitte_lat(dach.getKoord_dachmitte_lat());
+        tblDach.setKoord_dachmitte_lng(dach.getKoord_dachmitte_lng());
+        tblDach.setCookie(tblCookie);
+        utx.begin();
+        em.persist(tblDach);
+        utx.commit();
+        return "ok";
+    }
+
+    @POST
+    @Path("/updateRoof")
+    @Produces(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String updateRoof(ModelDach dach) throws Exception{
+        Query getRoofById = em.createNamedQuery("tblDach.findById");
+        getRoofById.setParameter("id", dach.getDach_id());
+        TblDach tblDach = (TblDach) getRoofById.getSingleResult();
+        Query getCookieById = em.createNamedQuery("tblCookie.findById");
+        getCookieById.setParameter("id", dach.getCookie().getCookie_id());
+        TblCookie tblCookie = (TblCookie) getCookieById.getSingleResult();
+        tblDach.setHausnummer(dach.getHausnummer());
+        tblDach.setPlz(dach.getPostleitzahl());
+        tblDach.setStrasse(dach.getStrasse());
+        tblDach.setDachneigung(dach.getDachneigung());
+        tblDach.setKoord_dachmitte_lat(dach.getKoord_dachmitte_lat());
+        tblDach.setKoord_dachmitte_lng(dach.getKoord_dachmitte_lng());
+        tblDach.setCookie(tblCookie);
+        utx.begin();
+        em.merge(tblDach);
+        utx.commit();
+        return "ok";
     }
 
 
@@ -60,11 +114,27 @@ public class HelloWorld {
         queryCookieById.setParameter("id", id);
         List resultRoofs = queryCookieById.getResultList();
         if(resultRoofs.isEmpty()){
-            return null;
+            return new ModelCookie(new TblCookie(-1, new java.sql.Timestamp(0)));
         }
         TblCookie tblCookie = (TblCookie) queryCookieById.getSingleResult();
         return new ModelCookie(tblCookie);
     }
+
+    @POST
+    @Path("/postCookie")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    public String postCookie(ModelCookie cookie) throws Exception{
+        int lastId = this.em.createQuery("select max(u.cookie_id) from TblCookie u", Integer.class).getSingleResult();
+        TblCookie tblCookie = new TblCookie();
+        tblCookie.setAblaufdatum(cookie.getAblaufdatum());
+        tblCookie.setCookie_id(lastId+1);
+        utx.begin();
+        em.persist(tblCookie);
+        utx.commit();
+        return "ok";
+    }
+
 
     @POST
     @Path("/postPanel")
@@ -99,6 +169,7 @@ public class HelloWorld {
         utx.commit();
         return "ok";
     }
+
 
     @POST
     @Path("/updatePanel")
