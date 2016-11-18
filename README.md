@@ -3,6 +3,9 @@
 
 So I herd U liek soloaerpnaol?
 
+#Errorhandling
+I will think about it
+
 When the server is running, you can find it under 
 IPAdress:Port/SolarRESTService_war_exploded/server
 The follwing paths should be working:
@@ -58,6 +61,37 @@ The finction returns a Roof JSON in the form of
 
 The roof contains all solarpanels that are associated with that roof. The obenLinks, obenRechts etc are
 the points that mark the corners of the solarpanel. First value is the latiture, secound the longitude.
+If no roof is found, the returned value is null.
+
+
+#/postRoof
+Saves the given Roof in the database. The dach_id can be any Integer since it is
+a new id will be generated. The 'modelSolarpanelCollection' is not used since the panels 
+are saved and updated separately.
+```json
+{
+  "dach_id": 2,
+  "strasse": "Artelleristr",
+  "hausnummer": "4",
+  "postleitzahl": "56454",
+  "dachneigung": 6,
+  "koord_dachmitte_lng": 1,
+  "koord_dachmitte_lat": 1,
+  "cookie": {
+    "cookie_id": 1,
+    "dach_ids": [
+      2
+    ],
+    "ablaufdatum": 32472140400000
+  }
+}
+```
+Will return 'ok' is the roof was successfully updated. Anything else
+will yield in a '500 internal Error', so don't expect any error handling.
+
+#/updateRoof
+Takes the same JSON as 'postRoof', will return 'ok' if roof was updated.
+Anything else will give a '500 internal Error'
 
 
 #/postPanel
@@ -95,12 +129,14 @@ The JSON to post should be in this form:
 
 Any Integer can be used for panel_id can be used since it doesnt matter 
 because is thrown away and a new id for the panel is generated.
+Return 'ok' if Panel was added to the database successfully.
 
 
 
 #/updatePanel
 Wants the same JSON as postPanel, but needs a valid panel_id, since the
-postet panel will override the panel in the database with the same panel_id
+postet panel will override the panel in the database with the same panel_id.
+Returns 'ok' if panel was updated.
 
 
 #/getCookie{cookie}
@@ -116,4 +152,15 @@ Right now, this will be return as a JSON:
   "ablaufdatum": 4070905200000
 }
 ```
-  
+
+#/postCookie
+Takes a Cookie in the following form:
+```json
+{
+  "cookie_id": 0,
+  "ablaufdatum": 4070905200000
+}
+```
+Like about, the 'id' field can be anything, will be generated anyway.
+'ablaufdatum' is in Unixtime. After posting a new Cookie, it can be uses to
+identify a new roof. Returns 'ok'.
