@@ -4,7 +4,7 @@ window.onload = function () {
      */
    var test =  eraseCookie("Modulplatzierer");
     var cookie = readCookie("Modulplatzierer");
-    if(cookie === null || cookie === undefined) {
+    if(cookie === null || cookie === "undefined") {
         var dueDate = new Date().getTime()+(30*24*60*60*1000);
         var cid = getCookieFromServer(dueDate);
         createCookie("Modulplatzierer" , cid , dueDate);

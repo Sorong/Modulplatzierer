@@ -4,9 +4,12 @@ import com.sun.jersey.spi.container.ContainerRequest;
 import com.sun.jersey.spi.container.ContainerResponse;
 import com.sun.jersey.spi.container.ContainerResponseFilter;
 
+import javax.ws.rs.ext.Provider;
+
 /**
  * Created by Patrick Starzynski on 19.11.2016.
  */
+@Provider
 public class CrossDomainFilter implements ContainerResponseFilter {
     
     public ContainerResponse filter(ContainerRequest containerRequest, ContainerResponse containerResponse) {

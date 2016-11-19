@@ -69,23 +69,48 @@ function getCookieFromServer(dueDate) {
 
 
 
+    // $.ajax({
+    //     crossDomain: true,
+    //     type: "POST",
+    //     dataType: "json",
+    //     contentType: "application/json",
+    //     url: 'http://195.37.224.237:8080/SolarRESTService_war_exploded/server/postCookie/',
+    //     // data : JSON.stringify({
+    //     //     cookie_id : 0,
+    //     //     ablaufdatum : dueDate
+    //     // }),
+    //     data : {
+    //         cookie_id : 0,
+    //         ablaufdatum : dueDate
+    //     },
+    //     header : {
+    //         "content-type": "application/json",
+    //         "cache-control": "no-cache",
+    //         "postman-token": "fb4915c3-a458-2a90-714d-fbe37aa3a27b"
+    //     },
+    //
+    // }).done(function (data) {
+    //     console.log(data);
+    //     alert(data);
+    // }).fail(function () {
+    //     console.log("Fehler beim Versuch mit dem Server zu kommunizieren");
+    // });
+
+
     $.ajax({
         crossDomain: true,
         type: "POST",
         dataType: "json",
+        contentType: "application/json",
+        cors: "true",
         url: 'http://localhost:8080/SolarRESTService_war_exploded/server/postCookie/',
-        // data : JSON.stringify({
-        //     cookie_id : 0,
-        //     ablaufdatum : dueDate
-        // }),
-        data : {
+        data : JSON.stringify({
             cookie_id : 0,
             ablaufdatum : dueDate
-        },
+        }),
+
         header : {
             "content-type": "application/json",
-            "cache-control": "no-cache",
-            "postman-token": "fb4915c3-a458-2a90-714d-fbe37aa3a27b"
         },
 
     }).done(function (data) {
@@ -94,9 +119,6 @@ function getCookieFromServer(dueDate) {
     }).fail(function () {
         console.log("Fehler beim Versuch mit dem Server zu kommunizieren");
     });
-
-
-
 }
 
 function postRoofToServer(roof) {
