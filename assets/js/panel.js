@@ -9,7 +9,6 @@ function Solarpanel() {
     this.bottomright = null;
     this.orientation = null;
     this.pitch = null;
-
 }
 
 
@@ -36,7 +35,9 @@ function loadSolarpanel(topleft, topright, bottomleft, bottomright, orientation,
 
 }
 
-function alignPanel(solarpanel,d3Overlay, orientation, pitch) {
+function alignPanel(solarpanel, d3Overlay, orientation, pitch) {
+
+
     solarpanel.orientation = orientation;
     solarpanel.pitch = pitch;
     solarpanel.topleft = d3Overlay.projection.latLngToLayerPoint(solarpanel.originTopLeft);
@@ -61,25 +62,25 @@ function alignPanel(solarpanel,d3Overlay, orientation, pitch) {
         0];
 
     var orientationMatrix = calculateOrientationMatrix(solarpanel.orientation);
-    var pitchMatrix = calculatePitchMatrix(solarpanel.pitch);
+     var pitchMatrix = calculatePitchMatrix(solarpanel.pitch);
 
-    var topright = matrixMultiplyVector(orientationMatrix, vTopLeftTopRight);
-    solarpanel.topright = d3Overlay.projection.layerPointToLatLng([solarpanel.topleft.x + topright[1], solarpanel.topleft.y + topright[0]]);
+     var topright = matrixMultiplyVector(orientationMatrix, vTopLeftTopRight);
+     solarpanel.topright = d3Overlay.projection.layerPointToLatLng([solarpanel.topleft.x + topright[1], solarpanel.topleft.y + topright[0]]);
 
-    var bottomleft = matrixMultiplyVector(orientationMatrix, matrixMultiplyVector(pitchMatrix, vTopBottomLeft));
-    solarpanel.bottomleft = d3Overlay.projection.layerPointToLatLng([solarpanel.topleft.x + bottomleft[1], solarpanel.topleft.x + bottomleft[0]]);
+     var bottomleft = matrixMultiplyVector(orientationMatrix, matrixMultiplyVector(pitchMatrix, vTopBottomLeft));
+     solarpanel.bottomleft = d3Overlay.projection.layerPointToLatLng([solarpanel.topleft.x + bottomleft[1], solarpanel.topleft.x + bottomleft[0]]);
 
-    var bottomright = matrixMultiplyVector(orientationMatrix, matrixMultiplyVector(pitchMatrix, vTopBottomRight));
-    solarpanel.bottomright = d3Overlay.projection.layerPointToLatLng([solarpanel.topleft.x + bottomright[1], solarpanel.topleft.y + bottomright[0]]);
+     var bottomright = matrixMultiplyVector(orientationMatrix, matrixMultiplyVector(pitchMatrix, vTopBottomRight));
+     solarpanel.bottomright = d3Overlay.projection.layerPointToLatLng([solarpanel.topleft.x + bottomright[1], solarpanel.topleft.y + bottomright[0]]);
 
-    solarpanel.topleft = solarpanel.originTopLeft;
+     solarpanel.topleft = solarpanel.originTopLeft;
 
 }
 
 function calculateOrientationMatrix(orientation) {
     var matrix = [
         [Math.cos(orientation * Math.PI / 180), -Math.sin(orientation * Math.PI / 180), 0],
-        [Math.sin(orientation * Math.PI / 180), Math.cos(orientation * Math.PI /180), 0],
+        [Math.sin(orientation * Math.PI / 180), Math.cos(orientation * Math.PI / 180), 0],
         [0, 0, 1]
     ];
     return matrix;

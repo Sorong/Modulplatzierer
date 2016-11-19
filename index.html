@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css"/>
     <link rel="stylesheet" href="assets/css/style.css"/>
 
-
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJ4aYR2NFbLLzh_tkya-rE40gCl-hPpLc" async defer></script>
     <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
     <script src='https://unpkg.com/leaflet.gridlayer.googlemutant@latest/Leaflet.GoogleMutant.js'></script>
@@ -17,6 +17,7 @@
 
     <script src="assets/js/app.js"></script>
     <script type="text/javascript" src="assets/js/panel.js"></script>
+    <script type="text/javascript" src="assets/js/paneltools.js"></script>
 </head>
 <body>
 
@@ -71,7 +72,8 @@
             <!-- Tools -->
             <div id="tools">
 
-                <div id="tools_headling">Panel ID 1000 <span style="float:right"><a href="#">löschen</a></span></div>
+                <div id="tools_headline"><span class="headline">Panel ID 1000</span> <span style="float:right"><a
+                        href="#">löschen</a></span></div>
                 <div id="tools_container">
 
                     <div class="tool">
@@ -79,9 +81,9 @@
                             Dachneigung
                         </div>
                         <div class="tool_input">
-                            <input type="range">
+                            <input id="panel_tilt" type="range" min="0" max="360">
                         </div>
-                        <div class="tool_output">
+                        <div class="tool_output" id="panel_tilt_value">
                             45°
                         </div>
                     </div>
@@ -91,9 +93,9 @@
                             Modulbreite
                         </div>
                         <div class="tool_input">
-                            <input type="range">
+                            <input id="panel_width" type="range" min="1" max="10">
                         </div>
-                        <div class="tool_output">
+                        <div class="tool_output" id="panel_width_value">
                             5m
                         </div>
                     </div>
@@ -103,9 +105,9 @@
                             Modulh&ouml;he
                         </div>
                         <div class="tool_input">
-                            <input type="range">
+                            <input id="panel_height" type="range" min="1" max="10">
                         </div>
-                        <div class="tool_output">
+                        <div class="tool_output" id="panel_height_value">
                             5m
                         </div>
                     </div>
@@ -126,7 +128,6 @@
     <div class="clear"></div>
 
 </div>
-
 
 
 </body>
