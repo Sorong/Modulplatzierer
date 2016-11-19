@@ -1,4 +1,39 @@
 window.onload = function () {
+    /*
+     Cookietestarea Anfang
+     */
+    eraseCookie("Modulplatzierer");
+    var cookie = readCookie("Modulplatzierer");
+    if(cookie === null) {
+        var dueDate = new Date().getTime()+(30*24*60*60*1000);
+        var cid = getCookieFromServer(dueDate);
+        createCookie("Modulplatzierer" , cid , dueDate);
+        //Roof ist momentan ein Dummy
+        var roofId = postRoofToServer({
+         dach_id : 0,
+            strasse : "Musterstraße",
+            hausnummer : "5",
+            postleitzahl : "12345",
+            dachneigung : 45,
+            koord_dachmitte_lng : 12,
+            koord_dachmitte_lat : 12,
+            cookie : {
+                cookie_id : cid,
+                dach_ids : []
+            },
+            ablaufdatum : dueDate
+        });
+
+    } else {
+        getPanelsFromServer();
+        /*if error:
+         eraseCookie("Modulplatziererer");
+        */
+    }
+
+    /*
+     Cookietestarea Ende
+     */
 
     var solarpanels = [];
     var selectedSolarPolygon = null;
@@ -235,5 +270,5 @@ window.onload = function () {
     openStreetMapButton.onclick = function () {
         showOpenStreetMap();
     };
-    
+
 };
