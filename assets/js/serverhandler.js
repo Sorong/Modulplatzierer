@@ -105,8 +105,8 @@ function getCookieFromServer(dueDate) {
         cors: "true",
         url: 'http://localhost:8080/SolarRESTService_war_exploded/server/postCookie/',
         data : JSON.stringify({
-            cookie_id : 0,
-            ablaufdatum : dueDate
+             cookie_id : 0,
+             ablaufdatum : dueDate
         }),
 
         header : {

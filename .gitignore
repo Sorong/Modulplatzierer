@@ -10,6 +10,8 @@
 /.idea/
 .idea/
 */out/*
+/workspace.xml
+workspace.xml
 
 # Sensitive or high-churn files:
 .idea/dataSources/
