@@ -49,6 +49,7 @@ function getPanelsFromServer() {
 
 function getCookieFromServer(dueDate) {
 
+
     // xhr = new XMLHttpRequest();
     // var url = "http://localhost:8080/SolarRESTService_war_exploded/server/postCookie";
     // xhr.open("POST", url, true);
@@ -93,6 +94,7 @@ function getCookieFromServer(dueDate) {
     }).fail(function () {
         console.log("Fehler beim Versuch mit dem Server zu kommunizieren");
     });
+
 
 
 }
