@@ -2,7 +2,6 @@ package com.example.jersey;
 
 
 import com.sun.jersey.api.json.JSONWithPadding;
-import com.sun.tools.internal.xjc.model.Model;
 import de.solarweb.datamodel.*;
 import de.solarweb.models.*;
 import org.apache.cxf.rs.security.cors.CrossOriginResourceSharing;
@@ -53,8 +52,8 @@ public class HelloWorld {
             allowAllOrigins = true
     )
     @Path("/getRoof/{dach_id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public ModelDach getRoof(@PathParam("dach_id") int id){
+    @Produces({"application/javascript"})
+    public ModelDach getRoof(@PathParam("dach_id") int id, @QueryParam("callback") String callback){
         TblDach tblDach = getRoofById(id);
         if (tblDach == null){
             return null;

@@ -2,10 +2,10 @@ window.onload = function () {
     /*
      Cookietestarea Anfang
      */
-    getPanelsFromServer();
-    eraseCookie("Modulplatzierer");
+
+   var test =  eraseCookie("Modulplatzierer");
     var cookie = readCookie("Modulplatzierer");
-    if(cookie === null) {
+    if(cookie === null || cookie === undefined) {
         var dueDate = new Date().getTime()+(30*24*60*60*1000);
         var cid = getCookieFromServer(dueDate);
         createCookie("Modulplatzierer" , cid , dueDate);

@@ -31,7 +31,7 @@ function getPanelsFromServer() {
 //  crossDomain: true,
         dataType: "json", // jsonp
        // jsonpCallback: 'callback',
-        url: 'http://195.37.224.237:8080/SolarRESTService_war_exploded/server/getRoof/0',
+        url: 'http://localhost:8080/SolarRESTService_war_exploded/server/getRoof/0',
     //    data: data,
 //  success: 1,
     }).done(function (data) {
@@ -49,23 +49,54 @@ function getPanelsFromServer() {
 
 function getCookieFromServer(dueDate) {
 
-    var formData = {"cookie_id":0,"ablaufdatum":dueDate}; 
- 
-$.ajax({
-    url : "http://localhost:8080/SolarRESTService_war_exploded/server/postCookie",
-    type: "POST",
-    dataType: "json",
-    contentType: "application/json",
-    data : JSON.stringify(formData),
-    success: function(data, textStatus, jqXHR)
-    {
-        alert(data)
-    },
-    error: function (jqXHR, textStatus, errorThrown)
-    {
- 
-    }
-}); 
+
+    // xhr = new XMLHttpRequest();
+    // var url = "http://localhost:8080/SolarRESTService_war_exploded/server/postCookie";
+    // xhr.open("POST", url, true);
+    // xhr.setRequestHeader("Content-type", "application/json");
+    // xhr.onreadystatechange = function () {
+    //     if (xhr.readyState == 4 && xhr.status == 200) {
+    //         var json = JSON.parse(xhr.responseText);
+    //         console.log(json);
+    //     }
+    // };
+    // var data = JSON.stringify({
+    //     cookie_id: 0,
+    //     ablaufdatum: dueDate
+    // });
+    //
+    // xhr.send(data);
+
+
+
+    $.ajax({
+        crossDomain: true,
+        type: "POST",
+        dataType: "json",
+        url: 'http://localhost:8080/SolarRESTService_war_exploded/server/postCookie/',
+        // data : JSON.stringify({
+        //     cookie_id : 0,
+        //     ablaufdatum : dueDate
+        // }),
+        data : {
+            cookie_id : 0,
+            ablaufdatum : dueDate
+        },
+        header : {
+            "content-type": "application/json",
+            "cache-control": "no-cache",
+            "postman-token": "fb4915c3-a458-2a90-714d-fbe37aa3a27b"
+        },
+
+    }).done(function (data) {
+        console.log(data);
+        alert(data);
+    }).fail(function () {
+        console.log("Fehler beim Versuch mit dem Server zu kommunizieren");
+    });
+
+
+
 }
 
 function postRoofToServer(roof) {
