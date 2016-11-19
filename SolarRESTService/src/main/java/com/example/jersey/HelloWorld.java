@@ -1,6 +1,7 @@
 package com.example.jersey;
 
 
+import com.sun.jersey.api.json.JSONWithPadding;
 import com.sun.tools.internal.xjc.model.Model;
 import de.solarweb.datamodel.*;
 import de.solarweb.models.*;
@@ -46,13 +47,13 @@ public class HelloWorld {
 
     @GET
     @Path("/getRoof/{dach_id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public ModelDach getRoof(@PathParam("dach_id") int id){
+    @Produces({"application/javascript"})
+    public JSONWithPadding getRoof(@PathParam("dach_id") int id, @QueryParam("callback") String callback){
         TblDach tblDach = getRoofById(id);
         if (tblDach == null){
             return null;
         }
-        return new ModelDach(tblDach);
+        return new JSONWithPadding(new ModelDach(tblDach), callback);
     }
 
 
@@ -78,7 +79,7 @@ public class HelloWorld {
         utx.begin();
         em.persist(tblDach);
         utx.commit();
-        return "ok";
+        return ""+(lastId+1);
     }
 
     @POST
@@ -123,8 +124,8 @@ public class HelloWorld {
     @POST
     @Path("/postCookie")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
-    public String postCookie(ModelCookie cookie) throws Exception{
+    @Produces({"application/javascript"})
+    public JSONWithPadding postCookie(ModelCookie cookie) throws Exception{
         int lastId = this.em.createQuery("select max(u.cookie_id) from TblCookie u", Integer.class).getSingleResult();
         TblCookie tblCookie = new TblCookie();
         tblCookie.setAblaufdatum(cookie.getAblaufdatum());
@@ -132,7 +133,7 @@ public class HelloWorld {
         utx.begin();
         em.persist(tblCookie);
         utx.commit();
-        return "ok";
+        return new JSONWithPadding(lastId+1);
     }
 
 
