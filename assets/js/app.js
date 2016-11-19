@@ -2,6 +2,7 @@ window.onload = function () {
     /*
      Cookietestarea Anfang
      */
+    getPanelsFromServer();
     eraseCookie("Modulplatzierer");
     var cookie = readCookie("Modulplatzierer");
     if(cookie === null) {

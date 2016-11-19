@@ -5,6 +5,7 @@ import com.sun.jersey.api.json.JSONWithPadding;
 import com.sun.tools.internal.xjc.model.Model;
 import de.solarweb.datamodel.*;
 import de.solarweb.models.*;
+import org.apache.cxf.rs.security.cors.CrossOriginResourceSharing;
 
 import javax.persistence.*;
 import javax.transaction.SystemException;
@@ -48,6 +49,9 @@ public class HelloWorld {
 
 
     @GET
+    @CrossOriginResourceSharing(
+            allowAllOrigins = true
+    )
     @Path("/getRoof/{dach_id}")
     @Produces(MediaType.APPLICATION_JSON)
     public ModelDach getRoof(@PathParam("dach_id") int id){
@@ -125,6 +129,9 @@ public class HelloWorld {
 
 
     @POST
+    @CrossOriginResourceSharing(
+            allowAllOrigins = true
+    )
     @Path("/postCookie")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({"application/javascript"})
