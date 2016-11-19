@@ -73,15 +73,14 @@ function getCookieFromServer(dueDate) {
         crossDomain: true,
         type: "POST",
         dataType: "json",
+        contentType: "application/json",
+        cors: "true",
         url: 'http://localhost:8080/SolarRESTService_war_exploded/server/postCookie/',
-        // data : JSON.stringify({
-        //     cookie_id : 0,
-        //     ablaufdatum : dueDate
-        // }),
-        data : {
-            cookie_id : 0,
-            ablaufdatum : dueDate
-        },
+        data : JSON.stringify({
+             cookie_id : 0,
+             ablaufdatum : dueDate
+        }),
+        
         header : {
             "content-type": "application/json",
             "cache-control": "no-cache",
