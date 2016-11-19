@@ -2,7 +2,6 @@ package com.example.jersey;
 
 
 import com.sun.jersey.api.json.JSONWithPadding;
-import com.sun.tools.internal.xjc.model.Model;
 import de.solarweb.datamodel.*;
 import de.solarweb.models.*;
 
@@ -48,12 +47,12 @@ public class HelloWorld {
     @GET
     @Path("/getRoof/{dach_id}")
     @Produces({"application/javascript"})
-    public JSONWithPadding getRoof(@PathParam("dach_id") int id, @QueryParam("callback") String callback){
+    public ModelDach getRoof(@PathParam("dach_id") int id, @QueryParam("callback") String callback){
         TblDach tblDach = getRoofById(id);
         if (tblDach == null){
             return null;
         }
-        return new JSONWithPadding(new ModelDach(tblDach), callback);
+        return new ModelDach(tblDach);
     }
 
 
