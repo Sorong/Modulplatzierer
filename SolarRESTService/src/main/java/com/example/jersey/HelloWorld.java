@@ -16,6 +16,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
+import javax.ws.rs.ext.Provider;
 
 
 @Stateless
@@ -45,15 +46,16 @@ public class HelloWorld {
 
 
 
+
     @GET
     @Path("/getRoof/{dach_id}")
-    @Produces({"application/javascript"})
-    public JSONWithPadding getRoof(@PathParam("dach_id") int id, @QueryParam("callback") String callback){
+    @Produces(MediaType.APPLICATION_JSON)
+    public ModelDach getRoof(@PathParam("dach_id") int id){
         TblDach tblDach = getRoofById(id);
         if (tblDach == null){
             return null;
         }
-        return new JSONWithPadding(new ModelDach(tblDach), callback);
+        return new ModelDach(tblDach);
     }
 
 
@@ -121,11 +123,12 @@ public class HelloWorld {
         return new ModelCookie(tblCookie);
     }
 
+
     @POST
     @Path("/postCookie")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({"application/javascript"})
-    public JSONWithPadding postCookie(ModelCookie cookie) throws Exception{
+    public String postCookie(ModelCookie cookie) throws Exception{
         int lastId = this.em.createQuery("select max(u.cookie_id) from TblCookie u", Integer.class).getSingleResult();
         TblCookie tblCookie = new TblCookie();
         tblCookie.setAblaufdatum(cookie.getAblaufdatum());
@@ -133,7 +136,7 @@ public class HelloWorld {
         utx.begin();
         em.persist(tblCookie);
         utx.commit();
-        return new JSONWithPadding(lastId+1);
+        return "" + (lastId + 1);
     }
 
 

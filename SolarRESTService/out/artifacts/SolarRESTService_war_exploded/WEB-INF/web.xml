@@ -11,7 +11,10 @@
             <param-name>com.sun.jersey.config.property.packages</param-name>
             <param-value>com.example.jersey</param-value>
         </init-param>
-
+        <init-param>
+            <param-name>com.sun.jersey.spi.container.ContainerResponseFilters</param-name>
+            <param-value>com.example.jersey.ResponseCorsFilter</param-value>
+        </init-param>
         <init-param>
             <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
             <param-value>true</param-value>
