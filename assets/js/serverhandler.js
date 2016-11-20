@@ -109,8 +109,9 @@ function postPanelToServer(panel) {
          	laenge: panel.laenge,
          	breite: panel.breite,
          	neigung: panel.neigung,
-         	ausrichtung: panel.ausrichtung;
+         	ausrichtung: panel.ausrichtung,
          	rahmenbreite: panel.rahmenbreite
+         }),
         
         header : {
             "content-type": "application/json",
@@ -141,8 +142,9 @@ function updatePanelToServer(panel) {
          	laenge: panel.laenge,
          	breite: panel.breite,
          	neigung: panel.neigung,
-         	ausrichtung: panel.ausrichtung;
+         	ausrichtung: panel.ausrichtung,
          	rahmenbreite: panel.rahmenbreite
+         }),
         
         header : {
             "content-type": "application/json",
