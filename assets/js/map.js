@@ -86,7 +86,7 @@ function updateFromServer(paneldata) {
 function addPanel(solarpanel, d3Overlay, writeToDatabase) {
 
     solarpanel.name = "Panel_" + (solarpanels.length);
-    alignPanel(solarpanel);
+    //solarpanel = alignPanel(solarpanel);
 
     var solarpanelpolygon = L.polygon([
             [solarpanel.topleft.lat, solarpanel.topleft.lng],
@@ -109,8 +109,8 @@ function addPanel(solarpanel, d3Overlay, writeToDatabase) {
         panel.tilt().on("change mousemove", function () {
 
             var val = $(this).val();
-
-            alignPanel(selectedSolarPolygon.panel, d3Overlay, val, selectedSolarPolygon.panel.pitch);
+            console.log("DANGER");
+            alignPanel(selectedSolarPolygon.panel, val, selectedSolarPolygon.panel.pitch);
 
             selectedSolarPolygon.setLatLngs([
                 [selectedSolarPolygon.panel.topleft.lat, selectedSolarPolygon.panel.topleft.lng],
@@ -181,6 +181,11 @@ function dragendPanel(d) {
 
     d.target.panel.bottomleft.lat = d.target._latlngs[0][3].lat;
     d.target.panel.bottomleft.lng = d.target._latlngs[0][3].lng;
+
+    console.log( "Obenlinks " + d3Overlay.projection.latLngToLayerPoint(d.target.panel.topleft));
+    console.log("Obenrechts " + d3Overlay.projection.latLngToLayerPoint(d.target.panel.topright));
+    console.log("Untenlinks " + d3Overlay.projection.latLngToLayerPoint(d.target.panel.bottomleft));
+    console.log("Untenrechts "+ d3Overlay.projection.latLngToLayerPoint(d.target.panel.bottomright));
     d.target.panel.realign();
     updatePanelToServer(roofId, d.target.panel);
 }

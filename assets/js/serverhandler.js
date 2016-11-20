@@ -125,13 +125,17 @@ function postPanelToServer(roofid, panel) {
 
     }).done(function (data) {
         panel.id = data;
+
     }).fail(function () {
         console.log("Fehler beim Versuch mit dem Server zu kommunizieren");
     });
 }
 
 function updatePanelToServer(roofid, panel) {
-
+    console.log( "Obenlinks Vorher " + d3Overlay.projection.latLngToLayerPoint(panel.originTopLeft));
+    console.log("Obenrechts Vorher" + d3Overlay.projection.latLngToLayerPoint(panel.originTopRight));
+    console.log("Untenlinks Vorher" + d3Overlay.projection.latLngToLayerPoint(panel.originBottomLeft));
+    console.log("Untenrechts Vorher"+ d3Overlay.projection.latLngToLayerPoint(panel.originBottomRight));
 	$.ajax({
     	async: false,
         crossDomain: true,
@@ -139,7 +143,7 @@ function updatePanelToServer(roofid, panel) {
         dataType: "json",
         contentType: "application/json",
         cors: "true",
-        url: serverURL + '/postPanel/',
+        url: serverURL + '/updatePanel/',
         data : JSON.stringify({
             dach_id: roofid,
             panel_id: panel.id,
@@ -159,7 +163,11 @@ function updatePanelToServer(roofid, panel) {
         },
 
     }).done(function (data) {
-        console.log("Update zum Server");
+        console.log("Update zum Server" + data);
+        console.log( "Obenlinks Nachher" + d3Overlay.projection.latLngToLayerPoint(L.latLng(data.obenLinks)));
+        console.log("Obenrechts Nachher" + d3Overlay.projection.latLngToLayerPoint(L.latLng(data.obenRechts)));
+        console.log("Untenlinks Nachher" + d3Overlay.projection.latLngToLayerPoint(L.latLng(data.untenLinks)));
+        console.log("Untenrechts Nachher"+ d3Overlay.projection.latLngToLayerPoint(L.latLng(data.untenRechts)));
     }).fail(function () {
         console.log("Fehler beim Versuch mit dem Server zu kommunizieren");
     });
