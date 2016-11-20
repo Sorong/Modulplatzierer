@@ -71,7 +71,7 @@ function updateFromServer(paneldata) {
 function addPanel(solarpanel, d3Overlay) {
 
     solarpanel.name = "Panel_" + (solarpanel.length);
-    alignPanel(solarpanel, d3Overlay, 0, 45);
+    alignPanel(solarpanel, d3Overlay, 0, 0);
 
     var solarpanelpolygon = L.polygon([
             [solarpanel.topleft.lat, solarpanel.topleft.lng],
