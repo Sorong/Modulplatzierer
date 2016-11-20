@@ -98,7 +98,7 @@ function getCookieFromServer(id){
 function postPanelToServer(roofid, panel) {
 
 	$.ajax({
-    	async: false,
+    //	async: false,
         crossDomain: true,
         type: "POST",
         dataType: "json",
@@ -137,7 +137,7 @@ function updatePanelToServer(roofid, panel) {
     console.log("Untenlinks Vorher" + d3Overlay.projection.latLngToLayerPoint(panel.originBottomLeft));
     console.log("Untenrechts Vorher"+ d3Overlay.projection.latLngToLayerPoint(panel.originBottomRight));
 	$.ajax({
-    	async: false,
+    	//async: false,
         crossDomain: true,
         type: "POST",
         dataType: "json",

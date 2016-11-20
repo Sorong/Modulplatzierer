@@ -110,8 +110,8 @@ function addPanel(solarpanel, d3Overlay, writeToDatabase) {
 
             var val = $(this).val();
             console.log("DANGER");
-            alignPanel(selectedSolarPolygon.panel, val, selectedSolarPolygon.panel.pitch);
-
+            selectedSolarPolygon.panel.pitch = val;
+            alignPanel(selectedSolarPolygon.panel);
             selectedSolarPolygon.setLatLngs([
                 [selectedSolarPolygon.panel.topleft.lat, selectedSolarPolygon.panel.topleft.lng],
                 [selectedSolarPolygon.panel.topright.lat, selectedSolarPolygon.panel.topright.lng],
@@ -125,19 +125,30 @@ function addPanel(solarpanel, d3Overlay, writeToDatabase) {
             // Data changed
 
         });
+        panel.tilt().on("mouseleave", function () {
+            updatePanelToServer(roofId, selectedSolarPolygon.panel);
+        });
 
         panel.height().on("change mousemove", function () {
 
             var val = $(this).val();
             console.log("Panel: " + selectedSolarPolygon.panel.name + " set height: " + val);
-
+            selectedSolarPolygon.panel.length = val;
+            selectedSolarPolygon.panel.realign();
+        });
+        panel.height().on("mouseleave", function () {
+            updatePanelToServer(roofId, selectedSolarPolygon.panel);
         });
 
         panel.width().on("change mousemove", function () {
 
             var val = $(this).val();
             console.log("Panel: " + selectedSolarPolygon.panel.name + " set width: " + val);
-
+            selectedSolarPolygon.panel.width = val;
+            selectedSolarPolygon.panel.realign();
+        });
+        panel.width().on("mouseleave", function () {
+          updatePanelToServer(roofId, selectedSolarPolygon.panel);
         });
 
     });
