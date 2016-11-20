@@ -80,7 +80,7 @@ function updateFromServer(paneldata) {
     */
 }
 
-function addPanel(solarpanel) {
+function addPanel(solarpanel, d3Overlay) {
 
     solarpanel.name = "Panel_" + (solarpanel.length);
     alignPanel(solarpanel, d3Overlay, 0, 45);
@@ -252,7 +252,7 @@ window.onload = function () {
 
         this.projection = projection;
 
-        var feature = selection.selectAll('rect').data(panels);
+     /*   var feature = selection.selectAll('rect').data(panels);
         feature.enter()
             .append("rect")
             .style("stroke", "black")
@@ -273,8 +273,10 @@ window.onload = function () {
                         projection.latLngToLayerPoint(d.LatLng).y + ")";
                 }
             );
-        }
+        }*/
     });
+
+    d3Overlay.addTo(map);
 
     function showOpenStreetMap() {
         if (layer) {
@@ -312,7 +314,7 @@ window.onload = function () {
         panelData.name = "Added Panel";
         panelData.LatLng = d3Overlay.projection.layerPointToLatLng(point);
         var solarpanel = createSolarpanel(panelData.LatLng, 10, 10);
-        addPanel(solarpanel);
+        addPanel(solarpanel, d3Overlay);
 
     };
 
