@@ -86,7 +86,7 @@ function updateFromServer(paneldata) {
 function addPanel(solarpanel, d3Overlay, writeToDatabase) {
 
     solarpanel.name = "Panel_" + (solarpanels.length);
-    //solarpanel = alignPanel(solarpanel);
+    solarpanel = alignPanel(solarpanel);
 
     var solarpanelpolygon = L.polygon([
             [solarpanel.topleft.lat, solarpanel.topleft.lng],
@@ -109,8 +109,7 @@ function addPanel(solarpanel, d3Overlay, writeToDatabase) {
         panel.pitchSlider().on("change mousemove", function () {
 
             var val = $(this).val();
-            console.log("DANGER");
-            selectedSolarPolygon.panel.pitch = val;
+            selectedSolarPolygon.panel.setPitch(val);
             alignPanel(selectedSolarPolygon.panel);
             selectedSolarPolygon.setLatLngs([
                 [selectedSolarPolygon.panel.topleft.lat, selectedSolarPolygon.panel.topleft.lng],
@@ -168,7 +167,7 @@ function addPanel(solarpanel, d3Overlay, writeToDatabase) {
 
             var val = $(this).val();
             console.log("Panel: " + selectedSolarPolygon.panel.name + " set orientation: " + val);
-            selectedSolarPolygon.panel.orientation = val;
+            selectedSolarPolygon.panel.setOrientation(val);
             selectedSolarPolygon.panel.realign();
             selectedSolarPolygon.setLatLngs([
                 [selectedSolarPolygon.panel.topleft.lat, selectedSolarPolygon.panel.topleft.lng],

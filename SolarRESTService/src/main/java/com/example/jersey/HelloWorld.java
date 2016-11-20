@@ -150,6 +150,7 @@ public class HelloWorld {
 
 
         tblPanel.setAusrichtung(panel.getAusrichtung());
+        tblPanel.setNeigung(panel.getNeigung());
         tblPanel.setBreite(panel.getBreite());
         tblPanel.setLaenge(panel.getLaenge());
         tblPanel.setRahmenbreite(panel.getRahmenbreite());
@@ -186,6 +187,7 @@ public class HelloWorld {
 
         utx.begin();
         tblPanel.setAusrichtung(panel.getAusrichtung());
+        tblPanel.setNeigung(panel.getNeigung());
         tblPanel.setBreite(panel.getBreite());
         tblPanel.setLaenge(panel.getLaenge());
         tblPanel.setRahmenbreite(panel.getRahmenbreite());

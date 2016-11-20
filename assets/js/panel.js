@@ -22,6 +22,12 @@ Solarpanel.prototype.realign = function () {
 
     alignPanel(this);
 };
+Solarpanel.prototype.setPitch = function (pitch) {
+    this.pitch = parseInt(pitch);
+};
+Solarpanel.prototype.setOrientation = function (orientation) {
+    this.orientation = parseInt(orientation);
+};
 
 function createSolarpanel(topleft, length, width, orientation, pitch) {
     var solarpanel = new Solarpanel();

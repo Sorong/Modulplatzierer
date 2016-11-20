@@ -132,10 +132,19 @@ function postPanelToServer(roofid, panel) {
 }
 
 function updatePanelToServer(roofid, panel) {
-    console.log( "Obenlinks Vorher " + d3Overlay.projection.latLngToLayerPoint(panel.originTopLeft));
-    console.log("Obenrechts Vorher" + d3Overlay.projection.latLngToLayerPoint(panel.originTopRight));
-    console.log("Untenlinks Vorher" + d3Overlay.projection.latLngToLayerPoint(panel.originBottomLeft));
-    console.log("Untenrechts Vorher"+ d3Overlay.projection.latLngToLayerPoint(panel.originBottomRight));
+    var json = JSON.stringify({
+        dach_id: roofid,
+        panel_id: panel.id,
+        obenLinks: [panel.originTopLeft.lat, panel.originTopLeft.lng],
+        obenRechts: [panel.originTopRight.lat, panel.originTopRight.lng],
+        untenRechts: [panel.originBottomRight.lat, panel.originBottomRight.lng],
+        untenLinks: [panel.originBottomLeft.lat, panel.originBottomLeft.lng],
+        laenge: panel.length,
+        breite: panel.width,
+        neigung: panel.pitch,
+        ausrichtung: panel.orientation,
+        rahmenbreite: 0
+    });
 	$.ajax({
     	//async: false,
         crossDomain: true,
@@ -144,19 +153,7 @@ function updatePanelToServer(roofid, panel) {
         contentType: "application/json",
         cors: "true",
         url: serverURL + '/updatePanel/',
-        data : JSON.stringify({
-            dach_id: roofid,
-            panel_id: panel.id,
-            obenLinks: [panel.originTopLeft.lat, panel.originTopLeft.lng],
-            obenRechts: [panel.originTopRight.lat, panel.originTopRight.lng],
-            untenRechts: [panel.originBottomRight.lat, panel.originBottomRight.lng],
-            untenLinks: [panel.originBottomLeft.lat, panel.originBottomLeft.lng],
-            laenge: panel.length,
-            breite: panel.width,
-            neigung: panel.pitch,
-            ausrichtung: panel.orientation,
-            rahmenbreite: 0
-        }),
+        data : json,
         
         header : {
             "content-type": "application/json",
