@@ -80,21 +80,22 @@ function createCookieFromServer(dueDate) {
 }
 
 function getCookieFromServer(id){
-	var cookie;
+	//var cookie;
     $.ajax({
-    	async: false,
+  //  	async: false,
      	type: "GET",
         dataType: "json",
         url: serverURL + '/getCookie/' + id,
     }).done(function (data) {
-        cookie = data;
+        loadCookieContent(data);
+      //  cookie = data;
     }).fail(function () {
         console.log("Fehler beim Versuch mit dem Server zu kommunizieren");
     });
-    return cookie;
+    //return cookie;
 }
 
-function postPanelToServer(panel) {
+function postPanelToServer(roofid, panel) {
 
 	$.ajax({
     	async: false,
@@ -105,6 +106,7 @@ function postPanelToServer(panel) {
         cors: "true",
         url: serverURL + '/postPanel/',
         data : JSON.stringify({
+            dach_id: roofid,
          	panel_id: panel.id,
          	obenLinks: [panel.originTopLeft.lat, panel.originTopLeft.lng],
          	obenRechts: [panel.originTopRight.lat, panel.originTopRight.lng],
@@ -123,7 +125,6 @@ function postPanelToServer(panel) {
 
     }).done(function (data) {
         panel.id = data;
-        alert(data);
     }).fail(function () {
         console.log("Fehler beim Versuch mit dem Server zu kommunizieren");
     });

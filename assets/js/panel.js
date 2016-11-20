@@ -7,8 +7,8 @@ function Solarpanel() {
     this.topright = null;
     this.bottomleft = null;
     this.bottomright = null;
-    this.orientation = null;
-    this.pitch = null;
+    this.orientation = 0;
+    this.pitch = 0;
     this.name = null;
     this.id = 0;
 }
@@ -23,37 +23,45 @@ function createSolarpanel(topleft, length, width, orientation, pitch) {
 
     if (orientation !== undefined || pitch !== undefined) {
         alignPanel(solarpanel, orientation, pitch);
-        solarpanel.topleft = solarpanel.originTopLeft;
     } else {
-        solarpanel.topleft = solarpanel.originTopLeft;
         solarpanel.topright = solarpanel.originTopRight;
         solarpanel.bottomleft = solarpanel.originBottomLeft;
         solarpanel.bottomright = solarpanel.originBottomRight;
     }
+    solarpanel.topleft = solarpanel.originTopLeft;
     return solarpanel;
 }
 
 function loadSolarpanel(topleft, topright, bottomleft, bottomright, orientation, pitch) {
-    var panel = new Solarpanel();
-    panel.originTopLeft = topleft;
-    panel.originTopRight = topright;
-    panel.originBottomLeft = bottomleft;
-    panel.originTopRight = bottomright;
+    var solarpanel = new Solarpanel();
+    solarpanel.originTopLeft = topleft;
+    solarpanel.originTopRight = topright;
+    solarpanel.originBottomLeft = bottomleft;
+    solarpanel.originBottomRight = bottomright;
     if(orientation === "undefined") {
         orientation = 0;
     }
     if (pitch === "undefined") {
         pitch = 0;
     }
-    panel.orientation = orientation;
-    panel.pitch = pitch;
-}
-
-function alignPanel(solarpanel, d3Overlay, orientation, pitch) {
-
-
     solarpanel.orientation = orientation;
     solarpanel.pitch = pitch;
+    if(orientation != 0 || pitch != 0) {
+        alignPanel(panel, orientation, pitch);
+    } else {
+        solarpanel.topright = solarpanel.originTopRight;
+        solarpanel.bottomleft = solarpanel.originBottomLeft;
+        solarpanel.bottomright = solarpanel.originBottomRight;
+    }
+    solarpanel.topleft = solarpanel.originTopLeft;
+    return solarpanel;
+}
+
+function alignPanel(solarpanel) {
+
+
+    solarpanel.orientation;
+    solarpanel.pitch;
     solarpanel.topleft = d3Overlay.projection.latLngToLayerPoint(solarpanel.originTopLeft);
     solarpanel.topright = d3Overlay.projection.latLngToLayerPoint(solarpanel.originTopRight);
     solarpanel.bottomleft = d3Overlay.projection.latLngToLayerPoint(solarpanel.originBottomLeft);

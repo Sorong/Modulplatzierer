@@ -16,14 +16,20 @@ var dragCoords = {x: 0, y: 0};
 
 
 function init() {
-    eraseCookie(COOKIENAME);
+    //  eraseCookie(COOKIENAME);
     cookieId = readCookie(COOKIENAME);
-    if(cookieId === null || cookieId === "undefined") {
-        var dueDate = new Date().getTime()+(DAYS_TILL_COOKIE_EXPIRE*24*60*60*1000);
+    if (cookieId === null || cookieId === "undefined") {
+        var dueDate = new Date().getTime() + (DAYS_TILL_COOKIE_EXPIRE * 24 * 60 * 60 * 1000);
         createCookieFromServer(dueDate);
     } else {
-        getPanelsFromServer(cookieId);
+        getCookieFromServer(cookieId);
+
     }
+}
+
+function loadCookieContent(data) {
+    setRoofId(data.dach_ids[0]);
+    getPanelsFromServer(roofId);
 }
 
 function setCookie(cid, dueDate) {
@@ -31,18 +37,18 @@ function setCookie(cid, dueDate) {
     createCookie(COOKIENAME, cid, dueDate);
     //PostRoof wird mir Dummydach aufgerufen
     postRoofToServer({
-        dach_id : 0,
-        strasse : "Musterstraße",
-        hausnummer : "5",
-        postleitzahl : "12345",
-        dachneigung : 45,
-        koord_dachmitte_lng : 12,
-        koord_dachmitte_lat : 12,
-        cookie : {
-            cookie_id : cid,
-            dach_ids : []
+        dach_id: 0,
+        strasse: "Musterstraße",
+        hausnummer: "5",
+        postleitzahl: "12345",
+        dachneigung: 45,
+        koord_dachmitte_lng: 12,
+        koord_dachmitte_lat: 12,
+        cookie: {
+            cookie_id: cid,
+            dach_ids: []
         },
-        ablaufdatum : dueDate
+        ablaufdatum: dueDate
     });
     alert("cookieId: " + cookieId);
 }
@@ -53,25 +59,29 @@ function setRoofId(rid) {
 }
 
 function updateFromServer(paneldata) {
-    if(paneldata === "undefined") {
+    if (paneldata === "undefined") {
         return;
     }
     paneldata.forEach(loadPanel);
     function loadPanel(element, index, array) {
         var panel = loadSolarpanel(
-          element.obenLinks, element.obenRechts, element.obenLinks, element.obenRechts, element.neigung, element.ausrichtung
+            L.latLng(element.obenLinks[0], element.obenLinks[1]),
+            L.latLng(element.obenRechts[0], element.obenRechts[1]),
+            L.latLng(element.untenLinks[0], element.untenLinks[1]),
+            L.latLng(element.untenRechts[0], element.untenRechts[1]), element.neigung, element.ausrichtung
         );
-        addPanel(panel);
+        addPanel(panel,d3Overlay, false);
     }
+
     /* TODO: Auf Solarpanel fokussieren
-    map.setView(solarpanels[0].originTopLeft.lat, solarpanels[0].originTopLeft.lng, 18);
-    */
+     map.setView(solarpanels[0].originTopLeft.lat, solarpanels[0].originTopLeft.lng, 18);
+     */
 }
 
-function addPanel(solarpanel, d3Overlay) {
+function addPanel(solarpanel, d3Overlay, writeToDatabase) {
 
-    solarpanel.name = "Panel_" + (solarpanel.length);
-    alignPanel(solarpanel, d3Overlay, 0, 0);
+    solarpanel.name = "Panel_" + (solarpanels.length);
+    alignPanel(solarpanel);
 
     var solarpanelpolygon = L.polygon([
             [solarpanel.topleft.lat, solarpanel.topleft.lng],
@@ -126,7 +136,9 @@ function addPanel(solarpanel, d3Overlay) {
         });
 
     });
-    postPanelToServer(solarpanel);
+    if(writeToDatabase) {
+        postPanelToServer(roofId, solarpanel);
+    }
     solarpanelpolygon.on('drag', dragmovePanel);
     solarpanelpolygon.on('dragend', dragendPanel);
     solarpanels.push(solarpanel);
@@ -136,7 +148,7 @@ function dragmovePanel(d) {
 
     console.log("Drag Panel: " + d.target.panel.name);
 
-    d.target.panel.topleft.lat = d.target._latlngs[0][0].lat;
+    d.target.panel.topleft.lat = d.target._latlngs[0][1].lat;
     d.target.panel.topleft.lng = d.target._latlngs[0][0].lng;
 
     d.target.panel.topright.lat = d.target._latlngs[0][1].lat;
@@ -150,9 +162,9 @@ function dragmovePanel(d) {
 
 }
 
-function dragendPanel(d){
-	console.log("Drop Panel: " + d.target.panel.name);
-	console.log(d.target.panel);
+function dragendPanel(d) {
+    console.log("Drop Panel: " + d.target.panel.name);
+    console.log(d.target.panel);
 }
 
 function dragstarted() {
@@ -187,7 +199,7 @@ window.onload = function () {
 
 
     map = L.map('map').setView([52.46806645297567, 10.534391955698084], 18);
-    var layer, d3Overlay;
+    var layer;
 
     showGoogleMap();
 
@@ -226,47 +238,47 @@ window.onload = function () {
     ]).addTo(map);
 
     /*
-    // Panels
-    //
-    var panels = [];
-    d3.json("rectangle.json", function (data) {
-        panels = data.features;
-        var i = 0;
-        panels.forEach(function (d) {
-            d.name = "Panel_" + (++i);
-            var coords = d.geometry.coordinates;
-            d.LatLng = new L.LatLng(coords[0], coords[1]);
-        });
-        d3Overlay.addTo(map)
-    });
-    */
+     // Panels
+     //
+     var panels = [];
+     d3.json("rectangle.json", function (data) {
+     panels = data.features;
+     var i = 0;
+     panels.forEach(function (d) {
+     d.name = "Panel_" + (++i);
+     var coords = d.geometry.coordinates;
+     d.LatLng = new L.LatLng(coords[0], coords[1]);
+     });
+     d3Overlay.addTo(map)
+     });
+     */
 
     d3Overlay = L.d3SvgOverlay(function (selection, projection) {
 
         this.projection = projection;
 
-     /*   var feature = selection.selectAll('rect').data(panels);
-        feature.enter()
-            .append("rect")
-            .style("stroke", "black")
-            .style("opacity", .6)
-            .style("fill", "red")
-            .attr("width", 30)
-            .attr("height", 50)
-            .call(drag);
+        /*   var feature = selection.selectAll('rect').data(panels);
+         feature.enter()
+         .append("rect")
+         .style("stroke", "black")
+         .style("opacity", .6)
+         .style("fill", "red")
+         .attr("width", 30)
+         .attr("height", 50)
+         .call(drag);
 
-        map.on("zoom", update);
-        update();
+         map.on("zoom", update);
+         update();
 
-        function update() {
-            feature.attr("transform",
-                function (d) {
-                    return "translate(" +
-                        projection.latLngToLayerPoint(d.LatLng).x + "," +
-                        projection.latLngToLayerPoint(d.LatLng).y + ")";
-                }
-            );
-        }*/
+         function update() {
+         feature.attr("transform",
+         function (d) {
+         return "translate(" +
+         projection.latLngToLayerPoint(d.LatLng).x + "," +
+         projection.latLngToLayerPoint(d.LatLng).y + ")";
+         }
+         );
+         }*/
     });
 
     d3Overlay.addTo(map);
@@ -307,7 +319,7 @@ window.onload = function () {
         panelData.name = "Added Panel";
         panelData.LatLng = d3Overlay.projection.layerPointToLatLng(point);
         var solarpanel = createSolarpanel(panelData.LatLng, 10, 10);
-        addPanel(solarpanel, d3Overlay);
+        addPanel(solarpanel, d3Overlay, true);
 
     };
 
