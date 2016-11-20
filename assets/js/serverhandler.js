@@ -1,3 +1,5 @@
+serverURL = 'http://localhost:8080/SolarRESTService_war_exploded/server';
+
 function createCookie(name,value, duedate) {
     if (duedate) {
         var date = new Date();
@@ -24,86 +26,38 @@ function eraseCookie(name) {
     createCookie(name,"",-1);
 }
 
-function getPanelsFromServer() {
 
+function getPanelsFromServer(id) {
+	var panelData;
     $.ajax({
-     type: "GET",
-//  crossDomain: true,
-        dataType: "json", // jsonp
-       // jsonpCallback: 'callback',
-        url: 'http://localhost:8080/SolarRESTService_war_exploded/server/getRoof/0',
-    //    data: data,
-//  success: 1,
+    	async: false,
+     	type: "GET",
+        dataType: "json",
+        url: serverURL + '/getRoof/' + id,
     }).done(function (data) {
         var arr = [];
         data.modelSolarpanelCollection.forEach(getPanels);
         function getPanels(element, index, array) {
             arr.push(element);
         }
-        alert(arr.length);
+        panelData = arr;
     }).fail(function () {
         console.log("Fehler beim Versuch mit dem Server zu kommunizieren");
-    })
-    ;
+    });
+    return panelData;
 }
 
-function getCookieFromServer(dueDate) {
 
-
-    // xhr = new XMLHttpRequest();
-    // var url = "http://localhost:8080/SolarRESTService_war_exploded/server/postCookie";
-    // xhr.open("POST", url, true);
-    // xhr.setRequestHeader("Content-type", "application/json");
-    // xhr.onreadystatechange = function () {
-    //     if (xhr.readyState == 4 && xhr.status == 200) {
-    //         var json = JSON.parse(xhr.responseText);
-    //         console.log(json);
-    //     }
-    // };
-    // var data = JSON.stringify({
-    //     cookie_id: 0,
-    //     ablaufdatum: dueDate
-    // });
-    //
-    // xhr.send(data);
-
-
-
-    // $.ajax({
-    //     crossDomain: true,
-    //     type: "POST",
-    //     dataType: "json",
-    //     contentType: "application/json",
-    //     url: 'http://195.37.224.237:8080/SolarRESTService_war_exploded/server/postCookie/',
-    //     // data : JSON.stringify({
-    //     //     cookie_id : 0,
-    //     //     ablaufdatum : dueDate
-    //     // }),
-    //     data : {
-    //         cookie_id : 0,
-    //         ablaufdatum : dueDate
-    //     },
-    //     header : {
-    //         "content-type": "application/json",
-    //         "cache-control": "no-cache",
-    //         "postman-token": "fb4915c3-a458-2a90-714d-fbe37aa3a27b"
-    //     },
-    //
-    // }).done(function (data) {
-    //     console.log(data);
-    //     alert(data);
-    // }).fail(function () {
-    //     console.log("Fehler beim Versuch mit dem Server zu kommunizieren");
-    // });
-
-
+function createCookieFromServer(dueDate) {
+	var cookieID;
     $.ajax({
+    	async: false,
         crossDomain: true,
         type: "POST",
         dataType: "json",
         contentType: "application/json",
         cors: "true",
-        url: 'http://localhost:8080/SolarRESTService_war_exploded/server/postCookie/',
+        url: serverURL + '/postCookie/',
         data : JSON.stringify({
              cookie_id : 0,
              ablaufdatum : dueDate
@@ -114,13 +68,127 @@ function getCookieFromServer(dueDate) {
         },
 
     }).done(function (data) {
-        console.log(data);
-        alert(data);
+        cookieID = data;
+    }).fail(function () {
+        console.log("Fehler beim Versuch mit dem Server zu kommunizieren");
+    });
+    return cookieID;
+}
+
+function getCookieFromServer(id){
+	var cookie;
+    $.ajax({
+    	async: false,
+     	type: "GET",
+        dataType: "json",
+        url: serverURL + '/getCookie/' + id,
+    }).done(function (data) {
+        cookie = data;
+    }).fail(function () {
+        console.log("Fehler beim Versuch mit dem Server zu kommunizieren");
+    });
+    return cookie;
+}
+
+function postPanelToServer(panel) {
+
+	$.ajax({
+    	async: false,
+        crossDomain: true,
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json",
+        cors: "true",
+        url: serverURL + '/postPanel/',
+        data : JSON.stringify({
+         	panel_id: panel.panel_id,
+         	obenlinks: panel.obenLinks,
+         	obenRechts: panel.obenRechts,
+         	untenRechts: panel.untenRechts,
+         	untenLinks: panel.untenLinks,
+         	laenge: panel.laenge,
+         	breite: panel.breite,
+         	neigung: panel.neigung,
+         	ausrichtung: panel.ausrichtung;
+         	rahmenbreite: panel.rahmenbreite
+        
+        header : {
+            "content-type": "application/json",
+        },
+
+    }).done(function (data) {
     }).fail(function () {
         console.log("Fehler beim Versuch mit dem Server zu kommunizieren");
     });
 }
 
-function postRoofToServer(roof) {
+function updatePanelToServer(panel) {
 
+	$.ajax({
+    	async: false,
+        crossDomain: true,
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json",
+        cors: "true",
+        url: serverURL + '/postPanel/',
+        data : JSON.stringify({
+         	panel_id: panel.panel_id,
+         	obenlinks: panel.obenLinks,
+         	obenRechts: panel.obenRechts,
+         	untenRechts: panel.untenRechts,
+         	untenLinks: panel.untenLinks,
+         	laenge: panel.laenge,
+         	breite: panel.breite,
+         	neigung: panel.neigung,
+         	ausrichtung: panel.ausrichtung;
+         	rahmenbreite: panel.rahmenbreite
+        
+        header : {
+            "content-type": "application/json",
+        },
+
+    }).done(function (data) {
+    }).fail(function () {
+        console.log("Fehler beim Versuch mit dem Server zu kommunizieren");
+    });
+}
+    
+
+
+function postRoofToServer(roof) {
+	var roofId;
+	$.ajax({
+    	async: false,
+        crossDomain: true,
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json",
+        cors: "true",
+        url: serverURL + '/postRoof/',
+        data : JSON.stringify({
+         	dach_id : roof.dach_id,
+            strasse : roof.strasse,
+            hausnummer : roof.hausnummer,
+            postleitzahl : roof.postleitzahl,
+            dachneigung : roof.dachneigung,
+            koord_dachmitte_lng : roof.koord_dachmitte_lng,
+            koord_dachmitte_lat : roof.koord_dachmitte_lat,
+            cookie : {
+                cookie_id : roof.cookie.cookie_id,
+                dach_ids : [],
+            ablaufdatum : roof.cookie.ablaufdatum
+            }
+        }),
+        
+        header : {
+            "content-type": "application/json",
+        },
+
+    }).done(function (data) {
+        roofId = data;
+    }).fail(function () {
+        console.log("Fehler beim Versuch mit dem Server zu kommunizieren");
+    });
+    return roofId;
 }
