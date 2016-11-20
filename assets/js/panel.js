@@ -10,6 +10,7 @@ function Solarpanel() {
     this.orientation = null;
     this.pitch = null;
     this.name = null;
+    this.id = 0;
 }
 
 

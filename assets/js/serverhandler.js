@@ -105,16 +105,16 @@ function postPanelToServer(panel) {
         cors: "true",
         url: serverURL + '/postPanel/',
         data : JSON.stringify({
-         	panel_id: panel.panel_id,
-         	obenLinks: panel.obenLinks,
-         	obenRechts: panel.obenRechts,
-         	untenRechts: panel.untenRechts,
-         	untenLinks: panel.untenLinks,
-         	laenge: panel.laenge,
-         	breite: panel.breite,
-         	neigung: panel.neigung,
-         	ausrichtung: panel.ausrichtung,
-         	rahmenbreite: panel.rahmenbreite
+         	panel_id: panel.id,
+         	obenLinks: panel.originTopLeft,
+         	obenRechts: panel.originTopRight,
+         	untenRechts: panel.originBottomRight,
+         	untenLinks: panel.originBottomLeft,
+         	laenge: 0,
+         	breite: 0,
+         	neigung: panel.pitch,
+         	ausrichtung: panel.orientation,
+         	rahmenbreite: 0
          }),
         
         header : {
@@ -122,6 +122,7 @@ function postPanelToServer(panel) {
         },
 
     }).done(function (data) {
+        panel.id = data;
     }).fail(function () {
         console.log("Fehler beim Versuch mit dem Server zu kommunizieren");
     });

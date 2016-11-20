@@ -44,12 +44,12 @@ function setCookie(cid, dueDate) {
         },
         ablaufdatum : dueDate
     });
-    alert(cookieId);
+    alert("cookieId: " + cookieId);
 }
 
 function setRoofId(rid) {
     roofId = rid;
-    alert(roofId);
+    alert("roofId: " + roofId);
 }
 
 function updateFromServer(paneldata) {
@@ -126,7 +126,7 @@ function addPanel(solarpanel, d3Overlay) {
         });
 
     });
-
+    postPanelToServer(solarpanel);
     solarpanelpolygon.on('drag', dragmovePanel);
     solarpanels.push(solarpanel);
 }
