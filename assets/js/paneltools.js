@@ -12,23 +12,34 @@ function PanelTools(panelpolygon) {
     this.panelHeight = $("#panel_height");
     this.panelHeightValue = $("#panel_height_value");
 
+    this.orientation = $("#roof_orientation");
+    this.orientationValue = $("#roof_orientation_value");
+
     this.renderSolarPanelValues();
 }
 
 PanelTools.prototype.renderSolarPanelValues = function () {
     console.log("Render:" + this.selectedPanel.name);
     this.toolsHeadline.html(this.selectedPanel.name);
-    this.panelTilt.val(this.selectedPanel.orientation);
-    this.panelTiltValue.html(this.selectedPanel.orientation + "°");
 
-    this.panelWidth.val(1);
-    this.panelWidthValue.html(1 + "m");
+    var pitch = this.selectedPanel.pitch || 0;
+    this.panelTilt.val(pitch);
+    this.panelTiltValue.html(pitch + "°");
 
-    this.panelHeight.val(1);
-    this.panelHeightValue.html(1 + "m");
+    var width = this.selectedPanel.width || 1;
+    this.panelWidth.val(width);
+    this.panelWidthValue.html(width + "m");
+
+    var length = this.selectedPanel.length || 1;
+    this.panelHeight.val(length);
+    this.panelHeightValue.html(length + "m");
+
+    var orientation = this.selectedPanel.orientation || 0;
+    this.orientation.val(orientation);
+    this.orientationValue.html(orientation + "°");
 };
 
-PanelTools.prototype.tilt = function () {
+PanelTools.prototype.pitchSlider = function () {
     var degree = this.panelTiltValue;
     return this.panelTilt.on("change mousemove", function () {
         var val = $(this).val();
@@ -36,7 +47,7 @@ PanelTools.prototype.tilt = function () {
     });
 };
 
-PanelTools.prototype.width = function () {
+PanelTools.prototype.widthSlider = function () {
     console.log("Width");
     var widthVal = this.panelWidthValue;
     return this.panelWidth.on("change mousemove", function () {
@@ -45,11 +56,19 @@ PanelTools.prototype.width = function () {
     });
 };
 
-PanelTools.prototype.height = function () {
+PanelTools.prototype.heightSlider = function () {
     var height = this.panelHeightValue;
     return this.panelHeight.on("change mousemove", function () {
         var val = $(this).val();
         height.html(val + "m");
+    });
+};
+
+PanelTools.prototype.orientationSlider = function () {
+    var degree = this.orientationValue;
+    return this.orientation.on("change mousemove", function () {
+        var val = $(this).val();
+        degree.html(val + "°");
     });
 };
 

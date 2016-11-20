@@ -220,7 +220,7 @@ window.onload = function () {
             console.log("Click Panel: " + selectedSolarPolygon.panel.name);
 
             var panel = new PanelTools(selectedSolarPolygon);
-            panel.tilt().on("change mousemove", function () {
+            panel.pitchSlider().on("change mousemove", function () {
 
                 var val = $(this).val();
 
