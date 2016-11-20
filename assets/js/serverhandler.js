@@ -106,10 +106,10 @@ function postPanelToServer(panel) {
         url: serverURL + '/postPanel/',
         data : JSON.stringify({
          	panel_id: panel.id,
-         	obenLinks: panel.originTopLeft,
-         	obenRechts: panel.originTopRight,
-         	untenRechts: panel.originBottomRight,
-         	untenLinks: panel.originBottomLeft,
+         	obenLinks: [panel.originTopLeft.lat, panel.originTopLeft.lng],
+            obenRechts: [panel.originTopRight.lat, panel.originTopRight.lng],
+            untenRechts: [panel.originBottomRight.lat, panel.originBottomRight.lng],
+            untenLinks: [panel.originBottomLeft.lat, panel.originBottomLeft.lng],
          	laenge: 0,
          	breite: 0,
          	neigung: panel.pitch,
@@ -123,6 +123,7 @@ function postPanelToServer(panel) {
 
     }).done(function (data) {
         panel.id = data;
+        alert(data);
     }).fail(function () {
         console.log("Fehler beim Versuch mit dem Server zu kommunizieren");
     });
