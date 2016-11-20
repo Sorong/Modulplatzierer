@@ -112,8 +112,8 @@ function postPanelToServer(roofid, panel) {
          	obenRechts: [panel.originTopRight.lat, panel.originTopRight.lng],
          	untenRechts: [panel.originBottomRight.lat, panel.originBottomRight.lng],
          	untenLinks: [panel.originBottomLeft.lat, panel.originBottomLeft.lng],
-         	laenge: 0,
-         	breite: 0,
+         	laenge: panel.length,
+         	breite: panel.width,
          	neigung: panel.pitch,
          	ausrichtung: panel.orientation,
          	rahmenbreite: 0
@@ -130,7 +130,7 @@ function postPanelToServer(roofid, panel) {
     });
 }
 
-function updatePanelToServer(panel) {
+function updatePanelToServer(roofid, panel) {
 
 	$.ajax({
     	async: false,
@@ -141,23 +141,25 @@ function updatePanelToServer(panel) {
         cors: "true",
         url: serverURL + '/postPanel/',
         data : JSON.stringify({
-         	panel_id: panel.panel_id,
-         	obenlinks: panel.obenLinks,
-         	obenRechts: panel.obenRechts,
-         	untenRechts: panel.untenRechts,
-         	untenLinks: panel.untenLinks,
-         	laenge: panel.laenge,
-         	breite: panel.breite,
-         	neigung: panel.neigung,
-         	ausrichtung: panel.ausrichtung,
-         	rahmenbreite: panel.rahmenbreite
-         }),
+            dach_id: roofid,
+            panel_id: panel.id,
+            obenLinks: [panel.originTopLeft.lat, panel.originTopLeft.lng],
+            obenRechts: [panel.originTopRight.lat, panel.originTopRight.lng],
+            untenRechts: [panel.originBottomRight.lat, panel.originBottomRight.lng],
+            untenLinks: [panel.originBottomLeft.lat, panel.originBottomLeft.lng],
+            laenge: panel.length,
+            breite: panel.width,
+            neigung: panel.pitch,
+            ausrichtung: panel.orientation,
+            rahmenbreite: 0
+        }),
         
         header : {
             "content-type": "application/json",
         },
 
     }).done(function (data) {
+        console.log("Update zum Server");
     }).fail(function () {
         console.log("Fehler beim Versuch mit dem Server zu kommunizieren");
     });

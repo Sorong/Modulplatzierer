@@ -10,12 +10,22 @@ function Solarpanel() {
     this.orientation = 0;
     this.pitch = 0;
     this.name = null;
+    this.length = null;
+    this.width = null;
     this.id = 0;
 }
-
+Solarpanel.prototype.realign = function () {
+    this.originTopLeft = this.topleft;
+    this.originTopRight = translateCoordinates(this.width, this.originTopLeft, 0);
+    this.originBottomLeft = translateCoordinates(this.length, this.originTopLeft, -90);
+    this.originBottomRight = translateCoordinates(this.length, this.originTopRight, -90);
+    alignPanel(this);
+};
 
 function createSolarpanel(topleft, length, width, orientation, pitch) {
     var solarpanel = new Solarpanel();
+    solarpanel.width = width;
+    solarpanel.length = length;
     solarpanel.originTopLeft = topleft;
     solarpanel.originTopRight = translateCoordinates(width, solarpanel.originTopLeft, 0);
     solarpanel.originBottomLeft = translateCoordinates(length, solarpanel.originTopLeft, -90);
@@ -56,6 +66,7 @@ function loadSolarpanel(topleft, topright, bottomleft, bottomright, orientation,
     solarpanel.topleft = solarpanel.originTopLeft;
     return solarpanel;
 }
+
 
 function alignPanel(solarpanel) {
 

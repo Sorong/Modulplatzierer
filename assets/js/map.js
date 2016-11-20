@@ -70,6 +70,11 @@ function updateFromServer(paneldata) {
             L.latLng(element.untenLinks[0], element.untenLinks[1]),
             L.latLng(element.untenRechts[0], element.untenRechts[1]), element.neigung, element.ausrichtung
         );
+        panel.id = element.panel_id;
+        panel.width = element.breite;
+        panel.length = element.laenge;
+        panel.orientation = element.ausrichtung;
+        panel.pitch = element.neigung;
         addPanel(panel,d3Overlay, false);
     }
 
@@ -165,6 +170,19 @@ function dragmovePanel(d) {
 function dragendPanel(d) {
     console.log("Drop Panel: " + d.target.panel.name);
     console.log(d.target.panel);
+    d.target.panel.topleft.lat = d.target._latlngs[0][1].lat;
+    d.target.panel.topleft.lng = d.target._latlngs[0][0].lng;
+
+    d.target.panel.topright.lat = d.target._latlngs[0][1].lat;
+    d.target.panel.topright.lng = d.target._latlngs[0][1].lng;
+
+    d.target.panel.bottomright.lat = d.target._latlngs[0][2].lat;
+    d.target.panel.bottomright.lng = d.target._latlngs[0][2].lng;
+
+    d.target.panel.bottomleft.lat = d.target._latlngs[0][3].lat;
+    d.target.panel.bottomleft.lng = d.target._latlngs[0][3].lng;
+    d.target.panel.realign();
+    updatePanelToServer(roofId, d.target.panel);
 }
 
 function dragstarted() {
