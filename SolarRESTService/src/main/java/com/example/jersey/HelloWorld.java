@@ -177,8 +177,8 @@ public class HelloWorld {
     @POST
     @Path("/updatePanel")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
-    public String updatePanel(ModelSolarpanel panel) throws Exception{
+    @Produces(MediaType.APPLICATION_JSON)
+    public ModelSolarpanel updatePanel(ModelSolarpanel panel) throws Exception{
 
         Query queryPanelById = this.em.createNamedQuery("tblSolarpanel.findById");
         queryPanelById.setParameter("id", panel.getPanel_id());
@@ -206,7 +206,7 @@ public class HelloWorld {
         em.merge(tblPanel);
 
         utx.commit();
-        return "ok";
+        return new ModelSolarpanel(tblPanel);
     }
 
     private TblDach getRoofById(int id){
