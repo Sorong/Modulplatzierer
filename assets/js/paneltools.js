@@ -20,6 +20,12 @@ PanelTools.prototype.renderSolarPanelValues = function () {
     this.toolsHeadline.html(this.selectedPanel.name);
     this.panelTilt.val(this.selectedPanel.orientation);
     this.panelTiltValue.html(this.selectedPanel.orientation + "°");
+
+    this.panelWidth.val(1);
+    this.panelWidthValue.html(1 + "m");
+
+    this.panelHeight.val(1);
+    this.panelHeightValue.html(1 + "m");
 };
 
 PanelTools.prototype.tilt = function () {
