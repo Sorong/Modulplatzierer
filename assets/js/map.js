@@ -128,6 +128,7 @@ function addPanel(solarpanel, d3Overlay) {
     });
     postPanelToServer(solarpanel);
     solarpanelpolygon.on('drag', dragmovePanel);
+    solarpanelpolygon.on('dragend', dragendPanel);
     solarpanels.push(solarpanel);
 }
 
@@ -147,6 +148,11 @@ function dragmovePanel(d) {
     d.target.panel.bottomleft.lat = d.target._latlngs[0][3].lat;
     d.target.panel.bottomleft.lng = d.target._latlngs[0][3].lng;
 
+}
+
+function dragendPanel(d){
+	console.log("Drop Panel: " + d.target.panel.name);
+	console.log(d.target.panel);
 }
 
 function dragstarted() {
@@ -170,7 +176,6 @@ function dragmove(d) {
     d3.select(this).attr("transform", "translate(" + dragCoords.x + "," + dragCoords.y + ")");
     d.LatLng = d3Overlay.projection.layerPointToLatLng(new L.Point(dragCoords.x, dragCoords.y));
 }
-
 
 
 window.onload = function () {
