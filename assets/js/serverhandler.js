@@ -123,6 +123,7 @@ function postPanelToServer(panel) {
 
     }).done(function (data) {
         panel.id = data;
+        alert(data);
     }).fail(function () {
         console.log("Fehler beim Versuch mit dem Server zu kommunizieren");
     });

@@ -142,7 +142,7 @@ public class HelloWorld {
     @POST
     @Path("/postPanel")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public String setPanel(ModelSolarpanel panel) throws Exception{
         TblSolarpanel tblPanel = new TblSolarpanel();
         int lastId = this.em.createQuery("select max(u.panel_id) from TblSolarpanel u", Integer.class).getSingleResult();
@@ -170,7 +170,7 @@ public class HelloWorld {
         utx.begin();
         this.em.persist(tblPanel);
         utx.commit();
-        return "ok";
+        return "" + (lastId + 1);
     }
 
 
