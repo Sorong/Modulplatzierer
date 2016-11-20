@@ -7,7 +7,6 @@ import de.solarweb.models.*;
 
 
 import javax.persistence.*;
-import javax.transaction.SystemException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.transaction.UserTransaction;
