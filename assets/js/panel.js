@@ -9,6 +9,7 @@ function Solarpanel() {
     this.bottomright = null;
     this.orientation = null;
     this.pitch = null;
+    this.name = null;
 }
 
 
@@ -32,7 +33,19 @@ function createSolarpanel(topleft, length, width, orientation, pitch) {
 }
 
 function loadSolarpanel(topleft, topright, bottomleft, bottomright, orientation, pitch) {
-
+    var panel = new Solarpanel();
+    panel.originTopLeft = topleft;
+    panel.originTopRight = topright;
+    panel.originBottomLeft = bottomleft;
+    panel.originTopRight = bottomright;
+    if(orientation === "undefined") {
+        orientation = 0;
+    }
+    if (pitch === "undefined") {
+        pitch = 0;
+    }
+    panel.orientation = orientation;
+    panel.pitch = pitch;
 }
 
 function alignPanel(solarpanel, d3Overlay, orientation, pitch) {

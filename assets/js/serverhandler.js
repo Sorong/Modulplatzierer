@@ -28,30 +28,33 @@ function eraseCookie(name) {
 
 
 function getPanelsFromServer(id) {
-	var panelData;
+	//var panelData;
     $.ajax({
-    	async: false,
+   // 	async: false,
      	type: "GET",
         dataType: "json",
         url: serverURL + '/getRoof/' + id,
     }).done(function (data) {
+        if(data === undefined) {
+            return;
+        }
         var arr = [];
         data.modelSolarpanelCollection.forEach(getPanels);
         function getPanels(element, index, array) {
             arr.push(element);
         }
-        panelData = arr;
+        updateFromServer(arr);
     }).fail(function () {
         console.log("Fehler beim Versuch mit dem Server zu kommunizieren");
     });
-    return panelData;
+ //   return panelData;
 }
 
 
 function createCookieFromServer(dueDate) {
-	var cookieID;
+	//var cookieID;
     $.ajax({
-    	async: false,
+    //	async: false,
         crossDomain: true,
         type: "POST",
         dataType: "json",
@@ -64,15 +67,16 @@ function createCookieFromServer(dueDate) {
         }),
 
         header : {
-            "content-type": "application/json",
-        },
+            "content-type": "application/json"
+        }
 
     }).done(function (data) {
-        cookieID = data;
+       // cookieID = data;
+        setCookie(data, dueDate);
     }).fail(function () {
         console.log("Fehler beim Versuch mit dem Server zu kommunizieren");
     });
-    return cookieID;
+    //return cookieID;
 }
 
 function getCookieFromServer(id){
@@ -102,7 +106,7 @@ function postPanelToServer(panel) {
         url: serverURL + '/postPanel/',
         data : JSON.stringify({
          	panel_id: panel.panel_id,
-         	obenlinks: panel.obenLinks,
+         	obenLinks: panel.obenLinks,
          	obenRechts: panel.obenRechts,
          	untenRechts: panel.untenRechts,
          	untenLinks: panel.untenLinks,
@@ -159,9 +163,9 @@ function updatePanelToServer(panel) {
 
 
 function postRoofToServer(roof) {
-	var roofId;
+	//var roofId;
 	$.ajax({
-    	async: false,
+    //	async: false,
         crossDomain: true,
         type: "POST",
         dataType: "json",
@@ -184,13 +188,14 @@ function postRoofToServer(roof) {
         }),
         
         header : {
-            "content-type": "application/json",
-        },
+            "content-type": "application/json"
+        }
 
     }).done(function (data) {
-        roofId = data;
+      //  roofId = data;
+        setRoofId(data);
     }).fail(function () {
         console.log("Fehler beim Versuch mit dem Server zu kommunizieren");
     });
-    return roofId;
+    //return roofId;
 }
