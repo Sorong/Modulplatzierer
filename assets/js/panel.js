@@ -19,10 +19,7 @@ Solarpanel.prototype.realign = function () {
     this.originTopRight = translateCoordinates(this.width, this.originTopLeft, 0);
     this.originBottomLeft = translateCoordinates(this.length, this.originTopLeft, -90);
     this.originBottomRight = translateCoordinates(this.length, this.originTopRight, -90);
-    console.log( "Obenlinks realign" + d3Overlay.projection.latLngToLayerPoint(this.originTopLeft));
-    console.log("Obenrechts realign" + d3Overlay.projection.latLngToLayerPoint(this.originTopRight));
-    console.log("Untenlinks realign" + d3Overlay.projection.latLngToLayerPoint(this.originBottomLeft));
-    console.log("Untenrechts realign"+ d3Overlay.projection.latLngToLayerPoint(this.originBottomRight));
+
     alignPanel(this);
 };
 
@@ -61,7 +58,7 @@ function loadSolarpanel(topleft, topright, bottomleft, bottomright, orientation,
     solarpanel.orientation = orientation;
     solarpanel.pitch = pitch;
     if(orientation != 0 || pitch != 0) {
-        alignPanel(panel, orientation, pitch);
+        alignPanel(solarpanel, orientation, pitch);
     } else {
         solarpanel.topright = solarpanel.originTopRight;
         solarpanel.bottomleft = solarpanel.originBottomLeft;
@@ -111,12 +108,7 @@ function alignPanel(solarpanel) {
     solarpanel.topright = d3Overlay.projection.layerPointToLatLng([solarpanel.topleft.x + topright[0], solarpanel.topleft.y + topright[1]]);
     solarpanel.bottomright = d3Overlay.projection.layerPointToLatLng([solarpanel.topleft.x + bottomright[0], solarpanel.topleft.y + bottomright[1]]);
     solarpanel.topleft = d3Overlay.projection.layerPointToLatLng([solarpanel.topleft.x, solarpanel.topleft.y]);
-    //DEBUG
-    console.log( "Obenlinks " + d3Overlay.projection.latLngToLayerPoint(solarpanel.topleft));
-    console.log("Obenrechts " + d3Overlay.projection.latLngToLayerPoint(solarpanel.topright));
-    console.log("Untenlinks " + d3Overlay.projection.latLngToLayerPoint(solarpanel.bottomleft));
-    console.log("Untenrechts "+ d3Overlay.projection.latLngToLayerPoint(solarpanel.bottomright));
-    //ENDE DEBUG
+
 
     return solarpanel;
 

@@ -135,6 +135,12 @@ function addPanel(solarpanel, d3Overlay, writeToDatabase) {
             console.log("Panel: " + selectedSolarPolygon.panel.name + " set height: " + val);
             selectedSolarPolygon.panel.length = val;
             selectedSolarPolygon.panel.realign();
+            selectedSolarPolygon.setLatLngs([
+                [selectedSolarPolygon.panel.topleft.lat, selectedSolarPolygon.panel.topleft.lng],
+                [selectedSolarPolygon.panel.topright.lat, selectedSolarPolygon.panel.topright.lng],
+                [selectedSolarPolygon.panel.bottomright.lat, selectedSolarPolygon.panel.bottomright.lng],
+                [selectedSolarPolygon.panel.bottomleft.lat, selectedSolarPolygon.panel.bottomleft.lng]
+            ]);
 
         });
         panel.heightSlider().on("mouseleave", function () {
@@ -147,6 +153,12 @@ function addPanel(solarpanel, d3Overlay, writeToDatabase) {
             console.log("Panel: " + selectedSolarPolygon.panel.name + " set width: " + val);
             selectedSolarPolygon.panel.width = val;
             selectedSolarPolygon.panel.realign();
+            selectedSolarPolygon.setLatLngs([
+                [selectedSolarPolygon.panel.topleft.lat, selectedSolarPolygon.panel.topleft.lng],
+                [selectedSolarPolygon.panel.topright.lat, selectedSolarPolygon.panel.topright.lng],
+                [selectedSolarPolygon.panel.bottomright.lat, selectedSolarPolygon.panel.bottomright.lng],
+                [selectedSolarPolygon.panel.bottomleft.lat, selectedSolarPolygon.panel.bottomleft.lng]
+            ]);
         });
         panel.widthSlider().on("mouseleave", function () {
             updatePanelToServer(roofId, selectedSolarPolygon.panel);
@@ -158,6 +170,12 @@ function addPanel(solarpanel, d3Overlay, writeToDatabase) {
             console.log("Panel: " + selectedSolarPolygon.panel.name + " set orientation: " + val);
             selectedSolarPolygon.panel.orientation = val;
             selectedSolarPolygon.panel.realign();
+            selectedSolarPolygon.setLatLngs([
+                [selectedSolarPolygon.panel.topleft.lat, selectedSolarPolygon.panel.topleft.lng],
+                [selectedSolarPolygon.panel.topright.lat, selectedSolarPolygon.panel.topright.lng],
+                [selectedSolarPolygon.panel.bottomright.lat, selectedSolarPolygon.panel.bottomright.lng],
+                [selectedSolarPolygon.panel.bottomleft.lat, selectedSolarPolygon.panel.bottomleft.lng]
+            ]);
         });
         panel.orientationSlider().on("mouseleave", function () {
 
@@ -205,10 +223,6 @@ function dragendPanel(d) {
     d.target.panel.bottomleft.lat = d.target._latlngs[0][3].lat;
     d.target.panel.bottomleft.lng = d.target._latlngs[0][3].lng;
 
-    console.log("Obenlinks " + d3Overlay.projection.latLngToLayerPoint(d.target.panel.topleft));
-    console.log("Obenrechts " + d3Overlay.projection.latLngToLayerPoint(d.target.panel.topright));
-    console.log("Untenlinks " + d3Overlay.projection.latLngToLayerPoint(d.target.panel.bottomleft));
-    console.log("Untenrechts " + d3Overlay.projection.latLngToLayerPoint(d.target.panel.bottomright));
     d.target.panel.realign();
     updatePanelToServer(roofId, d.target.panel);
 }
