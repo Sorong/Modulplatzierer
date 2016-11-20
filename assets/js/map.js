@@ -16,25 +16,11 @@ var dragCoords = {x: 0, y: 0};
 
 
 function init() {
+    eraseCookie(COOKIENAME);
     cookieId = readCookie(COOKIENAME);
     if(cookieId === null || cookieId === "undefined") {
         var dueDate = new Date().getTime()+(DAYS_TILL_COOKIE_EXPIRE*24*60*60*1000);
-        cookieId = createCookieFromServer(dueDate);
-        createCookie(COOKIENAME, cid, dueDate);
-        roofId = postRoofToServer({
-            dach_id : 0,
-            strasse : "Musterstraße",
-            hausnummer : "5",
-            postleitzahl : "12345",
-            dachneigung : 45,
-            koord_dachmitte_lng : 12,
-            koord_dachmitte_lat : 12,
-            cookie : {
-                cookie_id : cid,
-                dach_ids : []
-            },
-            ablaufdatum : dueDate
-        });
+        createCookieFromServer(dueDate);
     } else {
         getPanelsFromServer(cookieId);
     }
@@ -58,10 +44,12 @@ function setCookie(cid, dueDate) {
         },
         ablaufdatum : dueDate
     });
+    alert(cookieId);
 }
 
 function setRoofId(rid) {
     roofId = rid;
+    alert(roofId);
 }
 
 function updateFromServer(paneldata) {
