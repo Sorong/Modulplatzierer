@@ -1,6 +1,6 @@
 body {
     font-family: 'Roboto', Arial, sans-serif;
-    font-weight: 100;
+    font-weight: 800;
 }
 
 #map {
@@ -19,8 +19,10 @@ body {
     margin-bottom: 20px;
     margin-right: 20px;
     padding: 10px;
-    border: 2px solid #95c11f;
+    border: 2px groove #95c11f;
+    border-radius: 5px;
     font-size: 14px;
+    background: #95c11f;
 }
 
 #left_section {
@@ -43,13 +45,15 @@ body {
 
 #tools {
     position: relative;
-    top: 0px;
-    right: 0px;
-    left: 0px;
-    background: #ffffff;
+    top: 1px;
+    right: 1px;
+    left: 1px;
+    margin-bottom: 10px;
     z-index: 10000000;
     width: 596px;
-    border: 2px solid #95c11f;
+    border: 2px groove #95c11f;
+    border-radius: 5px;
+    background: #95c11f;
 }
 
 .tool {
