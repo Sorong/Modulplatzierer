@@ -119,12 +119,6 @@ function addPanel(solarpanel, d3Overlay, writeToDatabase) {
             ]);
 
         }).change(function () {
-
-            var val = $(this).val();
-            // Data changed
-
-        });
-        panel.pitchSlider().on("mouseleave", function () {
             updatePanelToServer(roofId, selectedSolarPolygon.panel);
         });
 
@@ -141,8 +135,7 @@ function addPanel(solarpanel, d3Overlay, writeToDatabase) {
                 [selectedSolarPolygon.panel.bottomleft.lat, selectedSolarPolygon.panel.bottomleft.lng]
             ]);
 
-        });
-        panel.heightSlider().on("mouseleave", function () {
+        }).change(function(){
             updatePanelToServer(roofId, selectedSolarPolygon.panel);
         });
 
@@ -158,8 +151,7 @@ function addPanel(solarpanel, d3Overlay, writeToDatabase) {
                 [selectedSolarPolygon.panel.bottomright.lat, selectedSolarPolygon.panel.bottomright.lng],
                 [selectedSolarPolygon.panel.bottomleft.lat, selectedSolarPolygon.panel.bottomleft.lng]
             ]);
-        });
-        panel.widthSlider().on("mouseleave", function () {
+        }).change(function () {
             updatePanelToServer(roofId, selectedSolarPolygon.panel);
         });
 
@@ -175,9 +167,8 @@ function addPanel(solarpanel, d3Overlay, writeToDatabase) {
                 [selectedSolarPolygon.panel.bottomright.lat, selectedSolarPolygon.panel.bottomright.lng],
                 [selectedSolarPolygon.panel.bottomleft.lat, selectedSolarPolygon.panel.bottomleft.lng]
             ]);
-        });
-        panel.orientationSlider().on("mouseleave", function () {
-
+        }).change(function(){
+            updatePanelToServer(roofId, selectedSolarPolygon.panel);
         });
 
     });
