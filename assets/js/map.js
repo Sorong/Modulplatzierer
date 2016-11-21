@@ -12,8 +12,6 @@ var selectedSolarPolygon = null;
 
 var d3Overlay;
 
-var dragCoords = {x: 0, y: 0};
-
 
 function init() {
     //  eraseCookie(COOKIENAME);
@@ -83,6 +81,15 @@ function updateFromServer(paneldata) {
      */
 }
 
+function updateSolarpolygonPosition(solarpolygon){
+    solarpolygon.setLatLngs([
+        [solarpolygon.panel.topleft.lat,        solarpolygon.panel.topleft.lng],
+        [solarpolygon.panel.topright.lat,       solarpolygon.panel.topright.lng],
+        [solarpolygon.panel.bottomright.lat,    solarpolygon.panel.bottomright.lng],
+        [solarpolygon.panel.bottomleft.lat,     solarpolygon.panel.bottomleft.lng]
+    ]);
+}
+
 function addPanel(solarpanel, d3Overlay, writeToDatabase) {
 
     solarpanel.name = "Panel_" + (solarpanels.length);
@@ -106,68 +113,54 @@ function addPanel(solarpanel, d3Overlay, writeToDatabase) {
         console.log("Click Panel: " + selectedSolarPolygon.panel.name);
 
         var panel = new PanelTools(selectedSolarPolygon);
-        panel.pitchSlider().on("change mousemove", function () {
+        panel.pitchSlider().on("input change", function () {
 
-            var val = $(this).val();
-            selectedSolarPolygon.panel.setPitch(val);
+            var pitch = $(this).val();
+
+            selectedSolarPolygon.panel.setPitch(pitch);
             alignPanel(selectedSolarPolygon.panel);
-            selectedSolarPolygon.setLatLngs([
-                [selectedSolarPolygon.panel.topleft.lat, selectedSolarPolygon.panel.topleft.lng],
-                [selectedSolarPolygon.panel.topright.lat, selectedSolarPolygon.panel.topright.lng],
-                [selectedSolarPolygon.panel.bottomright.lat, selectedSolarPolygon.panel.bottomright.lng],
-                [selectedSolarPolygon.panel.bottomleft.lat, selectedSolarPolygon.panel.bottomleft.lng]
-            ]);
+            updateSolarpolygonPosition(selectedSolarPolygon);
 
         }).change(function () {
             updatePanelToServer(roofId, selectedSolarPolygon.panel);
         });
 
-        panel.heightSlider().on("change mousemove", function () {
+        panel.heightSlider().on("input change", function () {
 
-            var val = $(this).val();
-            console.log("Panel: " + selectedSolarPolygon.panel.name + " set height: " + val);
-            selectedSolarPolygon.panel.length = val;
+            var height = $(this).val();
+
+            console.log("Panel: " + selectedSolarPolygon.panel.name + " set height: " + height);
+            selectedSolarPolygon.panel.length = height;
             selectedSolarPolygon.panel.realign();
-            selectedSolarPolygon.setLatLngs([
-                [selectedSolarPolygon.panel.topleft.lat, selectedSolarPolygon.panel.topleft.lng],
-                [selectedSolarPolygon.panel.topright.lat, selectedSolarPolygon.panel.topright.lng],
-                [selectedSolarPolygon.panel.bottomright.lat, selectedSolarPolygon.panel.bottomright.lng],
-                [selectedSolarPolygon.panel.bottomleft.lat, selectedSolarPolygon.panel.bottomleft.lng]
-            ]);
+            updateSolarpolygonPosition(selectedSolarPolygon);
 
-        }).change(function(){
-            updatePanelToServer(roofId, selectedSolarPolygon.panel);
-        });
-
-        panel.widthSlider().on("change mousemove", function () {
-
-            var val = $(this).val();
-            console.log("Panel: " + selectedSolarPolygon.panel.name + " set width: " + val);
-            selectedSolarPolygon.panel.width = val;
-            selectedSolarPolygon.panel.realign();
-            selectedSolarPolygon.setLatLngs([
-                [selectedSolarPolygon.panel.topleft.lat, selectedSolarPolygon.panel.topleft.lng],
-                [selectedSolarPolygon.panel.topright.lat, selectedSolarPolygon.panel.topright.lng],
-                [selectedSolarPolygon.panel.bottomright.lat, selectedSolarPolygon.panel.bottomright.lng],
-                [selectedSolarPolygon.panel.bottomleft.lat, selectedSolarPolygon.panel.bottomleft.lng]
-            ]);
         }).change(function () {
             updatePanelToServer(roofId, selectedSolarPolygon.panel);
         });
 
-        panel.orientationSlider().on("change mousemove", function(){
+        panel.widthSlider().on("input change", function () {
 
-            var val = $(this).val();
-            console.log("Panel: " + selectedSolarPolygon.panel.name + " set orientation: " + val);
-            selectedSolarPolygon.panel.setOrientation(val);
+            var width = $(this).val();
+
+            console.log("Panel: " + selectedSolarPolygon.panel.name + " set width: " + width);
+            selectedSolarPolygon.panel.width = width;
             selectedSolarPolygon.panel.realign();
-            selectedSolarPolygon.setLatLngs([
-                [selectedSolarPolygon.panel.topleft.lat, selectedSolarPolygon.panel.topleft.lng],
-                [selectedSolarPolygon.panel.topright.lat, selectedSolarPolygon.panel.topright.lng],
-                [selectedSolarPolygon.panel.bottomright.lat, selectedSolarPolygon.panel.bottomright.lng],
-                [selectedSolarPolygon.panel.bottomleft.lat, selectedSolarPolygon.panel.bottomleft.lng]
-            ]);
-        }).change(function(){
+            updateSolarpolygonPosition(selectedSolarPolygon);
+
+        }).change(function () {
+            updatePanelToServer(roofId, selectedSolarPolygon.panel);
+        });
+
+        panel.orientationSlider().on("input change", function () {
+
+            var orientation = $(this).val();
+
+            console.log("Panel: " + selectedSolarPolygon.panel.name + " set orientation: " + orientation);
+            selectedSolarPolygon.panel.setOrientation(orientation);
+            selectedSolarPolygon.panel.realign();
+            updateSolarpolygonPosition(selectedSolarPolygon);
+
+        }).change(function () {
             updatePanelToServer(roofId, selectedSolarPolygon.panel);
         });
 
@@ -242,8 +235,6 @@ function dragmove(d) {
 
 window.onload = function () {
 
-    var toolsContainer = $("#tools");
-
     var mapHeight = document.getElementById("map").offsetHeight;
     var mapWidth = document.getElementById("map").offsetWidth;
 
@@ -252,21 +243,6 @@ window.onload = function () {
     var layer;
 
     showGoogleMap();
-
-
-    var drag = d3.behavior.drag()
-        .origin(function () {
-            return {x: 0, y: 0};
-        })
-        .on("dragstart", dragstarted)
-        .on("drag", dragmove);
-
-    var dragPanel = d3.behavior.drag()
-        .origin(function () {
-            return {x: 0, y: 0};
-        })
-        .on("drag", dragmovePanel);
-
 
     //
     // Roof
