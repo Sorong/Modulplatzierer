@@ -1,5 +1,5 @@
 /* Konstanten */
-const HOST = "localhost";
+const HOST = "10.132.105.25";
 const DAYS_TILL_COOKIE_EXPIRE = 30;
 const COOKIENAME = "Modulplatzierer";
 
@@ -69,7 +69,7 @@ $(document).ready(function () {
 
 
 function init() {
-    //  eraseCookie(COOKIENAME);
+    //cookieHandler.eraseCookie(COOKIENAME);
     cookieId = cookieHandler.readCookie(COOKIENAME);
     if (cookieId === null || cookieId === "undefined") {
         var dueDate = new Date().getTime() + (DAYS_TILL_COOKIE_EXPIRE * 24 * 60 * 60 * 1000);
@@ -87,7 +87,7 @@ function loadCookieContent(data) {
 
 function setCookie(cid, dueDate) {
     cookieId = cid;
-    cookieHandler.createCookie(COOKIENAME, cid, dueDate);
+    cookieHandler.createCookie(cid, dueDate);
     //PostRoof wird mir Dummydach aufgerufen
     serverHandler.postRoofToServer({
         dach_id: 0,

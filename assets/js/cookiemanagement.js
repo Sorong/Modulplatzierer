@@ -25,7 +25,7 @@ CookieHandler.prototype.readCookie = function () {
 };
 
 CookieHandler.prototype.eraseCookie = function () {
-    createCookie(this.name, "", -1);
+    this.createCookie("", -1);
 };
 
 /* ServerHandler */
