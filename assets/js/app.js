@@ -87,9 +87,9 @@ function loadCookieContent(data) {
 
 function setCookie(cid, dueDate) {
     cookieId = cid;
-    createCookie(COOKIENAME, cid, dueDate);
+    cookieHandler.createCookie(COOKIENAME, cid, dueDate);
     //PostRoof wird mir Dummydach aufgerufen
-    postRoofToServer({
+    serverHandler.postRoofToServer({
         dach_id: 0,
         strasse: "Musterstraße",
         hausnummer: "5",

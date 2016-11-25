@@ -147,7 +147,7 @@ ServerHandler.prototype.updatePanelToServer = function (roofid, panel) {
         dataType: "json",
         contentType: "application/json",
         cors: "true",
-        url: serverURL + '/updatePanel/',
+        url: this.serverURL + '/updatePanel/',
         data: dataString,
 
         header: {
@@ -184,7 +184,7 @@ ServerHandler.prototype.postRoofToServer = function (roof) {
         dataType: "json",
         contentType: "application/json",
         cors: "true",
-        url: serverURL + '/postRoof/',
+        url: this.serverURL + '/postRoof/',
         data: dataString,
 
         header: {

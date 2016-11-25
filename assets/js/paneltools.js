@@ -1,4 +1,4 @@
-function PanelTools(panelpolygon) {
+function PanelTool(panelpolygon) {
 
     this.selectedPanel = panelpolygon.panel;
     this.toolsContainer = $("#tools");
@@ -18,7 +18,8 @@ function PanelTools(panelpolygon) {
     this.renderSolarPanelValues();
 }
 
-PanelTools.prototype.renderSolarPanelValues = function () {
+PanelTool.prototype.renderSolarPanelValues = function () {
+    if(this.selectedPanel === undefined) { return; }
     console.log("Render:" + this.selectedPanel.name);
     this.toolsHeadline.html(this.selectedPanel.name);
 
@@ -39,7 +40,7 @@ PanelTools.prototype.renderSolarPanelValues = function () {
     this.orientationValue.html(orientation + "°");
 };
 
-PanelTools.prototype.pitchSlider = function () {
+PanelTool.prototype.pitchSlider = function () {
     var degree = this.panelTiltValue;
     return this.panelTilt.on("change mousemove", function () {
         var val = $(this).val();
@@ -47,7 +48,7 @@ PanelTools.prototype.pitchSlider = function () {
     });
 };
 
-PanelTools.prototype.widthSlider = function () {
+PanelTool.prototype.widthSlider = function () {
     console.log("Width");
     var widthVal = this.panelWidthValue;
     return this.panelWidth.on("change mousemove", function () {
@@ -56,7 +57,7 @@ PanelTools.prototype.widthSlider = function () {
     });
 };
 
-PanelTools.prototype.heightSlider = function () {
+PanelTool.prototype.heightSlider = function () {
     var height = this.panelHeightValue;
     return this.panelHeight.on("change mousemove", function () {
         var val = $(this).val();
@@ -64,7 +65,7 @@ PanelTools.prototype.heightSlider = function () {
     });
 };
 
-PanelTools.prototype.orientationSlider = function () {
+PanelTool.prototype.orientationSlider = function () {
     var degree = this.orientationValue;
     return this.orientation.on("change mousemove", function () {
         var val = $(this).val();

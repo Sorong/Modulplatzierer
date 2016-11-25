@@ -38,10 +38,11 @@ MapContainer.prototype.updatePolygonPosition = function (solarpanel) {
 MapContainer.prototype.addPolygon = function(solarpanel) {
     this.selectedSolarPolygon = this.updatePolygonPosition(solarpanel);
     this.selectedSolarPolygon.panel = solarpanel;
+    var mapC = this;
     this.selectedSolarPolygon.on('click', function () {
         selectedSolarPolygon = this;
-        var panel = new PanelTools(selectedSolarPolygon);
-        updatePolygonPosition(panel);
+        var panel = new PanelTool(selectedSolarPolygon);
+        mapC.updatePolygonPosition(solarpanel);
         connectPolygonTools(panel);
     });
     /* TODO: return statt writeToDatabase

@@ -1,50 +1,51 @@
 function connectPolygonTools(panel) {
-    panel.pitchSlider().on("input change", function () {
+    var panelTool = new PanelTool(panel);
+    panelTool.pitchSlider().on("input change", function () {
 
         var pitch = $(this).val();
 
         selectedSolarPolygon.panel.setPitch(pitch);
         alignPanel(selectedSolarPolygon.panel);
-        updateLatLngs(selectedSolarPolygon);
+        mapContainer.updateLatLngs(selectedSolarPolygon);
 
     }).change(function () {
         serverHandler.updatePanelToServer(roofId, selectedSolarPolygon.panel);
     });
 
-    panel.heightSlider().on("input change", function () {
+    panelTool.heightSlider().on("input change", function () {
 
         var height = $(this).val();
 
         console.log("Panel: " + selectedSolarPolygon.panel.name + " set height: " + height);
         selectedSolarPolygon.panel.length = height;
         selectedSolarPolygon.panel.realign();
-        updateLatLngs(selectedSolarPolygon);
+        mapContainer.updateLatLngs(selectedSolarPolygon);
 
     }).change(function () {
         serverHandler.updatePanelToServer(roofId, selectedSolarPolygon.panel);
     });
 
-    panel.widthSlider().on("input change", function () {
+    panelTool.widthSlider().on("input change", function () {
 
         var width = $(this).val();
 
         console.log("Panel: " + selectedSolarPolygon.panel.name + " set width: " + width);
         selectedSolarPolygon.panel.width = width;
         selectedSolarPolygon.panel.realign();
-        updateLatLngs(selectedSolarPolygon);
+        mapContainer.updateLatLngs(selectedSolarPolygon);
 
     }).change(function () {
         serverHandler.updatePanelToServer(roofId, selectedSolarPolygon.panel);
     });
 
-    panel.orientationSlider().on("input change", function () {
+    panelTool.orientationSlider().on("input change", function () {
 
         var orientation = $(this).val();
 
         console.log("Panel: " + selectedSolarPolygon.panel.name + " set orientation: " + orientation);
         selectedSolarPolygon.panel.setOrientation(orientation);
         selectedSolarPolygon.panel.realign();
-        updateLatLngs(selectedSolarPolygon);
+        mapContainer.updateLatLngs(selectedSolarPolygon);
 
     }).change(function () {
         serverHandler.updatePanelToServer(roofId, selectedSolarPolygon.panel);
@@ -53,7 +54,7 @@ function connectPolygonTools(panel) {
 
 function updatePanelPosition(draggedPanel) {
     var d = draggedPanel;
-    d.target.panel.topLeft.lat = d.target._latlngs[0][1].lat;
+    d.target.panel.topLeft.lat = d.target._latlngs[0][0].lat;
     d.target.panel.topLeft.lng = d.target._latlngs[0][0].lng;
 
     d.target.panel.topRight.lat = d.target._latlngs[0][1].lat;
