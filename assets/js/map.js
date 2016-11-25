@@ -42,7 +42,7 @@ MapContainer.prototype.addPolygon = function(solarpanel) {
     this.selectedSolarPolygon.on('click', function () {
         selectedSolarPolygon = this;
         var panel = new PanelTool(selectedSolarPolygon);
-        mapC.updatePolygonPosition(solarpanel);
+        mapC.updateLatLngs(this);
         connectPolygonTools(panel);
     });
     /* TODO: return statt writeToDatabase
