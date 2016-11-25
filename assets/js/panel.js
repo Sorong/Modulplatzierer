@@ -1,12 +1,12 @@
 function Solarpanel() {
     this.originTopLeft = null;
     this.originTopRight = null;
-    this.originBottomLeft = null;
-    this.originBottomRight = null;
-    this.topleft = null;
-    this.topright = null;
-    this.bottomleft = null;
-    this.bottomright = null;
+    this.originBotLeft = null;
+    this.originBotRight = null;
+    this.topLeft = null;
+    this.topRight = null;
+    this.botLeft = null;
+    this.botRight = null;
     this.orientation = 0;
     this.pitch = 0;
     this.name = null;
@@ -14,17 +14,20 @@ function Solarpanel() {
     this.width = null;
     this.id = 0;
 }
+
 Solarpanel.prototype.realign = function () {
-    this.originTopLeft = this.topleft;
+    this.originTopLeft = this.topLeft;
     this.originTopRight = translateCoordinates(this.width, this.originTopLeft, 0);
-    this.originBottomLeft = translateCoordinates(this.length, this.originTopLeft, -90);
-    this.originBottomRight = translateCoordinates(this.length, this.originTopRight, -90);
+    this.originBotLeft = translateCoordinates(this.length, this.originTopLeft, -90);
+    this.originBotRight = translateCoordinates(this.length, this.originTopRight, -90);
 
     alignPanel(this);
 };
+
 Solarpanel.prototype.setPitch = function (pitch) {
     this.pitch = parseInt(pitch);
 };
+
 Solarpanel.prototype.setOrientation = function (orientation) {
     this.orientation = parseInt(orientation);
 };
@@ -35,17 +38,17 @@ function createSolarpanel(topleft, length, width, orientation, pitch) {
     solarpanel.length = length;
     solarpanel.originTopLeft = topleft;
     solarpanel.originTopRight = translateCoordinates(width, solarpanel.originTopLeft, 0);
-    solarpanel.originBottomLeft = translateCoordinates(length, solarpanel.originTopLeft, -90);
-    solarpanel.originBottomRight = translateCoordinates(length, solarpanel.originTopRight, -90);
+    solarpanel.originBotLeft = translateCoordinates(length, solarpanel.originTopLeft, -90);
+    solarpanel.originBotRight = translateCoordinates(length, solarpanel.originTopRight, -90);
 
     if (orientation !== undefined || pitch !== undefined) {
         alignPanel(solarpanel, orientation, pitch);
     } else {
-        solarpanel.topright = solarpanel.originTopRight;
-        solarpanel.bottomleft = solarpanel.originBottomLeft;
-        solarpanel.bottomright = solarpanel.originBottomRight;
+        solarpanel.topRight = solarpanel.originTopRight;
+        solarpanel.botLeft = solarpanel.originBotLeft;
+        solarpanel.botRight = solarpanel.originBotRight;
     }
-    solarpanel.topleft = solarpanel.originTopLeft;
+    solarpanel.topLeft = solarpanel.originTopLeft;
     return solarpanel;
 }
 
@@ -53,8 +56,8 @@ function loadSolarpanel(topleft, topright, bottomleft, bottomright, orientation,
     var solarpanel = new Solarpanel();
     solarpanel.originTopLeft = topleft;
     solarpanel.originTopRight = topright;
-    solarpanel.originBottomLeft = bottomleft;
-    solarpanel.originBottomRight = bottomright;
+    solarpanel.originBotLeft = bottomleft;
+    solarpanel.originBotRight = bottomright;
     if(orientation === "undefined") {
         orientation = 0;
     }
@@ -66,11 +69,11 @@ function loadSolarpanel(topleft, topright, bottomleft, bottomright, orientation,
     if(orientation != 0 || pitch != 0) {
         alignPanel(solarpanel, orientation, pitch);
     } else {
-        solarpanel.topright = solarpanel.originTopRight;
-        solarpanel.bottomleft = solarpanel.originBottomLeft;
-        solarpanel.bottomright = solarpanel.originBottomRight;
+        solarpanel.topRight = solarpanel.originTopRight;
+        solarpanel.botLeft = solarpanel.originBotLeft;
+        solarpanel.botRight = solarpanel.originBotRight;
     }
-    solarpanel.topleft = solarpanel.originTopLeft;
+    solarpanel.topLeft = solarpanel.originTopLeft;
     return solarpanel;
 }
 
@@ -78,25 +81,25 @@ function loadSolarpanel(topleft, topright, bottomleft, bottomright, orientation,
 function alignPanel(solarpanel) {
     console.log("Aufruf");
 
-    solarpanel.topleft = d3Overlay.projection.latLngToLayerPoint(solarpanel.originTopLeft);
-    solarpanel.topright = d3Overlay.projection.latLngToLayerPoint(solarpanel.originTopRight);
-    solarpanel.bottomleft = d3Overlay.projection.latLngToLayerPoint(solarpanel.originBottomLeft);
-    solarpanel.bottomright = d3Overlay.projection.latLngToLayerPoint(solarpanel.originBottomRight);
+    solarpanel.topLeft = mapContainer.latLngToLayerPoint(solarpanel.originTopLeft);
+    solarpanel.topRight = mapContainer.latLngToLayerPoint(solarpanel.originTopRight);
+    solarpanel.botLeft = mapContainer.latLngToLayerPoint(solarpanel.originBotLeft);
+    solarpanel.botRight = mapContainer.latLngToLayerPoint(solarpanel.originBotRight);
 
 
     var vTopBottomLeft = [
-        solarpanel.bottomleft.x - solarpanel.topleft.x,
-        solarpanel.bottomleft.y - solarpanel.topleft.y,
+        solarpanel.botLeft.x - solarpanel.topLeft.x,
+        solarpanel.botLeft.y - solarpanel.topLeft.y,
         0
     ];
     var vTopBottomRight = [
-        solarpanel.bottomright.x - solarpanel.topleft.x,
-        solarpanel.bottomright.y - solarpanel.topleft.y,
+        solarpanel.botRight.x - solarpanel.topLeft.x,
+        solarpanel.botRight.y - solarpanel.topLeft.y,
         0
     ];
     var vTopLeftTopRight = [
-        solarpanel.topright.x - solarpanel.topleft.x,
-        solarpanel.topright.y - solarpanel.topleft.y,
+        solarpanel.topRight.x - solarpanel.topLeft.x,
+        solarpanel.topRight.y - solarpanel.topLeft.y,
         0];
 
     var orientationMatrix = calculateOrientationMatrix(solarpanel.orientation);
@@ -110,10 +113,10 @@ function alignPanel(solarpanel) {
 
      var bottomright = matrixMultiplyVector(orientationMatrix, matrixMultiplyVector(pitchMatrix, vTopBottomRight));
 
-    solarpanel.bottomleft = d3Overlay.projection.layerPointToLatLng([solarpanel.topleft.x + bottomleft[0], solarpanel.topleft.y + bottomleft[1]]);
-    solarpanel.topright = d3Overlay.projection.layerPointToLatLng([solarpanel.topleft.x + topright[0], solarpanel.topleft.y + topright[1]]);
-    solarpanel.bottomright = d3Overlay.projection.layerPointToLatLng([solarpanel.topleft.x + bottomright[0], solarpanel.topleft.y + bottomright[1]]);
-    solarpanel.topleft = d3Overlay.projection.layerPointToLatLng([solarpanel.topleft.x, solarpanel.topleft.y]);
+    solarpanel.botLeft = mapContainer.layerPointToLatLng([solarpanel.topLeft.x + bottomleft[0], solarpanel.topLeft.y + bottomleft[1]]);
+    solarpanel.topRight = mapContainer.layerPointToLatLng([solarpanel.topLeft.x + topright[0], solarpanel.topLeft.y + topright[1]]);
+    solarpanel.botRight = mapContainer.layerPointToLatLng([solarpanel.topLeft.x + bottomright[0], solarpanel.topLeft.y + bottomright[1]]);
+    solarpanel.topLeft = mapContainer.layerPointToLatLng([solarpanel.topLeft.x, solarpanel.topLeft.y]);
 
 
     return solarpanel;
