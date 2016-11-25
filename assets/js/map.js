@@ -19,7 +19,7 @@ MapContainer.prototype.updatePolygonPosition = function (solarpanel) {
         this.displayedPanels = [];
     }
     //TODO: alignPanel refactoren
-    var panel = alignPanel(solarpanel);
+    var panel = solarpanel.alignPanel();
     panel.name = "Panel_" + this.displayedPanels.length;
     
     var polygon = L.polygon([

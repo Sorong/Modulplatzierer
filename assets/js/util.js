@@ -5,7 +5,7 @@ function connectPolygonTools(panel) {
         var pitch = $(this).val();
 
         selectedSolarPolygon.panel.setPitch(pitch);
-        alignPanel(selectedSolarPolygon.panel);
+        selectedSolarPolygon.panel.alignPanel();
         mapContainer.updateLatLngs(selectedSolarPolygon);
 
     }).change(function () {
@@ -97,4 +97,13 @@ function dragmove(d) {
 
     d3.select(this).attr("transform", "translate(" + dragCoords.x + "," + dragCoords.y + ")");
     d.LatLng = d3Overlay.projection.layerPointToLatLng(new L.Point(dragCoords.x, dragCoords.y));
+}
+
+function translateCoordinates(distance, point, angle) {
+    earthRadius = 6371000;
+    distanceNorth = Math.sin(angle * Math.PI / 180) * distance;
+    distanceEast = Math.cos(angle * Math.PI / 180) * distance;
+    newLat = point.lat + (distanceNorth / earthRadius) * (180 / Math.PI);
+    newLon = point.lng + (distanceEast / earthRadius) * (180 / Math.PI) / Math.cos(point.lat * Math.PI / 180);
+    return L.latLng(newLat, newLon);
 }
