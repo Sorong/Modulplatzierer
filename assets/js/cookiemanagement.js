@@ -34,11 +34,8 @@ function ServerHandler(url) {
 }
 
 ServerHandler.prototype.getPanelsFromServer = function (id) {
-    $.ajax({
-        type: "GET",
-        dataType: "json",
-        url: this.serverURL + '/getRoof/' + id
-    }).done(function (data) {
+    var server_fun = "/getRoof/" + id;
+    this._get(server_fun, function (data) {
         if (data === undefined) {
             return;
         }
@@ -49,45 +46,24 @@ ServerHandler.prototype.getPanelsFromServer = function (id) {
         }
 
         updateFromServer(arr);
-    }).fail(function () {
-        console.log("Fehler beim Versuch mit dem Server zu kommunizieren");
+    });
+};
+
+
+ServerHandler.prototype.getCookieFromServer = function (id) {
+    var server_fun = "/getCookie/" + id;
+    this._get(server_fun, function (data) {
+        loadCookieContent(data);
     });
 };
 
 ServerHandler.prototype.createCookieFromServer = function (dueDate) {
-    $.ajax({
-        crossDomain: true,
-        type: "POST",
-        dataType: "json",
-        contentType: "application/json",
-        cors: "true",
-        url: this.serverURL + '/postCookie/',
-        data: JSON.stringify({
-            cookie_id: 0,
-            ablaufdatum: dueDate
-        }),
-
-        header: {
-            "content-type": "application/json"
-        }
-
-    }).done(function (data) {
-        setCookie(data, dueDate);
-    }).fail(function () {
-        console.log("Fehler beim Versuch mit dem Server zu kommunizieren");
+    var dataString = JSON.stringify({
+        cookie_id: 0,
+        ablaufdatum: dueDate
     });
-};
-
-ServerHandler.prototype.getCookieFromServer = function (id) {
-    $.ajax({
-        type: "GET",
-        dataType: "json",
-        url: this.serverURL + '/getCookie/' + id
-    }).done(function (data) {
-        loadCookieContent(data);
-        //  cookie = data;
-    }).fail(function () {
-        console.log("Fehler beim Versuch mit dem Server zu kommunizieren");
+    this._post(dataString, "postCookie", function (data) {
+        setCookie(data, dueDate);
     });
 };
 
@@ -105,25 +81,8 @@ ServerHandler.prototype.postPanelToServer = function (roofid, panel) {
         ausrichtung: panel.orientation,
         rahmenbreite: 0
     });
-
-    $.ajax({
-        //	async: false,
-        crossDomain: true,
-        type: "POST",
-        dataType: "json",
-        contentType: "application/json",
-        cors: "true",
-        url: this.serverURL + '/postPanel/',
-        data: dataString,
-        header: {
-            "content-type": "application/json"
-        }
-
-    }).done(function (data) {
+    this._post(dataString, "postPanel", function (data) {
         panel.id = data;
-
-    }).fail(function () {
-        console.log("Fehler beim Versuch mit dem Server zu kommunizieren");
     });
 };
 
@@ -141,28 +100,13 @@ ServerHandler.prototype.updatePanelToServer = function (roofid, panel) {
         ausrichtung: panel.orientation,
         rahmenbreite: 0
     });
-    $.ajax({
-        crossDomain: true,
-        type: "POST",
-        dataType: "json",
-        contentType: "application/json",
-        cors: "true",
-        url: this.serverURL + '/updatePanel/',
-        data: dataString,
-
-        header: {
-            "content-type": "application/json"
-        }
-
-    }).done(function (data) {
+    this._post(dataString, "updatePanel", function (data) {
         //TODO: Callback bei Erfolg?
-    }).fail(function () {
-        console.log("Fehler beim Versuch mit dem Server zu kommunizieren");
     });
 };
 
 
-ServerHandler.prototype.postRoofToServer = function (roof) {
+ServerHandler.prototype.postRoofToServer = function (roof, callback) {
     var dataString = JSON.stringify({
         dach_id: roof.dach_id,
         strasse: roof.strasse,
@@ -177,23 +121,48 @@ ServerHandler.prototype.postRoofToServer = function (roof) {
             ablaufdatum: roof.cookie.ablaufdatum
         }
     });
+    this._post(dataString, "postRoof", function (data) {
+        setRoofId(data);
+    });
+};
 
+ServerHandler.prototype._get = function (serverfunc, success, error) {
+    var error_fun;
+    if (error === undefined) {
+        error_fun = function () {
+            console.log("Fehler beim Versuch mit dem Server zu kommunizieren");
+        };
+    } else {
+        error_fun = error;
+    }
+
+    $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: this.serverURL + serverfunc
+    }).done(success).fail(error_fun);
+};
+
+ServerHandler.prototype._post = function (json, serverfunc, success, error) {
+    var error_fun;
+    if (error === undefined) {
+        error_fun = function () {
+            console.log("Fehler beim Versuch mit dem Server zu kommunizieren");
+        };
+    } else {
+        error_fun = error;
+    }
     $.ajax({
         crossDomain: true,
         type: "POST",
         dataType: "json",
         contentType: "application/json",
         cors: "true",
-        url: this.serverURL + '/postRoof/',
-        data: dataString,
-
+        url: this.serverURL + '/' + serverfunc + '/',
+        data: json,
         header: {
             "content-type": "application/json"
         }
-
-    }).done(function (data) {
-        setRoofId(data);
-    }).fail(function () {
-        console.log("Fehler beim Versuch mit dem Server zu kommunizieren");
-    });
+    }).done(success).fail(error_fun);
 };
+

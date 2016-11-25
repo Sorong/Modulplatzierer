@@ -1,5 +1,5 @@
 /* Konstanten */
-const HOST = "10.132.105.25";
+const HOST = "10.132.134.222";
 const DAYS_TILL_COOKIE_EXPIRE = 30;
 const COOKIENAME = "Modulplatzierer";
 
