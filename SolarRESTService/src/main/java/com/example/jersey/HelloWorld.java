@@ -15,7 +15,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
-import javax.ws.rs.ext.Provider;
+import java.sql.*;
 
 
 @Stateless
@@ -28,7 +28,7 @@ public class HelloWorld {
     //private EntityManager em = entityManagerFactory.createEntityManager();
     @Resource
     private UserTransaction utx;
-    private String dbURL = "jdbc:postgresql://scl1-ifm-min.ad.fh-bielefeld.de/scl";
+    private String dbURL = "jdbc:postgresql://suchdomain-wow.dnshome.de:5432/scltest_sg_we2016_gr2a";
 
 
 
@@ -209,6 +209,25 @@ public class HelloWorld {
 
         utx.commit();
         return new ModelSolarpanel(tblPanel);
+    }
+
+    @GET
+    @Path("/getPredefinedRoof/{street}/{number}/{plz}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getPredefinedRoof(@PathParam("street") String street,
+                                    @PathParam("number") String number, @PathParam("plz") Integer plz) throws Exception{
+        String roofPolygon = "empty";
+        Connection db_con = DriverManager.getConnection(dbURL, "scltest_sg_we2016_gr2a", "YRKmWvLp");
+        String statement = String.format("SELECT ST_asGeoJSON(ST_Transform(the_geom, 25832)) FROM berlin_fh_bielefeld_buildings WHERE street = '%s' AND number = '%s' AND plz = %d", street, number, plz);
+        PreparedStatement preparedStatement = db_con.prepareStatement(statement);
+        ResultSet result = preparedStatement.executeQuery();
+        if(!result.wasNull() && result.next()) {
+             roofPolygon = result.getString(1);
+        }
+        result.close();
+        db_con.close();
+        return roofPolygon;
+
     }
 
     private TblDach getRoofById(int id){
