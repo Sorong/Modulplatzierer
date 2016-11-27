@@ -50,6 +50,10 @@ function connectPolygonTools(panel) {
     }).change(function () {
         serverHandler.updatePanelToServer(roofId, selectedSolarPolygon.panel);
     });
+
+    panelTool.deleteButton().on("click", function(){
+       alert("To delete panel: " + selectedSolarPolygon.panel.name);
+    });
 }
 
 function updatePanelPosition(draggedPanel) {
@@ -77,11 +81,17 @@ function dragendPanel(d) {
     serverHandler.updatePanelToServer(roofId, d.target.panel);
 }
 
+/**
+ * @deprecated wird nicht mehr genutzt
+ */
 function dragstarted() {
     dragCoords = {x: 0, y: 0};
     d3.event.sourceEvent.stopPropagation();
 }
 
+/**
+ * @deprecated wird nicht mehr genutzt
+ */
 function dragmove(d) {
     // First run?
     if (dragCoords.x == 0 && dragCoords.y == 0) {

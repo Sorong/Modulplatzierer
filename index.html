@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="assets/css/style.css"/>
 
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJ4aYR2NFbLLzh_tkya-rE40gCl-hPpLc" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJ4aYR2NFbLLzh_tkya-rE40gCl-hPpLc" async
+            defer></script>
     <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
     <script src='https://unpkg.com/leaflet.gridlayer.googlemutant@latest/Leaflet.GoogleMutant.js'></script>
     <script src="http://www.sumbera.com/gist/js/leaflet/svg/scaled/d3-3.5.5.min.js"></script>
@@ -77,7 +78,7 @@
             <div id="tools">
 
                 <div id="tools_headline"><span class="headline">Panel ID 1000</span> <span style="float:right"><a
-                        href="#">löschen</a></span></div>
+                        href="#" id="delete_panel">löschen</a></span></div>
                 <div id="tools_container">
 
                     <div class="tool">
@@ -131,8 +132,22 @@
                     <div class="clear"></div>
 
                 </div>
+                <div id="hidden_content">
+                    <div class="tool">
+                        <div class="tool_label">
+                            Weitere Einstellung
+                        </div>
+                        <div class="tool_input">
+                            <input id="other_setting" type="range" min="0" max="360">
+                        </div>
+                        <div class="tool_output" id="other_settings_value">
+                            360°
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
                 <div id="tools_showmore">
-                    <input type="button" value="mehr"/>
+                    <input type="button" id="panel_show_more" value="mehr"/>
                 </div>
 
             </div>

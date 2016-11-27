@@ -15,11 +15,17 @@ function PanelTool(panelpolygon) {
     this.orientation = $("#roof_orientation");
     this.orientationValue = $("#roof_orientation_value");
 
+    this.toolsShowMore = $("#panel_show_more");
+    this.toolsHiddenContent = $("#hidden_content");
+    this.deletePanel = $("#delete_panel");
+
     this.renderSolarPanelValues();
 }
 
 PanelTool.prototype.renderSolarPanelValues = function () {
-    if(this.selectedPanel === undefined) { return; }
+    if (this.selectedPanel === undefined) {
+        return;
+    }
     console.log("Render:" + this.selectedPanel.name);
     this.toolsHeadline.html(this.selectedPanel.name);
 
@@ -38,6 +44,18 @@ PanelTool.prototype.renderSolarPanelValues = function () {
     var orientation = this.selectedPanel.orientation || 0;
     this.orientation.val(orientation);
     this.orientationValue.html(orientation + "°");
+
+    var self = this;
+    this.toolsShowMore.on("click", function () {
+        var isVisible = (self.toolsHiddenContent.is(":visible") === true);
+        if (isVisible) {
+            self.toolsHiddenContent.hide();
+            self.toolsShowMore.val("mehr");
+        } else {
+            self.toolsHiddenContent.show();
+            self.toolsShowMore.val("weniger");
+        }
+    });
 };
 
 PanelTool.prototype.pitchSlider = function () {
@@ -73,3 +91,6 @@ PanelTool.prototype.orientationSlider = function () {
     });
 };
 
+PanelTool.prototype.deleteButton = function(){
+    return this.deletePanel;
+};
