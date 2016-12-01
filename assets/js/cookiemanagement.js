@@ -33,7 +33,7 @@ function ServerHandler(url) {
     this.serverURL = url;
 }
 
-ServerHandler.prototype.getPanelsFromServer = function (id) {
+ServerHandler.prototype.getPanelsFromServer = function (id, callback) {
     var server_fun = "/getRoof/" + id;
     this._get(server_fun, function (data) {
         if (data === undefined) {
@@ -41,33 +41,36 @@ ServerHandler.prototype.getPanelsFromServer = function (id) {
         }
         var arr = [];
         data.modelSolarpanelCollection.forEach(getPanels);
-        function getPanels(element, index, array) {
+        function getPanels(element) {
             arr.push(element);
         }
 
         updateFromServer(arr);
     });
-};
-
-
-ServerHandler.prototype.getCookieFromServer = function (id) {
-    var server_fun = "/getCookie/" + id;
     this._get(server_fun, function (data) {
-        loadCookieContent(data);
+        callback(data);
     });
 };
 
-ServerHandler.prototype.createCookieFromServer = function (dueDate) {
+
+ServerHandler.prototype.getCookieFromServer = function (id, callback) {
+    var server_fun = "/getCookie/" + id;
+    this._get(server_fun, function (data) {
+        callback(data);
+    });
+};
+
+ServerHandler.prototype.createCookieFromServer = function (dueDate, callback) {
     var dataString = JSON.stringify({
         cookie_id: 0,
         ablaufdatum: dueDate
     });
     this._post(dataString, "postCookie", function (data) {
-        setCookie(data, dueDate);
+         callback(data, dueDate);
     });
 };
 
-ServerHandler.prototype.postPanelToServer = function (roofid, panel) {
+ServerHandler.prototype.postPanelToServer = function (roofid, panel, callback) {
     var dataString = JSON.stringify({
         dach_id: roofid,
         panel_id: panel.id,
@@ -83,10 +86,11 @@ ServerHandler.prototype.postPanelToServer = function (roofid, panel) {
     });
     this._post(dataString, "postPanel", function (data) {
         panel.id = data;
+        callback(data, panel);
     });
 };
 
-ServerHandler.prototype.updatePanelToServer = function (roofid, panel) {
+ServerHandler.prototype.updatePanelToServer = function (roofid, panel, callback) {
     var dataString = JSON.stringify({
         dach_id: roofid,
         panel_id: panel.id,
@@ -122,7 +126,7 @@ ServerHandler.prototype.postRoofToServer = function (roof, callback) {
         }
     });
     this._post(dataString, "postRoof", function (data) {
-        setRoofId(data);
+        callback(data);
     });
 };
 

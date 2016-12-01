@@ -6,10 +6,10 @@ function connectPolygonTools(panel) {
 
         selectedSolarPolygon.panel.setPitch(pitch);
         selectedSolarPolygon.panel.alignPanel();
-        mapContainer.updateLatLngs(selectedSolarPolygon);
+        controller.mapContainer.updateLatLngs(selectedSolarPolygon);
 
     }).change(function () {
-        serverHandler.updatePanelToServer(roofId, selectedSolarPolygon.panel);
+        controller.serverHandler.updatePanelToServer(controller.serverHandler.roofId, selectedSolarPolygon.panel);
     });
 
     panelTool.heightSlider().on("input change", function () {
@@ -19,10 +19,10 @@ function connectPolygonTools(panel) {
         console.log("Panel: " + selectedSolarPolygon.panel.name + " set height: " + height);
         selectedSolarPolygon.panel.length = height;
         selectedSolarPolygon.panel.realign();
-        mapContainer.updateLatLngs(selectedSolarPolygon);
+        controller.mapContainer.updateLatLngs(selectedSolarPolygon);
 
     }).change(function () {
-        serverHandler.updatePanelToServer(roofId, selectedSolarPolygon.panel);
+        controller.serverHandler.updatePanelToServer(controller.serverHandler.roofId, selectedSolarPolygon.panel);
     });
 
     panelTool.widthSlider().on("input change", function () {
@@ -32,10 +32,10 @@ function connectPolygonTools(panel) {
         console.log("Panel: " + selectedSolarPolygon.panel.name + " set width: " + width);
         selectedSolarPolygon.panel.width = width;
         selectedSolarPolygon.panel.realign();
-        mapContainer.updateLatLngs(selectedSolarPolygon);
+        controller.mapContainer.updateLatLngs(selectedSolarPolygon);
 
     }).change(function () {
-        serverHandler.updatePanelToServer(roofId, selectedSolarPolygon.panel);
+        controller.serverHandler.updatePanelToServer(controller.serverHandler.roofId, selectedSolarPolygon.panel);
     });
 
     panelTool.orientationSlider().on("input change", function () {
@@ -45,10 +45,10 @@ function connectPolygonTools(panel) {
         console.log("Panel: " + selectedSolarPolygon.panel.name + " set orientation: " + orientation);
         selectedSolarPolygon.panel.setOrientation(orientation);
         selectedSolarPolygon.panel.realign();
-        mapContainer.updateLatLngs(selectedSolarPolygon);
+        controller.mapContainer.updateLatLngs(selectedSolarPolygon);
 
     }).change(function () {
-        serverHandler.updatePanelToServer(roofId, selectedSolarPolygon.panel);
+        controller.serverHandler.updatePanelToServer(controller.serverHandler.roofId, selectedSolarPolygon.panel);
     });
 }
 
@@ -74,7 +74,7 @@ function dragmovePanel(d) {
 function dragendPanel(d) {
     updatePanelPosition(d);
     d.target.panel.realign();
-    serverHandler.updatePanelToServer(roofId, d.target.panel);
+    controller.serverHandler.updatePanelToServer(controller.roofId, d.target.panel);
 }
 
 function dragstarted() {

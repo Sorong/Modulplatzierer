@@ -77,6 +77,7 @@ Solarpanel.prototype.setOrientation = function (orientation) {
 };
 
 Solarpanel.prototype.alignPanel = function () {
+    var mapContainer = controller.mapContainer;
     this.topLeft = mapContainer.latLngToLayerPoint(this.originTopLeft);
     this.topRight = mapContainer.latLngToLayerPoint(this.originTopRight);
     this.botLeft = mapContainer.latLngToLayerPoint(this.originBotLeft);

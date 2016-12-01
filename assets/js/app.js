@@ -1,43 +1,9 @@
-/* Konstanten */
-const HOST = "10.132.134.222";
-const DAYS_TILL_COOKIE_EXPIRE = 30;
-const COOKIENAME = "Modulplatzierer";
-
-const SERVER_URL = "http://" + HOST + ":8080/SolarRESTService_war_exploded/server";
-
-/* Variablen */
-var cookieId;
-var roofId;
-
-
-/* Klassen */
-var serverHandler = new ServerHandler(SERVER_URL);
-var cookieHandler = new CookieHandler(COOKIENAME);
-var mapContainer = new MapContainer();
+var controller;
 
 $(document).ready(function () {
-
-    var mapHeight = document.getElementById("map").offsetHeight;
-    var mapWidth = document.getElementById("map").offsetWidth;
-
-    mapContainer.map = L.map('map').setView([52.46806645297567, 10.534391955698084], 18);
-    mapContainer.showGoogleMaps();
-    /* TODO: Dummydach ersetzen */
-
-    var roof = L.polygon([
-        [52.46847495386419, 10.533764318788599],
-        [52.46853377767989, 10.534858660066675],
-        [52.46771350515504, 10.53499277051742],
-        [52.467667752452556, 10.533882335985254],
-        [52.46847495386419, 10.533764318788599]
-    ]).addTo(mapContainer.map);
-    mapContainer.d3Overlay = L.d3SvgOverlay(function (selection, projection) {
-        this.projection = projection;
-    });
-    mapContainer.d3Overlay.addTo(mapContainer.map);
-
-
-    init();
+    controller = new Controller();
+    controller.initMap();
+    controller.loadFromServer();
 
     var addBtn = document.getElementById("add");
 
@@ -47,42 +13,29 @@ $(document).ready(function () {
 
         var panelData = {};
         panelData.name = "Added Panel";
-        panelData.LatLng = mapContainer.layerPointToLatLng(point);
+        panelData.LatLng = controller.mapContainer.layerPointToLatLng(point);
         var solarpanel = createSolarpanel(panelData.LatLng, 10, 10);
-        solarpanel = mapContainer.addPolygon(solarpanel);
-        serverHandler.postPanelToServer(roofId,solarpanel);
-
+        solarpanel = controller.mapContainer.addPolygon(solarpanel);
+        controller.createPanel(solarpanel);
     };
 
 
     var googleMapButton = document.getElementById("googleMap");
     googleMapButton.onclick = function () {
-        mapContainer.showGoogleMap();
+        controller.mapContainer.showGoogleMaps();
     };
 
     var openStreetMapButton = document.getElementById("openStreetMap");
     openStreetMapButton.onclick = function () {
-        mapContainer.showOpenStreetMap();
+        controller.mapContainer.showOpenstreetMap();
     };
 
 });
 
 
-function init() {
-    //cookieHandler.eraseCookie(COOKIENAME);
-    cookieId = cookieHandler.readCookie(COOKIENAME);
-    if (cookieId === null || cookieId === "undefined") {
-        var dueDate = new Date().getTime() + (DAYS_TILL_COOKIE_EXPIRE * 24 * 60 * 60 * 1000);
-        serverHandler.createCookieFromServer(dueDate);
-    } else {
-        serverHandler.getCookieFromServer(cookieId);
-
-    }
-}
-
 function loadCookieContent(data) {
     setRoofId(data.dach_ids[0]);
-    serverHandler.getPanelsFromServer(roofId);
+    controller.serverHandler.getPanelsFromServer(roofId);
 }
 
 function setCookie(cid, dueDate) {

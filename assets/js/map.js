@@ -36,9 +36,9 @@ MapContainer.prototype.updatePolygonPosition = function (solarpanel) {
 };
 
 MapContainer.prototype.addPolygon = function(solarpanel) {
+    var mapC = this;
     this.selectedSolarPolygon = this.updatePolygonPosition(solarpanel);
     this.selectedSolarPolygon.panel = solarpanel;
-    var mapC = this;
     this.selectedSolarPolygon.on('click', function () {
         selectedSolarPolygon = this;
         var panel = new PanelTool(selectedSolarPolygon);
@@ -58,7 +58,7 @@ MapContainer.prototype.addPolygon = function(solarpanel) {
 
 MapContainer.prototype.showGoogleMaps = function () {
     if (this.layer) {
-        map.removeLayer(layer);
+       this.map.removeLayer(this.layer);
     }
     this.layer = L.gridLayer.googleMutant({
         type: 'satellite',
@@ -69,7 +69,7 @@ MapContainer.prototype.showGoogleMaps = function () {
 
 MapContainer.prototype.showOpenstreetMap = function () {
     if (this.layer) {
-        map.removeLayer(layer);
+        this.map.removeLayer(this.layer);
     }
     var mapLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
     this.layer = L.tileLayer(
