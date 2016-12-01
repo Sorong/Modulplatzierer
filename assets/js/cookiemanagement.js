@@ -36,18 +36,6 @@ function ServerHandler(url) {
 ServerHandler.prototype.getPanelsFromServer = function (id, callback) {
     var server_fun = "/getRoof/" + id;
     this._get(server_fun, function (data) {
-        if (data === undefined) {
-            return;
-        }
-        var arr = [];
-        data.modelSolarpanelCollection.forEach(getPanels);
-        function getPanels(element) {
-            arr.push(element);
-        }
-
-        updateFromServer(arr);
-    });
-    this._get(server_fun, function (data) {
         callback(data);
     });
 };
