@@ -25,7 +25,7 @@ PanelTool.prototype.renderSolarPanelValues = function () {
 
     var pitch = this.selectedPanel.pitch || 0;
     this.panelTilt.val(pitch);
-    this.panelTiltValue.html(pitch + "°");
+    this.panelTiltValue.html(parseFloat(pitch).toFixed(2) + "°");
 
     var width = this.selectedPanel.width || 1;
     this.panelWidth.val(width);
@@ -37,7 +37,7 @@ PanelTool.prototype.renderSolarPanelValues = function () {
 
     var orientation = this.selectedPanel.orientation || 0;
     this.orientation.val(orientation);
-    this.orientationValue.html(orientation + "°");
+    this.orientationValue.html(parseFloat(orientation).toFixed(2) + "°");
 };
 
 PanelTool.prototype.pitchSlider = function () {
