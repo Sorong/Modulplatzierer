@@ -31,6 +31,9 @@ CookieHandler.prototype.eraseCookie = function () {
 /* ServerHandler */
 function ServerHandler(url) {
     this.serverURL = url;
+    this.default_error_function = function () {
+        console.log("Fehler beim Versuch mit dem Server zu kommunizieren");
+    }
 }
 
 ServerHandler.prototype.getPanelsFromServer = function (id, callback) {
@@ -121,9 +124,7 @@ ServerHandler.prototype.postRoofToServer = function (roof, callback) {
 ServerHandler.prototype._get = function (serverfunc, success, error) {
     var error_fun;
     if (error === undefined) {
-        error_fun = function () {
-            console.log("Fehler beim Versuch mit dem Server zu kommunizieren");
-        };
+        error_fun = this.default_error_function();
     } else {
         error_fun = error;
     }
@@ -138,9 +139,7 @@ ServerHandler.prototype._get = function (serverfunc, success, error) {
 ServerHandler.prototype._post = function (json, serverfunc, success, error) {
     var error_fun;
     if (error === undefined) {
-        error_fun = function () {
-            console.log("Fehler beim Versuch mit dem Server zu kommunizieren");
-        };
+        error_fun = this.default_error_function();
     } else {
         error_fun = error;
     }

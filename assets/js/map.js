@@ -1,18 +1,9 @@
 function MapContainer() {
-    var map, layer;
+    var map, layer, controller;
     var displayedPanels = [];
     var selectedSolarPolygon = null;
     var d3Overlay = null;
 }
-
-MapContainer.prototype.updateLatLngs = function (polygon) {
-    polygon.setLatLngs([
-        [polygon.panel.topLeft.lat,        polygon.panel.topLeft.lng],
-        [polygon.panel.topRight.lat,       polygon.panel.topRight.lng],
-        [polygon.panel.botRight.lat,    polygon.panel.botRight.lng],
-        [polygon.panel.botLeft.lat,     polygon.panel.botLeft.lng]
-    ]);
-};
 
 MapContainer.prototype.updatePolygonPosition = function (solarpanel) {
     if(this.displayedPanels === undefined) {
@@ -37,13 +28,14 @@ MapContainer.prototype.updatePolygonPosition = function (solarpanel) {
 
 MapContainer.prototype.addPolygon = function(solarpanel) {
     var mapC = this;
+    var cont = this.controller;
     this.selectedSolarPolygon = this.updatePolygonPosition(solarpanel);
     this.selectedSolarPolygon.panel = solarpanel;
     this.selectedSolarPolygon.on('click', function () {
         selectedSolarPolygon = this;
         var panel = new PanelTool(selectedSolarPolygon);
-        mapC.updateLatLngs(this);
-        connectPolygonTools(panel);
+        cont.updateModel(this);
+        cont.connectWithPolygonTool(panel);
     });
     /* TODO: return statt writeToDatabase
     if (writeToDatabase) {

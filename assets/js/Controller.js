@@ -4,17 +4,19 @@ const COOKIENAME = "Modulplatzierer";
 const SERVER_URL = "http://" + HOST + ":8080/SolarRESTService_war_exploded/server";
 
 function Controller() {
-    var serverHandler;
-    var cookieHandler;
-    var mapContainer;
-
-
-    var cookieId;
-    var roofId;
+    this.serverHandler = null;
+    this.serverAvailable = null;
+    this.cookieHandler = null;
+    this.mapContainer = null;
+    this.cookieId = null;
+    this.roofId = null;
 }
 
+
 Controller.prototype.initMap = function () {
+
     this.mapContainer = new MapContainer();
+    this.mapContainer.controller = this;
     var mapHeight = document.getElementById("map").offsetHeight;
     var mapWidth = document.getElementById("map").offsetWidth;
 
@@ -36,21 +38,32 @@ Controller.prototype.initMap = function () {
     });
     this.mapContainer.d3Overlay.addTo(this.mapContainer.map);
 };
+Controller.prototype.setServerUnavailable = function () {
+    this.serverAvailable = false;
+    this.serverHandler = null;
+};
 
 Controller.prototype.loadFromServer = function () {
     this.cookieHandler = new CookieHandler(COOKIENAME);
     this.serverHandler = new ServerHandler(SERVER_URL);
+    var cont = this;
+    this.serverHandler.default_error_function = function () {
+        cont.setServerUnavailable();
+    };
     this.cookieId = this.cookieHandler.readCookie(COOKIENAME);
     if (this.cookieId === null || this.cookieId === "undefined") {
         var dueDate = new Date().getTime() + (DAYS_TILL_COOKIE_EXPIRE * 24 * 60 * 60 * 1000);
         this.serverHandler.createCookieFromServer(dueDate, this.writeCookie);
     } else {
-        this.serverHandler.getCookieFromServer(this.cookieId,this.loadCookieData);
+        this.serverHandler.getCookieFromServer(this.cookieId, this.loadCookieData);
     }
 };
 
 Controller.prototype.loadCookieData = function (data) {
     this.setRoofId(data.dach_ids[0]);
+    if (!this.serverAvailable) {
+        return;
+    }
     this.serverHandler.getPanelsFromServer(roofId, function (data) {
         if (data === undefined) {
             return;
@@ -60,6 +73,7 @@ Controller.prototype.loadCookieData = function (data) {
         function getPanels(element) {
             arr.push(element);
         }
+
         this.updateLoadedFromServer(arr);
     });
 };
@@ -92,7 +106,9 @@ Controller.prototype.setRoofId = function (roofId) {
 Controller.prototype.writeCookie = function (cid, dueDate) {
     this.cookieId = cid;
     this.cookieHandler.createCookie(cid, dueDate);
-    //PostRoof wird mir Dummydach aufgerufen
+    if (!this.serverAvailable) {
+        return;
+    }
     this.serverHandler.postRoofToServer({
         dach_id: 0,
         strasse: "Musterstraße",
@@ -110,8 +126,73 @@ Controller.prototype.writeCookie = function (cid, dueDate) {
 };
 
 Controller.prototype.createPanel = function (panel) {
+    if (!this.serverAvailable) {
+        return;
+    }
     this.serverHandler.postPanelToServer(this.roofId, panel, function (data, panel) {
         panel.id = data;
     });
 
+};
+
+Controller.prototype.connectWithPolygonTool = function(panel) {
+    var panelTool = new PanelTool(panel);
+    var controller = this;
+    var changed = function () {
+        if (!controller.serverAvailable) {
+            return;
+        }
+        controller.serverHandler.updatePanelToServer(controller.serverHandler.roofId, selectedSolarPolygon.panel);
+    };
+    panelTool.pitchSlider().on("input change", function () {
+
+        var pitch = $(this).val();
+
+        selectedSolarPolygon.panel.setPitch(pitch);
+        selectedSolarPolygon.panel.realign();
+        controller.updateModel(selectedSolarPolygon);
+
+    }).change(changed());
+
+    panelTool.heightSlider().on("input change", function () {
+
+        var height = $(this).val();
+
+        console.log("Panel: " + selectedSolarPolygon.panel.name + " set height: " + height);
+        selectedSolarPolygon.panel.length = height;
+        selectedSolarPolygon.panel.realign();
+        controller.updateModel(selectedSolarPolygon);
+
+    }).change(changed());
+
+    panelTool.widthSlider().on("input change", function () {
+
+        var width = $(this).val();
+
+        console.log("Panel: " + selectedSolarPolygon.panel.name + " set width: " + width);
+        selectedSolarPolygon.panel.width = width;
+        selectedSolarPolygon.panel.realign();
+        controller.updateModel(selectedSolarPolygon);
+
+    }).change(changed());
+
+    panelTool.orientationSlider().on("input change", function () {
+
+        var orientation = $(this).val();
+
+        console.log("Panel: " + selectedSolarPolygon.panel.name + " set orientation: " + orientation);
+        selectedSolarPolygon.panel.setOrientation(orientation);
+        selectedSolarPolygon.panel.realign();
+        controller.updateModel(selectedSolarPolygon);
+
+    }).change(changed());
+};
+
+Controller.prototype.updateModel = function (polygon) {
+    polygon.setLatLngs([
+        [polygon.panel.topLeft.lat, polygon.panel.topLeft.lng],
+        [polygon.panel.topRight.lat, polygon.panel.topRight.lng],
+        [polygon.panel.botRight.lat, polygon.panel.botRight.lng],
+        [polygon.panel.botLeft.lat, polygon.panel.botLeft.lng]
+    ]);
 };
