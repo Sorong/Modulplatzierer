@@ -20,7 +20,9 @@ function dragmovePanel(d) {
 function dragendPanel(d) {
     updatePanelPosition(d);
     d.target.panel.realign();
-    controller.serverHandler.updatePanelToServer(controller.roofId, d.target.panel);
+    if(controller.serverAvailable) {
+        controller.serverHandler.updatePanelToServer(controller.roof.id, d.target.panel);
+    }
 }
 
 function dragstarted() {
@@ -52,4 +54,85 @@ function translateCoordinates(distance, point, angle) {
     newLat = point.lat + (distanceNorth / earthRadius) * (180 / Math.PI);
     newLon = point.lng + (distanceEast / earthRadius) * (180 / Math.PI) / Math.cos(point.lat * Math.PI / 180);
     return L.latLng(newLat, newLon);
+}
+
+function GET_DUMMY_DACH() {
+    var json = {
+        "gid": 38063,
+        "gmlid": "BLDG_0003000000894894",
+        "nr": "2138",
+        "street": "Illerzeile",
+        "number": "5",
+        "plz": 13509,
+        "hid": 38063,
+        "ort": "Berlin",
+        "zusatz": "",
+        "denkmal": false,
+        "denkmali": null,
+        "monument_reason": null,
+        "area2d": 167.043701171875,
+        "area3d": 218.7119074665735,
+        "pv": 2,
+        "st": 2,
+        "gd": null,
+        "doneby": 31412,
+        "calctime": 3.58577,
+        "qhint": null,
+        "household_size": 0,
+        "gd_area": 0,
+        "rueckhalt": 0,
+        "the_geom": [
+            {
+                "latitude": 52.587197,
+                "longitude": 13.292041
+            },
+            {
+                "latitude": 52.587262,
+                "longitude": 13.291927
+            },
+            {
+                "latitude": 52.587367,
+                "longitude": 13.292086
+            },
+            {
+                "latitude": 52.587334,
+                "longitude": 13.292143
+            },
+            {
+                "latitude": 52.587302,
+                "longitude": 13.292199
+            },
+            {
+                "latitude": 52.587197,
+                "longitude": 13.292041
+            }
+        ],
+        "rt_geom": [
+            {
+                "latitude": 61.049414,
+                "longitude": 33.310396
+            },
+            {
+                "latitude": 61.049545,
+                "longitude": 33.310232
+            },
+            {
+                "latitude": 61.049666,
+                "longitude": 33.310641
+            },
+            {
+                "latitude": 61.0496,
+                "longitude": 33.310722
+            },
+            {
+                "latitude": 61.049534,
+                "longitude": 33.310803
+            },
+            {
+                "latitude": 61.049414,
+                "longitude": 33.310396
+            }
+        ]
+    };
+    return json;
 }

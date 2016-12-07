@@ -8,8 +8,11 @@ function Controller() {
     this.serverAvailable = null;
     this.cookieHandler = null;
     this.mapContainer = null;
+
+    this.roof = null;
+
     this.cookieId = null;
-    this.roofId = null;
+
 }
 
 
@@ -20,23 +23,17 @@ Controller.prototype.initMap = function () {
     var mapHeight = document.getElementById("map").offsetHeight;
     var mapWidth = document.getElementById("map").offsetWidth;
 
-    this.mapContainer.map = L.map('map').setView([52.46806645297567, 10.534391955698084], 18);
+    this.mapContainer.map = L.map('map').setView([0.0, 0.0], 0);
     this.mapContainer.showGoogleMaps();
-    /* TODO: Dummydach ersetzen */
-
-    var roof = L.polygon([
-        [52.46847495386419, 10.533764318788599],
-        [52.46853377767989, 10.534858660066675],
-        [52.46771350515504, 10.53499277051742],
-        [52.467667752452556, 10.533882335985254],
-        [52.46847495386419, 10.533764318788599]
-    ]).addTo(this.mapContainer.map);
+    this.getRoofFromServer();
+    this.mapContainer.drawRoof(this.roof.getAsPolygon());
 
 
     this.mapContainer.d3Overlay = L.d3SvgOverlay(function (selection, projection) {
         this.projection = projection;
     });
     this.mapContainer.d3Overlay.addTo(this.mapContainer.map);
+    this.roof.setOrientation();
 };
 Controller.prototype.setServerUnavailable = function () {
     this.serverAvailable = false;
@@ -100,7 +97,7 @@ Controller.prototype.updateLoadedFromServer = function (data) {
 };
 
 Controller.prototype.setRoofId = function (roofId) {
-    this.roofId = roofId;
+    this.roof.id = roofId;
 };
 
 Controller.prototype.writeCookie = function (cid, dueDate) {
@@ -129,7 +126,7 @@ Controller.prototype.createPanel = function (panel) {
     if (!this.serverAvailable) {
         return;
     }
-    this.serverHandler.postPanelToServer(this.roofId, panel, function (data, panel) {
+    this.serverHandler.postPanelToServer(this.roof.id, panel, function (data, panel) {
         panel.id = data;
     });
 
@@ -142,12 +139,11 @@ Controller.prototype.connectWithPolygonTool = function(panel) {
         if (!controller.serverAvailable) {
             return;
         }
-        controller.serverHandler.updatePanelToServer(controller.serverHandler.roofId, selectedSolarPolygon.panel);
+        controller.serverHandler.updatePanelToServer(controller.serverHandler.roof.id, selectedSolarPolygon.panel);
     };
     panelTool.pitchSlider().on("input change", function () {
 
         var pitch = $(this).val();
-
         selectedSolarPolygon.panel.setPitch(pitch);
         selectedSolarPolygon.panel.realign();
         controller.updateModel(selectedSolarPolygon);
@@ -157,8 +153,6 @@ Controller.prototype.connectWithPolygonTool = function(panel) {
     panelTool.heightSlider().on("input change", function () {
 
         var height = $(this).val();
-
-        console.log("Panel: " + selectedSolarPolygon.panel.name + " set height: " + height);
         selectedSolarPolygon.panel.length = height;
         selectedSolarPolygon.panel.realign();
         controller.updateModel(selectedSolarPolygon);
@@ -168,8 +162,6 @@ Controller.prototype.connectWithPolygonTool = function(panel) {
     panelTool.widthSlider().on("input change", function () {
 
         var width = $(this).val();
-
-        console.log("Panel: " + selectedSolarPolygon.panel.name + " set width: " + width);
         selectedSolarPolygon.panel.width = width;
         selectedSolarPolygon.panel.realign();
         controller.updateModel(selectedSolarPolygon);
@@ -179,8 +171,6 @@ Controller.prototype.connectWithPolygonTool = function(panel) {
     panelTool.orientationSlider().on("input change", function () {
 
         var orientation = $(this).val();
-
-        console.log("Panel: " + selectedSolarPolygon.panel.name + " set orientation: " + orientation);
         selectedSolarPolygon.panel.setOrientation(orientation);
         selectedSolarPolygon.panel.realign();
         controller.updateModel(selectedSolarPolygon);
@@ -195,4 +185,26 @@ Controller.prototype.updateModel = function (polygon) {
         [polygon.panel.botRight.lat, polygon.panel.botRight.lng],
         [polygon.panel.botLeft.lat, polygon.panel.botLeft.lng]
     ]);
+};
+
+Controller.prototype.getRoofFromServer = function() {
+    var roof_json = GET_DUMMY_DACH();
+
+    this.roof = new Roof();
+    this.roof.controller = this;
+    this.roof.pv = roof_json.pv;
+    this.roof.st = roof_json.st;
+    var arr = [];
+    roof_json.the_geom.forEach(getCoords);
+    function getCoords(element) {
+        arr.push([element.latitude, element.longitude]);
+    }
+    this.roof.setCornersUnsorted(arr);
+};
+Controller.prototype.getLatLngAsPoint = function(latLng) {
+    return this.mapContainer.latLngToLayerPoint(latLng);
+};
+
+Controller.prototype.getBasePolygonOrientation = function () {
+    return roof.orientation;
 };

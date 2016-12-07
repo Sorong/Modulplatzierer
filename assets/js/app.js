@@ -35,9 +35,11 @@ $(document).ready(function () {
         var panelData = {};
         panelData.name = "Added Panel";
         panelData.LatLng = controller.mapContainer.layerPointToLatLng(point);
-        var solarpanel = createSolarpanel(panelData.LatLng, 10, 10);
+        var solarpanel = createSolarpanel(panelData.LatLng, 1.20, 1.30);
+        solarpanel.orientation = controller.roof.orientation;
+        solarpanel.realign();
         solarpanel = controller.mapContainer.addPolygon(solarpanel);
-        controller.createPanel(solarpanel);
+        controller.createPanel(solarpanel.panel);
     };
 
 

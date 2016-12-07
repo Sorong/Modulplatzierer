@@ -49,7 +49,6 @@ PanelTool.prototype.pitchSlider = function () {
 };
 
 PanelTool.prototype.widthSlider = function () {
-    console.log("Width");
     var widthVal = this.panelWidthValue;
     return this.panelWidth.on("change mousemove", function () {
         var val = $(this).val();

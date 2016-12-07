@@ -2,10 +2,10 @@ var matrix = new Matrix();
 
 
 function Matrix() {
-    var lastOrientation;
-    var lastOrientationMatrix;
-    var lastPitch;
-    var lastPitchMatrix;
+    this.lastOrientation = null;
+    this.lastOrientationMatrix = null;
+    this.lastPitch = null;
+    this.lastPitchMatrix = null;
 }
 
 Matrix.prototype.calculateOrientationMatrix = function (orientation) {
@@ -98,7 +98,7 @@ Solarpanel.prototype.alignPanel = function () {
         this.topRight.y - this.topLeft.y,
         0];
 
-    var orientationMatrix = matrix.calculateOrientationMatrix(this.orientation);
+    var orientationMatrix = matrix.calculateOrientationMatrix(-this.orientation);
     var pitchMatrix = matrix.calculatePitchMatrix(this.pitch);
     var topright = matrix.matrixMultiplyVector(orientationMatrix, vTopLeftTopRight);
     var bottomleft = matrix.matrixMultiplyVector(orientationMatrix, matrix.matrixMultiplyVector(pitchMatrix, vTopBottomLeft));
@@ -117,7 +117,6 @@ function createSolarpanel(topleft, length, width, orientation, pitch) {
     solarpanel.width = width;
     solarpanel.length = length;
     solarpanel.topLeft = topleft;
-    solarpanel.realign();
     return solarpanel;
 }
 
