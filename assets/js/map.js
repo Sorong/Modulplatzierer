@@ -1,14 +1,14 @@
 function MapContainer() {
-    var map, layer, controller;
-    var displayedPanels = [];
-    var selectedSolarPolygon = null;
-    var d3Overlay = null;
+    this.map = null;
+    this.layer = null;
+    this.controller = null;
+    this.displayedPanels = [];
+    this.selectedSolarPolygon = null;
+    this.d3Overlay = null;
+    this.roof = null;
 }
 
 MapContainer.prototype.updatePolygonPosition = function (solarpanel) {
-    if(this.displayedPanels === undefined) {
-        this.displayedPanels = [];
-    }
     //TODO: alignPanel refactoren
     var panel = solarpanel.alignPanel();
     panel.name = "Panel_" + this.displayedPanels.length;
@@ -27,7 +27,6 @@ MapContainer.prototype.updatePolygonPosition = function (solarpanel) {
 };
 
 MapContainer.prototype.addPolygon = function(solarpanel) {
-    var mapC = this;
     var cont = this.controller;
     this.selectedSolarPolygon = this.updatePolygonPosition(solarpanel);
     this.selectedSolarPolygon.panel = solarpanel;
@@ -37,15 +36,10 @@ MapContainer.prototype.addPolygon = function(solarpanel) {
         cont.updateModel(this);
         cont.connectWithPolygonTool(panel);
     });
-    /* TODO: return statt writeToDatabase
-    if (writeToDatabase) {
-        postPanelToServer(roofId, solarpanel);
-    }
-    */
     this.selectedSolarPolygon.on('drag', dragmovePanel);
     this.selectedSolarPolygon.on('dragend', dragendPanel);
     this.displayedPanels.push(solarpanel);
-    return solarpanel;
+    return this.selectedSolarPolygon;
 };
 
 MapContainer.prototype.showGoogleMaps = function () {
@@ -67,7 +61,7 @@ MapContainer.prototype.showOpenstreetMap = function () {
     this.layer = L.tileLayer(
         'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; ' + mapLink + ' Contributors',
-            maxZoom: 18
+            maxZoom: 20
         });
     this.map.addLayer(this.layer);
 };
@@ -80,5 +74,9 @@ MapContainer.prototype.latLngToLayerPoint = function (latLng) {
     return this.d3Overlay.projection.latLngToLayerPoint(latLng);
 };
 
-
+MapContainer.prototype.drawRoof = function (polygon) {
+    this.roof = polygon;
+    this.roof.addTo(this.map);
+    this.map.fitBounds(polygon.getBounds());
+};
 
