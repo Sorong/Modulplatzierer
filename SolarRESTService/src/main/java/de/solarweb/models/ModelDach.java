@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * Created by Nils on 12.11.16.
  */
 
-public class ModelDach implements Serializable{
+public class ModelDach implements Serializable {
 
     private int dach_id;
     private String strasse;
@@ -20,14 +20,13 @@ public class ModelDach implements Serializable{
     private int dachneigung;
     private double koord_dachmitte_lng;
     private double koord_dachmitte_lat;
-    private ArrayList<ModelSolarpanel> modelSolarpanelCollection;
-    private ModelCookie cookie;
 
-    public ModelDach(){
+
+    public ModelDach() {
 
     }
 
-    public ModelDach(TblDach tblDach){
+    public ModelDach(TblDach tblDach) {
         this.dach_id = tblDach.getDach_id();
         this.strasse = tblDach.getStrasse();
         this.dachneigung = tblDach.getDachneigung();
@@ -35,11 +34,6 @@ public class ModelDach implements Serializable{
         this.postleitzahl = tblDach.getPlz();
         this.koord_dachmitte_lat = tblDach.getKoord_dachmitte_lat();
         this.koord_dachmitte_lng = tblDach.getKoord_dachmitte_lng();
-        this.modelSolarpanelCollection = new ArrayList<ModelSolarpanel>();
-        for(TblSolarpanel tblSolarpanel : tblDach.getTblSolarpanelCollection() ){
-            modelSolarpanelCollection.add(new ModelSolarpanel(tblSolarpanel));
-        }
-        this.cookie = new ModelCookie(tblDach.getCookie());
 
     }
 
@@ -97,21 +91,5 @@ public class ModelDach implements Serializable{
 
     public void setKoord_dachmitte_lat(double koord_dachmitte_lat) {
         this.koord_dachmitte_lat = koord_dachmitte_lat;
-    }
-
-    public ArrayList<ModelSolarpanel> getModelSolarpanelCollection() {
-        return modelSolarpanelCollection;
-    }
-
-    public void setModelSolarpanelCollection(ArrayList<ModelSolarpanel> modelSolarpanelCollection) {
-        this.modelSolarpanelCollection = modelSolarpanelCollection;
-    }
-
-    public ModelCookie getCookie() {
-        return cookie;
-    }
-
-    public void setCookie(ModelCookie cookie) {
-        this.cookie = cookie;
     }
 }

@@ -38,8 +38,6 @@ public class TblDach implements Serializable{
     @Column(name = "dach_id", nullable = false)
     private Integer dach_id;
 
-    @OneToMany(mappedBy = "dach_id")
-    private Collection<TblSolarpanel> tblSolarpanelCollection;
 
     @JoinColumn(name = "cookie_id", nullable = false)
     @ManyToOne(optional = false)
@@ -91,14 +89,6 @@ public class TblDach implements Serializable{
 
     public void setDach_id(Integer dach_id) {
         this.dach_id = dach_id;
-    }
-
-    public Collection<TblSolarpanel> getTblSolarpanelCollection() {
-        return tblSolarpanelCollection;
-    }
-
-    public void setTblSolarpanelCollection(Collection<TblSolarpanel> tblSolarpanelCollection) {
-        this.tblSolarpanelCollection = tblSolarpanelCollection;
     }
 
     public String getStrasse() {

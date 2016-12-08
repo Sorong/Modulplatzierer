@@ -36,9 +36,9 @@ public class TblSolarpanel implements Serializable{
     private Integer panel_id;
 
 
-    @JoinColumn(name = "dach_id", nullable = false)
+    @JoinColumn(name = "cookie_id", nullable = false)
     @ManyToOne(optional = false)
-    private TblDach dach_id;
+    private TblCookie cookie_id;
 
 
     @Basic(optional = false)
@@ -106,13 +106,7 @@ public class TblSolarpanel implements Serializable{
 
     }
 
-    public TblSolarpanel(Integer id, double lat, double lng, double laenge, double breite, int neigung, int ausrichtung, double rahmenbreite){
-        this.panel_id = id;
-        this.laenge = laenge;
-        this.breite = breite;
-        this.neigung = neigung;
-        this.rahmenbreite = rahmenbreite;
-    }
+
 
     public Integer getPanel_id() {
         return panel_id;
@@ -122,12 +116,12 @@ public class TblSolarpanel implements Serializable{
         this.panel_id = panel_id;
     }
 
-    public TblDach getDach() {
-        return dach_id;
+    public TblCookie getCookie() {
+        return cookie_id;
     }
 
-    public void setDach(TblDach dach) {
-        this.dach_id = dach;
+    public void setCookie(TblCookie tblCookie) {
+        this.cookie_id = tblCookie;
     }
 
     public double getLaenge() {

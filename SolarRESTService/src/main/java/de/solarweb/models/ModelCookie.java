@@ -1,7 +1,10 @@
 package de.solarweb.models;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import de.solarweb.datamodel.TblCookie;
 import de.solarweb.datamodel.TblDach;
+import de.solarweb.datamodel.TblSolarpanel;
+import org.geolatte.geom.M;
 
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -13,18 +16,23 @@ import java.sql.Timestamp;
 public class ModelCookie implements Serializable{
 
     private int cookie_id;
-    private LinkedList<Integer> dach_ids;
+    private LinkedList<ModelSolarpanel> solarpanelList;
     private Timestamp ablaufdatum;
 
     public ModelCookie(){
 
     }
 
+    public ModelCookie(int id, Timestamp time){
+        this.cookie_id = id;
+        this.ablaufdatum = time;
+    }
+
     public ModelCookie(TblCookie tblCookie){
         this.cookie_id = tblCookie.getCookie_id();
-        dach_ids = new LinkedList<Integer>();
-        for(TblDach tblDach : tblCookie.getTblDachCollection()){
-            dach_ids.add(tblDach.getDach_id());
+        solarpanelList = new LinkedList<ModelSolarpanel>();
+        for(TblSolarpanel tblSolarpanel : tblCookie.getTblSolarpanelCollection()){
+            solarpanelList.add(new ModelSolarpanel(tblSolarpanel));
         }
         this.ablaufdatum = tblCookie.getAblaufdatum();
     }
@@ -37,12 +45,12 @@ public class ModelCookie implements Serializable{
         this.cookie_id = cookie_id;
     }
 
-    public LinkedList<Integer> getDach_ids() {
-        return dach_ids;
+    public LinkedList<ModelSolarpanel> getSolarpanelList() {
+        return solarpanelList;
     }
 
-    public void setDach_ids(LinkedList<Integer> dach_ids) {
-        this.dach_ids = dach_ids;
+    public void setSolarpanelList(LinkedList<ModelSolarpanel> solarpanelList) {
+        this.solarpanelList = solarpanelList;
     }
 
     public Timestamp getAblaufdatum() {

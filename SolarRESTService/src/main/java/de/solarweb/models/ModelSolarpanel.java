@@ -22,7 +22,7 @@ public class ModelSolarpanel implements Serializable{
     private int neigung;
     private int ausrichtung;
     private double rahmenbreite;
-    private int dach_id;
+    private int cookie_id;
 
     public ModelSolarpanel(){
 
@@ -35,7 +35,7 @@ public class ModelSolarpanel implements Serializable{
         this.neigung = tblSolarpanel.getNeigung();
         this.ausrichtung = tblSolarpanel.getAusrichtung();
         this.rahmenbreite = tblSolarpanel.getRahmenbreite();
-        this.dach_id = tblSolarpanel.getDach().getDach_id();
+        this.cookie_id = tblSolarpanel.getCookie().getCookie_id();
 
         //Oben Links
         obenLinks[0] = tblSolarpanel.getOben_links_lat();
@@ -67,7 +67,7 @@ public class ModelSolarpanel implements Serializable{
         this.neigung = neigung;
         this.ausrichtung = ausrichtung;
         this.rahmenbreite = rahmenbreite;
-        this.dach_id = dach_id;
+        this.cookie_id = cookie_id;
     }
 
     public int getPanel_id() {
@@ -150,11 +150,11 @@ public class ModelSolarpanel implements Serializable{
         this.rahmenbreite = rahmenbreite;
     }
 
-    public int getDach_id() {
-        return dach_id;
+    public int getCookie_id() {
+        return cookie_id;
     }
 
-    public void setDach_id(int dach_id) {
-        this.dach_id = dach_id;
+    public void setCookie_id(int cookie_id) {
+        this.cookie_id = cookie_id;
     }
 }

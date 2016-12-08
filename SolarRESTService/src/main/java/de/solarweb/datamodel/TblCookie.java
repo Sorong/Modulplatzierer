@@ -38,8 +38,8 @@ public class TblCookie implements Serializable{
     @Column(nullable = false)
     private Integer cookie_id;
 
-    @OneToMany(mappedBy = "cookie")
-    private Collection<TblDach> tblDachCollection;
+    @OneToMany(mappedBy = "cookie_id")
+    private Collection<TblSolarpanel> tblSolarpanelCollection;
 
 
     public Timestamp getAblaufdatum() {
@@ -73,12 +73,11 @@ public class TblCookie implements Serializable{
         this.cookie_id = cookie_id;
     }
 
-    public Collection<TblDach> getTblDachCollection() {
-        return tblDachCollection;
+    public Collection<TblSolarpanel> getTblSolarpanelCollection() {
+        return tblSolarpanelCollection;
     }
 
-    public void setTblDachCollection(Collection<TblDach> tblDachCollection) {
-        this.tblDachCollection = tblDachCollection;
+    public void setTblSolarpanelCollection(Collection<TblSolarpanel> tblSolarpanelCollection) {
+        this.tblSolarpanelCollection = tblSolarpanelCollection;
     }
-
 }
