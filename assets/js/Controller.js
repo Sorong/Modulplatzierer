@@ -1,5 +1,5 @@
 
-const HOST = "195.37.224.87";
+const HOST = "localhost";
 
 const DAYS_TILL_COOKIE_EXPIRE = 30;
 const COOKIENAME = "Modulplatzierer";
@@ -191,6 +191,7 @@ Controller.prototype.drawRoofOnMap = function (data) {
 
     cs.roof = new Roof();
     cs.roof.controller = cs;
+    cs.roof.gid = roof_json.gid;
     cs.roof.pv = roof_json.pv;
     cs.roof.st = roof_json.st;
     var arr = [];
@@ -201,6 +202,24 @@ Controller.prototype.drawRoofOnMap = function (data) {
     cs.roof.setCornersUnsorted(arr);
     cs.mapContainer.drawRoof(cs.roof.getAsPolygon());
     cs.roof.setOrientation();
+    cs.serverHandler.getRoofParts(cs.roof.gid, cs.drawRoofPartOnMap);
+};
+
+Controller.prototype.drawRoofPartOnMap = function (data) {
+    var cs = controller.self;
+    for(var i = 0; i < data.length; i++) {
+        var arr = [];
+        var roof = new Roof();
+        roof.pv = data[i].pv;
+        roof.st = data[i].st
+        data[i].the_geom.forEach(getCoords);
+        function getCoords(element) {
+            arr.push([element.latitude, element.longitude]);
+        }
+        roof.setCornersUnsorted(arr);
+        cs.mapContainer.drawRoof(roof.getAsPolygon());
+    }
+
 };
 
 Controller.prototype.getLatLngAsPoint = function(latLng) {

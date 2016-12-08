@@ -1,7 +1,7 @@
 const BEST_PV = 2;
 
 function Roof() {
-    this.id = null;
+    this.gid = null;
     this.corners = null;
     this.pv = null;
     this.st = null;
@@ -78,3 +78,4 @@ Roof.prototype.setOrientation = function () {
     var angle = Math.acos(cos_theta) / Math.PI * 180;
     this.orientation = angle;
 };
+

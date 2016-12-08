@@ -58,6 +58,13 @@ ServerHandler.prototype.getPredefinedRoof = function (street, nr, citycode, call
     });
 };
 
+ServerHandler.prototype.getRoofParts = function (gid, callback) {
+  var server_fun = "/getRoofParts/" + gid;
+    this._get(server_fun, function (data) {
+        callback(data);
+    });
+};
+
 ServerHandler.prototype.createCookieFromServer = function (dueDate, callback) {
     var dataString = JSON.stringify({
         cookie_id: 0,
