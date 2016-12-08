@@ -14,10 +14,12 @@ function initAutocomplete() {
 
 function addressChanged() {
     var place = autocomplete.getPlace();
+
     if(controller != undefined){
         var lat = place.geometry.location.lat();
         var lng = place.geometry.location.lng();
         controller.mapContainer.map.setView(new L.LatLng(lat, lng), 18);
+        controller.getRoofFromServer(place);
     }
 }
 
@@ -34,9 +36,15 @@ $(document).ready(function () {
 
         var panelData = {};
         panelData.name = "Added Panel";
-        panelData.LatLng = controller.mapContainer.layerPointToLatLng(point);
+        var coords;
+        if(controller.roof != null) {
+            coords = L.latLng(controller.roof.corners[0][0], controller.roof.corners[0][1]);
+        } else {
+            coords = controller.mapContainer.layerPointToLatLng(point);
+        }
+        panelData.LatLng = coords;
         var solarpanel = createSolarpanel(panelData.LatLng, 1.20, 1.30);
-        solarpanel.orientation = controller.roof.orientation;
+        solarpanel.orientation = controller.roof === null ? 0 : controller.roof.orientation;
         solarpanel.realign();
         solarpanel = controller.mapContainer.addPolygon(solarpanel);
         controller.createPanel(solarpanel.panel);

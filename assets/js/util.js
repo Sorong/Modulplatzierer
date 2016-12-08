@@ -21,7 +21,7 @@ function dragendPanel(d) {
     updatePanelPosition(d);
     d.target.panel.realign();
     if(controller.serverAvailable) {
-        controller.serverHandler.updatePanelToServer(controller.roof.id, d.target.panel);
+        controller.serverHandler.updatePanelToServer(controller.cookieId, d.target.panel);
     }
 }
 

@@ -51,6 +51,13 @@ ServerHandler.prototype.getCookieFromServer = function (id, callback) {
     });
 };
 
+ServerHandler.prototype.getPredefinedRoof = function (street, nr, citycode, callback) {
+  var server_fun = "/getPredefinedRoof/" + street + "/" + nr + "/" + citycode;
+    this._get(server_fun, function (data) {
+        callback(data)
+    });
+};
+
 ServerHandler.prototype.createCookieFromServer = function (dueDate, callback) {
     var dataString = JSON.stringify({
         cookie_id: 0,
@@ -63,7 +70,7 @@ ServerHandler.prototype.createCookieFromServer = function (dueDate, callback) {
 
 ServerHandler.prototype.postPanelToServer = function (roofid, panel, callback) {
     var dataString = JSON.stringify({
-        dach_id: roofid,
+        cookie_id: roofid,
         panel_id: panel.id,
         obenLinks: [panel.originTopLeft.lat, panel.originTopLeft.lng],
         obenRechts: [panel.originTopRight.lat, panel.originTopRight.lng],
@@ -83,7 +90,7 @@ ServerHandler.prototype.postPanelToServer = function (roofid, panel, callback) {
 
 ServerHandler.prototype.updatePanelToServer = function (roofid, panel, callback) {
     var dataString = JSON.stringify({
-        dach_id: roofid,
+        cookie_id: roofid,
         panel_id: panel.id,
         obenLinks: [panel.originTopLeft.lat, panel.originTopLeft.lng],
         obenRechts: [panel.originTopRight.lat, panel.originTopRight.lng],
@@ -124,7 +131,7 @@ ServerHandler.prototype.postRoofToServer = function (roof, callback) {
 ServerHandler.prototype._get = function (serverfunc, success, error) {
     var error_fun;
     if (error === undefined) {
-        error_fun = this.default_error_function();
+        error_fun = this.default_error_function;
     } else {
         error_fun = error;
     }
@@ -139,7 +146,7 @@ ServerHandler.prototype._get = function (serverfunc, success, error) {
 ServerHandler.prototype._post = function (json, serverfunc, success, error) {
     var error_fun;
     if (error === undefined) {
-        error_fun = this.default_error_function();
+        error_fun = this.default_error_function;
     } else {
         error_fun = error;
     }

@@ -1,48 +1,48 @@
-const HOST = "10.132.134.222";
+const HOST = "195.37.224.87";
 const DAYS_TILL_COOKIE_EXPIRE = 30;
 const COOKIENAME = "Modulplatzierer";
 const SERVER_URL = "http://" + HOST + ":8080/SolarRESTService_war_exploded/server";
 
 function Controller() {
     this.serverHandler = null;
-    this.serverAvailable = null;
+    this.serverAvailable = true;
     this.cookieHandler = null;
     this.mapContainer = null;
 
     this.roof = null;
 
     this.cookieId = null;
+    this.self = this;
 
 }
 
 
 Controller.prototype.initMap = function () {
-
     this.mapContainer = new MapContainer();
+    this.cookieHandler = new CookieHandler(COOKIENAME);
+   // this.cookieHandler.eraseCookie();
+    this.serverHandler = new ServerHandler(SERVER_URL);
     this.mapContainer.controller = this;
     var mapHeight = document.getElementById("map").offsetHeight;
     var mapWidth = document.getElementById("map").offsetWidth;
 
-    this.mapContainer.map = L.map('map').setView([0.0, 0.0], 0);
+    this.mapContainer.map = L.map('map').setView([52.587896, 13.29209], 18);
     this.mapContainer.showGoogleMaps();
-    this.getRoofFromServer();
-    this.mapContainer.drawRoof(this.roof.getAsPolygon());
-
 
     this.mapContainer.d3Overlay = L.d3SvgOverlay(function (selection, projection) {
         this.projection = projection;
     });
     this.mapContainer.d3Overlay.addTo(this.mapContainer.map);
-    this.roof.setOrientation();
 };
+
 Controller.prototype.setServerUnavailable = function () {
     this.serverAvailable = false;
-    this.serverHandler = null;
+    //this.serverHandler = null;
+    console.log("Server nicht da");
 };
 
 Controller.prototype.loadFromServer = function () {
-    this.cookieHandler = new CookieHandler(COOKIENAME);
-    this.serverHandler = new ServerHandler(SERVER_URL);
+
     var cont = this;
     this.serverHandler.default_error_function = function () {
         cont.setServerUnavailable();
@@ -56,26 +56,31 @@ Controller.prototype.loadFromServer = function () {
     }
 };
 
+Controller.prototype.setRoofId = function (roofId) {
+    this.roof.id = roofId;
+};
+
 Controller.prototype.loadCookieData = function (data) {
-    this.setRoofId(data.dach_ids[0]);
-    if (!this.serverAvailable) {
+    var cs = controller.self;
+   // cs.setRoofId(data.dach_ids[0]);
+    if (!cs.serverAvailable) {
         return;
     }
-    this.serverHandler.getPanelsFromServer(roofId, function (data) {
         if (data === undefined) {
             return;
         }
         var arr = [];
-        data.modelSolarpanelCollection.forEach(getPanels);
+        data.solarpanelList.forEach(getPanels);
         function getPanels(element) {
             arr.push(element);
         }
 
-        this.updateLoadedFromServer(arr);
-    });
+        cs.updateLoadedFromServer(arr);
+
 };
 
 Controller.prototype.updateLoadedFromServer = function (data) {
+    var cs = controller.self;
     if (data === "undefined") {
         return;
     }
@@ -92,41 +97,23 @@ Controller.prototype.updateLoadedFromServer = function (data) {
         panel.length = elem.laenge;
         panel.orientation = elem.ausrichtung;
         panel.pitch = elem.neigung;
-        this.mapContainer.addPolygon(panel)
+        cs.mapContainer.addPolygon(panel)
     }
 };
 
-Controller.prototype.setRoofId = function (roofId) {
-    this.roof.id = roofId;
-};
+
 
 Controller.prototype.writeCookie = function (cid, dueDate) {
-    this.cookieId = cid;
-    this.cookieHandler.createCookie(cid, dueDate);
-    if (!this.serverAvailable) {
-        return;
-    }
-    this.serverHandler.postRoofToServer({
-        dach_id: 0,
-        strasse: "Musterstraße",
-        hausnummer: "5",
-        postleitzahl: "12345",
-        dachneigung: 45,
-        koord_dachmitte_lng: 12,
-        koord_dachmitte_lat: 12,
-        cookie: {
-            cookie_id: cid,
-            dach_ids: []
-        },
-        ablaufdatum: dueDate
-    });
+    var cs = controller.self;
+    cs.cookieId = cid;
+    cs.cookieHandler.createCookie(cid, dueDate);
 };
 
 Controller.prototype.createPanel = function (panel) {
     if (!this.serverAvailable) {
         return;
     }
-    this.serverHandler.postPanelToServer(this.roof.id, panel, function (data, panel) {
+    this.serverHandler.postPanelToServer(this.cookieId, panel, function (data, panel) {
         panel.id = data;
     });
 
@@ -139,7 +126,7 @@ Controller.prototype.connectWithPolygonTool = function(panel) {
         if (!controller.serverAvailable) {
             return;
         }
-        controller.serverHandler.updatePanelToServer(controller.serverHandler.roof.id, selectedSolarPolygon.panel);
+        controller.serverHandler.updatePanelToServer(controller.cookieId, selectedSolarPolygon.panel);
     };
     panelTool.pitchSlider().on("input change", function () {
 
@@ -187,20 +174,32 @@ Controller.prototype.updateModel = function (polygon) {
     ]);
 };
 
-Controller.prototype.getRoofFromServer = function() {
-    var roof_json = GET_DUMMY_DACH();
+Controller.prototype.getRoofFromServer = function(place) {
+    this.serverAvailable = true;
+    this.serverHandler.getPredefinedRoof(place.address_components[1].short_name,
+        place.address_components[0].short_name,
+        place.address_components[7].short_name, this.drawRoofOnMap);
 
-    this.roof = new Roof();
-    this.roof.controller = this;
-    this.roof.pv = roof_json.pv;
-    this.roof.st = roof_json.st;
+};
+
+Controller.prototype.drawRoofOnMap = function (data) {
+    var cs = controller.self;
+    var roof_json = data;
+
+    cs.roof = new Roof();
+    cs.roof.controller = cs;
+    cs.roof.pv = roof_json.pv;
+    cs.roof.st = roof_json.st;
     var arr = [];
     roof_json.the_geom.forEach(getCoords);
     function getCoords(element) {
         arr.push([element.latitude, element.longitude]);
     }
-    this.roof.setCornersUnsorted(arr);
+    cs.roof.setCornersUnsorted(arr);
+    cs.mapContainer.drawRoof(cs.roof.getAsPolygon());
+    cs.roof.setOrientation();
 };
+
 Controller.prototype.getLatLngAsPoint = function(latLng) {
     return this.mapContainer.latLngToLayerPoint(latLng);
 };

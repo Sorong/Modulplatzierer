@@ -61,7 +61,7 @@ MapContainer.prototype.showOpenstreetMap = function () {
     this.layer = L.tileLayer(
         'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; ' + mapLink + ' Contributors',
-            maxZoom: 20
+            maxZoom: 18
         });
     this.map.addLayer(this.layer);
 };
