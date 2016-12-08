@@ -1,10 +1,14 @@
 package de.solarweb.datamodel;
 
+import com.vividsolutions.jts.geom.Geometry;
+import de.solarweb.de.soalarweb.helper.GeometryConverter;
+import de.solarweb.de.soalarweb.helper.LatitudeLongitude;
+
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
+import java.util.ArrayList;
 
-import com.vividsolutions.jts.geom.Geometry;
 /**
  * Created by Nils on 25.11.16.
  */
@@ -12,11 +16,11 @@ import com.vividsolutions.jts.geom.Geometry;
 @Table(name = "berlin_fh_bielefeld_display_aggregate")
 @XmlRootElement
 @NamedQueries({
-        @NamedQuery(name = "tblDisplayAggregate.findAll", query = "SELECT t FROM TblDisplayAggregate t"),
-        @NamedQuery(name = "tblDisplayAggregate.findById", query = "SELECT t FROM TblDisplayAggregate t WHERE t.gid = :id")
+        @NamedQuery(name = "tblDisplayAggregate.findAll", query = "SELECT t FROM TblTetraederDisplayAggregate t"),
+        @NamedQuery(name = "tblDisplayAggregate.findById", query = "SELECT t FROM TblTetraederDisplayAggregate t WHERE t.gid = :id")
 })
 
-public class TblDisplayAggregate implements Serializable {
+public class TblTetraederDisplayAggregate implements Serializable {
 
     @Id
     @Basic
@@ -32,10 +36,10 @@ public class TblDisplayAggregate implements Serializable {
     private double globalc;
 
     @Basic
-    @Column(name = "the_geom")
-    private String the_geom;
+    @Column(name = "the_geom", columnDefinition = "geometry(Multipolygon, 25833")
+    private Geometry the_geom;
 
-    public TblDisplayAggregate(){
+    public TblTetraederDisplayAggregate(){
 
     }
 
@@ -63,11 +67,17 @@ public class TblDisplayAggregate implements Serializable {
         this.globalc = globalc;
     }
 
-    public String getThe_geom() {
+    public Geometry getThe_geom() {
         return the_geom;
     }
 
-    public void setThe_geom(String the_geom) {
+    public void setThe_geom(Geometry the_geom) {
         this.the_geom = the_geom;
+    }
+
+    public ArrayList<LatitudeLongitude> getGeometryAsPoints() throws Exception{
+        GeometryConverter converter = new GeometryConverter();
+        return converter.convertGeometry(25833, the_geom);
+
     }
 }

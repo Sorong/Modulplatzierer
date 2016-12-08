@@ -10,17 +10,18 @@ import java.util.ArrayList;
 /**
  * Created by Nils on 12.11.16.
  */
+
 public class ModelDach implements Serializable{
 
-    int dach_id;
-    String strasse;
-    String hausnummer;
-    String postleitzahl;
-    int dachneigung;
-    double koord_dachmitte_lng;
-    double koord_dachmitte_lat;
+    private int dach_id;
+    private String strasse;
+    private String hausnummer;
+    private String postleitzahl;
+    private int dachneigung;
+    private double koord_dachmitte_lng;
+    private double koord_dachmitte_lat;
     private ArrayList<ModelSolarpanel> modelSolarpanelCollection;
-    ModelCookie cookie;
+    private ModelCookie cookie;
 
     public ModelDach(){
 
