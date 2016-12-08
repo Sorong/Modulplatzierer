@@ -1,8 +1,11 @@
-package com.example.jersey;
+package de.solarweb.server;
 
 
-import com.sun.jersey.api.json.JSONWithPadding;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.PrecisionModel;
+import com.vividsolutions.jts.io.WKTReader;
 import de.solarweb.datamodel.*;
+import de.solarweb.de.soalarweb.helper.LatitudeLongitude;
 import de.solarweb.models.*;
 
 
@@ -11,26 +14,29 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.transaction.UserTransaction;
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import java.sql.*;
+import java.util.Scanner;
+import java.util.logging.Logger;
 
 
 @Stateless
 @TransactionManagement( TransactionManagementType.BEAN )
 @Path("/server")
-public class HelloWorld {
+public class RESTSever {
     @PersistenceContext(unitName = "SolarPersistence")
     private EntityManager em;
     @Resource
     private UserTransaction utx;
-    private String dbURL = "jdbc:postgresql://suchdomain-wow.dnshome.de:5432/scltest_sg_we2016_gr2a";
+
+    Logger logger = Logger.getLogger(getClass().getName());
 
 
-
-    public HelloWorld() throws Exception{
+    public RESTSever() throws Exception{
         Class.forName("org.postgresql.Driver");
     }
 
@@ -39,11 +45,12 @@ public class HelloWorld {
     @GET
     @Path("/getRoof/{dach_id}")
     @Produces({"application/javascript"})
-    public ModelDach getRoof(@PathParam("dach_id") int id, @QueryParam("callback") String callback){
+    public ModelDach getRoof(@PathParam("dach_id") int id){
         TblDach tblDach = getRoofById(id);
         if (tblDach == null){
-            return null;
+            new ModelDach();
         }
+        logger.warning("Dach mit ID: " + id + "abgerufen");
         return new ModelDach(tblDach);
     }
 
@@ -54,6 +61,7 @@ public class HelloWorld {
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes(MediaType.APPLICATION_JSON)
     public String setRoof(ModelDach dach) throws Exception{
+        logger.warning("Dach gepostet");
         int lastId = this.em.createQuery("select max(u.dach_id) from TblDach u", Integer.class).getSingleResult();
         Query getCookieById = em.createNamedQuery("tblCookie.findById");
         getCookieById.setParameter("id", dach.getCookie().getCookie_id());
@@ -70,6 +78,7 @@ public class HelloWorld {
         utx.begin();
         em.persist(tblDach);
         utx.commit();
+        logger.warning("Dach unter ID: " + lastId+1 +"gespeichert");
         return ""+(lastId+1);
     }
 
@@ -94,6 +103,7 @@ public class HelloWorld {
         utx.begin();
         em.merge(tblDach);
         utx.commit();
+        logger.warning("Dach mit ID:" + dach.getDach_id() + "geupdateted");
         return "ok";
     }
 
@@ -106,9 +116,11 @@ public class HelloWorld {
         queryCookieById.setParameter("id", id);
         List resultRoofs = queryCookieById.getResultList();
         if(resultRoofs.isEmpty()){
+            logger.warning("Kein Cookie gefunden");
             return new ModelCookie(new TblCookie(-1, new java.sql.Timestamp(0)));
         }
         TblCookie tblCookie = (TblCookie) queryCookieById.getSingleResult();
+        logger.warning("Cookie mit ID: " + id + "abgerufen");
         return new ModelCookie(tblCookie);
     }
 
@@ -125,6 +137,7 @@ public class HelloWorld {
         utx.begin();
         em.persist(tblCookie);
         utx.commit();
+        logger.warning("Cookie angelegt");
         return "" + (lastId + 1);
     }
 
@@ -161,6 +174,7 @@ public class HelloWorld {
         utx.begin();
         this.em.persist(tblPanel);
         utx.commit();
+        logger.warning("Panel angelegt");
         return "" + (lastId + 1);
     }
 
@@ -198,6 +212,7 @@ public class HelloWorld {
         em.merge(tblPanel);
 
         utx.commit();
+        logger.warning("Panel geupdated");
         return new ModelSolarpanel(tblPanel);
     }
 
@@ -213,6 +228,7 @@ public class HelloWorld {
             TblSolarpanel pPanel = em.merge(tblPanel);
             em.remove(pPanel);
             utx.commit();
+            logger.warning("Panel gelöscht");
             return "ok";
         }
         return "Not found";
@@ -223,19 +239,48 @@ public class HelloWorld {
     @GET
     @Path("/getPredefinedRoof/{street}/{number}/{plz}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getPredefinedRoof(@PathParam("street") String street,
-                                    @PathParam("number") String number, @PathParam("plz") Integer plz) throws Exception{
-        String roofPolygon = "empty";
-        Connection db_con = DriverManager.getConnection(dbURL, "scltest_sg_we2016_gr2a", "YRKmWvLp");
-        String statement = String.format("SELECT ST_asGeoJSON(ST_Transform(the_geom, 3857)) FROM berlin_fh_bielefeld_buildings WHERE street = '%s' AND number = '%s' AND plz = %d", street, number, plz);
-        PreparedStatement preparedStatement = db_con.prepareStatement(statement);
-        ResultSet result = preparedStatement.executeQuery();
-        if(!result.wasNull() && result.next()) {
-             roofPolygon = result.getString(1);
+    public ModelTetraederBuilding getPredefinedRoof(@PathParam("street") String street,
+                                       @PathParam("number") String number, @PathParam("plz") Double plz) throws Exception{
+        Query queryTetraederBuilding = em.createNamedQuery("tblTetraederBuildings.findByAddress");
+        queryTetraederBuilding.setParameter(0, street);
+        queryTetraederBuilding.setParameter(1, number);
+        queryTetraederBuilding.setParameter(2, plz);
+        List resultBuildings = queryTetraederBuilding.getResultList();
+        if(resultBuildings.isEmpty()){
+            return new ModelTetraederBuilding();
         }
-        result.close();
-        db_con.close();
-        return roofPolygon;
+        TblTetraederBuilding tblTetraederBuilding = (TblTetraederBuilding) resultBuildings.get(0);
+        logger.warning("Tetraeder Dach aus Datenbank gelesen");
+        return new ModelTetraederBuilding(tblTetraederBuilding);
+
+    }
+
+    @GET
+    @Path("/getRoofParts/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ArrayList<ModelTetraederRoof> getRoofParts(@PathParam("id") int id) throws Exception{
+        ArrayList<ModelTetraederRoof> roofPartList = new ArrayList<ModelTetraederRoof>();
+        Query queryTetraederRoofParts = em.createNamedQuery("tblTetraederRoof.findById");
+        queryTetraederRoofParts.setParameter("id", id);
+        List resultParts = queryTetraederRoofParts.getResultList();
+        if(resultParts.isEmpty()){
+            return null;
+        }
+        for(Object o : resultParts){
+            roofPartList.add(new ModelTetraederRoof((TblTetraederRoof)o));
+        }
+        logger.warning("Dacheinheiten aus Tetaeder Datenbank gelesen");
+        return roofPartList;
+    }
+
+    @GET
+    @Path("/test")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ArrayList<LatitudeLongitude> test() throws Exception{
+        Query q = em.createNamedQuery("tblDisplayAggregate.findById");
+        q.setParameter("id", 4720);
+        TblTetraederDisplayAggregate display = (TblTetraederDisplayAggregate) q.getSingleResult();
+        return display.getGeometryAsPoints();
 
     }
 

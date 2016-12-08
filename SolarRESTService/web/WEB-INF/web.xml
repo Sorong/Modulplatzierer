@@ -4,12 +4,12 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
     <servlet>
-        <servlet-name>Example API</servlet-name>
+        <servlet-name>SolarREST</servlet-name>
         <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
 
         <init-param>
             <param-name>com.sun.jersey.config.property.packages</param-name>
-            <param-value>com.example.jersey</param-value>
+            <param-value>de.solarweb.server</param-value>
         </init-param>
         <init-param>
             <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
@@ -23,7 +23,9 @@
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>Example API</servlet-name>
+        <servlet-name>SolarREST</servlet-name>
         <url-pattern>/*</url-pattern>
     </servlet-mapping>
 </web-app>
+
+

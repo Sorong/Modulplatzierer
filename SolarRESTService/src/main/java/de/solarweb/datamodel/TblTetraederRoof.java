@@ -1,8 +1,16 @@
 package de.solarweb.datamodel;
 
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryCollection;
+import com.vividsolutions.jts.geom.Point;
+import de.solarweb.de.soalarweb.helper.GeometryConverter;
+import de.solarweb.de.soalarweb.helper.LatitudeLongitude;
+
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
+import java.net.Inet4Address;
+import java.util.ArrayList;
 
 /**
  * Created by Nils on 26.11.16.
@@ -10,7 +18,10 @@ import java.io.Serializable;
 @Entity
 @Table(name = "berlin_fh_bielefeld_roofs")
 @XmlRootElement
-public class TblRoof implements Serializable {
+@NamedQueries({
+        @NamedQuery(name = "tblTetraederRoof.findById", query = "SELECT t FROM TblTetraederRoof t WHERE t.building_id = :id")
+})
+public class TblTetraederRoof implements Serializable {
 
     @Id
     @Basic
@@ -23,7 +34,7 @@ public class TblRoof implements Serializable {
 
     @Basic
     @Column(name = "uid")
-    private int uid;
+    private Integer uid;
 
     @Basic
     @Column(name = "cid")
@@ -46,8 +57,8 @@ public class TblRoof implements Serializable {
     private double direct;
 
     @Basic
-    @Column(name = "kwpha")
-    private double kwpha;
+    @Column(name = "kwhpa")
+    private double kwhpa;
 
     @Basic
     @Column(name = "strongshadow")
@@ -55,11 +66,15 @@ public class TblRoof implements Serializable {
 
     @Basic
     @Column(name = "directu")
-    private double directu;
+    private Double directu;
 
     @Basic
     @Column(name = "nearby_loss")
-    private double nearby_loss;
+    private Double nearby_loss;
+
+    @Basic
+    @Column(name = "distance_loss")
+    private Double distance_loss;
 
     @Basic
     @Column(name = "tilt")
@@ -91,7 +106,7 @@ public class TblRoof implements Serializable {
 
     @Basic
     @Column(name = "gd")
-    private int gd;
+    private Integer gd;
 
     @Basic
     @Column(name = "flat")
@@ -99,17 +114,26 @@ public class TblRoof implements Serializable {
 
     @Basic
     @Column(name = "mp_panelnumber")
-    private int mp_panelnumber;
+    private Integer mp_panelnumber;
 
     @Basic
-    @Column(name = "the_geom")
-    private String the_geom;
+    @Column(name = "the_geom", columnDefinition = "geometry(Multipolygon, 25833")
+    private Geometry the_geom;
+
+    @Basic
+    @Column(name = "planep", columnDefinition = "geometry(Point, 25833")
+    private Point planep;
+
+    @Basic
+    @Column(name = "kwpha")
+    private Double kwpha;
+
 
     @Basic
     @Column(name = "planp")
-    private String plannp;
+    private String planp;
 
-    public TblRoof(){
+    public TblTetraederRoof(){
 
     }
 
@@ -129,11 +153,11 @@ public class TblRoof implements Serializable {
         this.building_id = building_id;
     }
 
-    public int getUid() {
+    public Integer getUid() {
         return uid;
     }
 
-    public void setUid(int uid) {
+    public void setUid(Integer uid) {
         this.uid = uid;
     }
 
@@ -169,19 +193,19 @@ public class TblRoof implements Serializable {
         this.diffuse = diffuse;
     }
 
-    public double getDirect() {
+    public Double getDirect() {
         return direct;
     }
 
-    public void setDirect(double direct) {
+    public void setDirect(Double direct) {
         this.direct = direct;
     }
 
-    public double getKwpha() {
+    public Double getKwpha() {
         return kwpha;
     }
 
-    public void setKwpha(double kwpha) {
+    public void setKwpha(Double kwpha) {
         this.kwpha = kwpha;
     }
 
@@ -193,19 +217,19 @@ public class TblRoof implements Serializable {
         this.strongshadow = strongshadow;
     }
 
-    public double getDirectu() {
+    public Double getDirectu() {
         return directu;
     }
 
-    public void setDirectu(double directu) {
+    public void setDirectu(Double directu) {
         this.directu = directu;
     }
 
-    public double getNearby_loss() {
+    public Double getNearby_loss() {
         return nearby_loss;
     }
 
-    public void setNearby_loss(double nearby_loss) {
+    public void setNearby_loss(Double nearby_loss) {
         this.nearby_loss = nearby_loss;
     }
 
@@ -265,11 +289,11 @@ public class TblRoof implements Serializable {
         this.st = st;
     }
 
-    public int getGd() {
+    public Integer getGd() {
         return gd;
     }
 
-    public void setGd(int gd) {
+    public void setGd(Integer gd) {
         this.gd = gd;
     }
 
@@ -281,27 +305,56 @@ public class TblRoof implements Serializable {
         this.flat = flat;
     }
 
-    public int getMp_panelnumber() {
+    public Integer getMp_panelnumber() {
         return mp_panelnumber;
     }
 
-    public void setMp_panelnumber(int mp_panelnumber) {
+    public void setMp_panelnumber(Integer mp_panelnumber) {
         this.mp_panelnumber = mp_panelnumber;
     }
 
-    public String getThe_geom() {
+    public Geometry getThe_geom() {
         return the_geom;
     }
 
-    public void setThe_geom(String the_geom) {
+    public void setThe_geom(Geometry the_geom) {
         this.the_geom = the_geom;
     }
 
-    public String getPlannp() {
-        return plannp;
+    public ArrayList<LatitudeLongitude> getThe_geomAsLatlng() throws Exception{
+        GeometryConverter converter = new GeometryConverter();
+        return converter.convertGeometry(25833, the_geom);
     }
 
-    public void setPlannp(String plannp) {
-        this.plannp = plannp;
+    public Point getPlannp() {
+        return planep;
+    }
+
+    public void setPlannp(Point plannp) {
+        this.planep = planep;
+    }
+
+    public double getKwhpa() {
+        return kwhpa;
+    }
+
+    public void setKwhpa(double kwhpa) {
+        this.kwhpa = kwhpa;
+    }
+
+    public Double getDistance_loss() {
+        return distance_loss;
+    }
+
+    public void setDistance_loss(Double distance_loss) {
+        this.distance_loss = distance_loss;
+    }
+
+    public String getPlanp() {
+        return planp;
+    }
+
+    public void setPlanp(String planp) {
+        this.planp = planp;
     }
 }

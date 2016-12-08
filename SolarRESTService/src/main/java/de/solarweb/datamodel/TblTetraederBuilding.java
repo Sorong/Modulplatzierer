@@ -1,8 +1,13 @@
 package de.solarweb.datamodel;
 
+import com.vividsolutions.jts.geom.Geometry;
+import de.solarweb.de.soalarweb.helper.GeometryConverter;
+import de.solarweb.de.soalarweb.helper.LatitudeLongitude;
+
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by Nils on 26.11.16.
@@ -10,7 +15,11 @@ import java.io.Serializable;
 @Entity
 @Table(name = "berlin_fh_bielefeld_buildings")
 @XmlRootElement
-public class TblBuilding implements Serializable{
+@NamedQueries({
+        @NamedQuery(name = "tblTetraederBuilding.findAll", query = "SELECT t FROM TblTetraederBuilding t"),
+        @NamedQuery(name = "tblTetraederBuildings.findByAddress", query = "SELECT t FROM TblTetraederBuilding t WHERE t.street = ?0 AND t.number = ?1 AND t.plz = ?2")
+})
+public class TblTetraederBuilding implements Serializable{
 
     @Id
     @Basic
@@ -39,7 +48,7 @@ public class TblBuilding implements Serializable{
 
     @Basic
     @Column(name = "hid")
-    private int hid;
+    private Integer hid;
 
     @Basic
     @Column(name = "ort")
@@ -47,7 +56,7 @@ public class TblBuilding implements Serializable{
 
     @Basic
     @Column(name = "the_geom")
-    private String geometry;
+    private Geometry the_geom;
 
     @Basic
     @Column(name = "zusatz")
@@ -59,8 +68,12 @@ public class TblBuilding implements Serializable{
     private boolean denkmal;
 
     @Basic
+    @Column(name = "denkmali")
+    private String denkmali;
+
+    @Basic
     @Column(name = "monument_reason")
-    private String text;
+    private String monument_reason;
 
     @Basic
     @Column(name = "area2d")
@@ -80,7 +93,7 @@ public class TblBuilding implements Serializable{
 
     @Basic
     @Column(name = "gd")
-    private int gd;
+    private Integer gd;
 
     @Basic
     @Column(name = "doneby")
@@ -92,7 +105,7 @@ public class TblBuilding implements Serializable{
 
     @Basic
     @Column(name = "qhint")
-    private int qhint;
+    private Integer qhint;
 
     @Basic
     @Column(name = "household_size")
@@ -108,9 +121,9 @@ public class TblBuilding implements Serializable{
 
     @Basic
     @Column(name = "rt_geom")
-    private String rt_geom;
+    private Geometry rt_geom;
 
-    public TblBuilding()
+    public TblTetraederBuilding()
     {
 
     }
@@ -179,12 +192,17 @@ public class TblBuilding implements Serializable{
         this.ort = ort;
     }
 
-    public String getGeometry() {
-        return geometry;
+    public Geometry getThe_geom() {
+        return the_geom;
     }
 
-    public void setGeometry(String geometry) {
-        this.geometry = geometry;
+    public ArrayList<LatitudeLongitude> getThe_geomAsLatlng() throws Exception{
+        GeometryConverter converter = new GeometryConverter();
+        return converter.convertGeometry(25833, the_geom);
+    }
+
+    public void setThe_geom(Geometry geometry) {
+        this.the_geom = geometry;
     }
 
     public String getZusatz() {
@@ -203,12 +221,20 @@ public class TblBuilding implements Serializable{
         this.denkmal = denkmal;
     }
 
-    public String getText() {
-        return text;
+    public String getDenkmali() {
+        return denkmali;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setDenkmali(String denkmali) {
+        this.denkmali = denkmali;
+    }
+
+    public String getMonument_reason() {
+        return monument_reason;
+    }
+
+    public void setMonument_reason(String text) {
+        this.monument_reason = text;
     }
 
     public double getArea2d() {
@@ -243,11 +269,11 @@ public class TblBuilding implements Serializable{
         this.st = st;
     }
 
-    public int getGd() {
+    public Integer getGd() {
         return gd;
     }
 
-    public void setGd(int gd) {
+    public void setGd(Integer gd) {
         this.gd = gd;
     }
 
@@ -267,11 +293,11 @@ public class TblBuilding implements Serializable{
         this.calctime = calctime;
     }
 
-    public int getQhint() {
+    public Integer getQhint() {
         return qhint;
     }
 
-    public void setQhint(int qhint) {
+    public void setQhint(Integer qhint) {
         this.qhint = qhint;
     }
 
@@ -299,11 +325,16 @@ public class TblBuilding implements Serializable{
         this.rueckhalt = rueckhalt;
     }
 
-    public String getRt_geom() {
+    public Geometry getRt_geom() {
         return rt_geom;
     }
 
-    public void setRt_geom(String rt_geom) {
+    public ArrayList<LatitudeLongitude> getRt_geomAsLatlng() throws Exception{
+        GeometryConverter converter = new GeometryConverter();
+        return converter.convertGeometry(25833, rt_geom);
+    }
+
+    public void setRt_geom(Geometry rt_geom) {
         this.rt_geom = rt_geom;
     }
 }
