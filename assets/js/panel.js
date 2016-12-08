@@ -117,6 +117,8 @@ function createSolarpanel(topleft, length, width, orientation, pitch) {
     solarpanel.width = width;
     solarpanel.length = length;
     solarpanel.topLeft = topleft;
+    // brauche realign für den panelstring
+    solarpanel.realign();
     return solarpanel;
 }
 

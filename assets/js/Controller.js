@@ -1,4 +1,4 @@
-const HOST = "10.132.134.222";
+const HOST = "172.20.10.2";
 const DAYS_TILL_COOKIE_EXPIRE = 30;
 const COOKIENAME = "Modulplatzierer";
 const SERVER_URL = "http://" + HOST + ":8080/SolarRESTService_war_exploded/server";
@@ -12,9 +12,7 @@ function Controller() {
     this.roof = null;
 
     this.cookieId = null;
-
 }
-
 
 Controller.prototype.initMap = function () {
 
