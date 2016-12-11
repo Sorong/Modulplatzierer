@@ -42,7 +42,8 @@ Roof.prototype.setCornersUnsorted = function (coordinates) {
         return lower.concat(upper);
     }
 
-    this.corners = convexHull(coordinates);
+    //this.corners = convexHull(coordinates);
+    this.corners = coordinates;
 
 };
 
