@@ -55,7 +55,7 @@ function Solarpanel() {
     this.orientation = 0;
     this.pitch = 0;
     this.name = null;
-    this.length = null;
+    this.height = null;
     this.width = null;
     this.id = 0;
 }
@@ -63,8 +63,8 @@ function Solarpanel() {
 Solarpanel.prototype.realign = function () {
     this.originTopLeft = this.topLeft;
     this.originTopRight = translateCoordinates(this.width, this.originTopLeft, 0);
-    this.originBotLeft = translateCoordinates(this.length, this.originTopLeft, -90);
-    this.originBotRight = translateCoordinates(this.length, this.originTopRight, -90);
+    this.originBotLeft = translateCoordinates(this.height, this.originTopLeft, -90);
+    this.originBotRight = translateCoordinates(this.height, this.originTopRight, -90);
     this.alignPanel(this);
 };
 
@@ -115,7 +115,7 @@ Solarpanel.prototype.alignPanel = function () {
 function createSolarpanel(topleft, length, width, orientation, pitch) {
     var solarpanel = new Solarpanel();
     solarpanel.width = width;
-    solarpanel.length = length;
+    solarpanel.height = length;
     solarpanel.topLeft = topleft;
     // brauche realign für den panelstring
     solarpanel.realign();

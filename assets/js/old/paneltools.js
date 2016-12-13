@@ -31,7 +31,7 @@ PanelTool.prototype.renderSolarPanelValues = function () {
     this.panelWidth.val(width);
     this.panelWidthValue.html(width + "m");
 
-    var length = this.selectedPanel.length || 1;
+    var length = this.selectedPanel.height || 1;
     this.panelHeight.val(length);
     this.panelHeightValue.html(length + "m");
 

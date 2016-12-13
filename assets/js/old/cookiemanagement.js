@@ -16,10 +16,10 @@ CookieHandler.prototype.createCookie = function (value, dueDate) {
 CookieHandler.prototype.readCookie = function () {
     var nameEQ = this.name + "=";
     var ca = document.cookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
+    for (var i = 0; i < ca.height; i++) {
         var c = ca[i];
-        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+        while (c.charAt(0) == ' ') c = c.substring(1, c.height);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.height, c.height);
     }
     return null;
 };
@@ -83,7 +83,7 @@ ServerHandler.prototype.postPanelToServer = function (roofid, panel, callback) {
         obenRechts: [panel.originTopRight.lat, panel.originTopRight.lng],
         untenRechts: [panel.originBotRight.lat, panel.originBotRight.lng],
         untenLinks: [panel.originBotLeft.lat, panel.originBotLeft.lng],
-        laenge: panel.length,
+        laenge: panel.height,
         breite: panel.width,
         neigung: panel.pitch,
         ausrichtung: panel.orientation,
@@ -103,7 +103,7 @@ ServerHandler.prototype.updatePanelToServer = function (roofid, panel, callback)
         obenRechts: [panel.originTopRight.lat, panel.originTopRight.lng],
         untenRechts: [panel.originBotRight.lat, panel.originBotRight.lng],
         untenLinks: [panel.originBotLeft.lat, panel.originBotLeft.lng],
-        laenge: panel.length,
+        laenge: panel.height,
         breite: panel.width,
         neigung: panel.pitch,
         ausrichtung: panel.orientation,

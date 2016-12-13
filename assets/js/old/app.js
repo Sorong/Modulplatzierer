@@ -26,7 +26,7 @@ function addressChanged() {
 $(document).ready(function () {
 
     controller = new Controller();
-    controller.initMap();
+    controller.init();
     controller.loadFromServer();
 
     var addBtn = document.getElementById("add");

@@ -22,16 +22,16 @@ Roof.prototype.setCornersUnsorted = function (coordinates) {
         });
 
         var lower = [];
-        for (var i = 0; i < points.length; i++) {
-            while (lower.length >= 2 && cross(lower[lower.length - 2], lower[lower.length - 1], points[i]) <= 0) {
+        for (var i = 0; i < points.height; i++) {
+            while (lower.height >= 2 && cross(lower[lower.height - 2], lower[lower.height - 1], points[i]) <= 0) {
                 lower.pop();
             }
             lower.push(points[i]);
         }
 
         var upper = [];
-        for (var i = points.length - 1; i >= 0; i--) {
-            while (upper.length >= 2 && cross(upper[upper.length - 2], upper[upper.length - 1], points[i]) <= 0) {
+        for (var i = points.height - 1; i >= 0; i--) {
+            while (upper.height >= 2 && cross(upper[upper.height - 2], upper[upper.height - 1], points[i]) <= 0) {
                 upper.pop();
             }
             upper.push(points[i]);
@@ -54,7 +54,7 @@ Roof.prototype.getAsPolygon = function () {
     var rgb = 0x000000;
     rgb |= red |= green;
     rgb = rgb.toString(16);
-    while (rgb.length < 6) {
+    while (rgb.height < 6) {
         rgb = "0" + rgb;
     }
     var polygon = L.polygon(this.corners, {color: "#" + rgb});
@@ -65,7 +65,7 @@ Roof.prototype.getAsPolygon = function () {
 Roof.prototype.setOrientation = function () {
     var leftBot = [Number.MAX_VALUE, Number.MIN_VALUE];
     var rightBot = [Number.MAX_VALUE, Number.MIN_VALUE];
-    for (var i = 0; i < this.corners.length; i++) {
+    for (var i = 0; i < this.corners.height; i++) {
         var curr = this.controller.getLatLngAsPoint(this.corners[i]);
         if (curr.y >= leftBot[1]) {
             leftBot = [curr.x, curr.y];

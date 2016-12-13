@@ -20,7 +20,7 @@ function Controller() {
 
 }
 
-Controller.prototype.initMap = function () {
+Controller.prototype.init = function () {
     this.mapContainer = new MapContainer();
     this.cookieHandler = new CookieHandler(COOKIENAME);
    // this.cookieHandler.eraseCookie();
@@ -97,7 +97,7 @@ Controller.prototype.updateLoadedFromServer = function (data) {
         );
         panel.id = elem.panel_id;
         panel.width = elem.breite;
-        panel.length = elem.laenge;
+        panel.height = elem.laenge;
         panel.orientation = elem.ausrichtung;
         panel.pitch = elem.neigung;
         cs.mapContainer.addPolygon(panel)
@@ -143,7 +143,7 @@ Controller.prototype.connectWithPolygonTool = function(panel) {
     panelTool.heightSlider().on("input change", function () {
 
         var height = $(this).val();
-        selectedSolarPolygon.panel.length = height;
+        selectedSolarPolygon.panel.height = height;
         selectedSolarPolygon.panel.realign();
         controller.updateModel(selectedSolarPolygon);
 
@@ -207,11 +207,11 @@ Controller.prototype.drawRoofOnMap = function (data) {
 
 Controller.prototype.drawRoofPartOnMap = function (data) {
     var cs = controller.self;
-    for(var i = 0; i < data.length; i++) {
+    for(var i = 0; i < data.height; i++) {
         var arr = [];
         var roof = new Roof();
         roof.pv = data[i].pv;
-        roof.st = data[i].st
+        roof.st = data[i].st;
         data[i].the_geom.forEach(getCoords);
         function getCoords(element) {
             arr.push([element.latitude, element.longitude]);

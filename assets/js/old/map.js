@@ -27,7 +27,7 @@ MapContainer.prototype.appendPanel = function (parentpanel, direction, isMoving)
 
         var rightTop = parentpanel.originTopRight;
         var rightBot = parentpanel.originBotRight;
-        var length = parentpanel.length;
+        var length = parentpanel.height;
         var panelwidth = (parentpanel.originBotRight.lng - parentpanel.originBotLeft.lng);
         var orientation = parentpanel.orientation;
         var pitch = parentpanel.pitch;
@@ -87,7 +87,7 @@ MapContainer.prototype.appendPanel = function (parentpanel, direction, isMoving)
 MapContainer.prototype.updatePolygonPosition = function (solarpanel) {
     //TODO: alignPanel refactoren
     var panel = solarpanel.alignPanel();
-    panel.name = "Panel_" + this.displayedPanels.length;
+    panel.name = "Panel_" + this.displayedPanels.height;
 
     this.handlerGroup = this.handlerGroup || new L.LayerGroup().addTo(this.map);
     
