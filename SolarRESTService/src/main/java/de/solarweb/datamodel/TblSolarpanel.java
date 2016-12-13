@@ -3,25 +3,20 @@ package de.solarweb.datamodel;
 /**
  * Created by Nils on 10.11.16.
  */
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryCollection;
+import de.solarweb.helper.GeometryConverter;
+import de.solarweb.helper.LatitudeLongitude;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
+@SequenceGenerator(name = "SolarpanelSequence", initialValue=0)
 @Table(name = "tbl_solarpanel")
 @XmlRootElement
 @NamedQueries({
@@ -30,6 +25,7 @@ import javax.xml.bind.annotation.XmlTransient;
 })
 public class TblSolarpanel implements Serializable{
 
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SolarpanelSequence")
     @Id
     @Basic(optional = false)
     @Column(name = "panel_id", nullable = false)
@@ -61,46 +57,9 @@ public class TblSolarpanel implements Serializable{
     @Column(name = "rahmenbreite", nullable = false)
     private double rahmenbreite;
 
-
-    //Oben Links
-    @Basic(optional = false)
-    @Column(name = "oben_links_lat", nullable = false)
-    private double oben_links_lat;
-
-    @Basic(optional = false)
-    @Column(name = "oben_links_lng", nullable = false)
-    private double oben_links_lng;
-
-
-    //Oben Rechts
-    @Basic(optional = false)
-    @Column(name = "oben_rechts_lat", nullable = false)
-    private double oben_rechts_lat;
-
-    @Basic(optional = false)
-    @Column(name = "oben_rechts_lng", nullable = false)
-    private double oben_rechts_lng;
-
-
-    //Unten Rechts
-    @Basic(optional = false)
-    @Column(name = "unten_rechts_lat", nullable = false)
-    private double unten_rechts_lat;
-
-    @Basic(optional = false)
-    @Column(name = "unten_rechts_lng", nullable = false)
-    private double unten_rechts_lng;
-
-
-    //Unten Links
-    @Basic(optional = false)
-    @Column(name = "unten_links_lat", nullable = false)
-    private double unten_links_lat;
-
-    @Basic(optional = false)
-    @Column(name = "unten_links_lng", nullable = false)
-    private double unten_links_lng;
-
+    @Basic
+    @Column(name = "the_geom", columnDefinition = "geometry(Multipolygon, 4326")
+    private Geometry the_geom;
 
     public TblSolarpanel(){
 
@@ -164,67 +123,23 @@ public class TblSolarpanel implements Serializable{
         this.rahmenbreite = rahmenbreite;
     }
 
-    public double getOben_links_lat() {
-        return oben_links_lat;
+    public TblCookie getCookie_id() {
+        return cookie_id;
     }
 
-    public void setOben_links_lat(double oben_links_lat) {
-        this.oben_links_lat = oben_links_lat;
+    public void setCookie_id(TblCookie cookie_id) {
+        this.cookie_id = cookie_id;
     }
 
-    public double getOben_links_lng() {
-        return oben_links_lng;
+    public Geometry getThe_geom() {
+        return the_geom;
     }
 
-    public void setOben_links_lng(double oben_links_lng) {
-        this.oben_links_lng = oben_links_lng;
+    public void setThe_geom(Geometry the_geom) {
+        this.the_geom = the_geom;
     }
 
-    public double getOben_rechts_lat() {
-        return oben_rechts_lat;
-    }
-
-    public void setOben_rechts_lat(double oben_rechts_lat) {
-        this.oben_rechts_lat = oben_rechts_lat;
-    }
-
-    public double getOben_rechts_lng() {
-        return oben_rechts_lng;
-    }
-
-    public void setOben_rechts_lng(double oben_rechts_lng) {
-        this.oben_rechts_lng = oben_rechts_lng;
-    }
-
-    public double getUnten_recht_lat() {
-        return unten_rechts_lat;
-    }
-
-    public void setUnten_rechts_lat(double unten_recht_lat) {
-        this.unten_rechts_lat = unten_recht_lat;
-    }
-
-    public double getUnten_rechts_lng() {
-        return unten_rechts_lng;
-    }
-
-    public void setUnten_rechts_lng(double unten_rechts_lng) {
-        this.unten_rechts_lng = unten_rechts_lng;
-    }
-
-    public double getUnten_links_lat() {
-        return unten_links_lat;
-    }
-
-    public void setUnten_links_lat(double unten_links_lat) {
-        this.unten_links_lat = unten_links_lat;
-    }
-
-    public double getUnten_links_lng() {
-        return unten_links_lng;
-    }
-
-    public void setUnten_links_lng(double unten_links_lng) {
-        this.unten_links_lng = unten_links_lng;
+    public ArrayList<LatitudeLongitude> getThe_geomAsLatLng(){
+        return GeometryConverter.geometryToLatLngArray(the_geom);
     }
 }

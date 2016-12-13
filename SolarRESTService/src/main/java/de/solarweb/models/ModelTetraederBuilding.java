@@ -1,7 +1,7 @@
 package de.solarweb.models;
 
 import de.solarweb.datamodel.TblTetraederBuilding;
-import de.solarweb.de.soalarweb.helper.LatitudeLongitude;
+import de.solarweb.helper.LatitudeLongitude;
 
 import java.io.Serializable;
 import java.util.ArrayList;

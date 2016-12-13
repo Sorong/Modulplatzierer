@@ -10,6 +10,7 @@
             <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.enable_lazy_load_no_trans" value="true"/>
+            <property name="hibernate.id.new_generator_mappings" value="false"/>
         </properties>
     </persistence-unit>
 </persistence>

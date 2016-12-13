@@ -1,8 +1,8 @@
 package de.solarweb.datamodel;
 
 import com.vividsolutions.jts.geom.Geometry;
-import de.solarweb.de.soalarweb.helper.GeometryConverter;
-import de.solarweb.de.soalarweb.helper.LatitudeLongitude;
+import de.solarweb.helper.GeometryConverter;
+import de.solarweb.helper.LatitudeLongitude;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -197,8 +197,7 @@ public class TblTetraederBuilding implements Serializable{
     }
 
     public ArrayList<LatitudeLongitude> getThe_geomAsLatlng() throws Exception{
-        GeometryConverter converter = new GeometryConverter();
-        return converter.convertGeometry(25833, the_geom);
+        return GeometryConverter.geometryToLatLngArray(25833, the_geom);
     }
 
     public void setThe_geom(Geometry geometry) {
@@ -330,8 +329,7 @@ public class TblTetraederBuilding implements Serializable{
     }
 
     public ArrayList<LatitudeLongitude> getRt_geomAsLatlng() throws Exception{
-        GeometryConverter converter = new GeometryConverter();
-        return converter.convertGeometry(25833, rt_geom);
+        return GeometryConverter.geometryToLatLngArray(25833, rt_geom);
     }
 
     public void setRt_geom(Geometry rt_geom) {

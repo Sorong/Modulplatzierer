@@ -1,4 +1,4 @@
-package de.solarweb.de.soalarweb.helper;
+package de.solarweb.helper;
 
 import java.io.Serializable;
 
@@ -34,5 +34,10 @@ public class LatitudeLongitude implements Serializable{
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    @Override
+    public String toString(){
+        return "" +longitude + " " + latitude;
     }
 }

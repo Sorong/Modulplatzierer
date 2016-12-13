@@ -1,9 +1,11 @@
 package de.solarweb.models;
 
 import de.solarweb.datamodel.TblSolarpanel;
+import de.solarweb.helper.LatitudeLongitude;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 
 /**
@@ -13,16 +15,13 @@ import java.io.Serializable;
 public class ModelSolarpanel implements Serializable{
 
     private int panel_id;
-    private double[] obenLinks = new double[2];
-    private double[] obenRechts = new double[2];
-    private double[] untenRechts = new double[2];
-    private double[] untenLinks = new double[2];
     private double laenge;
     private double breite;
     private int neigung;
     private int ausrichtung;
     private double rahmenbreite;
     private int cookie_id;
+    private ArrayList<LatitudeLongitude> the_geom;
 
     public ModelSolarpanel(){
 
@@ -36,39 +35,10 @@ public class ModelSolarpanel implements Serializable{
         this.ausrichtung = tblSolarpanel.getAusrichtung();
         this.rahmenbreite = tblSolarpanel.getRahmenbreite();
         this.cookie_id = tblSolarpanel.getCookie().getCookie_id();
-
-        //Oben Links
-        obenLinks[0] = tblSolarpanel.getOben_links_lat();
-        obenLinks[1] = tblSolarpanel.getOben_links_lng();
-
-        //Oben Rechts
-        obenRechts[0] = tblSolarpanel.getOben_rechts_lat();
-        obenRechts[1] = tblSolarpanel.getOben_rechts_lng();
-
-        //Unten Rechts
-        untenRechts[0] = tblSolarpanel.getUnten_recht_lat();
-        untenRechts[1] = tblSolarpanel.getUnten_rechts_lng();
-
-        //UntenLinks
-        untenLinks[0] = tblSolarpanel.getUnten_links_lat();
-        untenLinks[1] = tblSolarpanel.getUnten_links_lng();
+        this.the_geom = tblSolarpanel.getThe_geomAsLatLng();
     }
 
-    public ModelSolarpanel(int id, double[] obenLinks, double[] obenRechts,
-                           double[] untenRechts, double[] untenLinks,
-                           double breite, double laenge, int neigung, int ausrichtung, double rahmenbreite, int dach_id){
-        this.panel_id = id;
-        this.obenLinks = obenLinks;
-        this.obenRechts = obenRechts;
-        this.untenRechts = untenRechts;
-        this.untenLinks = untenLinks;
-        this.breite = breite;
-        this.laenge = laenge;
-        this.neigung = neigung;
-        this.ausrichtung = ausrichtung;
-        this.rahmenbreite = rahmenbreite;
-        this.cookie_id = cookie_id;
-    }
+
 
     public int getPanel_id() {
         return panel_id;
@@ -76,38 +46,6 @@ public class ModelSolarpanel implements Serializable{
 
     public void setPanel_id(int panel_id) {
         this.panel_id = panel_id;
-    }
-
-    public double[] getObenLinks() {
-        return obenLinks;
-    }
-
-    public void setObenLinks(double[] obenLinks) {
-        this.obenLinks = obenLinks;
-    }
-
-    public double[] getObenRechts() {
-        return obenRechts;
-    }
-
-    public void setObenRechts(double[] obenRechts) {
-        this.obenRechts = obenRechts;
-    }
-
-    public double[] getUntenRechts() {
-        return untenRechts;
-    }
-
-    public void setUntenRechts(double[] untenRechts) {
-        this.untenRechts = untenRechts;
-    }
-
-    public double[] getUntenLinks() {
-        return untenLinks;
-    }
-
-    public void setUntenLinks(double[] untenLinks) {
-        this.untenLinks = untenLinks;
     }
 
     public double getLaenge() {
@@ -156,5 +94,13 @@ public class ModelSolarpanel implements Serializable{
 
     public void setCookie_id(int cookie_id) {
         this.cookie_id = cookie_id;
+    }
+
+    public ArrayList<LatitudeLongitude> getThe_geom() {
+        return the_geom;
+    }
+
+    public void setThe_geom(ArrayList<LatitudeLongitude> the_geom) {
+        this.the_geom = the_geom;
     }
 }
