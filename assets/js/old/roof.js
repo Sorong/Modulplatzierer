@@ -1,7 +1,7 @@
 const BEST_PV = 2;
 
 function Roof() {
-    this.id = null;
+    this.gid = null;
     this.corners = null;
     this.pv = null;
     this.st = null;
@@ -42,7 +42,8 @@ Roof.prototype.setCornersUnsorted = function (coordinates) {
         return lower.concat(upper);
     }
 
-    this.corners = convexHull(coordinates);
+    //this.corners = convexHull(coordinates);
+    this.corners = coordinates;
 
 };
 
@@ -76,5 +77,6 @@ Roof.prototype.setOrientation = function () {
     var cos_theta = (leftBot[0] + rightBot[0] * leftBot[1] + rightBot[1])
         / (Math.sqrt(Math.pow(leftBot[0], 2) + Math.pow(leftBot[1], 2)) * Math.sqrt(Math.pow(rightBot[0], 2) + Math.pow(rightBot[1], 2)));
     var angle = Math.acos(cos_theta) / Math.PI * 180;
-    this.orientation = angle;
+    this.orientation = isNaN(angle)  ? 0 : angle;
 };
+
