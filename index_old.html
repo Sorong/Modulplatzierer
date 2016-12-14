@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+
+    <meta charset="UTF-8">
+    <title>Modulplatzierer</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css"/>
+    <link rel="stylesheet" href="assets/css/style.css"/>
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
+    <script src='https://unpkg.com/leaflet.gridlayer.googlemutant@latest/Leaflet.GoogleMutant.js'></script>
+    <script src="http://www.sumbera.com/gist/js/leaflet/svg/scaled/d3-3.5.5.min.js"></script>
+    <script src="https://rawgit.com/teralytics/Leaflet.D3SvgOverlay/master/L.D3SvgOverlay.js"></script>
+    <script src="assets/libs/L.Path.Drag.js"></script>
+
+    <script type="text/javascript" src="assets/js/old/util.js"></script>
+    <script type="text/javascript" src="assets/js/old/map.js"></script>
+    <script type="text/javascript" src="assets/js/old/panel.js"></script>
+    <script type="text/javascript" src="assets/js/old/roof.js"></script>
+    <script type="text/javascript" src="assets/js/old/paneltools.js"></script>
+    <script type="text/javascript" src="assets/js/old/cookiemanagement.js"></script>
+    <script type="text/javascript" src="assets/js/old/Controller.js"></script>
+    <script type="text/javascript" src="assets/js/old/app.js"></script>
+
+
+
+
+</head>
+<body>
+
+
+<div id="main_container">
+
+    <div id="left_section">
+
+        <div class="box_left adress">
+
+            Adresse<br/>
+            <input id="address" placeholder="Geben Sie Ihre Adresse ein" type="text" style="width: 100%;"/>
+
+        </div>
+
+        <div class="box_left">
+            <input type="button" value="Panel hinzuf&uuml;gen" id="add"/><br/>
+            <input type="button" value="Google Map" id="googleMap"/><br/>
+            <input type="button" value="OpenStreet Map" id="openStreetMap"/><br/>
+            Panel Strings <input id="panel_string" type="checkbox" />
+        </div>
+
+        <div class="box_left">
+            <table width="100%">
+                <tr>
+                    <td>Anzahl Module:</td>
+                    <td style="text-align: right;">5</td>
+                </tr>
+                <tr>
+                    <td>Fl&auml;che:</td>
+                    <td style="text-align: right;">20m²</td>
+                </tr>
+                <tr>
+                    <td>Nennleistung:</td>
+                    <td style="text-align: right;">10 kWh</td>
+                </tr>
+                <tr>
+                    <td>Stromertrag:</td>
+                    <td style="text-align: right;">500 kWh/Jahr</td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+
+    <div id="right_section">
+
+        <!-- Map -->
+        <div id="map_container">
+            <!-- Tools -->
+            <div id="tools">
+
+                <div id="tools_headline"><span class="headline">Panel ID 1000</span> <span style="float:right"><a
+                        href="#">löschen</a></span></div>
+                <div id="tools_container">
+
+                    <div class="tool">
+                        <div class="tool_label">
+                            Dachneigung
+                        </div>
+                        <div class="tool_input">
+                            <input id="model_tilt" type="range" min="0" max="90">
+                        </div>
+                        <div class="tool_output" id="model_tilt_value">
+                            45°
+                        </div>
+                    </div>
+
+                    <div class="tool">
+                        <div class="tool_label">
+                            Modulbreite
+                        </div>
+                        <div class="tool_input">
+                            <input id="model_width" type="range" min="1" max="10">
+                        </div>
+                        <div class="tool_output" id="model_width_value">
+                            5m
+                        </div>
+                    </div>
+
+                    <div class="tool">
+                        <div class="tool_label">
+                            Modulh&ouml;he
+                        </div>
+                        <div class="tool_input">
+                            <input id="model_height" type="range" min="1" max="10">
+                        </div>
+                        <div class="tool_output" id="model_height_value">
+                            5m
+                        </div>
+                    </div>
+
+                    <div class="tool">
+                        <div class="tool_label">
+                            Dachorientierung
+                        </div>
+                        <div class="tool_input">
+                            <input id="roof_orientation" type="range" min="0" max="360">
+                        </div>
+                        <div class="tool_output" id="roof_orientation_value">
+                            360°
+                        </div>
+                    </div>
+
+                    <div class="clear"></div>
+
+                </div>
+                <div id="tools_showmore">
+                    <input type="button" value="mehr"/>
+                </div>
+
+            </div>
+            <div id="map"></div>
+        </div>
+
+    </div>
+
+    <div class="clear"></div>
+
+</div>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJ4aYR2NFbLLzh_tkya-rE40gCl-hPpLc&libraries=places&callback=initAutocomplete" async defer></script>
+
+</body>
+</html>

@@ -32,7 +32,11 @@ Map.prototype.addPolygon = function (model) {
     this.selectedPolygon.on('click', function () {
         selectedPolygon = this;
         self.controller.updateModel(this);
-    })
+    });
+    this.selectedPolygon.on('drag', dragmoveModel);
+    this.selectedPolygon.on('dragend', dragendModel);
+    this.moveablePolygons.push(model);
+    return this.selectedPolygon;
 };
 
 Map.prototype.updatePolygonPosition = function (model) {
@@ -40,7 +44,7 @@ Map.prototype.updatePolygonPosition = function (model) {
     this.handlerGroup = this.handlerGroup || new L.LayerGroup().addTo(this.map);
 
     var polygon = L.polygon(controller.getModelAsList(model), {
-        color: '#F00',
+        color: '#FF0',
         draggable: true
     }).addTo(this.handlerGroup);
     polygon.model = model;
@@ -109,3 +113,27 @@ Map.prototype.changeMapProvider = function (layer) {
     this.mapProvider = layer;
     this.map.addLayer(this.mapProvider);
 };
+
+/* Dragfunktionnen */
+function dragmoveModel(d) {
+    console.log("test " + d.target._latlngs[0][0]);
+    updateModelPosition(d);
+}
+
+function dragendModel(d) {
+    updateModelPosition(d);
+    d.target.model.align(controller);
+}
+
+
+function updateModelPosition(draggedPolygon) {
+    var d = draggedPolygon;
+    var arr = [];
+    arr.push(d.target._latlngs[0][0]);
+    arr.push(d.target._latlngs[0][1]);
+    arr.push(d.target._latlngs[0][2]);
+    arr.push(d.target._latlngs[0][3]);
+
+    d.target.model.getPointsFromList(arr);
+
+}

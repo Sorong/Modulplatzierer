@@ -54,8 +54,8 @@ Controller.prototype.init = function () {
         };
         //TODO: Maßstab der Solarpanels nicht hardcodieren
         var model = new Panel();
-        model.width = 1.20;
-        model.height = 1.20;
+        model.width = 1000;
+        model.height = 1000;
         model.topLeft = panelData.LatLng;
         model.orientation = self.viewMap.nonMovablePolygon === null ? 0 : self.viewMap.nonMovablePolygon.roof.orientation;
         model.align(self);

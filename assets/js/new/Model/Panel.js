@@ -22,14 +22,14 @@ Panel.prototype.align = function (controller, width, height) {
     var h = height !== undefined ? height : this.height;
     this.oTopLeft = this.topLeft;
     //if (this.width !== w || this.oTopRight === null) {
-        this.oTopRight = calcNextPoint(this.width, this.oTopLeft, 0);
+    this.oTopRight = calcNextPoint(this.width, this.oTopLeft, 0);
     //}
-   // if (this.height !== h || this.oBotLeft === null) {
-        this.oBotLeft = calcNextPoint(this.height, this.oTopLeft, -90);
-   // }
+    // if (this.height !== h || this.oBotLeft === null) {
+    this.oBotLeft = calcNextPoint(this.height, this.oTopLeft, -90);
+    // }
     //if (this.height !== h || this.width !== w || this.oBotRight === null) {
-        this.oBotRight = calcNextPoint(this.height, this.oTopRight, -90);
-   //
+    this.oBotRight = calcNextPoint(this.height, this.oTopRight, -90);
+    //
     this.width = w;
     this.height = h;
     this.selfAlign(controller);
@@ -72,6 +72,16 @@ Panel.prototype.selfAlign = function (controller) {
 Panel.prototype.getPointsAsList = function () {
     var list = [this.topLeft, this.topRight, this.botRight, this.botLeft];
     return list;
+};
+
+Panel.prototype.getPointsFromList = function (list) {
+    if (list.length != 4) {
+        return;
+    }
+    this.topLeft = list[0];
+    this.topRight = list[1];
+    this.botRight = list[2];
+    this.botLeft = list[3];
 };
 
 function calcNextPoint(distance, point, angle) {
