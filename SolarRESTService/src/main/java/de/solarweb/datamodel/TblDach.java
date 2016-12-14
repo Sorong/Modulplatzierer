@@ -3,27 +3,22 @@ package de.solarweb.datamodel;
 /**
  * Created by Nils on 10.11.16.
  */
+import com.vividsolutions.jts.geom.Geometry;
+import de.solarweb.helper.GeometryConverter;
+import de.solarweb.helper.LatitudeLongitude;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import java.util.logging.Logger;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 
 @Entity
+@SequenceGenerator(name = "DachSequence", initialValue=0)
 @Table(name = "tbl_dach")
 @XmlRootElement
 @NamedQueries({
@@ -31,8 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
         @NamedQuery(name = "tblDach.findById", query = "SELECT t FROM TblDach t WHERE t.dach_id = :id")
 })
 public class TblDach implements Serializable{
-
-
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "DachSequence")
     @Id
     @Basic(optional = false)
     @Column(name = "dach_id", nullable = false)
@@ -42,7 +36,6 @@ public class TblDach implements Serializable{
     @JoinColumn(name = "cookie_id", nullable = false)
     @ManyToOne(optional = false)
     private TblCookie cookie;
-
 
     @Basic(optional = false)
     @Column(nullable = false)
@@ -60,28 +53,15 @@ public class TblDach implements Serializable{
     @Column(nullable = false)
     private int dachneigung;
 
-    @Basic(optional = false)
-    @Column(nullable = false)
-    private double koord_dachmitte_lng;
-
-    @Basic(optional = false)
-    @Column(nullable = false)
-    private double koord_dachmitte_lat;
+    @Basic
+    @Column(name = "the_geom", columnDefinition = "geometry(Multipolygon, 4326")
+    private Geometry the_geom;
 
 
     public TblDach(){
 
     }
 
-    public TblDach(Integer id, String strasse, String hausnummer, String plz, int dachneigung, double koord_dachmitte_lng, double koord_dachmitte_lat){
-        this.dach_id = id;
-        this.strasse = strasse;
-        this.hausnummer = hausnummer;
-        this.plz = plz;
-        this.dachneigung = dachneigung;
-        this.koord_dachmitte_lng = koord_dachmitte_lng;
-        this.koord_dachmitte_lat = koord_dachmitte_lat;
-    }
 
     public Integer getDach_id() {
         return dach_id;
@@ -123,22 +103,6 @@ public class TblDach implements Serializable{
         this.dachneigung = dachneigung;
     }
 
-    public double getKoord_dachmitte_lng() {
-        return koord_dachmitte_lng;
-    }
-
-    public void setKoord_dachmitte_lng(double koord_dachmitte_lng) {
-        this.koord_dachmitte_lng = koord_dachmitte_lng;
-    }
-
-    public double getKoord_dachmitte_lat() {
-        return koord_dachmitte_lat;
-    }
-
-    public void setKoord_dachmitte_lat(double koord_dachmitte_lat) {
-        this.koord_dachmitte_lat = koord_dachmitte_lat;
-    }
-
     public TblCookie getCookie() {
         return cookie;
     }
@@ -146,5 +110,18 @@ public class TblDach implements Serializable{
     public void setCookie(TblCookie cookie) {
         this.cookie = cookie;
     }
+
+    public Geometry getThe_geom() {
+        return the_geom;
+    }
+
+    public void setThe_geom(Geometry the_geom) {
+        this.the_geom = the_geom;
+    }
+
+    public ArrayList<LatitudeLongitude> getThe_geomAsLatlng(){
+        return GeometryConverter.geometryToLatLngArray(the_geom);
+    }
+
 }
 

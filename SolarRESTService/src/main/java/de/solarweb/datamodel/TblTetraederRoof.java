@@ -1,15 +1,13 @@
 package de.solarweb.datamodel;
 
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.Point;
-import de.solarweb.de.soalarweb.helper.GeometryConverter;
-import de.solarweb.de.soalarweb.helper.LatitudeLongitude;
+import de.solarweb.helper.GeometryConverter;
+import de.solarweb.helper.LatitudeLongitude;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
-import java.net.Inet4Address;
 import java.util.ArrayList;
 
 /**
@@ -322,8 +320,7 @@ public class TblTetraederRoof implements Serializable {
     }
 
     public ArrayList<LatitudeLongitude> getThe_geomAsLatlng() throws Exception{
-        GeometryConverter converter = new GeometryConverter();
-        return converter.convertGeometry(25833, the_geom);
+        return GeometryConverter.geometryToLatLngArray(25833, the_geom);
     }
 
     public Point getPlannp() {

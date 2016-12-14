@@ -1,0 +1,479 @@
+# this is an example of the Uber API
+# as a demonstration of an API spec in YAML
+swagger: '2.0'
+info:
+  title: SolarREST Server
+  description: Needs more Panel
+  version: "1.0.0"
+# the domain of the service
+host: localhost:8080
+# array of all schemes that your API supports
+schemes:
+  - http
+# will be prefixed to all paths
+basePath: /v1
+produces:
+  - application/json
+paths:
+  /cookie/getCookie:
+    get:
+      summary: Cookiedaten abrufen
+      description: |
+        Gibt den Cookie Daten zurück, falls Daten zu der angegebenen Cookie ID in der Datenbank gefunden werden.
+        Sollte der default fall eintreten, so sind alle Felder des Cookies null.
+      produces:
+        - application/json
+      parameters:
+        - name: CookieID
+          in: query
+          description: ID des gesuchten Cookies
+          required: true
+          type: number
+          format: integer
+      tags:
+        - Cookie
+      responses:
+        200:
+          description: Cookie mit Panels
+          schema:
+            $ref: '#/definitions/Cookie'
+        default:
+          description: Kein Cookie gefunden
+          schema:
+            $ref: '#/definitions/Cookie'
+  /cookie/postCookie:
+    post:
+      summary: Einen neuen Cookie erzeugen
+      description: |
+        Erzeugt einen neuen Cookie auf dem Server, welcher als Antwort zurück an den Client gesendet wird. Die mit dem
+        POST gesendeten Daten müssen zwar ein Cookie sein, allerdings muss nur das Ablaufdatum gesetzt werden.
+      parameters:
+        - name: Cookie
+          in: body
+          description: Cookie mit Ablaufdatum
+          required: true
+          schema:
+            $ref: '#/definitions/Cookie'
+      tags:
+        - Cookie
+      responses:
+        200:
+          description: Der auf dem Server erzeugte Cookie mit ID
+          schema:
+              $ref: '#/definitions/Cookie'
+  /panel/postPanel:
+    post:
+      summary: Neues Solarpanel erstellen
+      description: Erstellt ein neues Solarpanel auf dem Server. Das ID Feld des Panel kann leer gelassen werden, da dieses vom Server generiert werden muss. Alle anderen Felder muessen ausgefüllt sein.
+      parameters:
+        - name: Solarpanel
+          in: body
+          description: Solarpanel welches erstellt werden soll
+          required: true
+          schema:
+            $ref: '#/definitions/Solarpanel'
+      tags:
+        - Solarpanel
+      responses:
+        200:
+          description: Das erzeugte Solarpanel mit ID
+          schema:
+            $ref: '#/definitions/Solarpanel'
+  /panel/updatePanel:
+    post:
+      summary: Update eines bestenden Panels
+      description: Updateted das Panel, falls es beispielsweise vom User verschoben wurde.
+      parameters:
+        - name: Solarpanel
+          in: body
+          description: Solarpanel welches geupdated werden soll
+          required: true
+          schema:
+           $ref: '#/definitions/Solarpanel'
+      tags:
+        - Solarpanel
+      responses:
+        200:
+          description: Das erzeugte Solarpanel mit ID
+          schema:
+            $ref: '#/definitions/Solarpanel'
+  /panel/removePanel:
+    get:
+      summary: Löscht Panel
+      description: Entfernt ein Solarpanel aus der Datenbank.  Antwortet "Deleted" falls das Panel gelöscht wurde. "Not found" falls kein passended Panel gefunden wurde
+      parameters:
+        - name: SolarpanelId
+          in: query
+          type: integer
+          format: int32
+          description: Id des Solarpanels
+      tags:
+        - Solarpanel
+      responses:
+        200:
+          description: Antwort des Servers
+          schema:
+            type: string
+  /dach/getRoof:
+    get:
+      summary: Dach abrufen
+      description: Ruf das zu der passende ID Dach vom Server ab
+      parameters:
+        - name: DachId
+          in: query
+          type: integer
+          format: int32
+          required: true
+          description: Id des Daches
+      tags:
+       - Dach
+      responses:
+        200:
+          description: Das zur Id passende Dach
+          schema:
+            $ref: '#/definitions/Dach'
+  /dach/updateRoof:
+    post:
+      summary: Dach updaten
+      description: Updated das gepostete Dach mit den neuen Werte, fall der User sein Dach aendern möchet.
+      parameters:
+        - name: Dach
+          in: body
+          description: Dach mit den aktuellen Daten.
+          required: true
+          schema:
+            $ref: '#/definitions/Dach'
+      tags:
+       - Dach
+      responses:
+        200:
+          description: Das geupdatete Dach
+          schema:
+            $ref: '#/definitions/Dach'
+  /dach/postRoof:
+    post:
+      summary: Dach auf Server erstellen
+      description: Erstellt ein neues Dach auf dem Server. Id kann leer gelassen werden, da diese vom Server generiert wird.
+      parameters:
+        - name: Dach
+          in: body
+          description: Dach welches erstellt werden soll
+          required: true
+          schema:
+            $ref: '#/definitions/Dach'
+      tags:
+       - Dach
+      responses:
+        200:
+          description: Das erstelle Dach mit Id
+          schema:
+            $ref: '#/definitions/Dach'
+  /dach/getPredefinedRoof:
+    get:
+      summary: TetraederDach abrufen
+      description: Such auf dem Server nach einem Dach, welches zu der Angegebenen Adresse passt
+      parameters:
+        - name: Strasse
+          in: query
+          type: string
+          required: true
+          description: Strasse des gesuchten Daches
+        - name: Nummber
+          in: query
+          type: string
+          required: true
+          description: Hausnummer des gesuchten Daches
+        - name: Postleitzahl
+          in: query
+          type: string
+          required: true
+          description: Postleitzahl des gesuchten Daches
+      tags:
+        - Dach
+        - TetraederDach
+      responses:
+        200:
+          description: Das Dach zu der passenden Adrersse
+          schema:
+            $ref: '#/definitions/TetraederDach'
+  /dach/getRoofParts:
+    get:
+      summary: TetraederDach Abschnitte abrufen
+      description: Gibt alle Abschnitte eines Daches in einem Array zurück. HINWEIS, TetraederDachAbscnhittArray ist nur ein platzhalter, das verendete Array ist in wirklichkeit Anonym. Ich weiß nicht wie ich anonyme Arrays in Sawgger als Response mache.
+      parameters:
+        - name: TetraederDachId
+          in: query
+          type: integer
+          required: true
+          description: TetraederDachId 
+      tags:
+        - Dach
+        - TetraederDach
+      responses:
+        200:
+          description: Alle Abschnitte eines Daches
+          schema:
+            $ref: '#/definitions/TetraederDachAbschnittArray'
+definitions:
+  Cookie:
+    type: object
+    properties:
+      cookie_id:
+        type: integer
+        description: Endeutige ID, vom Server generiert. 
+      ablaufdatum:
+        type: integer
+        description: Datum, bis wann der Cookie in der Datenbank gespeichert wird.
+      solarpannelList:
+        type: array
+        items: 
+          $ref: '#/definitions/Solarpanel'
+        description: Alle Solarpanels die zu einem Cookie gehören.
+  LatitudeLongitude:
+    type: object
+    properties:
+      latitude:
+        type: number
+        format: double
+        description: Latitude eines Punktes.
+      longitutde:
+        type: number
+        format: double
+        description: Longitude eines Punkes.
+  Solarpanel:
+    type: object
+    properties:
+      panel_id:
+        type: integer
+        description: Eindeutige ID eines Solarpanels.
+      laenge:
+        type: number
+        format: double
+        description: Länge eines Solarpanels.
+      breite:
+        type: number
+        format: double
+        description: Breite eines Solarpanels.
+      neigung:
+        type: number
+        format: double
+        description: Neigung eines Solarpanels.
+      ausrichtung:
+        type: number
+        format: double
+        description: Ausrichtung eines Solarpanles.
+      rahmenbreite:
+        type: number
+        format: double
+        description: Breite des Rahmens eines Solarpanels.
+      the_geom:
+        type: array
+        items:
+          $ref: '#/definitions/LatitudeLongitude'
+  Dach:
+    type: object
+    properties:
+      dach_id:
+        type: integer
+        description: Eindeutige ID eines Daches.
+      strasse:
+        type: string
+        description: Strasse, Teil der Adresse des Daches.
+      hausnummer:
+        type: string
+        description: Hausnummer mit Zusatz, Teil der Adresse des Daches.
+      postleitzahl:
+        type: string
+        description: Postleitzahl, Teil der Adresse des Daches.
+      dachneigung:
+        type: integer
+        description: Neigung des Daches.
+      the_geom:
+        type: array
+        items:
+          $ref: '#/definitions/LatitudeLongitude'
+  TetraederDach:
+    type: object
+    properties:
+      gid:
+        type: integer
+        description: Eindeutige ID eines Daches.
+      gmlid:
+        type: string
+        description: Keine Ahnung...
+      nr:
+        type: string
+        description: Scheint eine Art Nummer zu sein.
+      street:
+        type: string
+        description: Strasse, Teil der Adresse eines Daches.
+      number:
+        type: string
+        description: Hausnummer, Teil der Adresse eines Daches.
+      plz:
+        type: number
+        format: double
+        description: Postleitzahl, Teil der Adresse eines Daches.
+      hid:
+        type: integer
+        description: Keine Ahnung...
+      ort:
+        type: string
+        description: Ort, Teil der Adresse eines Daches.
+      zusatz:
+        type: string
+        description: Zusatzinformationen zu einem dach
+      denkmal:
+        type: boolean
+        description: Gibt an, ob das Dach denkmalgeschützt ist
+      denkmali:
+        type: string
+        description: Irgentwas mit Denkmal
+      monument_reason:
+        type: string
+        description: ¯\_(ツ)_/¯
+      area2d:
+        type: number
+        format: double
+        description: Dachfläche in 2D in Meter^2
+      area3d:
+        type: number
+        format: double
+        description: Dachfläche in 3D in Meter^2
+      pv:
+        type: integer
+        description: Gibt an, ob das Dach für Photovoltaik geeinget ist. 0 sehr gut, 1 gut, 2 nicht gut, 7 keine Daten
+      st:
+        type: integer
+        description: Gibt an, ob das Dach für Solarthermie geeinget ist. 0 sehr gut, 1 gut, 2 nicht gut, 7 keine Daten
+      gd:
+        type: integer
+        description: Hmmm...
+      doneby:
+        type: integer
+        description: Vermutlich wer das Dach gescanned hat
+      calctime:
+        type: number
+        format: double
+        description: Wie lang die Berechnung des Daches gedauert hat
+      qhint:
+        type: integer
+        description: Ich brauche hier auch nen Hint
+      household_size:
+        type: integer
+        description: Anzahl der Personen die unter dem Dach leben
+      gd_area:
+        type: number
+        format: double
+        description: Irgentwas mit Flaeche
+      rueckhalt:
+        type: integer
+        description: Keine Ahnung
+      the_geom:
+        type: array
+        items:
+          $ref: '#/definitions/LatitudeLongitude'
+        description: Punkte die das Dach markieren, bitte benutzten zum Zeichnen des Daches
+      rt_geom:
+        type: array
+        items:
+          $ref: '#/definitions/LatitudeLongitude'
+        description: Nicht benutzten, noch keinen richtigen Umrechner gefunden
+  TetraederDachAbschnitt:
+    type: object
+    properties:
+      cid:
+        type: integer
+        description: Eindeutige ID eines Abschnittes
+      area3d:
+        type: number
+        format: double
+        description: Fläche des Abschnittes in Meter^2
+      gloabl:
+        type: number
+        format: double
+        description: Globale Einstahling
+      diffuse:
+        type: number
+        format: double
+        description: Diffuse Einstahlung
+      direct:
+        type: number
+        format: double
+        description: Direkte Einstahlung
+      kwhpa:
+        type: number
+        format: double
+        description: KiloWatt pro Jahr für den Abschnitt
+      strongshadow:
+        type: boolean
+        description: Wird auf den Abschnitt ein starker Schatten geworfen?
+      directu:
+        type: number
+        format: double
+        description: Keine Ahnung
+      nearbyLoss:
+        type: number
+        format: double
+        description: Einstahlung die in der Naehe verloren geht?
+      distanceLoss:
+        type: number
+        format: double
+        description: Einstahlung die in der Ferne verloren geht?
+      tilt:
+        type: number
+        format: double
+        description: Neigung des Abschnittes
+      aspect:
+        type: number
+        format: double
+        description: hmm...
+      nx:
+        type: number
+        format: double
+        description: Keine Ahnung
+      ny:
+        type: number
+        format: double
+        description: Keine Ahnung
+      nz:
+        type: number
+        format: double
+        description: Keine Ahnung
+      pv:
+        type: integer
+        description: Gibt an, ob das Dach für Photovoltaik geeinget ist. 0 sehr gut, 1 gut, 2 nicht gut, 7 keine Daten
+      st:
+        type: integer
+        description: Gibt an, ob das Dach für Solarthermie geeinget ist. 0 sehr gut, 1 gut, 2 nicht gut, 7 keine Daten
+      gd:
+        type: integer
+        description: Hmmm...
+      flat:
+        type: boolean
+        description: Gibt an, ob der Abschnitt Flach ist
+      mp_panelnumber:
+        type: integer
+        description: Vermutlich Anzahl der Panels auf einem Abschnitt
+      kwpha:
+        type: number
+        format: double
+        description: Vermutlich irgentwas mit Kilowatt
+      planp:
+        type: string
+        description: Keine Ahnung
+      the_geom:
+        type: array
+        items:
+          $ref: '#/definitions/LatitudeLongitude'
+        description: Punkte die das Dach markieren, bitte benutzten zum Zeichnen des Daches
+      planed:
+        $ref: '#/definitions/LatitudeLongitude'
+  TetraederDachAbschnittArray:
+    type: array
+    items:
+      $ref: '#/definitions/TetraederDachAbschnitt'
+      
+      
+      
+        

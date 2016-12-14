@@ -1,6 +1,7 @@
 package de.solarweb.models;
 
 import de.solarweb.datamodel.*;
+import de.solarweb.helper.LatitudeLongitude;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -18,23 +19,20 @@ public class ModelDach implements Serializable {
     private String hausnummer;
     private String postleitzahl;
     private int dachneigung;
-    private double koord_dachmitte_lng;
-    private double koord_dachmitte_lat;
+    private ArrayList<LatitudeLongitude> the_geom;
 
 
     public ModelDach() {
 
     }
 
-    public ModelDach(TblDach tblDach) {
+    public ModelDach(TblDach tblDach){
         this.dach_id = tblDach.getDach_id();
         this.strasse = tblDach.getStrasse();
         this.dachneigung = tblDach.getDachneigung();
         this.hausnummer = tblDach.getHausnummer();
         this.postleitzahl = tblDach.getPlz();
-        this.koord_dachmitte_lat = tblDach.getKoord_dachmitte_lat();
-        this.koord_dachmitte_lng = tblDach.getKoord_dachmitte_lng();
-
+        this.the_geom = tblDach.getThe_geomAsLatlng();
     }
 
     public int getDach_id() {
@@ -77,19 +75,11 @@ public class ModelDach implements Serializable {
         this.dachneigung = dachneigung;
     }
 
-    public double getKoord_dachmitte_lng() {
-        return koord_dachmitte_lng;
+    public ArrayList<LatitudeLongitude> getThe_geom() {
+        return the_geom;
     }
 
-    public void setKoord_dachmitte_lng(double koord_dachmitte_lng) {
-        this.koord_dachmitte_lng = koord_dachmitte_lng;
-    }
-
-    public double getKoord_dachmitte_lat() {
-        return koord_dachmitte_lat;
-    }
-
-    public void setKoord_dachmitte_lat(double koord_dachmitte_lat) {
-        this.koord_dachmitte_lat = koord_dachmitte_lat;
+    public void setThe_geom(ArrayList<LatitudeLongitude> the_geom) {
+        this.the_geom = the_geom;
     }
 }

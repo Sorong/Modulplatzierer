@@ -1,8 +1,8 @@
 package de.solarweb.datamodel;
 
 import com.vividsolutions.jts.geom.Geometry;
-import de.solarweb.de.soalarweb.helper.GeometryConverter;
-import de.solarweb.de.soalarweb.helper.LatitudeLongitude;
+import de.solarweb.helper.GeometryConverter;
+import de.solarweb.helper.LatitudeLongitude;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -76,8 +76,7 @@ public class TblTetraederDisplayAggregate implements Serializable {
     }
 
     public ArrayList<LatitudeLongitude> getGeometryAsPoints() throws Exception{
-        GeometryConverter converter = new GeometryConverter();
-        return converter.convertGeometry(25833, the_geom);
+        return GeometryConverter.geometryToLatLngArray(25833, the_geom);
 
     }
 }

@@ -1,9 +1,8 @@
 package de.solarweb.models;
 
 import de.solarweb.datamodel.TblTetraederRoof;
-import de.solarweb.de.soalarweb.helper.LatitudeLongitude;
+import de.solarweb.helper.LatitudeLongitude;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.io.Serializable;
 import java.util.ArrayList;
 
