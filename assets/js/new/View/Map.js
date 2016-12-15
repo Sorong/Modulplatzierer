@@ -14,7 +14,7 @@ function Map() {
     this.d3Overlay = null;
 
     this.handlerGroup = null;
-
+    this.lastPanelAppendPosition = null;
 }
 
 Map.prototype.init = function () {
@@ -24,6 +24,68 @@ Map.prototype.init = function () {
         this.projection = projection;
     });
     this.d3Overlay.addTo(this.map);
+};
+
+Map.prototype.addMultiPolygon = function (model){
+  var self = this;
+    this.handlerGroup = this.handlerGroup || new L.LayerGroup().addTo(this.map);
+
+    this.selectedPolygon =
+        L.polygon(model.getGeoJSON(), {
+            color: '#FF0',
+            draggable: true,
+            transform: true
+        }).addTo(this.handlerGroup);
+    this.selectedPolygon.transform.enable({rotation: true, scaling: true});
+    this.selectedPolygon.on("resizestart", function(){
+        console.log("resizestart")
+    });
+    this.selectedPolygon.on("transform", function(d){
+        console.log("Transform")
+        console.log(d)
+    })
+    this.selectedPolygon.on('scalestart', function(d){
+        console.log(d)
+    })
+    this.selectedPolygon.on('scale', function(d){
+        console.log("Scale");
+        console.log(d.matrix._matrix);
+        if(d.matrix._matrix[0] > 2){
+            model.appendPanel();
+            selectedPolygon.setLatLngs(model.getGeoJSON());
+        }
+        console.log(d.rect._latlngs)
+        console.log(d.rect._pxBounds)
+    })
+    this.selectedPolygon.on('scaleend', function(d){
+        console.log("Scale End");
+        //console.log(d)
+        console.log(d);
+        console.log(d.rect._latlngs)
+        console.log(d.rect._pxBounds)
+    })
+    this.selectedPolygon.on("resize", function(d){
+        console.log("resize")
+        console.log(d)
+    });
+    this.selectedPolygon.on("resizeend", function(){
+        console.log("resizeend")
+    });
+    this.selectedPolygon.on("drag", function(){
+        console.log("dragxxx")
+    });
+    this.selectedPolygon.on("dragend", function(){
+        console.log("dragend")
+    });
+    this.selectedPolygon.model = model;
+    this.selectedPolygon.on('click', function () {
+        selectedPolygon = this;
+        self.controller.updateModel(this);
+    });
+    this.selectedPolygon.on('drag', dragmoveModel);
+    this.selectedPolygon.on('dragend', dragendModel);
+    this.moveablePolygons.push(model);
+    return this.selectedPolygon;
 };
 
 Map.prototype.addPolygon = function (model) {
