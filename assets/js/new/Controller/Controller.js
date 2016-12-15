@@ -184,9 +184,9 @@ function callbackDisableServer() {
     }
 }
 
-function callbackCreateCookie(cid, duedate) {
+function callbackCreateCookie(data) {
     if (controller !== undefined) {
-        controller.createUserCookie(cid, duedate);
+        controller.createUserCookie(data.cookie_id, data.ablaufdatum);
     }
 }
 

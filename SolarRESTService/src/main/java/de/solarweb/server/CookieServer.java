@@ -1,6 +1,6 @@
 package de.solarweb.server;
 
-import com.sun.tools.internal.xjc.model.Model;
+
 import de.solarweb.datamodel.TblCookie;
 import de.solarweb.models.ModelCookie;
 

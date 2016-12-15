@@ -6,7 +6,7 @@ function ServerHandler(url) {
 }
 
 ServerHandler.prototype.getCookie = function (id, callback) {
-    var serverFunction = "cookie/getCooke/" + id;
+    var serverFunction = "cookie/getCookie/" + id;
     this._get(serverFunction, function (data) {
         callback(data);
     });
@@ -26,15 +26,15 @@ ServerHandler.prototype.getRoofParts = function (gid, callback) {
     });
 };
 
-ServerHandler.prototype.postCookie = function (json, model, callback) {
+ServerHandler.prototype.postCookie = function (json, callback) {
     this._post(json, "cookie/postCookie", function (data) {
-        callback(data, model);
+        callback(data);
     });
 };
 
-ServerHandler.prototype.postPanel = function (json, callback) {
+ServerHandler.prototype.postPanel = function (json, model, callback) {
     this._post(json, "panel/postPanel", function (data) {
-        callback(data);
+        callback(data, model);
     })
 };
 
