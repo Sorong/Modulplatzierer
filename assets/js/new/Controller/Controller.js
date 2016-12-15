@@ -10,7 +10,9 @@ function Controller() {
     this.viewMap = new Map();
     this.viewAddress = null;
     this.serverHandler = new ServerHandler(SERVER_URL);
+    this.serverHandler.errorFunction = callbackDisableServer();
     this.cookieHandler = new CookieHandler(COOKIENAME);
+    this.cookieId = null;
 }
 
 Controller.prototype.init = function () {
@@ -26,9 +28,9 @@ Controller.prototype.init = function () {
         var lng = place.geometry.location.lng();
 
         var street, nr, postalcode;
-        for(var i = 0; i < place.address_components.height; i++) {
+        for (var i = 0; i < place.address_components.height; i++) {
             var curr = place.address_components[i];
-            if(curr.types[0] === "route") {
+            if (curr.types[0] === "route") {
                 street = curr.long_name;
             } else if (curr.types[0] === "street_number") {
                 nr = curr.long_name;
@@ -36,7 +38,7 @@ Controller.prototype.init = function () {
                 postalcode = curr.long_name;
             }
         }
-        if(street !== undefined && nr !== undefined && postalcode !== undefined) {
+        if (street !== undefined && nr !== undefined && postalcode !== undefined) {
             self.viewMap.setFocus(lat, lng);
         } else {
             alert("Bitte die Adresse vollständig (Straße, Hausnummer, Wohnort) eingeben");
@@ -47,10 +49,10 @@ Controller.prototype.init = function () {
     addBtn.onclick = function () {
         var mapHeight = document.getElementById("map").offsetHeight;
         var mapWidth = document.getElementById("map").offsetWidth;
-        var center = controller.viewMap.containerPointToLatLng(L.point(mapHeight/2,mapWidth/2));
+        var center = controller.viewMap.containerPointToLatLng(L.point(mapHeight / 2, mapWidth / 2));
         var panelData = {
-            name : "Added Panel",
-            LatLng : center
+            name: "Added Panel",
+            LatLng: center
         };
         //TODO: Maßstab der Solarpanels nicht hardcodieren
         var model = new Panel();
@@ -60,7 +62,6 @@ Controller.prototype.init = function () {
         model.orientation = self.viewMap.nonMovablePolygon === null ? 0 : self.viewMap.nonMovablePolygon.roof.orientation;
         model.align(self);
         polygonPanel = self.viewMap.addPolygon(model);
-        //TODO: Ausrichten
     }
 };
 
@@ -72,11 +73,19 @@ Controller.prototype.enableServer = function () {
     this.serverAvailable = true;
 };
 
-Controller.prototype.loadFromServer = function () {
+Controller.prototype.loadFromServer = function (forceNewCookie) {
+    var self = this;
+    this.cookieId = this.cookieHandler.readCookie();
+    if (this.cookieId === null || this.cookieId === undefined || forceNewCookie === true) {
+        var dueDate = new Date().getTime() + (DAYS_TILL_COOKIE_EXPIRE * 24 * 60 * 60 * 1000);
+        this.serverHandler.postCookie(dueDate, callbackCreateCookie)
+    } else {
+        this.serverHandler.getCookie(this.cookieId, callbackEvaluateCookie)
+    }
 
 };
 
-Controller.prototype.saveToServer = function(panel) {
+Controller.prototype.saveToServer = function (panel) {
 
 };
 
@@ -85,7 +94,12 @@ Controller.prototype.createUserCookie = function (cid, duedate) {
     this.cookieHandler.createCookie(cid, duedate);
 };
 
-Controller.prototype.updateModel = function(polygon) {
+Controller.prototype.deleteUserCooke = function () {
+    this.cookieHandler.eraseCookie();
+    this.loadFromServer(true);
+};
+
+Controller.prototype.updateModel = function (polygon) {
     this.updateModelPosition(polygon);
     this.connectModelWithToolbar(polygon);
 };
@@ -95,7 +109,7 @@ Controller.prototype.connectModelWithToolbar = function (polygon) {
     var self = this;
     var selected = self.viewMap.selectedPolygon;
     var changed = function () {
-        if(self.serverAvailable) {
+        if (self.serverAvailable) {
             self.serverHandler.updatePanelToServer(self.cookieId, selected.model);
         }
     };
@@ -126,48 +140,65 @@ Controller.prototype.updateModelPosition = function (polygon) {
     polygon.setLatLngs(polygon.model.getPointsAsList());
 };
 
-Controller.prototype.getLatLngAsPoint = function(latLng) {
+Controller.prototype.getLatLngAsPoint = function (latLng) {
     return this.viewMap.latLngToLayerPoint(latLng);
 };
 
 Controller.prototype.getPointAsLatLng = function (point) {
-  return this.viewMap.layerPointToLatLng(point);
+    return this.viewMap.layerPointToLatLng(point);
 };
 
 Controller.prototype.getModelAsList = function (model) {
-  return model.getPointsAsList();
+    return model.getPointsAsList();
 };
-
-
-
-
-
 
 
 /* Callbackfunktionen */
 
 function swapServerstatus() {
-    if(controller !== undefined) {
+    if (controller !== undefined) {
         controller.serverIsAvailable ? controller.disableServer() : controller.enableServer();
     }
 }
 
-function getPanelsFromCookieData(data) {
-    var arr = [];
-    data.solarpanelList.forEach(getPanels);
-    function getPanels(element) {
-        arr.push(element);
+function callbackDisableServer() {
+    if (controller !== undefined) {
+        controller.disableServer();
     }
-    /*TODO: cs.updateLoadedFromServer(arr);
-    Das Pushen in das Array könnte überflüssig sein.
-
-     */
 }
 
-function createUserCookie(cid, duedate) {
-    controller.createUserCookie(cid, duedate);
+function callbackCreateCookie(cid, duedate) {
+    if (controller !== undefined) {
+        controller.createUserCookie(cid, duedate);
+    }
 }
+
+function callbackEvaluateCookie(data) {
+    if (controller === undefined) {
+        return;
+    }
+    if (data.cookieId === -1) {
+        controller.deleteUserCooke();
+    } else {
+        data.solarpanelList.forEach(createPanel);
+        function createPanel(p) {
+            var panel = new Panel();
+            panel.oTopLeft = L.latLng(p.obenLinks[0], p.obenLinks[1]);
+            panel.oTopRight = L.latLng(p.obenRechts[0], p.obenRechts[1]);
+            panel.oBotLeft = L.latLng(p.untenLinks[0], p.untenRechts[1]);
+            panel.oBotRight = L.latLng(p.untenRechts[0], p.untenRechts[1]);
+            panel.pitch = p.neigung;
+            panel.orientation = p.ausrichtung;
+            panel.id = p.panel_id;
+            panel.width = p.breite;
+            panel.height = p.laenge;
+            panel.align();
+            controller.viewMap.addPolygon(panel);
+        }
+    }
+}
+
 
 function weissnochnicht() {
-    
+
 }

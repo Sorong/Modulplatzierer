@@ -84,6 +84,20 @@ Panel.prototype.getPointsFromList = function (list) {
     this.botLeft = list[3];
 };
 
+Panel.prototype.getAsJson = function () {
+
+    return {
+        panel_id : this.panel_id,
+        obenLinks : [this.oTopLeft.lat, this.oTopLeft.lng],
+        obenRechts : [this.oTopRight.lat, this.oTopRight.lng],
+        untenRechts : [this.oBotRight.lat, this.oBotRight.lng],
+        untenLinks : [this.oBotLeft.lat, this.oBotLeft.lng],
+        laenge : this.height,
+        breite : this.width,
+        neigung : this.pitch,
+        ausrichtung : this.orientation
+    }
+};
 function calcNextPoint(distance, point, angle) {
     earthRadius = 6371000;
     distanceNorth = Math.sin(angle * Math.PI / 180) * distance;
