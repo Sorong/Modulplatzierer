@@ -64,6 +64,7 @@ public class CookieServer {
         utx.begin();
         em.persist(tblCookie);
         utx.commit();
+        logger.warning("TEST");
         logger.warning("Cookie angelegt");
         return new ModelCookie(tblCookie);
     }
