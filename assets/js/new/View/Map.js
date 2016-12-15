@@ -116,7 +116,6 @@ Map.prototype.changeMapProvider = function (layer) {
 
 /* Dragfunktionnen */
 function dragmoveModel(d) {
-    console.log("test " + d.target._latlngs[0][0]);
     updateModelPosition(d);
 }
 

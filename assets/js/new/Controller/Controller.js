@@ -2,7 +2,7 @@ const HOST = "localhost";
 
 const DAYS_TILL_COOKIE_EXPIRE = 30;
 const COOKIENAME = "Modulplatzierer";
-const SERVER_URL = "http://" + HOST + ":8080/SolarRESTService_war_exploded/server";
+const SERVER_URL = "http://" + HOST + ":8080/SolarRESTService_war_exploded/";
 
 
 function Controller() {
@@ -10,7 +10,7 @@ function Controller() {
     this.viewMap = new Map();
     this.viewAddress = null;
     this.serverHandler = new ServerHandler(SERVER_URL);
-    this.serverHandler.errorFunction = callbackDisableServer();
+    this.serverHandler.errorFunction = callbackDisableServer;
     this.cookieHandler = new CookieHandler(COOKIENAME);
     this.cookieId = null;
 }
@@ -62,6 +62,7 @@ Controller.prototype.init = function () {
         model.orientation = self.viewMap.nonMovablePolygon === null ? 0 : self.viewMap.nonMovablePolygon.roof.orientation;
         model.align(self);
         polygonPanel = self.viewMap.addPolygon(model);
+        self.saveToServer(polygonPanel.model);
     }
 };
 
@@ -74,11 +75,15 @@ Controller.prototype.enableServer = function () {
 };
 
 Controller.prototype.loadFromServer = function (forceNewCookie) {
-    var self = this;
     this.cookieId = this.cookieHandler.readCookie();
+    console.log("CookieID " + this.cookieId + " vom Nutzer gelesen");
     if (this.cookieId === null || this.cookieId === undefined || forceNewCookie === true) {
         var dueDate = new Date().getTime() + (DAYS_TILL_COOKIE_EXPIRE * 24 * 60 * 60 * 1000);
-        this.serverHandler.postCookie(dueDate, callbackCreateCookie)
+        var json = JSON.stringify({
+            cookie_id : 0,
+            ablaufdatum : dueDate
+        });
+        this.serverHandler.postCookie(json, callbackCreateCookie)
     } else {
         this.serverHandler.getCookie(this.cookieId, callbackEvaluateCookie)
     }
@@ -86,7 +91,25 @@ Controller.prototype.loadFromServer = function (forceNewCookie) {
 };
 
 Controller.prototype.saveToServer = function (panel) {
+    if (this.serverAvailable) {
+        var json = JSON.stringify({
+            cookie_id: this.cookieId,
+            panel_id: panel.id,
+            obenLinks: [panel.oTopLeft.lat, panel.oTopLeft.lng],
+            obenRechts: [panel.oTopRight.lat, panel.oTopRight.lng],
+            untenRechts: [panel.oBotRight.lat, panel.oBotRight.lng],
+            untenLinks: [panel.oBotLeft.lat, panel.oBotLeft.lng],
+            laenge: panel.height,
+            breite: panel.width,
+            neigung: panel.pitch,
+            ausrichtung: panel.orientation,
+            rahmenbreite: 0
+        });
 
+        this.serverHandler.postPanel(json, panel, function (data, panel) {
+            panel.id = data;
+        });
+    }
 };
 
 Controller.prototype.createUserCookie = function (cid, duedate) {
@@ -155,12 +178,6 @@ Controller.prototype.getModelAsList = function (model) {
 
 /* Callbackfunktionen */
 
-function swapServerstatus() {
-    if (controller !== undefined) {
-        controller.serverIsAvailable ? controller.disableServer() : controller.enableServer();
-    }
-}
-
 function callbackDisableServer() {
     if (controller !== undefined) {
         controller.disableServer();
@@ -196,9 +213,4 @@ function callbackEvaluateCookie(data) {
             controller.viewMap.addPolygon(panel);
         }
     }
-}
-
-
-function weissnochnicht() {
-
 }
