@@ -17,7 +17,8 @@ Roof.prototype.getPointsAsList = function (coordinates) {
 };
 
 Roof.prototype.getAsPolygon = function () {
-    var color_border = Math.round(256 / BEST_PV)-1;
+
+    var color_border = Math.floor(256 / BEST_PV);
     var red = (255 - (color_border * this.pv)) << 16;
     var green = (color_border * this.pv) << 8;
     var rgb = 0x000000;
@@ -27,6 +28,13 @@ Roof.prototype.getAsPolygon = function () {
         rgb = "0" + rgb;
     }
     return L.polygon(this.corners, {color: "#" + rgb});
+};
+
+Roof.prototype.addPart = function (part) {
+    if(this.parts === null) {
+        this.parts = [];
+    }
+    this.parts.push(part);
 };
 
 Roof.prototype.calculateOrientation = function (controller) {

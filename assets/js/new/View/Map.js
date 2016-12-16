@@ -1,4 +1,4 @@
-const INIT_LOCATION = [52.520645, 13.40977];
+const INIT_LOCATION = [52.520645, 13.40977]; //Koordinaten in Berlin
 const DEFAULT_ZOOM = 20;
 
 function Map() {
@@ -51,8 +51,28 @@ Map.prototype.updatePolygonPosition = function (model) {
     return polygon;
 };
 
-Map.prototype.setNonMovable = function (polygon) {
+Map.prototype.setNonMovable = function (model) {
+    if(this.nonMovablePolygon !== null) {
+        this.removeNonMoveable();
+    }
+    var polygon = model.getAsPolygon();
+    polygon.addTo(this.map);
+    polygon.parts = [];
+    var parts = model.parts;
+    for(var i = 0; i < parts.length; i++) {
+        var m = parts[i].getAsPolygon();
+        polygon.parts.push(m);
+        m.addTo(this.map);
+    }
+};
 
+Map.prototype.removeNonMoveable = function () {
+    if(this.nonMovablePolygon !== null) {
+        for(var i = 0; i < this.nonMovablePolygon.parts.length; i++) {
+            this.map.removeLayer(this.nonMovablePolygon.parts[i]);
+        }
+        this.map.removeLayer(this.nonMovablePolygon);
+    }
 };
 
 
@@ -123,7 +143,6 @@ function dragendModel(d) {
     updateModelPosition(d);
     d.target.model.align(controller);
 }
-
 
 function updateModelPosition(draggedPolygon) {
     var d = draggedPolygon;
