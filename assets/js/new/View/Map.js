@@ -1,5 +1,5 @@
 const INIT_LOCATION = [52.520645, 13.40977]; //Koordinaten in Berlin
-const DEFAULT_ZOOM = 20;
+const DEFAULT_ZOOM = 18;
 
 function Map() {
     this.map = null;
@@ -142,7 +142,7 @@ function dragmoveModel(d) {
 
 function dragendModel(d) {
     updateModelPosition(d);
-    d.target.model.align(controller);
+    controller.updateModelPosition(d.target);
 }
 
 function updateModelPosition(draggedPolygon) {
@@ -153,6 +153,6 @@ function updateModelPosition(draggedPolygon) {
     arr.push(d.target._latlngs[0][2]);
     arr.push(d.target._latlngs[0][3]);
 
-    d.target.model.getPointsFromList(arr);
+    d.target.model.setPointsFromList(arr);
 
 }

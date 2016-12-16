@@ -38,8 +38,8 @@ Controller.prototype.init = function () {
         };
         //TODO: Maßstab der Solarpanels nicht hardcodieren
         var model = new Panel();
-        model.width = 1000;
-        model.height = 1000;
+        model.width = 10;
+        model.height = 10;
         model.topLeft = panelData.LatLng;
         model.orientation = self.roof === null ? 0 : self.roof.orientation;
         model.align(self);
@@ -74,7 +74,7 @@ Controller.prototype.loadFromServer = function (forceNewCookie) {
 
 Controller.prototype.saveToServer = function (panel) {
     if (this.serverIsAvailable) {
-        var json = this.converModelToJsonString(panel);
+        var json = this.convertModelToJsonString(panel);
         json.rahmenbreite = 0;
 
         this.serverHandler.postPanel(json, panel, function (data, panel) {
@@ -104,7 +104,7 @@ Controller.prototype.connectModelWithToolbar = function (polygon) {
     var selected = self.viewMap.selectedPolygon;
     var changed = function () {
         if (self.serverIsAvailable) {
-            var json = self.converModelToJsonString(polygon.model);
+            var json = self.convertModelToJsonString(polygon.model);
             self.serverHandler.updatePanelToServer(json);
         }
     };
@@ -115,24 +115,28 @@ Controller.prototype.connectModelWithToolbar = function (polygon) {
     toolbar.pitchSlider().on("input change", function () {
         selected.model.pitch = $(this).val();
         realignModel(selected);
-    }).change(changed());
+    }).change(changed);
 
     toolbar.heightSlider().on("input change", function () {
         realignModel(selected, selected.model.width, $(this).val());
-    }).change(changed());
+    }).change(changed);
 
     toolbar.widthSlider().on("input change", function () {
         realignModel(selected, $(this).val(), selected.model.height);
-    }).change(changed());
+    }).change(changed);
 
     toolbar.orientationSlider().on("input change", function () {
         selected.model.orientation = $(this).val();
         realignModel(selected);
-    }).change(changed());
+    }).change(changed);
 };
 
 Controller.prototype.updateModelPosition = function (polygon) {
-    polygon.setLatLngs(polygon.model.setPointsFromList());
+    polygon.model.align(this);
+    polygon.setLatLngs(polygon.model.getPointsAsList());
+    this.serverHandler.updatePanel(this.convertModelToJsonString(polygon.model), function () {
+        console.log("Panel updated");
+    });
 };
 
 Controller.prototype.getRoofFromServer = function (place) {
@@ -182,7 +186,7 @@ Controller.prototype.getModelAsList = function (model) {
     return model.getPointsAsList();
 };
 
-Controller.prototype.converModelToJsonString = function (model) {
+Controller.prototype.convertModelToJsonString = function (model) {
     var json = model.getAsJson();
     json.cookie_id = this.cookieId;
     json.rahmenbreite = 0;
@@ -216,7 +220,7 @@ function callbackEvaluateCookie(data) {
 
         function createPanel(p) {
             var panel = new Panel();
-            panel.getPointsFromList(p.the_geom);
+            panel.setPointsFromList(p.the_geom);
             panel.pitch = p.neigung;
             panel.orientation = p.ausrichtung;
             panel.id = p.panel_id;

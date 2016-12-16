@@ -74,6 +74,7 @@ Panel.prototype.getPointsAsList = function () {
     return list;
 };
 
+
 Panel.prototype.getPointsFromList = function (list) {
     if (list.length != 4) {
         return;
@@ -87,7 +88,7 @@ Panel.prototype.getPointsFromList = function (list) {
 Panel.prototype.getAsJson = function () {
 
     return {
-        panel_id: this.panel_id,
+        panel_id: this.id,
         the_geom: [
             {
                 latitude: this.oTopLeft.lat,
@@ -113,12 +114,15 @@ Panel.prototype.getAsJson = function () {
 };
 
 Panel.prototype.setPointsFromList = function (list) {
-    if (!list.isEmpty()) {
+    if (list.length > 0) {
         for (var i = 0; i < list.length; i++) {
             var latLng = L.latLng(list[i].latitude, list[i].longitude);
+            if(latLng === undefined) {
+                latLng = list[i];
+            }
             switch (i) {
                 case 0:
-                    this.oTopLeft = latLng;
+                    this.oTopLeft = this.topLeft = latLng;
                     break;
                 case 1:
                     this.oTopRight = latLng;

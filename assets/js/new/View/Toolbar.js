@@ -11,8 +11,8 @@ function Toolbar(model) {
     this.modelHeight = $("#model_height");
     this.modelHeightValue = $("#model_height_value");
 
-    this.modelOrientation = $("#roof_orientation");
-    this.modelOrientationValue = $("#roof_orientation_value");
+    this.modelOrientation = $("#model_orientation");
+    this.modelOrientationValue = $("#model_orientation_value");
 
     this.renderModelValues();
 }
