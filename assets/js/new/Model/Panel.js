@@ -70,23 +70,11 @@ Panel.prototype.selfAlign = function (controller) {
 };
 
 Panel.prototype.getPointsAsList = function () {
-    var list = [this.topLeft, this.topRight, this.botRight, this.botLeft];
+    var list = [this.oTopLeft, this.topRight, this.botRight, this.botLeft];
     return list;
 };
 
-
-Panel.prototype.getPointsFromList = function (list) {
-    if (list.length != 4) {
-        return;
-    }
-    this.topLeft = L.latLng(list[0].latitude, list[0].longitude);
-    this.topRight = L.latLng(list[1].latitude, list[1].longitude);
-    this.botRight = L.latLng(list[2].latitude, list[2].longitude);
-    this.botLeft = L.latLng(list[3].latitude, list[3].longitude);
-};
-
 Panel.prototype.getAsJson = function () {
-
     return {
         panel_id: this.id,
         the_geom: [

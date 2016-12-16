@@ -49,8 +49,10 @@ Roof.prototype.calculateOrientation = function (controller) {
             }
         }
     }
+
     L.circle(controller.getPointAsLatLng(leftBot),0.8).addTo(controller.viewMap.map);
     L.circle(controller.getPointAsLatLng(rightBot),0.8).addTo(controller.viewMap.map);
+
     var cos_theta = (leftBot.x + rightBot.x * leftBot.y + rightBot.y)
         / (Math.sqrt(Math.pow(leftBot.x, 2) + Math.pow(leftBot.y, 2)) * Math.sqrt(Math.pow(rightBot.x, 2) + Math.pow(rightBot.y, 2)));
     var angle = Math.acos(cos_theta) / Math.PI * 180;

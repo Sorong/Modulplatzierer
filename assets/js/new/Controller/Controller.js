@@ -9,6 +9,7 @@ function Controller() {
     this.serverIsAvailable = true;
     this.viewMap = new Map();
     this.viewAddress = null;
+    this.toolbar = null;
     this.serverHandler = new ServerHandler(SERVER_URL);
     this.serverHandler.errorFunction = callbackDisableServer;
     this.cookieHandler = new CookieHandler(COOKIENAME);
@@ -99,7 +100,12 @@ Controller.prototype.updateModel = function (polygon) {
 };
 
 Controller.prototype.connectModelWithToolbar = function (polygon) {
-    var toolbar = new Toolbar(polygon.model);
+    if(this.toolbar === null) {
+        this.toolbar = new Toolbar(polygon.model);
+    } else {
+        this.toolbar.unbindEvents();
+    }
+
     var self = this;
     var selected = self.viewMap.selectedPolygon;
     var changed = function () {
@@ -112,20 +118,20 @@ Controller.prototype.connectModelWithToolbar = function (polygon) {
         selectedPolygon.model.align(self, width, height);
         self.updateModelPosition(selectedPolygon, true);
     };
-    toolbar.pitchSlider().on("input change", function () {
+    this.toolbar.pitchSlider().on("input change", function () {
         selected.model.pitch = $(this).val();
         realignModel(selected);
     }).focusout(changed);
 
-    toolbar.heightSlider().on("input change", function () {
+    this.toolbar.heightSlider().on("input change", function () {
         realignModel(selected, selected.model.width, $(this).val());
     }).focusout(changed);
 
-    toolbar.widthSlider().on("input change", function () {
+    this.toolbar.widthSlider().on("input change", function () {
         realignModel(selected, $(this).val(), selected.model.height);
     }).focusout(changed);
 
-    toolbar.orientationSlider().on("input change", function () {
+    this.toolbar.orientationSlider().on("input change", function () {
         selected.model.orientation = $(this).val();
         realignModel(selected);
     }).focusout(changed);
@@ -135,8 +141,11 @@ Controller.prototype.updateModelPosition = function (polygon, disabledServerUpda
     polygon.model.align(this);
     polygon.setLatLngs(polygon.model.getPointsAsList());
     if(disabledServerUpdate !== true) {
-        this.serverHandler.updatePanel(this.convertModelToJsonString(polygon.model), function () {
-            console.log("Panel updated");
+        var out = this.convertModelToJsonString(polygon.model);
+        this.serverHandler.updatePanel(out, function (data) {
+            var blubb = data;
+            L.circle([blubb.the_geom[0].latitude, blubb.the_geom[0].longitude], 0.2, {color: "#FF0000"}).addTo(controller.viewMap.map);
+            L.circle(polygon.model.topLeft,0.2, {color: "#00FF00"}).addTo(controller.viewMap.map);
         });
     }
 };
@@ -217,7 +226,6 @@ function callbackEvaluateCookie(data) {
     if (data.cookie_id === -1) {
         controller.deleteUserCooke();
     } else {
-        console.log("Create Panelloop");
         data.solarpanelList.forEach(createPanel);
 
         function createPanel(p) {
@@ -231,7 +239,6 @@ function callbackEvaluateCookie(data) {
             panel.align(controller);
             controller.viewMap.addPolygon(panel);
         }
-        console.log("Ende Loop");
     }
 }
 

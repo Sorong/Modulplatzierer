@@ -19,7 +19,9 @@ function Toolbar(model) {
 
 
 Toolbar.prototype.renderModelValues = function () {
-    if(this.selectedModel === undefined) { return; }
+    if (this.selectedModel === undefined) {
+        return;
+    }
     console.log("Render:" + this.selectedModel.name);
     this.toolsHeadline.html(this.selectedModel.name);
 
@@ -70,4 +72,11 @@ Toolbar.prototype.orientationSlider = function () {
         var val = $(this).val();
         degree.html(val + "°");
     });
+};
+
+Toolbar.prototype.unbindEvents = function () {
+    this.modelTilt.off();
+    this.modelHeight.off();
+    this.modelWidth.off();
+    this.modelOrientation.off();
 };

@@ -30,7 +30,7 @@ Map.prototype.addPolygon = function (model) {
     var self = this;
     this.selectedPolygon = this.updatePolygonPosition(model);
     this.selectedPolygon.on('click', function () {
-        selectedPolygon = this;
+        self.selectedPolygon = this;
         self.controller.updateModel(this);
     });
     this.selectedPolygon.on('drag', dragmoveModel);
