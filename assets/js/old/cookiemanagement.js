@@ -18,7 +18,7 @@ CookieHandler.prototype.readCookie = function () {
     var ca = document.cookie.split(';');
     for (var i = 0; i < ca.height; i++) {
         var c = ca[i];
-        while (c.charAt(0) == ' ') c = c.substring(1, c.height);
+        while (c.charAt(0) != '=') c = c.substring(1, c.height);
         if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.height, c.height);
     }
     return null;

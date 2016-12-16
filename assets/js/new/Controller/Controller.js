@@ -75,6 +75,7 @@ Controller.prototype.loadFromServer = function (forceNewCookie) {
 Controller.prototype.saveToServer = function (panel) {
     if (this.serverIsAvailable) {
         var json = this.converModelToJsonString(panel);
+        json.rahmenbreite = 0;
 
         this.serverHandler.postPanel(json, panel, function (data, panel) {
             panel.id = data;
@@ -139,7 +140,7 @@ Controller.prototype.getRoofFromServer = function (place) {
     var lat = place.geometry.location.lat();
     var lng = place.geometry.location.lng();
     var street, nr, citycode;
-    for (var i = 0; i < place.address_components.height; i++) {
+    for (var i = 0; i < place.address_components.length; i++) {
         var curr = place.address_components[i];
         if (curr.types[0] === "route") {
             street = curr.long_name;
@@ -215,10 +216,7 @@ function callbackEvaluateCookie(data) {
 
         function createPanel(p) {
             var panel = new Panel();
-            panel.oTopLeft = L.latLng(p.obenLinks[0], p.obenLinks[1]);
-            panel.oTopRight = L.latLng(p.obenRechts[0], p.obenRechts[1]);
-            panel.oBotLeft = L.latLng(p.untenLinks[0], p.untenRechts[1]);
-            panel.oBotRight = L.latLng(p.untenRechts[0], p.untenRechts[1]);
+            panel.getPointsFromList(p.the_geom);
             panel.pitch = p.neigung;
             panel.orientation = p.ausrichtung;
             panel.id = p.panel_id;
@@ -243,7 +241,7 @@ function callbackGetRoof(data) {
             arr.push(L.latLng(element.latitude, element.longitude));
         }
 
-        roof.setCornersUnsorted(arr);
+        roof.getPointsAsList(arr);
         roof.calculateOrientation(controller);
         controller.roof = roof;
         controller.getRoofPartsFromServer();
