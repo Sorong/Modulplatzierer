@@ -41,19 +41,21 @@ Roof.prototype.calculateOrientation = function (controller) {
     var leftBot = rightBot = controller.getLatLngAsPoint(this.points[0]);
     for (var i = 0; i < this.points.length; i++) {
         var current = controller.getLatLngAsPoint(this.points[i]);
+        var current_next = controller.getLatLngAsPoint(this.points[(i + 1) % this.points.length]);
+        L.circle(controller.getPointAsLatLng(current), i).addTo(controller.viewMap.map);
         if(current.y >= leftBot.y) {
-            if(current.x > leftBot.x) {
-                rightBot = current;
-            } else {
-                leftBot = current;
-            }
+            leftBot = current;
+            rightBot = current_next;
         }
     }
 
-    L.circle(controller.getPointAsLatLng(leftBot),0.8).addTo(controller.viewMap.map);
-    L.circle(controller.getPointAsLatLng(rightBot),0.8).addTo(controller.viewMap.map);
 
-    var cos_theta = (leftBot.x + rightBot.x * leftBot.y + rightBot.y)
+
+    rightBot.x-=leftBot.x;
+    rightBot.y-=leftBot.y;
+    leftBot.x= (leftBot.x+10) - leftBot.x;
+    leftBot.y-=leftBot.y;
+    var cos_theta = ((leftBot.x * rightBot.x) + (leftBot.y * rightBot.y))
         / (Math.sqrt(Math.pow(leftBot.x, 2) + Math.pow(leftBot.y, 2)) * Math.sqrt(Math.pow(rightBot.x, 2) + Math.pow(rightBot.y, 2)));
     var angle = Math.acos(cos_theta) / Math.PI * 180;
     this.orientation = isNaN(angle)  ? 0 : angle;
