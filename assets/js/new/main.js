@@ -7,5 +7,5 @@ function initAutocomplete() {
 }
 
 $(document).ready(function () {
-
+    controller.loadFromServer();
 });

@@ -6,42 +6,66 @@ function ServerHandler(url) {
 }
 
 ServerHandler.prototype.getCookie = function (id, callback) {
-    var serverFunction = "/getRoof/" + id;
+    var serverFunction = "cookie/getCookie/" + id;
     this._get(serverFunction, function (data) {
         callback(data);
     });
 };
 
 ServerHandler.prototype.getPredefinedRoof = function (street, nr, citycode, callback) {
-    var serverFunction = "/getPredefinedRoof/" + street + "/" + nr + "/" + citycode;
+    var serverFunction = "dach/getPredefinedRoof/" + street + "/" + nr + "/" + citycode;
     this._get(serverFunction, function (data) {
         callback(data);
     });
 };
 
 ServerHandler.prototype.getRoofParts = function (gid, callback) {
-    var serverFunction = "/getRoofParts/" + gid;
+    var serverFunction = "dach/getRoofParts/" + gid;
     this._get(serverFunction, function (data) {
         callback(data);
     });
 };
 
-ServerHandler.prototype.postCookie = function (duedate, callback) {
-    
+ServerHandler.prototype.postCookie = function (json, callback) {
+    this._post(json, "cookie/postCookie", function (data) {
+        callback(data);
+    });
 };
 
-ServerHandler.prototype.postPanel = function (cookieid, panel, callback) {
-    
+ServerHandler.prototype.postPanel = function (json, model, callback) {
+    this._post(json, "panel/postPanel", function (data) {
+        callback(data, model);
+    })
 };
 
-ServerHandler.prototype.updatePanel = function () {
-
+ServerHandler.prototype.updatePanel = function (json, callback) {
+    this._post(json, "panel/updatePanel", function (data) {
+        callback(data);
+    })
 };
+
 
 ServerHandler.prototype._get = function (serverFunction, successCallback) {
-
+    var errorFunction = this.errorFunction;
+    $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: this.serverURL + serverFunction
+    }).done(successCallback).fail(errorFunction);
 };
 
 ServerHandler.prototype._post = function (objAsJson, serverFunction, successCallback) {
-
+    var errorFunction = this.errorFunction;
+    $.ajax({
+        crossDomain: true,
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json",
+        cors: "true",
+        url: this.serverURL + serverFunction + '/',
+        data: objAsJson,
+        header: {
+            "content-type": "application/json"
+        }
+    }).done(successCallback).fail(errorFunction);
 };

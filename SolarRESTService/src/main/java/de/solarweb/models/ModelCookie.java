@@ -31,8 +31,10 @@ public class ModelCookie implements Serializable{
     public ModelCookie(TblCookie tblCookie){
         this.cookie_id = tblCookie.getCookie_id();
         solarpanelList = new LinkedList<ModelSolarpanel>();
-        for(TblSolarpanel tblSolarpanel : tblCookie.getTblSolarpanelCollection()){
-            solarpanelList.add(new ModelSolarpanel(tblSolarpanel));
+        if(tblCookie.getTblSolarpanelCollection() != null) {
+            for (TblSolarpanel tblSolarpanel : tblCookie.getTblSolarpanelCollection()) {
+                solarpanelList.add(new ModelSolarpanel(tblSolarpanel));
+            }
         }
         this.ablaufdatum = tblCookie.getAblaufdatum();
     }
