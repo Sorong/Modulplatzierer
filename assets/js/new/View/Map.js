@@ -64,6 +64,7 @@ Map.prototype.setNonMovable = function (model) {
         polygon.parts.push(m);
         m.addTo(this.map);
     }
+    this.nonMovablePolygon = polygon;
 };
 
 Map.prototype.removeNonMoveable = function () {

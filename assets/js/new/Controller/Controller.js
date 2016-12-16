@@ -1,4 +1,4 @@
-const HOST = "195.37.224.120";
+const HOST = "localhost";
 
 const DAYS_TILL_COOKIE_EXPIRE = 30;
 const COOKIENAME = "Modulplatzierer";
@@ -41,7 +41,7 @@ Controller.prototype.init = function () {
         model.width = 1000;
         model.height = 1000;
         model.topLeft = panelData.LatLng;
-        model.orientation = self.viewMap.nonMovablePolygon === null ? 0 : self.viewMap.nonMovablePolygon.roof.orientation;
+        model.orientation = self.roof === null ? 0 : self.roof.orientation;
         model.align(self);
         polygonPanel = self.viewMap.addPolygon(model);
         self.saveToServer(polygonPanel.model);
@@ -132,7 +132,7 @@ Controller.prototype.connectModelWithToolbar = function (polygon) {
 };
 
 Controller.prototype.updateModelPosition = function (polygon) {
-    polygon.setLatLngs(polygon.model.getPointsAsList());
+    polygon.setLatLngs(polygon.model.setPointsFromList());
 };
 
 Controller.prototype.getRoofFromServer = function (place) {
@@ -162,12 +162,12 @@ Controller.prototype.getRoofFromServer = function (place) {
 
 Controller.prototype.getRoofPartsFromServer = function () {
     if (this.serverIsAvailable) {
-        this.serverHandler.getRoofParts(this.roof.id, callbackGetRoofParts)
+        this.serverHandler.getRoofParts(this.roof.gid, callbackGetRoofParts)
     }
 };
 
 Controller.prototype.drawRoof = function () {
-    this.viewMap.setNonMovable(roof);
+    this.viewMap.setNonMovable(this.roof);
 };
 
 Controller.prototype.getLatLngAsPoint = function (latLng) {
@@ -222,7 +222,7 @@ function callbackEvaluateCookie(data) {
             panel.id = p.panel_id;
             panel.width = p.breite;
             panel.height = p.laenge;
-            panel.align();
+            panel.align(controller);
             controller.viewMap.addPolygon(panel);
         }
         console.log("Ende Loop");
@@ -241,7 +241,7 @@ function callbackGetRoof(data) {
             arr.push(L.latLng(element.latitude, element.longitude));
         }
 
-        roof.getPointsAsList(arr);
+        roof.setPointsFromList(arr);
         roof.calculateOrientation(controller);
         controller.roof = roof;
         controller.getRoofPartsFromServer();
@@ -259,9 +259,10 @@ function callbackGetRoofParts(data) {
             function getCoords(element) {
                 arr.push(L.latLng(element.latitude, element.longitude));
             }
-
+            roof.setPointsFromList(arr);
             controller.roof.addPart(roof);
 
         }
+        controller.drawRoof();
     }
 }

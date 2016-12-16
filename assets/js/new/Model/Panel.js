@@ -78,10 +78,10 @@ Panel.prototype.getPointsFromList = function (list) {
     if (list.length != 4) {
         return;
     }
-    this.topLeft = list[0];
-    this.topRight = list[1];
-    this.botRight = list[2];
-    this.botLeft = list[3];
+    this.topLeft = L.latLng(list[0].latitude, list[0].longitude);
+    this.topRight = L.latLng(list[1].latitude, list[1].longitude);
+    this.botRight = L.latLng(list[2].latitude, list[2].longitude);
+    this.botLeft = L.latLng(list[3].latitude, list[3].longitude);
 };
 
 Panel.prototype.getAsJson = function () {
