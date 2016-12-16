@@ -1,4 +1,4 @@
-const HOST = "localhost";
+const HOST = "195.37.224.120";
 
 const DAYS_TILL_COOKIE_EXPIRE = 30;
 const COOKIENAME = "Modulplatzierer";
@@ -207,10 +207,12 @@ function callbackEvaluateCookie(data) {
     if (controller === undefined) {
         return;
     }
-    if (data.cookieId === -1) {
+    if (data.cookie_id === -1) {
         controller.deleteUserCooke();
     } else {
+        console.log("Create Panelloop");
         data.solarpanelList.forEach(createPanel);
+
         function createPanel(p) {
             var panel = new Panel();
             panel.oTopLeft = L.latLng(p.obenLinks[0], p.obenLinks[1]);
@@ -225,6 +227,7 @@ function callbackEvaluateCookie(data) {
             panel.align();
             controller.viewMap.addPolygon(panel);
         }
+        console.log("Ende Loop");
     }
 }
 
