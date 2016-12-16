@@ -110,33 +110,35 @@ Controller.prototype.connectModelWithToolbar = function (polygon) {
     };
     var realignModel = function (selectedPolygon, width, height) {
         selectedPolygon.model.align(self, width, height);
-        self.updateModelPosition(selectedPolygon);
+        self.updateModelPosition(selectedPolygon, true);
     };
     toolbar.pitchSlider().on("input change", function () {
         selected.model.pitch = $(this).val();
         realignModel(selected);
-    }).change(changed);
+    }).focusout(changed);
 
     toolbar.heightSlider().on("input change", function () {
         realignModel(selected, selected.model.width, $(this).val());
-    }).change(changed);
+    }).focusout(changed);
 
     toolbar.widthSlider().on("input change", function () {
         realignModel(selected, $(this).val(), selected.model.height);
-    }).change(changed);
+    }).focusout(changed);
 
     toolbar.orientationSlider().on("input change", function () {
         selected.model.orientation = $(this).val();
         realignModel(selected);
-    }).change(changed);
+    }).focusout(changed);
 };
 
-Controller.prototype.updateModelPosition = function (polygon) {
+Controller.prototype.updateModelPosition = function (polygon, disabledServerUpdate) {
     polygon.model.align(this);
     polygon.setLatLngs(polygon.model.getPointsAsList());
-    this.serverHandler.updatePanel(this.convertModelToJsonString(polygon.model), function () {
-        console.log("Panel updated");
-    });
+    if(disabledServerUpdate !== true) {
+        this.serverHandler.updatePanel(this.convertModelToJsonString(polygon.model), function () {
+            console.log("Panel updated");
+        });
+    }
 };
 
 Controller.prototype.getRoofFromServer = function (place) {
