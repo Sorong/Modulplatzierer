@@ -30,6 +30,8 @@ Map.prototype.addMultiPolygon = function (model) {
     var self = this;
     this.handlerGroup = this.handlerGroup || new L.LayerGroup().addTo(this.map);
 
+    console.log(model.getGeoJSON());
+
     this.selectedPolygon =
         L.polygon(model.getGeoJSON(), {
             color: '#FF0',
@@ -45,19 +47,23 @@ Map.prototype.addMultiPolygon = function (model) {
     this.selectedPolygon.on("resizestart", function () {
         console.log("resizestart")
     });
-    var lastinputsize = 0;
+    var lastDistance = 0;
     this.selectedPolygon.on('resize', function (d) {
 
         var startCoord = this._latlngs[0][0];
         var endCoord = this._latlngs[0][1];
         var distance = startCoord.distanceTo(endCoord);
 
-        var einevariable = parseInt((d.distance / distance));
+        var currentDistance = parseInt((d.distance / distance));
 
-        if (einevariable >= 2 && lastinputsize != einevariable) {
-            model.appendPanel();
+        if (currentDistance >= 2 && lastDistance != currentDistance) {
+            if (currentDistance > lastDistance) {
+                model.appendPanel();
+            } else {
+                model.removePanel();
+            }
             selectedPolygon.setLatLngs(model.getGeoJSON());
-            lastinputsize = einevariable
+            lastDistance = currentDistance
         }
 
     });
@@ -103,14 +109,14 @@ Map.prototype.updatePolygonPosition = function (model) {
 };
 
 Map.prototype.setNonMovable = function (model) {
-    if(this.nonMovablePolygon !== null) {
+    if (this.nonMovablePolygon !== null) {
         this.removeNonMoveable();
     }
     var polygon = model.getAsPolygon();
     polygon.addTo(this.map);
     polygon.parts = [];
     var parts = model.parts;
-    for(var i = 0; i < parts.length; i++) {
+    for (var i = 0; i < parts.length; i++) {
         var m = parts[i].getAsPolygon();
         polygon.parts.push(m);
         m.addTo(this.map);
@@ -119,8 +125,8 @@ Map.prototype.setNonMovable = function (model) {
 };
 
 Map.prototype.removeNonMoveable = function () {
-    if(this.nonMovablePolygon !== null) {
-        for(var i = 0; i < this.nonMovablePolygon.parts.length; i++) {
+    if (this.nonMovablePolygon !== null) {
+        for (var i = 0; i < this.nonMovablePolygon.parts.length; i++) {
             this.map.removeLayer(this.nonMovablePolygon.parts[i]);
         }
         this.map.removeLayer(this.nonMovablePolygon);
