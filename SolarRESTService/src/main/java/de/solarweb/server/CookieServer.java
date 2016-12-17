@@ -1,6 +1,6 @@
 package de.solarweb.server;
 
-import com.sun.tools.internal.xjc.model.Model;
+
 import de.solarweb.datamodel.TblCookie;
 import de.solarweb.models.ModelCookie;
 
@@ -64,6 +64,7 @@ public class CookieServer {
         utx.begin();
         em.persist(tblCookie);
         utx.commit();
+        logger.warning("TEST");
         logger.warning("Cookie angelegt");
         return new ModelCookie(tblCookie);
     }
