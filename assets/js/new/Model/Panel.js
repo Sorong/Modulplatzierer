@@ -74,6 +74,15 @@ Panel.prototype.getPointsAsList = function () {
     return list;
 };
 
+Panel.prototype.getLatLngsAsArray = function() {
+    return [
+        [this.oTopLeft.lat, this.oTopLeft.lng],
+        [this.oTopRight.lat, this.oTopRight.lng],
+        [this.oBotRight.lat, this.oBotRight.lng],
+        [this.oBotLeft.lat, this.oBotLeft.lng]
+    ]
+};
+
 Panel.prototype.getAsJson = function () {
     return {
         panel_id: this.id,

@@ -1,36 +1,66 @@
 class PanelString {
 
+    controller;
     masterPanel;
-    panelCounter: number = 0;
+    panels;
 
-    constructor(panel) {
+    constructor(controller, panel) {
+        this.controller = controller;
         this.masterPanel = panel;
-        this.panelCounter++
+        this.panels = []
     }
 
-    appendPanel() {
-        this.panelCounter++
+    appendPanel(panel) {
+        if (panel != undefined) {
+            let master = this.masterPanel;
+
+            panel.topLeft = master.topLeft;
+            panel.pitch = master.pitch;
+            panel.orientation = master.orientation;
+            panel.id = master.id;
+            panel.align(this.controller, master.width, master.height);
+
+            this.panels.push(panel);
+        }
     }
 
-    removePanel() {
-        this.panelCounter--
+    removePanel(panel) {
+
+    }
+
+    removePanelById(panelId) {
+
+    }
+
+    private getNextPoint(panel) {
+        return panel.getPointsAsList()[1];
+    }
+
+    private refreshGeometrics() {
+        console.log("Master:")
+        console.log(this.masterPanel);
+        let orientation = this.masterPanel.orientation;
+        let nextLatLng = this.getNextPoint(this.masterPanel);
+        console.log(nextLatLng);
+        let height = this.masterPanel.height;
+        let width = this.masterPanel.width;
+        for (let i = 0; i < this.panels.length; i++) {
+            this.panels[i].topLeft = nextLatLng;
+            this.panels[i].orientation = orientation;
+            this.panels[i].align(this.controller, height, width);
+            console.log("I:" + i);
+            console.log(this.panels[i]);
+            nextLatLng = this.getNextPoint(this.panels[i]);
+        }
     }
 
     getGeoJSON() {
+        this.refreshGeometrics();
         let polygonArray = [];
-        console.log("GEO " + this.panelCounter);
-        let p = this.masterPanel.getPointsAsList();
-        let puff = 0.00015;
-        for (let i = 0; i < this.panelCounter; i++) {
-            let arr = [
-                [p[0].lat, p[0].lng + puff * i],
-                [p[1].lat, p[1].lng + puff * i],
-                [p[2].lat, p[2].lng + puff * i],
-                [p[3].lat, p[3].lng + puff * i]
-            ];
-            polygonArray.push(arr);
+        polygonArray.push(this.masterPanel.getLatLngsAsArray());
+        for (let i = 0; i < this.panels.length; i++) {
+            polygonArray.push(this.panels[i].getLatLngsAsArray());
         }
-
         return polygonArray
     }
 

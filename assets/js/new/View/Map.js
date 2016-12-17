@@ -27,23 +27,47 @@ Map.prototype.init = function () {
 };
 
 Map.prototype.addMultiPolygon = function (model) {
+    console.log(model);
     var self = this;
     this.handlerGroup = this.handlerGroup || new L.LayerGroup().addTo(this.map);
-
-    console.log(model.getGeoJSON());
-
     this.selectedPolygon =
         L.polygon(model.getGeoJSON(), {
             color: '#FF0',
             draggable: true,
             transform: true
         }).addTo(this.handlerGroup);
+    this.selectedPolygon.model = model;
     this.selectedPolygon.transform.enable(
         {
             rotation: true,
             scaling: false,
             resize: true
         });
+
+    var startorientation = null;
+    var rotation = 0;
+    this.selectedPolygon.on("rotatestart", function (d) {
+        if (startorientation == null) {
+            startorientation = selectedPolygon.model.masterPanel.orientation;
+        }
+    });
+
+    this.selectedPolygon.on("rotate", function (d) {
+        rotation = d.rotation;
+    });
+
+    this.selectedPolygon.on("rotateend", function (d) {
+        // TODO Begrenzung einfügen, unser Panel unterstützt nur 0-360!
+        // TODO callback liefert im Moment die falsche Rotation, bzw keine nur in 'rotate' selbst
+        var degrees = rotation * (180 / Math.PI);
+        var panel = selectedPolygon.model.masterPanel;
+        selectedPolygon.model.masterPanel.orientation += (startorientation + degrees);
+        selectedPolygon.model.masterPanel.align(controller, panel.width, panel.height);
+        console.log("RotationEnd")
+        console.log(selectedPolygon.model.masterPanel);
+        rotation = 0;
+    });
+
     this.selectedPolygon.on("resizestart", function () {
         console.log("resizestart")
     });
@@ -58,7 +82,8 @@ Map.prototype.addMultiPolygon = function (model) {
 
         if (currentDistance >= 2 && lastDistance != currentDistance) {
             if (currentDistance > lastDistance) {
-                model.appendPanel();
+                var panel = new Panel();
+                model.appendPanel(panel);
             } else {
                 model.removePanel();
             }
@@ -72,9 +97,10 @@ Map.prototype.addMultiPolygon = function (model) {
         console.log("resizeend")
     });
 
-    this.selectedPolygon.model = model;
+
     this.selectedPolygon.on('click', function () {
         selectedPolygon = this;
+
         self.controller.updateModel(this);
     });
     this.selectedPolygon.on('drag', dragmoveModel);

@@ -45,8 +45,8 @@ Controller.prototype.init = function () {
         model.orientation = self.roof === null ? 0 : self.roof.orientation;
         model.align(self);
 
-        var panelstring = new PanelString(model);
-        self.viewMap.addMultiPolygon(panelstring);
+        var panelstring = new PanelString(controller, model);
+        panelstring = self.viewMap.addMultiPolygon(panelstring);
         self.saveToServer(panelstring.model);
     }
 };
@@ -102,7 +102,7 @@ Controller.prototype.updateModel = function (polygon) {
 };
 
 Controller.prototype.connectModelWithToolbar = function (polygon) {
-    if(this.toolbar === null) {
+    if (this.toolbar === null) {
         this.toolbar = new Toolbar(polygon.model);
     } else {
         this.toolbar.unbindEvents();
@@ -147,7 +147,7 @@ Controller.prototype.updateModelPosition = function (polygon, disabledServerUpda
         this.serverHandler.updatePanel(out, function (data) {
             var blubb = data;
             L.circle([blubb.the_geom[0].latitude, blubb.the_geom[0].longitude], 0.2, {color: "#FF0000"}).addTo(controller.viewMap.map);
-            L.circle(polygon.model.topLeft,0.2, {color: "#00FF00"}).addTo(controller.viewMap.map);
+            L.circle(polygon.model.topLeft, 0.2, {color: "#00FF00"}).addTo(controller.viewMap.map);
         });
     }
 };
@@ -200,7 +200,7 @@ Controller.prototype.getModelAsList = function (model) {
 };
 
 Controller.prototype.convertModelToJsonString = function (model) {
-    var json = model.getAsJson();
+    var json = (model.constructor == PanelString) ? model.masterPanel.getAsJson() : model.getAsJson();
     json.cookie_id = this.cookieId;
     json.rahmenbreite = 0;
     return JSON.stringify(json);
@@ -274,6 +274,7 @@ function callbackGetRoofParts(data) {
             function getCoords(element) {
                 arr.push(L.latLng(element.latitude, element.longitude));
             }
+
             roof.setPointsFromList(arr);
             controller.roof.addPart(roof);
 
