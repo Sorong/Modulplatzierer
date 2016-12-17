@@ -3,9 +3,9 @@ const DEFAULT_ZOOM = 20;
 
 function Map() {
     this.map = null;
-/*   Notwendig?
-    var mapHeight = $('#map').get(0).offsetHeight;
-    var mapWidth = $('#map').get(0).offsetWidth;*/
+    /*   Notwendig?
+     var mapHeight = $('#map').get(0).offsetHeight;
+     var mapWidth = $('#map').get(0).offsetWidth;*/
     this.mapProvider = null;
     this.controller = null;
     this.moveablePolygons = [];
@@ -26,8 +26,8 @@ Map.prototype.init = function () {
     this.d3Overlay.addTo(this.map);
 };
 
-Map.prototype.addMultiPolygon = function (model){
-  var self = this;
+Map.prototype.addMultiPolygon = function (model) {
+    var self = this;
     this.handlerGroup = this.handlerGroup || new L.LayerGroup().addTo(this.map);
 
     this.selectedPolygon =
@@ -36,47 +36,36 @@ Map.prototype.addMultiPolygon = function (model){
             draggable: true,
             transform: true
         }).addTo(this.handlerGroup);
-    this.selectedPolygon.transform.enable({rotation: true, scaling: true});
-    this.selectedPolygon.on("resizestart", function(){
+    this.selectedPolygon.transform.enable(
+        {
+            rotation: true,
+            scaling: false,
+            resize: true
+        });
+    this.selectedPolygon.on("resizestart", function () {
         console.log("resizestart")
     });
-    this.selectedPolygon.on("transform", function(d){
-        console.log("Transform")
-        console.log(d)
-    })
-    this.selectedPolygon.on('scalestart', function(d){
-        console.log(d)
-    })
-    this.selectedPolygon.on('scale', function(d){
-        console.log("Scale");
-        console.log(d.matrix._matrix);
-        if(d.matrix._matrix[0] > 2){
+    var lastinputsize = 0;
+    this.selectedPolygon.on('resize', function (d) {
+
+        var startCoord = this._latlngs[0][0];
+        var endCoord = this._latlngs[0][1];
+        var distance = startCoord.distanceTo(endCoord);
+
+        var einevariable = parseInt((d.distance / distance));
+
+        if (einevariable >= 2 && lastinputsize != einevariable) {
             model.appendPanel();
             selectedPolygon.setLatLngs(model.getGeoJSON());
+            lastinputsize = einevariable
         }
-        console.log(d.rect._latlngs)
-        console.log(d.rect._pxBounds)
-    })
-    this.selectedPolygon.on('scaleend', function(d){
-        console.log("Scale End");
-        //console.log(d)
-        console.log(d);
-        console.log(d.rect._latlngs)
-        console.log(d.rect._pxBounds)
-    })
-    this.selectedPolygon.on("resize", function(d){
-        console.log("resize")
-        console.log(d)
+
     });
-    this.selectedPolygon.on("resizeend", function(){
+
+    this.selectedPolygon.on("resizeend", function () {
         console.log("resizeend")
     });
-    this.selectedPolygon.on("drag", function(){
-        console.log("dragxxx")
-    });
-    this.selectedPolygon.on("dragend", function(){
-        console.log("dragend")
-    });
+
     this.selectedPolygon.model = model;
     this.selectedPolygon.on('click', function () {
         selectedPolygon = this;
@@ -118,19 +107,6 @@ Map.prototype.setNonMovable = function (polygon) {
 };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 Map.prototype.setFocus = function (lat, lng) {
     this.map.setView(new L.LatLng(lat, lng), DEFAULT_ZOOM);
 };
@@ -138,15 +114,15 @@ Map.prototype.setFocus = function (lat, lng) {
 
 /* Konvertierung LatLng zu Punkt und umgekehrt */
 Map.prototype.layerPointToLatLng = function (point) {
-  return this.d3Overlay.projection.layerPointToLatLng(point);
+    return this.d3Overlay.projection.layerPointToLatLng(point);
 };
 
 Map.prototype.latLngToLayerPoint = function (latLng) {
-  return this.d3Overlay.projection.latLngToLayerPoint(latLng);
+    return this.d3Overlay.projection.latLngToLayerPoint(latLng);
 };
 
 Map.prototype.containerPointToLatLng = function (point) {
-  return this.map.containerPointToLatLng(point);
+    return this.map.containerPointToLatLng(point);
 };
 
 /* Kartentypen */
