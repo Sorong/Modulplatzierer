@@ -63,7 +63,7 @@ Map.prototype.addMultiPolygon = function (model) {
         var panel = selectedPolygon.model.masterPanel;
         selectedPolygon.model.masterPanel.orientation += (startorientation + degrees);
         selectedPolygon.model.masterPanel.align(controller, panel.width, panel.height);
-        console.log("RotationEnd")
+        console.log("RotationEnd");
         console.log(selectedPolygon.model.masterPanel);
         rotation = 0;
     });
@@ -73,7 +73,7 @@ Map.prototype.addMultiPolygon = function (model) {
     });
     var lastDistance = 0;
     this.selectedPolygon.on('resize', function (d) {
-
+        selectedPolygon = this;
         var startCoord = this._latlngs[0][0];
         var endCoord = this._latlngs[0][1];
         var distance = startCoord.distanceTo(endCoord);
