@@ -18,7 +18,7 @@ function Controller() {
 }
 
 Controller.prototype.init = function () {
-    if(navigator.cookieEnabled) { console.log("Cookies erlaubt") };
+    if(navigator.cookieEnabled) { console.log("Cookies erlaubt") }
     this.viewMap.controller = this;
     this.viewMap.init();
     this.viewAddress = new google.maps.places.Autocomplete(

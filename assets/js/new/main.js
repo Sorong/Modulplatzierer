@@ -7,6 +7,6 @@ function initAutocomplete() {
 
 }
 
-$(document).ready(function () {
+$(document).ready(function (){
     controller.loadFromServer();
 });
