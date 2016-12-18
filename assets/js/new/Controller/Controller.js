@@ -18,6 +18,7 @@ function Controller() {
 }
 
 Controller.prototype.init = function () {
+    if(navigator.cookieEnabled) { console.log("Cookies erlaubt") };
     this.viewMap.controller = this;
     this.viewMap.init();
     this.viewAddress = new google.maps.places.Autocomplete(
@@ -52,6 +53,7 @@ Controller.prototype.init = function () {
 };
 
 Controller.prototype.disableServer = function () {
+    $('#error_output').removeClass('hidden');
     this.serverIsAvailable = false;
 };
 
@@ -230,7 +232,12 @@ function callbackDisableServer() {
 
 function callbackCreateCookie(data) {
     if (controller !== undefined) {
-        controller.createUserCookie(data.cookie_id, data.ablaufdatum);
+        if(navigator.cookieEnabled) {
+            controller.createUserCookie(data.cookie_id, data.ablaufdatum);
+        } else {
+            alert("Bitte erlauben Sie die Nutzung von Cookie auf dieser Internetseite, um alle Funktionalitäten nutzen zu können");
+        }
+
     }
 }
 
