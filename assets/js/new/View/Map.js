@@ -44,12 +44,9 @@ Map.prototype.addMultiPolygon = function (model) {
             resize: true
         });
 
-    var startorientation = null;
     var rotation = 0;
     this.selectedPolygon.on("rotatestart", function (d) {
-        if (startorientation == null) {
-            startorientation = selectedPolygon.model.masterPanel.orientation;
-        }
+
     });
 
     this.selectedPolygon.on("rotate", function (d) {
@@ -59,12 +56,7 @@ Map.prototype.addMultiPolygon = function (model) {
     this.selectedPolygon.on("rotateend", function (d) {
         // TODO Begrenzung einfügen, unser Panel unterstützt nur 0-360!
         // TODO callback liefert im Moment die falsche Rotation, bzw keine nur in 'rotate' selbst
-        var degrees = rotation * (180 / Math.PI);
-        var panel = selectedPolygon.model.masterPanel;
-        selectedPolygon.model.masterPanel.orientation += (startorientation + degrees);
-        selectedPolygon.model.masterPanel.align(controller, panel.width, panel.height);
-        console.log("RotationEnd")
-        console.log(selectedPolygon.model.masterPanel);
+        selectedPolygon.model.setOrientationWithRadiant(rotation);
         rotation = 0;
     });
 
@@ -72,6 +64,8 @@ Map.prototype.addMultiPolygon = function (model) {
         console.log("resizestart")
     });
     var lastDistance = 0;
+    // left: -1, right: 1
+    var direction = 1;
     this.selectedPolygon.on('resize', function (d) {
 
         var startCoord = this._latlngs[0][0];
@@ -80,7 +74,10 @@ Map.prototype.addMultiPolygon = function (model) {
 
         var currentDistance = parseInt((d.distance / distance));
 
-        if (currentDistance >= 2 && lastDistance != currentDistance) {
+        direction = (currentDistance < lastDistance) ? -1 : 1;
+
+        if ((currentDistance >= 2 && direction == 1 || currentDistance >= 1 && direction == -1)
+            && lastDistance != currentDistance) {
             if (currentDistance > lastDistance) {
                 var panel = new Panel();
                 model.appendPanel(panel);
@@ -100,11 +97,18 @@ Map.prototype.addMultiPolygon = function (model) {
 
     this.selectedPolygon.on('click', function () {
         selectedPolygon = this;
-
         self.controller.updateModel(this);
     });
-    this.selectedPolygon.on('drag', dragmoveModel);
-    this.selectedPolygon.on('dragend', dragendModel);
+
+    this.selectedPolygon.on('drag', function (d) {
+        console.log("Drag");
+        console.log(d)
+    });
+    this.selectedPolygon.on('dragend', function (d) {
+        console.log("DragEnd")
+        model.setNewPosition(d.target._latlngs)
+    });
+
     this.moveablePolygons.push(model);
     return this.selectedPolygon;
 };
