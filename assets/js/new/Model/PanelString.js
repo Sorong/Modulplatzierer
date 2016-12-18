@@ -53,11 +53,9 @@ var PanelString = (function () {
         var orientation = this.masterPanel.orientation;
         var nextLatLng = this.getNextPoint(this.masterPanel);
         for (var i = 0; i < this.panels.length; i++) {
-            console.log("RefreshGeometrics: " + orientation);
-            console.log("I " + i);
-            console.log(nextLatLng);
             this.panels[i].setTopLeft(this.controller, nextLatLng);
             this.panels[i].setOrientation(this.controller, orientation);
+            console.log(this.panels[i]);
             nextLatLng = this.getNextPoint(this.panels[i]);
         }
     };

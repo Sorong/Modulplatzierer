@@ -1536,18 +1536,22 @@ L.Handler.PathTransform = L.Handler.extend({
             degrees += 360;
         }
 
-        this._orientation += degrees;
+        this._orientation = this._orientation + degrees
 
         if (this._orientation > 360) {
             this._orientation -= 360;
         }
 
+        // Workaround
+        var orientation = (this._orientation - 360 )*-1
+
         this._apply();
         this._path.fire('rotateend', {
             layer: this._path,
             rotation: angle,
-            orientation: this._orientation
+            orientation: orientation.toFixed(0)
         });
+
     },
 
 
