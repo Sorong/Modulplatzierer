@@ -14,7 +14,6 @@ function Map() {
     this.d3Overlay = null;
 
     this.handlerGroup = null;
-    this.lastPanelAppendPosition = null;
 }
 
 Map.prototype.init = function () {
@@ -27,86 +26,59 @@ Map.prototype.init = function () {
 };
 
 Map.prototype.addMultiPolygon = function (model) {
-    console.log(model);
+
     var self = this;
     this.handlerGroup = this.handlerGroup || new L.LayerGroup().addTo(this.map);
+
     this.selectedPolygon =
         L.polygon(model.getGeoJSON(), {
             color: '#FF0',
             draggable: true,
             transform: true
         }).addTo(this.handlerGroup);
+
     this.selectedPolygon.model = model;
-    this.selectedPolygon.transform.enable(
-        {
-            rotation: true,
-            scaling: false,
-            resize: true
-        });
-
-    var rotation = 0;
-    this.selectedPolygon.on("rotatestart", function (d) {
-
+    this.selectedPolygon.transform.enable({
+        rotation: true,
+        scaling: false,
+        resize: true
     });
 
-    this.selectedPolygon.on("rotate", function (d) {
-        rotation = d.rotation;
+    this.selectedPolygon.on('click', function () {
+        self.selectedPolygon = this;
+        self.controller.updateModel(this);
+    }).on('dragend', function (d) {
+        self.selectedPolygon.model.setNewPosition(d.target._latlngs)
+    }).on('rotateend', function (d) {
+        self.selectedPolygon.model.setOrientationWithRadiant(d.rotation);
     });
 
-    this.selectedPolygon.on("rotateend", function (d) {
-        // TODO Begrenzung einfügen, unser Panel unterstützt nur 0-360!
-        // TODO callback liefert im Moment die falsche Rotation, bzw keine nur in 'rotate' selbst
-        selectedPolygon.model.setOrientationWithRadiant(rotation);
-        rotation = 0;
-    });
-
-    this.selectedPolygon.on("resizestart", function () {
-        console.log("resizestart")
-    });
     var lastDistance = 0;
-    // left: -1, right: 1
-    var direction = 1;
+    var moveDirection = 1; // left: -1, right: 1
     this.selectedPolygon.on('resize', function (d) {
 
         var startCoord = this._latlngs[0][0];
         var endCoord = this._latlngs[0][1];
         var distance = startCoord.distanceTo(endCoord);
-
         var currentDistance = parseInt((d.distance / distance));
 
-        direction = (currentDistance < lastDistance) ? -1 : 1;
+        moveDirection = (currentDistance < lastDistance) ? -1 : 1;
 
-        if ((currentDistance >= 2 && direction == 1 || currentDistance >= 1 && direction == -1)
-            && lastDistance != currentDistance) {
+        var isAddOrRemoveBorderExceeded = (
+            (currentDistance >= 2 && moveDirection == 1 || currentDistance >= 1 && moveDirection == -1)
+            && lastDistance != currentDistance
+        );
+        if (isAddOrRemoveBorderExceeded) {
             if (currentDistance > lastDistance) {
                 var panel = new Panel();
-                model.appendPanel(panel);
+                self.selectedPolygon.model.appendPanel(panel);
             } else {
-                model.removePanel();
+                self.selectedPolygon.model.removePanel();
             }
-            selectedPolygon.setLatLngs(model.getGeoJSON());
+            self.selectedPolygon.setLatLngs(self.selectedPolygon.model.getGeoJSON());
             lastDistance = currentDistance
         }
 
-    });
-
-    this.selectedPolygon.on("resizeend", function () {
-        console.log("resizeend")
-    });
-
-
-    this.selectedPolygon.on('click', function () {
-        selectedPolygon = this;
-        self.controller.updateModel(this);
-    });
-
-    this.selectedPolygon.on('drag', function (d) {
-        console.log("Drag");
-        console.log(d)
-    });
-    this.selectedPolygon.on('dragend', function (d) {
-        console.log("DragEnd")
-        model.setNewPosition(d.target._latlngs)
     });
 
     this.moveablePolygons.push(model);

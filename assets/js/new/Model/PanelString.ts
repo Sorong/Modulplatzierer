@@ -36,10 +36,11 @@ class PanelString {
     setOrientation(orientation) {
         let master = this.masterPanel;
         master.orientation += (orientation);
-        master.align(this.controller, master.width, master.height);
+        master.align(this.controller);
     }
 
     setOrientationWithRadiant(radiant) {
+        // TODO Begrenzung einfügen, unser Panel unterstützt nur 0-360!
         let degrees = radiant * (180 / Math.PI);
         this.setOrientation(this.masterPanel.orientation + degrees)
     }
@@ -55,7 +56,7 @@ class PanelString {
         console.log(topRight);
         console.log(master.topRight);
 
-        master.selfAlign(this.controller);
+        master.align(this.controller);
 
         console.log("After");
         console.log(topLeft);
@@ -79,7 +80,7 @@ class PanelString {
             this.panels[i].orientation = orientation;
             // TODO selfAlign macht leider nicht das was gewünscht ist
             // this.panels[i].selfAlign(this.controller)
-            this.panels[i].align(this.controller, height, width);
+            this.panels[i].align(this.controller);
             nextLatLng = this.getNextPoint(this.panels[i]);
         }
     }

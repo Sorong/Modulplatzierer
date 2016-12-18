@@ -614,12 +614,6 @@ L.Matrix = function (a, b, c, d, e, f) {
 
 L.Matrix.prototype = {
 
-
-    jojoM: function () {
-
-    },
-
-
     /**
      * @param  {L.Point} point
      * @return {L.Point}
@@ -883,10 +877,6 @@ L.PathTransform.ResizeHandle = L.PathTransform.Handle.extend({
 
 L.Handler.PathTransform = L.Handler.extend({
 
-    jojo: function () {
-
-    },
-
     options: {
         rotation: true,
         scaling: true,
@@ -993,7 +983,6 @@ L.Handler.PathTransform = L.Handler.extend({
         this._path
             .on('dragstart', this._onDragStart, this)
             .on('dragend', this._onDragEnd, this);
-        this._teest = "lalalala";
     },
 
 
@@ -1336,7 +1325,6 @@ L.Handler.PathTransform = L.Handler.extend({
     },
 
     _createResizeHandlers: function () {
-        var map = this._map;
         var latlngs = this._rect._latlngs[0];
 
         var handlerPosition = latlngs[3];
@@ -1409,7 +1397,6 @@ L.Handler.PathTransform = L.Handler.extend({
 
         map.dragging.disable();
 
-
         this._activeMarker = marker;
         this._originMarker = evt.target;
 
@@ -1430,13 +1417,13 @@ L.Handler.PathTransform = L.Handler.extend({
 
     _onResize: function (evt) {
         var map = this._map;
-        var originPoint = this._originMarker._point;
+        /*var originPoint = this._originMarker._point;
         var ratio = originPoint.distanceTo(evt.layerPoint) / this._initialDist;
 
         var xRadio = evt.layerPoint.x / originPoint.x;
         var yRadio = evt.layerPoint.y / originPoint.y;
 
-        this._resize = new L.Point(xRadio, 1);
+        this._resize = new L.Point(xRadio, 1);*/
 
         var topLeft = this._rect._latlngs[0][1];
         var bottomRight = map.layerPointToLatLng(evt.layerPoint);
@@ -1445,9 +1432,9 @@ L.Handler.PathTransform = L.Handler.extend({
         this._activeMarker.setLatLng(bottomRight);
 
         // update matrix
-        this._matrix = this._initialMatrix
+       /* this._matrix = this._initialMatrix
             .clone()
-            .resize(evt.layerPoint, originPoint);
+            .resize(evt.layerPoint, originPoint);*/
 
         this._update();
 
@@ -1466,6 +1453,9 @@ L.Handler.PathTransform = L.Handler.extend({
     },
 
     _onResizeEnd: function (evt) {
+
+        this._rect.setBounds(this._path.getBounds());
+
         this._path._map
             .off('mousemove', this._onResize, this)
             .off('mouseup', this._onResizeEnd, this);
@@ -1530,8 +1520,9 @@ L.Handler.PathTransform = L.Handler.extend({
             .off('mousemove', this._onRotate, this)
             .off('mouseup', this._onRotateEnd, this);
 
+        var angle = this._angle;
         this._apply();
-        this._path.fire('rotateend', {layer: this._path, rotation: this._angle});
+        this._path.fire('rotateend', {layer: this._path, rotation: angle});
     },
 
 
@@ -1719,7 +1710,6 @@ L.Handler.PathTransform = L.Handler.extend({
 
 L.Path.addInitHook(function () {
     if (this.options.transform) {
-        this.lala = "test";
         this.transform = new L.Handler.PathTransform(this, this.options.transform);
     }
 });
