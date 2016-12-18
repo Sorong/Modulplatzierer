@@ -907,7 +907,7 @@ L.Handler.PathTransform = L.Handler.extend({
         // rectangle
         boundsOptions: {
             weight: 1,
-            opacity: 1,
+            opacity: 0,
             dashArray: [3, 3],
             fill: false
         },
@@ -923,7 +923,6 @@ L.Handler.PathTransform = L.Handler.extend({
             weight: 1,
             setCursor: true,
             opacity: 1,
-            color: "#F00",
             dashArray: [3, 3],
             fill: false
         },
@@ -1030,6 +1029,7 @@ L.Handler.PathTransform = L.Handler.extend({
             .off('dragend', this._onDragEnd, this);
         this._handlersGroup = null;
         this._rect = null;
+        this._polyLine = null;
         this._handlers = [];
     },
 
@@ -1189,9 +1189,11 @@ L.Handler.PathTransform = L.Handler.extend({
 
         this._rectShape = this._rect.toGeoJSON();
 
+        this._handlersGroup.removeLayer(this._polyLine);
         this._handlersGroup.removeLayer(this._handleLine);
         this._handlersGroup.removeLayer(this._rotationMarker);
 
+        this._polyLine = null;
         this._handleLine = this._rotationMarker = null;
 
         for (var i = this._handlers.length - 1; i >= 0; i--) {
@@ -1335,18 +1337,27 @@ L.Handler.PathTransform = L.Handler.extend({
         this._handlersGroup = this._handlersGroup ||
             new L.LayerGroup().addTo(map);
 
-        this._rect = this._rect ||
-            this._getBoundingPolygon().addTo(this._handlersGroup);
+        this._rect = this._rect || this._getBoundingPolygon().addTo(this._handlersGroup);
 
-        if (this.options.scaling) {
-            this._handlers = [];
-            for (var i = 0; i < this.options.edgesCount; i++) {
-                // TODO: add stretching
-                this._handlers.push(
-                    this._createHandler(this._rect._latlngs[0][i], i * 2, i)
-                        .addTo(this._handlersGroup));
-            }
-        }
+        /*
+         if (this.options.scaling) {
+         this._handlers = [];
+         for (var i = 0; i < this.options.edgesCount; i++) {
+         // TODO: add stretching
+         this._handlers.push(
+         this._createHandler(this._rect._latlngs[0][i], i * 2, i)
+         .addTo(this._handlersGroup));
+         }
+         }*/
+
+        var indexOfLastPath = this._path._latlngs.length - 1;
+        var firstPath = this._path._latlngs[0];
+        var lastPath = this._path._latlngs[indexOfLastPath];
+
+        this._polyLine = this._polyLine || new L.Polyline([
+                    firstPath[0], lastPath[1], lastPath[2], firstPath[3], firstPath[0]
+                ],
+                this.options.polyLineOptions).addTo(this._handlersGroup);
 
         // add bounds
         if (this.options.rotation) {
@@ -1358,31 +1369,15 @@ L.Handler.PathTransform = L.Handler.extend({
             this._createResizeHandlers();
         }
 
-        var indexOfLastPath = this._path._latlngs.length - 1;
-        var firstPath = this._path._latlngs[0];
-        var lastPath = this._path._latlngs[indexOfLastPath];
-
-        this._polyLine = new L.Polyline([
-            firstPath[0],
-            lastPath[1],
-            lastPath[2],
-            firstPath[3]
-        ],
-            this.options.polyLineOptions).addTo(this._handlersGroup);
-
     },
 
     _createResizeHandlers: function () {
-        var latlngs = this._rect._latlngs[0];
 
-        var handlerPosition;
-        if (this._orientation >= 0 && this._orientation < 90) {
-            handlerPosition = latlngs[3];
-        } else {
-            handlerPosition = latlngs[0];
-        }
-        console.log("Orientation: " + this._orientation)
-        console.log("Handler: " + this._getHandlerDirection())
+
+        var indexOfLastPath = this._path._latlngs.length - 1;
+        var lastPath = this._path._latlngs[indexOfLastPath];
+
+        var handlerPosition = lastPath[2];
 
         var ResizeHandleClass = this.options.resizeHandleClass;
         this._resizeMarker = new ResizeHandleClass(handlerPosition,
@@ -1447,8 +1442,13 @@ L.Handler.PathTransform = L.Handler.extend({
      */
     _getRotationOrigin: function () {
         var latlngs = this._rect._latlngs[0];
-        var lb = latlngs[0];
-        var rt = latlngs[2];
+
+        var indexOfLastPath = this._path._latlngs.length - 1;
+        var firstCorner = this._path._latlngs[0];
+        var secondCorner = this._path._latlngs[indexOfLastPath];
+
+        var lb = firstCorner[0];
+        var rt = secondCorner[2];
 
         return new L.LatLng(
             (lb.lat + rt.lat) / 2,
@@ -1508,7 +1508,8 @@ L.Handler.PathTransform = L.Handler.extend({
             topLeft,
             [distanceCBlat + topLeft.lat, distanceCBlng + topLeft.lng],
             handlerPosition,
-            botLeft
+            botLeft,
+            topLeft
         ];
         this._polyLine.setLatLngs(latlngs);
         this._activeMarker.setLatLng(handlerPosition);
