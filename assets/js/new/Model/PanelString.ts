@@ -1,7 +1,3 @@
-enum HandlerDirection{
-    NORTH, EAST, SOUTH, WEST
-}
-
 class PanelString {
 
     controller;
@@ -33,7 +29,6 @@ class PanelString {
     }
 
     removePanelById(panelId) {
-
     }
 
     setOrientation(orientation) {
@@ -48,22 +43,8 @@ class PanelString {
 
     setNewPosition(latlngs) {
         let topLeft = latlngs[0][0];
-        let topRight = latlngs[0][1];
         let master = this.masterPanel;
-
-        console.log("Before");
-        console.log(topLeft);
-        console.log(master.topLeft);
-        console.log(topRight);
-        console.log(master.topRight);
-
         master.setTopLeft(this.controller, topLeft);
-
-        console.log("After");
-        console.log(topLeft);
-        console.log(master.topLeft);
-        console.log(topRight);
-        console.log(master.topRight);
     }
 
     private getNextPoint(panel) {
@@ -77,7 +58,6 @@ class PanelString {
         for (let i = 0; i < this.panels.length; i++) {
             this.panels[i].setTopLeft(this.controller, nextLatLng);
             this.panels[i].setOrientation(this.controller, orientation);
-            console.log(this.panels[i]);
             nextLatLng = this.getNextPoint(this.panels[i]);
         }
     }

@@ -978,20 +978,6 @@ L.Handler.PathTransform = L.Handler.extend({
         this._polyLine = null;
     },
 
-    _getHandlerDirection: function () {
-        var direction;
-        if (this._orientation > 315 && this._orientation < 45) {
-            direction = HandlerDirection.NORTH;
-        } else if (this._orientation < 135) {
-            direction = HandlerDirection.EAST;
-        } else if (this._orientation < 225) {
-            direction = HandlerDirection.SOUTH;
-        } else {
-            direction = HandlerDirection.WEST;
-        }
-        return direction;
-    },
-
     /**
      * If the polygon is not rendered, you can transform it yourself
      * in the coordinates, and do it properly.
@@ -1340,6 +1326,7 @@ L.Handler.PathTransform = L.Handler.extend({
         this._rect = this._rect || this._getBoundingPolygon().addTo(this._handlersGroup);
 
         /*
+        TODO bitte vorerst drin lassen^^
          if (this.options.scaling) {
          this._handlers = [];
          for (var i = 0; i < this.options.edgesCount; i++) {
@@ -1441,8 +1428,6 @@ L.Handler.PathTransform = L.Handler.extend({
      * @return {L.LatLng}
      */
     _getRotationOrigin: function () {
-        var latlngs = this._rect._latlngs[0];
-
         var indexOfLastPath = this._path._latlngs.length - 1;
         var firstCorner = this._path._latlngs[0];
         var secondCorner = this._path._latlngs[indexOfLastPath];
@@ -1487,7 +1472,6 @@ L.Handler.PathTransform = L.Handler.extend({
     _onResize: function (evt) {
         var map = this._map;
 
-
         var indexOfLastPath = this._path._latlngs.length - 1;
         var firstCorner = this._path._latlngs[0][0];
         var secondCorner = this._path._latlngs[indexOfLastPath][2];
@@ -1511,48 +1495,11 @@ L.Handler.PathTransform = L.Handler.extend({
             botLeft,
             topLeft
         ];
+
         this._polyLine.setLatLngs(latlngs);
         this._activeMarker.setLatLng(handlerPosition);
-        //var polyline = L.polyline(latlngs, {color: 'red'}).addTo(this._map);
-
-        /*var topLeft = this._rect._latlngs[0][1];
-         var topRight = this._rect._latlngs[0][2];
-         var botRight = this._rect._latlngs[0][3];
-         var botLeft = this._rect._latlngs[0][0];
-
-
-
-         console.log("Distance: " + distance);
-
-         switch (this._getHandlerDirection()) {
-         case HandlerDirection.SOUTH:
-         this._rect.setBounds(L.latLngBounds(handlerPosition, topRight));
-         distance = topRight.distanceTo(handlerPosition);
-         break;
-         case HandlerDirection.WEST:
-         this._rect.setBounds(L.latLngBounds(handlerPosition, botRight));
-         distance = botRight.distanceTo(handlerPosition);
-         break;
-         case HandlerDirection.NORTH:
-         this._rect.setBounds(L.latLngBounds(handlerPosition, botLeft));
-         distance = botLeft.distanceTo(handlerPosition);
-         break;
-         default:
-         this._rect.setBounds(L.latLngBounds(handlerPosition, topLeft));
-         distance = topLeft.distanceTo(handlerPosition);
-
-         }*/
-
-        // update matrix
-        /* this._matrix = this._initialMatrix
-         .clone()
-         .resize(evt.layerPoint, originPoint);*/
 
         this._update();
-
-        var startCoord = this._rect._latlngs[0][1];
-        var endCoord = this._rect._latlngs[0][2];
-        //var distance = startCoord.distanceTo(endCoord);
 
         this._path.fire('resize', {
             distance: distance,

@@ -30,6 +30,11 @@ Map.prototype.selectPolygon = function (selectedPolygon) {
      this.selectedPolygon.transform.disable()
      }*/
     this.selectedPolygon = selectedPolygon;
+    //this.controller.updateModel(selectedPolygon);
+    this.controller.connectModelWithToolbar(selectedPolygon);
+    /*this.connectModelWithToolbar(polygon);
+    self.selectedPolygon = this;
+    self.controller.updateModel(this);*/
     /*this.selectedPolygon.transform.enable({
      rotation: true,
      scaling: false,
@@ -58,7 +63,6 @@ Map.prototype.addMultiPolygon = function (model) {
 
     this.selectedPolygon.on('click', function () {
         self.selectPolygon(this);
-        self.controller.updateModel(this);
     });
 
     // Drag & Drop Events

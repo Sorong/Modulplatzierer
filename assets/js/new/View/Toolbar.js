@@ -1,5 +1,14 @@
 function Toolbar(model) {
-    this.selectedModel = model;
+
+    this.isPanelString = false;
+
+    if(model.constructor == PanelString){
+        this.selectedModel = model.masterPanel;
+        this.isPanelString = true;
+    }else{
+        this.selectedModel = model;
+    }
+
     this.toolsContainer = $("#tools");
     this.toolsHeadline = $("#tools_headline").find(".headline");
     this.modelTilt = $("#model_tilt");

@@ -1,11 +1,3 @@
-var HandlerDirection;
-(function (HandlerDirection) {
-    HandlerDirection[HandlerDirection["NORTH"] = 0] = "NORTH";
-    HandlerDirection[HandlerDirection["EAST"] = 1] = "EAST";
-    HandlerDirection[HandlerDirection["SOUTH"] = 2] = "SOUTH";
-    HandlerDirection[HandlerDirection["WEST"] = 3] = "WEST";
-})(HandlerDirection || (HandlerDirection = {}));
-
 var PanelString = (function () {
     function PanelString(controller, panel) {
         this.controller = controller;
@@ -40,19 +32,8 @@ var PanelString = (function () {
     };
     PanelString.prototype.setNewPosition = function (latlngs) {
         var topLeft = latlngs[0][0];
-        var topRight = latlngs[0][1];
         var master = this.masterPanel;
-        console.log("Before");
-        console.log(topLeft);
-        console.log(master.topLeft);
-        console.log(topRight);
-        console.log(master.topRight);
         master.setTopLeft(this.controller, topLeft);
-        console.log("After");
-        console.log(topLeft);
-        console.log(master.topLeft);
-        console.log(topRight);
-        console.log(master.topRight);
     };
     PanelString.prototype.getNextPoint = function (panel) {
         return panel.getPointsAsList()[1];
@@ -63,7 +44,6 @@ var PanelString = (function () {
         for (var i = 0; i < this.panels.length; i++) {
             this.panels[i].setTopLeft(this.controller, nextLatLng);
             this.panels[i].setOrientation(this.controller, orientation);
-            console.log(this.panels[i]);
             nextLatLng = this.getNextPoint(this.panels[i]);
         }
     };
