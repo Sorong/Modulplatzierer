@@ -13,7 +13,6 @@ class PanelString {
     appendPanel(panel) {
         if (panel != undefined) {
             let master = this.masterPanel;
-
             panel.topLeft = master.topLeft;
             panel.pitch = master.pitch;
             panel.orientation = master.orientation;
@@ -25,7 +24,7 @@ class PanelString {
     }
 
     removePanel(panel) {
-        let removePosition = this.panels.length -1;
+        let removePosition = this.panels.length - 1;
         this.panels.splice(removePosition, 1);
     }
 
@@ -35,28 +34,26 @@ class PanelString {
 
     setOrientation(orientation) {
         let master = this.masterPanel;
-        master.orientation += (orientation);
-        master.align(this.controller);
+        console.log(orientation);
+        let o = orientation - 45;
+        if (o < 0) {
+            o += 360;
+        }
+        master.setOrientation(this.controller, o);
     }
 
-    setOrientationWithRadiant(radiant) {
-        // TODO Begrenzung einfügen, unser Panel unterstützt nur 0-360!
-        let degrees = radiant * (180 / Math.PI);
-        this.setOrientation(this.masterPanel.orientation + degrees)
-    }
-
-    setNewPosition(latlngs){
+    setNewPosition(latlngs) {
         let topLeft = latlngs[0][0];
         let topRight = latlngs[0][1];
         let master = this.masterPanel;
-        master.topLeft = topLeft;
+
         console.log("Before");
         console.log(topLeft);
         console.log(master.topLeft);
         console.log(topRight);
         console.log(master.topRight);
 
-        master.align(this.controller);
+        master.setTopLeft(this.controller, topLeft);
 
         console.log("After");
         console.log(topLeft);

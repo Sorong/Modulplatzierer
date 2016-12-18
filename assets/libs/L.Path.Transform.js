@@ -883,6 +883,7 @@ L.Handler.PathTransform = L.Handler.extend({
         resize: true,
         maxZoom: 22,
         globalAngle: 45,
+        orientation: 0,
 
         // edge handlers
         handlerOptions: {
@@ -947,6 +948,7 @@ L.Handler.PathTransform = L.Handler.extend({
         this._initialDist = 0;
         this._rotationStart = null;
         this._rotationOriginPt = null;
+        this._orientation = this.options.orientation;
 
         // preview and transform matrix
         this._matrix = new L.Matrix(1, 0, 0, 1, 0, 0);
@@ -1411,6 +1413,10 @@ L.Handler.PathTransform = L.Handler.extend({
         this._initialDist = this._originMarker._point
             .distanceTo(this._activeMarker._point);
 
+
+        this._map.removeLayer(this._handleLine);
+        this._map.removeLayer(this._rotationMarker);
+
         this._path
             .fire('resizestart', {layer: this._path});
     },
@@ -1418,12 +1424,12 @@ L.Handler.PathTransform = L.Handler.extend({
     _onResize: function (evt) {
         var map = this._map;
         /*var originPoint = this._originMarker._point;
-        var ratio = originPoint.distanceTo(evt.layerPoint) / this._initialDist;
+         var ratio = originPoint.distanceTo(evt.layerPoint) / this._initialDist;
 
-        var xRadio = evt.layerPoint.x / originPoint.x;
-        var yRadio = evt.layerPoint.y / originPoint.y;
+         var xRadio = evt.layerPoint.x / originPoint.x;
+         var yRadio = evt.layerPoint.y / originPoint.y;
 
-        this._resize = new L.Point(xRadio, 1);*/
+         this._resize = new L.Point(xRadio, 1);*/
 
         var topLeft = this._rect._latlngs[0][1];
         var bottomRight = map.layerPointToLatLng(evt.layerPoint);
@@ -1432,9 +1438,9 @@ L.Handler.PathTransform = L.Handler.extend({
         this._activeMarker.setLatLng(bottomRight);
 
         // update matrix
-       /* this._matrix = this._initialMatrix
-            .clone()
-            .resize(evt.layerPoint, originPoint);*/
+        /* this._matrix = this._initialMatrix
+         .clone()
+         .resize(evt.layerPoint, originPoint);*/
 
         this._update();
 
@@ -1459,6 +1465,9 @@ L.Handler.PathTransform = L.Handler.extend({
         this._path._map
             .off('mousemove', this._onResize, this)
             .off('mouseup', this._onResizeEnd, this);
+
+        this._map.addLayer(this._handleLine);
+        this._map.addLayer(this._rotationMarker);
 
         this._apply();
         this._path.fire('resizeend', {layer: this._path, rotation: this._angle});
@@ -1499,7 +1508,8 @@ L.Handler.PathTransform = L.Handler.extend({
         var origin = this._rotationOriginPt;
 
         // rotation step angle
-        this._angle = Math.atan2(pos.y - origin.y, pos.x - origin.x) -
+        this._angle =
+            Math.atan2(pos.y - origin.y, pos.x - origin.x) -
             Math.atan2(previous.y - origin.y, previous.x - origin.x);
 
         this._matrix = this._initialMatrix
@@ -1521,8 +1531,23 @@ L.Handler.PathTransform = L.Handler.extend({
             .off('mouseup', this._onRotateEnd, this);
 
         var angle = this._angle;
+        var degrees = angle * (180 / Math.PI);
+        if (angle < 0) {
+            degrees += 360;
+        }
+
+        this._orientation += degrees;
+
+        if (this._orientation > 360) {
+            this._orientation -= 360;
+        }
+
         this._apply();
-        this._path.fire('rotateend', {layer: this._path, rotation: angle});
+        this._path.fire('rotateend', {
+            layer: this._path,
+            rotation: angle,
+            orientation: this._orientation
+        });
     },
 
 

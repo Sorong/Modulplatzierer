@@ -25,6 +25,18 @@ Map.prototype.init = function () {
     this.d3Overlay.addTo(this.map);
 };
 
+Map.prototype.selectPolygon = function (selectedPolygon) {
+    /*if (this.selectedPolygon != null) {
+     this.selectedPolygon.transform.disable()
+     }*/
+    this.selectedPolygon = selectedPolygon;
+    /*this.selectedPolygon.transform.enable({
+     rotation: true,
+     scaling: false,
+     resize: true
+     });*/
+};
+
 Map.prototype.addMultiPolygon = function (model) {
 
     var self = this;
@@ -45,18 +57,32 @@ Map.prototype.addMultiPolygon = function (model) {
     });
 
     this.selectedPolygon.on('click', function () {
-        self.selectedPolygon = this;
+        self.selectPolygon(this);
         self.controller.updateModel(this);
-    }).on('dragend', function (d) {
-        self.selectedPolygon.model.setNewPosition(d.target._latlngs)
-    }).on('rotateend', function (d) {
-        self.selectedPolygon.model.setOrientationWithRadiant(d.rotation);
     });
 
+    // Drag & Drop Events
+    this.selectedPolygon.on('dragstart', function (d) {
+        self.selectPolygon(this)
+    }).on('dragend', function (d) {
+        self.selectedPolygon.model.setNewPosition(d.target._latlngs)
+    });
+
+    // Rotation Events
+    this.selectedPolygon.on('rotatestart', function (d) {
+        self.selectPolygon(this)
+    }).on('rotateend', function (d) {
+        self.selectedPolygon.model.setOrientation(d.orientation);
+        self.selectedPolygon.model.setNewPosition(d.target._latlngs);
+    });
+
+    // Resize Events
     var lastDistance = 0;
     var moveDirection = 1; // left: -1, right: 1
-    this.selectedPolygon.on('resize', function (d) {
-        selectedPolygon = this;
+    this.selectedPolygon.on('resizestart', function (d) {
+        self.selectPolygon(this);
+    }).on('resize', function (d) {
+
         var startCoord = this._latlngs[0][0];
         var endCoord = this._latlngs[0][1];
         var distance = startCoord.distanceTo(endCoord);

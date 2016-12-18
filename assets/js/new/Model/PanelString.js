@@ -23,25 +23,23 @@ var PanelString = (function () {
     };
     PanelString.prototype.setOrientation = function (orientation) {
         var master = this.masterPanel;
-        master.orientation += (orientation);
-        master.align(this.controller);
-    };
-    PanelString.prototype.setOrientationWithRadiant = function (radiant) {
-        // TODO Begrenzung einfügen, unser Panel unterstützt nur 0-360!
-        var degrees = radiant * (180 / Math.PI);
-        this.setOrientation(this.masterPanel.orientation + degrees);
+        console.log(orientation);
+        var o = orientation - 45;
+        if (o < 0) {
+            o += 360;
+        }
+        master.setOrientation(this.controller, o);
     };
     PanelString.prototype.setNewPosition = function (latlngs) {
         var topLeft = latlngs[0][0];
         var topRight = latlngs[0][1];
         var master = this.masterPanel;
-        master.topLeft = topLeft;
         console.log("Before");
         console.log(topLeft);
         console.log(master.topLeft);
         console.log(topRight);
         console.log(master.topRight);
-        master.align(this.controller);
+        master.setTopLeft(this.controller, topLeft);
         console.log("After");
         console.log(topLeft);
         console.log(master.topLeft);

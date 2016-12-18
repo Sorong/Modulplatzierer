@@ -69,12 +69,23 @@ Panel.prototype.selfAlign = function (controller) {
 
 };
 
+Panel.prototype.setOrientation = function (controller, orientation) {
+    alert("Set Orientation: " + orientation)
+    this.orientation = orientation;
+    this.align(controller)
+};
+
+Panel.prototype.setTopLeft = function(controller, topLeft){
+    this.topLeft = topLeft;
+    this.align(controller)
+};
+
 Panel.prototype.getPointsAsList = function () {
     var list = [this.oTopLeft, this.topRight, this.botRight, this.botLeft];
     return list;
 };
 
-Panel.prototype.getLatLngsAsArray = function() {
+Panel.prototype.getLatLngsAsArray = function () {
     return [
         [this.oTopLeft.lat, this.oTopLeft.lng],
         [this.oTopRight.lat, this.oTopRight.lng],
@@ -114,7 +125,7 @@ Panel.prototype.setPointsFromList = function (list) {
     if (list.length > 0) {
         for (var i = 0; i < list.length; i++) {
             var latLng = L.latLng(list[i].latitude, list[i].longitude);
-            if(latLng === undefined) {
+            if (latLng === undefined) {
                 latLng = list[i];
             }
             switch (i) {
