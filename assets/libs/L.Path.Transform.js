@@ -615,7 +615,7 @@ L.Matrix = function (a, b, c, d, e, f) {
 L.Matrix.prototype = {
 
 
-    jojoM: function(){
+    jojoM: function () {
 
     },
 
@@ -883,7 +883,7 @@ L.PathTransform.ResizeHandle = L.PathTransform.Handle.extend({
 
 L.Handler.PathTransform = L.Handler.extend({
 
-    jojo:function(){
+    jojo: function () {
 
     },
 
@@ -1429,7 +1429,6 @@ L.Handler.PathTransform = L.Handler.extend({
     },
 
     _onResize: function (evt) {
-        var rect = this._rect;
         var map = this._map;
         var originPoint = this._originMarker._point;
         var ratio = originPoint.distanceTo(evt.layerPoint) / this._initialDist;
@@ -1439,10 +1438,10 @@ L.Handler.PathTransform = L.Handler.extend({
 
         this._resize = new L.Point(xRadio, 1);
 
-        var topLeft = this._rect._latlngs[0];
+        var topLeft = this._rect._latlngs[0][1];
         var bottomRight = map.layerPointToLatLng(evt.layerPoint);
 
-        rect.setBounds(L.latLngBounds(topLeft, bottomRight));
+        this._rect.setBounds(L.latLngBounds(bottomRight, topLeft));
         this._activeMarker.setLatLng(bottomRight);
 
         // update matrix
@@ -1452,8 +1451,8 @@ L.Handler.PathTransform = L.Handler.extend({
 
         this._update();
 
-        var startCoord = rect._latlngs[0][1];
-        var endCoord = rect._latlngs[0][2];
+        var startCoord = this._rect._latlngs[0][1];
+        var endCoord = this._rect._latlngs[0][2];
         var distance = startCoord.distanceTo(endCoord);
 
         this._path.fire('resize', {

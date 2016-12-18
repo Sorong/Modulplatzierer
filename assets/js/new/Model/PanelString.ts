@@ -25,11 +25,43 @@ class PanelString {
     }
 
     removePanel(panel) {
-
+        let removePosition = this.panels.length -1;
+        this.panels.splice(removePosition, 1);
     }
 
     removePanelById(panelId) {
 
+    }
+
+    setOrientation(orientation) {
+        let master = this.masterPanel;
+        master.orientation += (orientation);
+        master.align(this.controller, master.width, master.height);
+    }
+
+    setOrientationWithRadiant(radiant) {
+        let degrees = radiant * (180 / Math.PI);
+        this.setOrientation(this.masterPanel.orientation + degrees)
+    }
+
+    setNewPosition(latlngs){
+        let topLeft = latlngs[0][0];
+        let topRight = latlngs[0][1];
+        let master = this.masterPanel;
+        master.topLeft = topLeft;
+        console.log("Before");
+        console.log(topLeft);
+        console.log(master.topLeft);
+        console.log(topRight);
+        console.log(master.topRight);
+
+        master.selfAlign(this.controller);
+
+        console.log("After");
+        console.log(topLeft);
+        console.log(master.topLeft);
+        console.log(topRight);
+        console.log(master.topRight);
     }
 
     private getNextPoint(panel) {
@@ -37,19 +69,17 @@ class PanelString {
     }
 
     private refreshGeometrics() {
-        console.log("Master:")
-        console.log(this.masterPanel);
         let orientation = this.masterPanel.orientation;
         let nextLatLng = this.getNextPoint(this.masterPanel);
-        console.log(nextLatLng);
+
         let height = this.masterPanel.height;
         let width = this.masterPanel.width;
         for (let i = 0; i < this.panels.length; i++) {
             this.panels[i].topLeft = nextLatLng;
             this.panels[i].orientation = orientation;
+            // TODO selfAlign macht leider nicht das was gewünscht ist
+            // this.panels[i].selfAlign(this.controller)
             this.panels[i].align(this.controller, height, width);
-            console.log("I:" + i);
-            console.log(this.panels[i]);
             nextLatLng = this.getNextPoint(this.panels[i]);
         }
     }
