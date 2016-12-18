@@ -36,15 +36,19 @@
 
 <div id="main_container" class="container-fluid text-center">
     <div class="row content">
-        <div class="col-sm-2 sidenav">
-            <div class="address">
-                <label for="address">Ihre Adresse: </label>
-                <input id="address" placeholder="Geben Sie Ihre Adresse ein" type="text" style="width: 100%;"/>
+        <div class="col-sm-3 sidenav">
+            <div class="form-group has-feedback" id="address_tool">
+                <label for="address">Adresse:</label>
+                <input type="text" class="form-control" id="address" placeholder="Geben Sie Ihre Adresse ein">
+                <span id="address_tool_span" class="glyphicon form-control-feedback"></span>
+                <label for="address" id="address_error"></label>
             </div>
             <div class="box_left">
-                <button type="button" class="btn btn-primary btn-block" id="add">Panel hinzuf&uuml;gen</button>
-                <button type="button" class="btn btn-primary btn-block" id="googleMap">Zeige GoogleMaps</button>
-                <button type="button" class="btn btn-primary btn-block" id="openstreetMap">Zeige OpenstreetMaps</button>
+                <div class="btn-group-vertical">
+                    <button type="button" class="btn btn-primary btn-block" id="add">Panel hinzuf&uuml;gen</button>
+                    <button type="button" class="btn btn-primary btn-block" id="googleMap">Zeige GoogleMaps</button>
+                    <button type="button" class="btn btn-primary btn-block" id="openstreetMap">Zeige OpenstreetMaps</button>
+                </div>
                 <div class="checkbox">
                     <label><input id="panel_string" type="checkbox" value="">Solarzellenstring</label>
                 </div>
@@ -72,7 +76,7 @@
 
         </div>
 
-        <div class="col-sm-8">
+        <div class="col-sm-7">
             <div id="map" style="height : 800px;"></div>
         </div>
         <div class="col-sm-2 sidenav">
