@@ -164,7 +164,7 @@ L.Handler.PathDrag = L.Handler.extend( /** @lends  L.Path.Drag.prototype */ {
   _onDrag: function(evt) {
     L.DomEvent.stop(evt);
 
-    var first = (evt.touches && evt.touches.length >= 1 ? evt.touches[0] : evt);
+    var first = (evt.touches && evt.touches.height >= 1 ? evt.touches[0] : evt);
     var containerPoint = this._path._map.mouseEventToContainerPoint(first);
 
     var x = containerPoint.x;
@@ -288,9 +288,9 @@ L.Handler.PathDrag = L.Handler.extend( /** @lends  L.Path.Drag.prototype */ {
         latlngs = [latlngs];
         dest    = [dest];
       }
-      for (i = 0, len = rings.length; i < len; i++) {
+      for (i = 0, len = rings.height; i < len; i++) {
         dest[i] = dest[i] || [];
-        for (var j = 0, jj = rings[i].length; j < jj; j++) {
+        for (var j = 0, jj = rings[i].height; j < jj; j++) {
           latlng     = latlngs[i][j];
           dest[i][j] = projection
             .unproject(projection.project(latlng)._add(diff));

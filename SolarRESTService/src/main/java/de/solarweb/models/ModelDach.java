@@ -1,6 +1,7 @@
 package de.solarweb.models;
 
 import de.solarweb.datamodel.*;
+import de.solarweb.helper.LatitudeLongitude;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -10,19 +11,18 @@ import java.util.ArrayList;
 /**
  * Created by Nils on 12.11.16.
  */
-public class ModelDach implements Serializable{
 
-    int dach_id;
-    String strasse;
-    String hausnummer;
-    String postleitzahl;
-    int dachneigung;
-    double koord_dachmitte_lng;
-    double koord_dachmitte_lat;
-    private ArrayList<ModelSolarpanel> modelSolarpanelCollection;
-    ModelCookie cookie;
+public class ModelDach implements Serializable {
 
-    public ModelDach(){
+    private int dach_id;
+    private String strasse;
+    private String hausnummer;
+    private String postleitzahl;
+    private int dachneigung;
+    private ArrayList<LatitudeLongitude> the_geom;
+
+
+    public ModelDach() {
 
     }
 
@@ -32,14 +32,7 @@ public class ModelDach implements Serializable{
         this.dachneigung = tblDach.getDachneigung();
         this.hausnummer = tblDach.getHausnummer();
         this.postleitzahl = tblDach.getPlz();
-        this.koord_dachmitte_lat = tblDach.getKoord_dachmitte_lat();
-        this.koord_dachmitte_lng = tblDach.getKoord_dachmitte_lng();
-        this.modelSolarpanelCollection = new ArrayList<ModelSolarpanel>();
-        for(TblSolarpanel tblSolarpanel : tblDach.getTblSolarpanelCollection() ){
-            modelSolarpanelCollection.add(new ModelSolarpanel(tblSolarpanel));
-        }
-        this.cookie = new ModelCookie(tblDach.getCookie());
-
+        this.the_geom = tblDach.getThe_geomAsLatlng();
     }
 
     public int getDach_id() {
@@ -82,35 +75,11 @@ public class ModelDach implements Serializable{
         this.dachneigung = dachneigung;
     }
 
-    public double getKoord_dachmitte_lng() {
-        return koord_dachmitte_lng;
+    public ArrayList<LatitudeLongitude> getThe_geom() {
+        return the_geom;
     }
 
-    public void setKoord_dachmitte_lng(double koord_dachmitte_lng) {
-        this.koord_dachmitte_lng = koord_dachmitte_lng;
-    }
-
-    public double getKoord_dachmitte_lat() {
-        return koord_dachmitte_lat;
-    }
-
-    public void setKoord_dachmitte_lat(double koord_dachmitte_lat) {
-        this.koord_dachmitte_lat = koord_dachmitte_lat;
-    }
-
-    public ArrayList<ModelSolarpanel> getModelSolarpanelCollection() {
-        return modelSolarpanelCollection;
-    }
-
-    public void setModelSolarpanelCollection(ArrayList<ModelSolarpanel> modelSolarpanelCollection) {
-        this.modelSolarpanelCollection = modelSolarpanelCollection;
-    }
-
-    public ModelCookie getCookie() {
-        return cookie;
-    }
-
-    public void setCookie(ModelCookie cookie) {
-        this.cookie = cookie;
+    public void setThe_geom(ArrayList<LatitudeLongitude> the_geom) {
+        this.the_geom = the_geom;
     }
 }

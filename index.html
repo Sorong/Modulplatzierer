@@ -1,28 +1,37 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <meta charset="UTF-8">
     <title>Modulplatzierer</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css"/>
-    <link rel="stylesheet" href="assets/css/style.css"/>
+
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
 
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJ4aYR2NFbLLzh_tkya-rE40gCl-hPpLc" async
-            defer></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    
     <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
     <script src='https://unpkg.com/leaflet.gridlayer.googlemutant@latest/Leaflet.GoogleMutant.js'></script>
     <script src="http://www.sumbera.com/gist/js/leaflet/svg/scaled/d3-3.5.5.min.js"></script>
     <script src="https://rawgit.com/teralytics/Leaflet.D3SvgOverlay/master/L.D3SvgOverlay.js"></script>
-    <script src="assets/libs/L.Path.Drag.js"></script>
+    <script src="assets/libs/L.Path.Transform.js"></script>
+
+    <script src="assets/js/new/Utility/Matrix.js"></script>
+    <script src="assets/js/new/Model/Panel.js"></script>
+    <script src="assets/js/new/Model/PanelString.js"></script>
+    <script src="assets/js/new/Model/RoofPart.js"></script>
+    <script src="assets/js/new/Model/Roof.js"></script>
+    <script src="assets/js/new/Handler/ServerHandler.js"></script>
+    <script src="assets/js/new/Handler/CookieHandler.js"></script>
+    <script src="assets/js/new/View/Toolbar.js"></script>
+    <script src="assets/js/new/View/Map.js"></script>
+    <script src="assets/js/new/Controller/Controller.js"></script>
+    <script src="assets/js/new/main.js"></script>
 
 
-    <script type="text/javascript" src="assets/js/util.js"></script>
-    <script type="text/javascript" src="assets/js/map.js"></script>
-    <script type="text/javascript" src="assets/js/panel.js"></script>
-    <script type="text/javascript" src="assets/js/paneltools.js"></script>
-    <script type="text/javascript" src="assets/js/cookiemanagement.js"></script>
-    <script type="text/javascript" src="assets/js/app.js"></script>
+
 </head>
 <body>
 
@@ -33,11 +42,8 @@
 
         <div class="box_left adress">
 
-            Stra&szlig;e<br/>
-            <input type="text"/><br/>
-
-            Ort<br/>
-            <input type="text"/>
+            Adresse<br/>
+            <input id="address" placeholder="Geben Sie Ihre Adresse ein" type="text" style="width: 100%;"/>
 
         </div>
 
@@ -45,6 +51,7 @@
             <input type="button" value="Panel hinzuf&uuml;gen" id="add"/><br/>
             <input type="button" value="Google Map" id="googleMap"/><br/>
             <input type="button" value="OpenStreet Map" id="openStreetMap"/><br/>
+            Panel Strings <input id="panel_string" type="checkbox" />
         </div>
 
         <div class="box_left">
@@ -86,9 +93,9 @@
                             Dachneigung
                         </div>
                         <div class="tool_input">
-                            <input id="panel_tilt" type="range" min="0" max="90">
+                            <input id="model_tilt" type="range" min="0" max="90">
                         </div>
-                        <div class="tool_output" id="panel_tilt_value">
+                        <div class="tool_output" id="model_tilt_value">
                             45°
                         </div>
                     </div>
@@ -98,9 +105,9 @@
                             Modulbreite
                         </div>
                         <div class="tool_input">
-                            <input id="panel_width" type="range" min="1" max="10">
+                            <input id="model_width" type="range" min="1" max="10">
                         </div>
-                        <div class="tool_output" id="panel_width_value">
+                        <div class="tool_output" id="model_width_value">
                             5m
                         </div>
                     </div>
@@ -110,9 +117,9 @@
                             Modulh&ouml;he
                         </div>
                         <div class="tool_input">
-                            <input id="panel_height" type="range" min="1" max="10">
+                            <input id="model_height" type="range" min="1" max="10">
                         </div>
-                        <div class="tool_output" id="panel_height_value">
+                        <div class="tool_output" id="model_height_value">
                             5m
                         </div>
                     </div>
@@ -122,9 +129,9 @@
                             Dachorientierung
                         </div>
                         <div class="tool_input">
-                            <input id="roof_orientation" type="range" min="0" max="360">
+                            <input id="model_orientation" type="range" min="0" max="360">
                         </div>
-                        <div class="tool_output" id="roof_orientation_value">
+                        <div class="tool_output" id="model_orientation_value">
                             360°
                         </div>
                     </div>
@@ -160,6 +167,7 @@
 
 </div>
 
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJ4aYR2NFbLLzh_tkya-rE40gCl-hPpLc&libraries=places&callback=initAutocomplete" async defer></script>
 
 </body>
 </html>
