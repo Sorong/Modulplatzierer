@@ -11,7 +11,7 @@ $(document).ready(function (){
     controller.loadFromServer();
 
     function resizeMap() {
-        $("#map").height($(window).height() - 100);
+        $("#map").height($(window).height() - 110);
         setTimeout(function () {
             controller.viewMap.map.invalidateSize();
         }, 100);

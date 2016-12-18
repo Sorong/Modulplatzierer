@@ -1,4 +1,4 @@
-const HOST = "10.136.193.758";
+const HOST = "10.136.193.75";
 
 const DAYS_TILL_COOKIE_EXPIRE = 30;
 const COOKIENAME = "Modulplatzierer";
