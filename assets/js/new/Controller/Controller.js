@@ -18,7 +18,7 @@ function Controller() {
 }
 
 Controller.prototype.init = function () {
-    if(navigator.cookieEnabled) { console.log("Cookies erlaubt") };
+    if(navigator.cookieEnabled) { console.log("Cookies erlaubt") }
     this.viewMap.controller = this;
     this.viewMap.init();
     this.viewAddress = new google.maps.places.Autocomplete(
@@ -147,9 +147,7 @@ Controller.prototype.updateModelPosition = function (polygon, disabledServerUpda
     if(disabledServerUpdate !== true) {
         var out = this.convertModelToJsonString(polygon.model);
         this.serverHandler.updatePanel(out, function (data) {
-            var blubb = data;
-            L.circle([blubb.the_geom[0].latitude, blubb.the_geom[0].longitude], 0.2, {color: "#FF0000"}).addTo(controller.viewMap.map);
-            L.circle(polygon.model.topLeft, 0.2, {color: "#00FF00"}).addTo(controller.viewMap.map);
+            console.log("Panel updated");
         });
     }
 };
