@@ -168,12 +168,13 @@ Controller.prototype.getRoofFromServer = function (place) {
         }
     }
     if (street !== undefined && nr !== undefined && citycode !== undefined) {
+        this.removeAddressError();
         if (self.serverIsAvailable) {
             self.serverHandler.getPredefinedRoof(street, nr, citycode, callbackGetRoof)
         }
         self.viewMap.setFocus(lat, lng);
     } else {
-        alert("Bitte die Adresse vollständig (Straße, Hausnummer, Wohnort) eingeben");
+        this.showAddressError();
     }
 };
 
@@ -204,6 +205,18 @@ Controller.prototype.convertModelToJsonString = function (model) {
     json.cookie_id = this.cookieId;
     json.rahmenbreite = 0;
     return JSON.stringify(json);
+};
+
+Controller.prototype.showAddressError = function () {
+    $('#address_tool').addClass('has-error');
+    $('#address_tool_span').addClass('glyphicon-remove');
+    $('#address_error').text("Addresse muss aus Straße, Hausnummer und Ort bestehen.");
+};
+
+Controller.prototype.removeAddressError = function () {
+    $('#address_tool').removeClass('has-error');
+    $('#address_tool_span').removeClass('glyphicon-remove');
+    $('#address_error').text("");
 };
 
 
