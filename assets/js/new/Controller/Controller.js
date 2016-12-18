@@ -52,6 +52,7 @@ Controller.prototype.init = function () {
 };
 
 Controller.prototype.disableServer = function () {
+    $('#error_output').removeClass('hidden');
     this.serverIsAvailable = false;
 };
 
