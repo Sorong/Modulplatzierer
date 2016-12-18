@@ -70,7 +70,6 @@ Panel.prototype.selfAlign = function (controller) {
 };
 
 Panel.prototype.setOrientation = function (controller, orientation) {
-    alert("Set Orientation: " + orientation)
     this.orientation = orientation;
     this.align(controller)
 };
@@ -87,10 +86,10 @@ Panel.prototype.getPointsAsList = function () {
 
 Panel.prototype.getLatLngsAsArray = function () {
     return [
-        [this.oTopLeft.lat, this.oTopLeft.lng],
-        [this.oTopRight.lat, this.oTopRight.lng],
-        [this.oBotRight.lat, this.oBotRight.lng],
-        [this.oBotLeft.lat, this.oBotLeft.lng]
+        [this.topLeft.lat, this.topLeft.lng],
+        [this.topRight.lat, this.topRight.lng],
+        [this.botRight.lat, this.botRight.lng],
+        [this.botLeft.lat, this.botLeft.lng]
     ]
 };
 

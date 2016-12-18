@@ -24,7 +24,7 @@ var PanelString = (function () {
     PanelString.prototype.setOrientation = function (orientation) {
         var master = this.masterPanel;
         console.log(orientation);
-        var o = orientation - 45;
+        var o = orientation;
         if (o < 0) {
             o += 360;
         }
@@ -52,14 +52,12 @@ var PanelString = (function () {
     PanelString.prototype.refreshGeometrics = function () {
         var orientation = this.masterPanel.orientation;
         var nextLatLng = this.getNextPoint(this.masterPanel);
-        var height = this.masterPanel.height;
-        var width = this.masterPanel.width;
         for (var i = 0; i < this.panels.length; i++) {
-            this.panels[i].topLeft = nextLatLng;
-            this.panels[i].orientation = orientation;
-            // TODO selfAlign macht leider nicht das was gewünscht ist
-            // this.panels[i].selfAlign(this.controller)
-            this.panels[i].align(this.controller);
+            console.log("RefreshGeometrics: " + orientation);
+            console.log("I " + i);
+            console.log(nextLatLng);
+            this.panels[i].setTopLeft(this.controller, nextLatLng);
+            this.panels[i].setOrientation(this.controller, orientation);
             nextLatLng = this.getNextPoint(this.panels[i]);
         }
     };
