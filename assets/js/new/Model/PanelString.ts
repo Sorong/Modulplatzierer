@@ -1,3 +1,7 @@
+enum HandlerDirection{
+    NORTH, EAST, SOUTH, WEST
+}
+
 class PanelString {
 
     controller;

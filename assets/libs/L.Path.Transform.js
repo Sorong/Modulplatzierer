@@ -4,6 +4,14 @@
  * @preserve
  */
 
+var HandlerDirection;
+(function (HandlerDirection) {
+    HandlerDirection[HandlerDirection["NORTH"] = 0] = "NORTH";
+    HandlerDirection[HandlerDirection["EAST"] = 1] = "EAST";
+    HandlerDirection[HandlerDirection["SOUTH"] = 2] = "SOUTH";
+    HandlerDirection[HandlerDirection["WEST"] = 3] = "WEST";
+})(HandlerDirection || (HandlerDirection = {}));
+
 /**
  * Matrix transform path for SVG/VML
  * Renderer-independent
@@ -869,7 +877,7 @@ L.PathTransform.ResizeHandle = L.PathTransform.Handle.extend({
     onAdd: function (map) {
         L.CircleMarker.prototype.onAdd.call(this, map);
         if (this._path && this.options.setCursor) {
-            this._path.style.cursor = 'nwse-resize';
+            this._path.style.cursor = 'all-scroll';
         }
     }
 
@@ -909,6 +917,15 @@ L.Handler.PathTransform = L.Handler.extend({
             weight: 1,
             opacity: 1,
             setCursor: true
+        },
+
+        polyLineOptions: {
+            weight: 1,
+            setCursor: true,
+            opacity: 1,
+            color: "#F00",
+            dashArray: [3, 3],
+            fill: false
         },
         // rotation handle length
         handleLength: 20,
@@ -959,6 +976,21 @@ L.Handler.PathTransform = L.Handler.extend({
         this._rect = null;
         this._handlers = [];
         this._handleLine = null;
+        this._polyLine = null;
+    },
+
+    _getHandlerDirection: function () {
+        var direction;
+        if (this._orientation > 315 && this._orientation < 45) {
+            direction = HandlerDirection.NORTH;
+        } else if (this._orientation < 135) {
+            direction = HandlerDirection.EAST;
+        } else if (this._orientation < 225) {
+            direction = HandlerDirection.SOUTH;
+        } else {
+            direction = HandlerDirection.WEST;
+        }
+        return direction;
     },
 
     /**
@@ -1105,6 +1137,7 @@ L.Handler.PathTransform = L.Handler.extend({
 
         if (this.options.rotation) {
             this._handleLine._transform(matrix._matrix);
+            this._polyLine._transform(matrix._matrix);
         }
     },
 
@@ -1181,7 +1214,9 @@ L.Handler.PathTransform = L.Handler.extend({
 
         if (this.options.rotation) {
             this._handleLine._transform(null);
+            this._polyLine._transform(null);
             this._transformPoints(this._handleLine, this._angle, null, null, this._origin, null, null);
+            this._transformPoints(this._polyLine, this._angle, null, null, this._origin, null, null);
         }
     },
 
@@ -1292,7 +1327,6 @@ L.Handler.PathTransform = L.Handler.extend({
         //console.timeEnd('transform');
     },
 
-
     /**
      * Creates markers and handles
      */
@@ -1324,12 +1358,31 @@ L.Handler.PathTransform = L.Handler.extend({
             this._createResizeHandlers();
         }
 
+        var indexOfLastPath = this._path._latlngs.length - 1;
+        var firstPath = this._path._latlngs[0];
+        var lastPath = this._path._latlngs[indexOfLastPath];
+
+        this._polyLine = new L.Polyline([
+            firstPath[0],
+            lastPath[1],
+            lastPath[2],
+            firstPath[3]
+        ],
+            this.options.polyLineOptions).addTo(this._handlersGroup);
+
     },
 
     _createResizeHandlers: function () {
         var latlngs = this._rect._latlngs[0];
 
-        var handlerPosition = latlngs[3];
+        var handlerPosition;
+        if (this._orientation >= 0 && this._orientation < 90) {
+            handlerPosition = latlngs[3];
+        } else {
+            handlerPosition = latlngs[0];
+        }
+        console.log("Orientation: " + this._orientation)
+        console.log("Handler: " + this._getHandlerDirection())
 
         var ResizeHandleClass = this.options.resizeHandleClass;
         this._resizeMarker = new ResizeHandleClass(handlerPosition,
@@ -1347,13 +1400,22 @@ L.Handler.PathTransform = L.Handler.extend({
         var map = this._map;
         var latlngs = this._rect._latlngs[0];
 
+        var indexOfLastPath = this._path._latlngs.length - 1;
+        var firstPath = this._path._latlngs[0];
+        var lastPath = this._path._latlngs[indexOfLastPath];
+
+        var topLeft = firstPath[3];
+        var topRight = firstPath[0];
+        var botRight = lastPath[1];
+        var botLeft = lastPath[2];
+
         var bottom = new L.LatLng(
-            (latlngs[0].lat + latlngs[3].lat) / 2,
-            (latlngs[0].lng + latlngs[3].lng) / 2);
+            (topLeft.lat + botLeft.lat) / 2,
+            (topLeft.lng + botLeft.lng) / 2);
         // hehe, top is a reserved word
         var topPoint = new L.LatLng(
-            (latlngs[1].lat + latlngs[2].lat) / 2,
-            (latlngs[1].lng + latlngs[2].lng) / 2);
+            (topRight.lat + botRight.lat) / 2,
+            (topRight.lng + botRight.lng) / 2);
 
         var handlerPosition = map.layerPointToLatLng(
             L.LineUtil.pointOnLine(
@@ -1364,6 +1426,7 @@ L.Handler.PathTransform = L.Handler.extend({
 
         this._handleLine = new L.Polyline([topPoint, handlerPosition],
             this.options.rotateHandleOptions).addTo(this._handlersGroup);
+
         var RotateHandleClass = this.options.rotateHandleClass;
         this._rotationMarker = new RotateHandleClass(handlerPosition,
             this.options.handlerOptions)
@@ -1423,19 +1486,61 @@ L.Handler.PathTransform = L.Handler.extend({
 
     _onResize: function (evt) {
         var map = this._map;
-        /*var originPoint = this._originMarker._point;
-         var ratio = originPoint.distanceTo(evt.layerPoint) / this._initialDist;
 
-         var xRadio = evt.layerPoint.x / originPoint.x;
-         var yRadio = evt.layerPoint.y / originPoint.y;
 
-         this._resize = new L.Point(xRadio, 1);*/
+        var indexOfLastPath = this._path._latlngs.length - 1;
+        var firstCorner = this._path._latlngs[0][0];
+        var secondCorner = this._path._latlngs[indexOfLastPath][2];
 
-        var topLeft = this._rect._latlngs[0][1];
-        var bottomRight = map.layerPointToLatLng(evt.layerPoint);
+        var topLeft = this._path._latlngs[0][0];
+        var topRight = this._path._latlngs[0][1];
+        var botRight = this._path._latlngs[0][2];
+        var botLeft = this._path._latlngs[0][3];
 
-        this._rect.setBounds(L.latLngBounds(bottomRight, topLeft));
-        this._activeMarker.setLatLng(bottomRight);
+
+        var handlerPosition = map.layerPointToLatLng(evt.layerPoint);
+        var distance = firstCorner.distanceTo(handlerPosition);
+
+        var distanceCBlat = handlerPosition.lat - botLeft.lat;
+        var distanceCBlng = handlerPosition.lng - botLeft.lng;
+
+        var latlngs = [
+            topLeft,
+            [distanceCBlat + topLeft.lat, distanceCBlng + topLeft.lng],
+            handlerPosition,
+            botLeft
+        ];
+        this._polyLine.setLatLngs(latlngs);
+        this._activeMarker.setLatLng(handlerPosition);
+        //var polyline = L.polyline(latlngs, {color: 'red'}).addTo(this._map);
+
+        /*var topLeft = this._rect._latlngs[0][1];
+         var topRight = this._rect._latlngs[0][2];
+         var botRight = this._rect._latlngs[0][3];
+         var botLeft = this._rect._latlngs[0][0];
+
+
+
+         console.log("Distance: " + distance);
+
+         switch (this._getHandlerDirection()) {
+         case HandlerDirection.SOUTH:
+         this._rect.setBounds(L.latLngBounds(handlerPosition, topRight));
+         distance = topRight.distanceTo(handlerPosition);
+         break;
+         case HandlerDirection.WEST:
+         this._rect.setBounds(L.latLngBounds(handlerPosition, botRight));
+         distance = botRight.distanceTo(handlerPosition);
+         break;
+         case HandlerDirection.NORTH:
+         this._rect.setBounds(L.latLngBounds(handlerPosition, botLeft));
+         distance = botLeft.distanceTo(handlerPosition);
+         break;
+         default:
+         this._rect.setBounds(L.latLngBounds(handlerPosition, topLeft));
+         distance = topLeft.distanceTo(handlerPosition);
+
+         }*/
 
         // update matrix
         /* this._matrix = this._initialMatrix
@@ -1446,7 +1551,7 @@ L.Handler.PathTransform = L.Handler.extend({
 
         var startCoord = this._rect._latlngs[0][1];
         var endCoord = this._rect._latlngs[0][2];
-        var distance = startCoord.distanceTo(endCoord);
+        //var distance = startCoord.distanceTo(endCoord);
 
         this._path.fire('resize', {
             distance: distance,
@@ -1460,7 +1565,7 @@ L.Handler.PathTransform = L.Handler.extend({
 
     _onResizeEnd: function (evt) {
 
-        this._rect.setBounds(this._path.getBounds());
+        //this._rect.setBounds(this._path.getBounds());
 
         this._path._map
             .off('mousemove', this._onResize, this)
@@ -1543,7 +1648,7 @@ L.Handler.PathTransform = L.Handler.extend({
         }
 
         // Workaround
-        var orientation = (this._orientation - 360 )*-1
+        var orientation = (this._orientation - 360 ) * -1
 
         this._apply();
         this._path.fire('rotateend', {

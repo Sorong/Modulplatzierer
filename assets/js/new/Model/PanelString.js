@@ -1,3 +1,11 @@
+var HandlerDirection;
+(function (HandlerDirection) {
+    HandlerDirection[HandlerDirection["NORTH"] = 0] = "NORTH";
+    HandlerDirection[HandlerDirection["EAST"] = 1] = "EAST";
+    HandlerDirection[HandlerDirection["SOUTH"] = 2] = "SOUTH";
+    HandlerDirection[HandlerDirection["WEST"] = 3] = "WEST";
+})(HandlerDirection || (HandlerDirection = {}));
+
 var PanelString = (function () {
     function PanelString(controller, panel) {
         this.controller = controller;
