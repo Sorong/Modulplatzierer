@@ -3,103 +3,86 @@ body {
     font-weight: 800;
 }
 
+div {
+    margin-top: 5px;
+}
+
+
 #map {
-    height: 500px;
-    width: 100%;
-    margin: 0;
-    padding: 0;
+    height: 800px;
+    border: 1px groove #000000;
 }
-
-#main_container {
-    width: 1000px;
-    margin: auto;
-}
-
-.box_left {
-    margin-bottom: 20px;
-    margin-right: 20px;
-    padding: 10px;
-    border: 2px groove #95c11f;
-    border-radius: 5px;
-    font-size: 14px;
-    background: #95c11f;
-}
-
-#left_section {
-    width: 300px;
-    float: left;
-}
-
-#right_section {
-    float: left;
-    width: 600px;
-}
-
-.clear {
-    clear: both;
-}
-
-#map_container {
-    position: relative;
-}
-
-#hidden_content{
-    display:none;
-    width: 100%;
-}
-
 #tools {
-    position: relative;
-    top: 1px;
-    right: 1px;
-    left: 1px;
-    margin-bottom: 10px;
-    z-index: 10000000;
-    width: 596px;
-    border: 2px groove #95c11f;
+   padding-left: 1%;
+}
+
+.sidenav{
+    margin-top: 10px;
+    background-color: #f4ffe6;
+    border: 1px groove #000000;
     border-radius: 5px;
-    background: #95c11f;
 }
 
-.tool {
-    float: left;
-    font-size: 12px;
-    width: 288px;
-    padding-left: 10px;
+#box_button {
+    border-top: 1px solid #000000;
+    text-align: left;
+    margin-left: 10px;
+}
+.table {
+    margin-top: 10px;
+}
+.btn-group-vertical {
+    margin-left: 1%;
+    display: inline-block;
 }
 
-.tool .tool_input {
-    float: left;
-    width: 150px;
+.btn-primary {
+    background-color: #c8e1ff;
+    color: #0a0a0a;
+    font-weight: 500;
 }
 
-.tool .tool_input input {
-    width: 130px;
+#address_tool {
+    text-align: left;
 }
 
-.tool .tool_label {
-    float: left;
-    width: 100px;
+#show_more {
+    margin-bottom: 10px;
+}
+input[type=range]{
+    -webkit-appearance: none;
 }
 
-.tool .tool_output {
-    float: left;
-    width: 30px;
-    text-align: right;
+input[type=range]::-webkit-slider-runnable-track {
+    width: 300px;
+    height: 5px;
+    background: #ddd;
+    border: none;
+    border-radius: 3px;
 }
 
-#tools_showmore {
-    padding: 5px;
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: #0a0a0a;
+    margin-top: -4px;
+}
+
+input[type=range]:focus {
+    outline: none;
+}
+
+input[type=range]:focus::-webkit-slider-runnable-track {
+    background: #ccc;
+}
+
+#error_container {
+    width: auto;
     text-align: center;
 }
 
-#tools_headline {
-    padding: 10px;
-    font-size: 12px;
-    font-weight: bold;
-}
 
-.adress input {
-    margin-bottom: 10px;
 
-}

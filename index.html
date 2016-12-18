@@ -8,7 +8,7 @@
     <title>Modulplatzierer</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css"/>
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-
+    <link rel="stylesheet" href="assets/css/style.css">
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
 
@@ -38,12 +38,12 @@
     <div class="row content">
         <div class="col-sm-3 sidenav">
             <div class="form-group has-feedback" id="address_tool">
-                <label for="address">Adresse:</label>
+                <label for="address" id="address_label">Adresse:</label>
                 <input type="text" class="form-control" id="address" placeholder="Geben Sie Ihre Adresse ein">
-                <span id="address_tool_span" class="glyphicon form-control-feedback"></span>
+                <span id="address_tool_span" class="glyphicon  form-control-feedback"></span>
                 <label for="address" id="address_error"></label>
             </div>
-            <div class="box_left">
+            <div class="box_left" id="box_button">
                 <div class="btn-group-vertical">
                     <button type="button" class="btn btn-primary btn-block" id="add">Panel hinzuf&uuml;gen</button>
                     <button type="button" class="btn btn-primary btn-block" id="googleMap">Zeige GoogleMaps</button>
@@ -76,67 +76,67 @@
 
         </div>
 
-        <div class="col-sm-7">
-            <div id="map" style="height : 800px;"></div>
+        <div class="col-sm-6">
+            <div id="map"></div>
         </div>
-        <div class="col-sm-2 sidenav">
-            <div id="tools">
+        <div class="col-sm-3 sidenav" id="tools">
                 <div id="tools_headline">
-                    <span class="headline">Panel ID 1000</span> <span style="float:right;">
-                    <a href="#" id="delete_panel">löschen</a></span></div>
+                    <span class="headline col-sm-4">Panel ID 1000</span> <span>
+                    <div class="col-sm-5"></div>
+                    <a class="col-sm-3" href="#" id="delete_panel">löschen</a></span>
                 <br>
-                <div id="tools_container">
+                </div>
+                <div id="tools_container" class="form-group">
                     <div class="col-sm-12">
-                        <label for="model_tilt">Dachneigung</label>
+                        <label class="control-label" for="model_tilt">Dachneigung</label>
                     </div>
                     <div class="col-sm-10">
                         <input id="model_tilt" type="range" min="0" max="90">
                     </div>
                     <div class="col-sm-2">
-                        <label for="model_tilt" id="model_tilt_value">  45°</label>
+                        <label class="control-label" for="model_tilt" id="model_tilt_value">  45°</label>
                     </div>
 
                     <div class="col-sm-12">
-                        <label for="model_width">Modulbreite</label>
+                        <label class="control-label" for="model_width">Modulbreite</label>
                     </div>
                     <div class="col-sm-10">
                         <input id="model_width" type="range" min="1" max="10">
                     </div>
                     <div class="col-sm-2">
-                        <label for="model_width" id="model_width_value"> 5m </label>
+                        <label class="control-label" for="model_width" id="model_width_value"> 5m </label>
                     </div>
                     <div class="col-sm-12">
-                        <label for="model_height">Modulh&ouml;he</label>
+                        <label class="control-label" for="model_height">Modulh&ouml;he</label>
                     </div>
                     <div class="col-sm-10">
                         <input id="model_height" type="range" min="1" max="10">
                     </div>
 
                     <div class="col-sm-2">
-                        <label for="model_height" id="model_height_value"> 5m </label>
+                        <label class="control-label" for="model_height" id="model_height_value"> 5m </label>
                     </div>
-                    <div class="col-sm-12">
-                        <label for="model_orientation">Dachorientierung</label>
+                    <div class="col-sm-10">
+                        <label class="control-label" for="model_orientation" >Dachorientierung</label>
                     </div>
                     <div class="col-sm-10">
                         <input id="model_orientation" type="range" min="1" max="360">
                     </div>
                     <div class="col-sm-2">
-                        <label for="model_orientation" id="model_orientation_value"> 360° </label>
+                        <label class="control-label" for="model_orientation" id="model_orientation_value"> 360° </label>
                     </div>
                     <div class="col-sm-6">
 
                     </div>
                     <div class="col-sm-6">
-                        <button type="button" class="btn btn-default btn-block" id="show_more">mehr</button>
+                        <button type="button" class="btn btn-default" id="show_more">mehr</button>
                     </div>
                 </div>
-            </div>
         </div>
     </div>
 </div>
 
-<footer class="container-fluid text-center">
+<footer class="container-fluid text-center" id="error_container">
     <div class="col-sm-2"></div>
     <div class="col-sm-8">
         <label id="error_output">ERROR-Platzhalter</label>
@@ -144,44 +144,6 @@
     <div class="col-sm-2"></div>
 
 </footer>
-
-
-<!--<div id="main_container">-->
-
-<!--<div id="left_section">-->
-
-<!--<div class="box_left">-->
-<!--<input type="button" value="Panel hinzuf&uuml;gen" id="add"/><br/>-->
-<!--<input type="button" value="Google Map" id="googleMap"/><br/>-->
-<!--<input type="button" value="OpenStreet Map" id="openStreetMap"/><br/>-->
-<!--Panel Strings <input id="panel_string" type="checkbox" />-->
-<!--</div>-->
-
-<!--<div class="box_left">-->
-<!--<table width="100%">-->
-<!--<tr>-->
-<!--<td>Anzahl Module:</td>-->
-<!--<td style="text-align: right;">5</td>-->
-<!--</tr>-->
-<!--<tr>-->
-<!--<td>Fl&auml;che:</td>-->
-<!--<td style="text-align: right;">20m²</td>-->
-<!--</tr>-->
-<!--<tr>-->
-<!--<td>Nennleistung:</td>-->
-<!--<td style="text-align: right;">10 kWh</td>-->
-<!--</tr>-->
-<!--<tr>-->
-<!--<td>Stromertrag:</td>-->
-<!--<td style="text-align: right;">500 kWh/Jahr</td>-->
-<!--</tr>-->
-<!--</table>-->
-<!--</div>-->
-
-<!--</div>-->
-
-
-<!--</div>-->
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJ4aYR2NFbLLzh_tkya-rE40gCl-hPpLc&libraries=places&callback=initAutocomplete"
         async defer></script>
