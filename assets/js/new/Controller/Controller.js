@@ -1,4 +1,4 @@
-const HOST = "10.136.193.75";
+const HOST = "195.37.224.14";
 
 const DAYS_TILL_COOKIE_EXPIRE = 30;
 const COOKIENAME = "Modulplatzierer";
@@ -115,7 +115,9 @@ Controller.prototype.connectModelWithToolbar = function (polygon) {
     var changed = function () {
         if (self.serverIsAvailable) {
             var json = self.convertModelToJsonString(polygon.model);
-            self.serverHandler.updatePanel(json);
+            self.serverHandler.updatePanel(json, function () {
+                console.log("Panel updated");
+            });
         }
     };
     var realignModel = function (selectedPolygon, width, height) {
@@ -164,6 +166,7 @@ Controller.prototype.updateModelPosition = function (polygon, disabledServerUpda
 
 Controller.prototype.getRoofFromServer = function (place) {
     var self = this;
+    if(place.geometry === undefined) {this.showAddressError(); return;}
     var lat = place.geometry.location.lat();
     var lng = place.geometry.location.lng();
     var street, nr, citycode;
