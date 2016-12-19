@@ -105,7 +105,7 @@ Controller.prototype.updateModel = function (polygon) {
 
 Controller.prototype.connectModelWithToolbar = function (polygon) {
     if (this.toolbar === null) {
-        this.toolbar = new Toolbar(polygon.model);
+        this.toolbar = new Toolbar(polygon.model.constructor === PanelString ? polygon.model.masterPanel : polygon.model);
     } else {
         this.toolbar.unbindEvents();
     }
@@ -115,7 +115,7 @@ Controller.prototype.connectModelWithToolbar = function (polygon) {
     var changed = function () {
         if (self.serverIsAvailable) {
             var json = self.convertModelToJsonString(polygon.model);
-            self.serverHandler.updatePanelToServer(json);
+            self.serverHandler.updatePanel(json);
         }
     };
     var realignModel = function (selectedPolygon, width, height) {
@@ -123,7 +123,12 @@ Controller.prototype.connectModelWithToolbar = function (polygon) {
         self.updateModelPosition(selectedPolygon, true);
     };
     this.toolbar.pitchSlider().on("input change", function () {
-        selected.model.pitch = $(this).val();
+        if(polygon.model.constructor === PanelString) {
+            selected.model.setPitch($(this).val());
+        } else {
+            selected.model.pitch = $(this).val();
+
+        }
         realignModel(selected);
     }).focusout(changed);
 
@@ -136,7 +141,12 @@ Controller.prototype.connectModelWithToolbar = function (polygon) {
     }).focusout(changed);
 
     this.toolbar.orientationSlider().on("input change", function () {
-        selected.model.orientation = $(this).val();
+        if(polygon.model.constructor === PanelString) {
+            selected.model.setOrientation($(this).val());
+        } else {
+            selected.model.orientation = $(this).val();
+
+        }
         realignModel(selected);
     }).focusout(changed);
 };

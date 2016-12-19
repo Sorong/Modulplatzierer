@@ -23,6 +23,16 @@ class PanelString {
         }
     }
 
+    /* Funktionen die bereitgestellt werden müssen um die Schnittstelle zu nutzen */
+    align(controller, width, height) {
+        this.masterPanel.align(controller, width, height);
+    }
+
+    getPointsAsList() {
+        return this.masterPanel.getPointsAsList();
+    }
+    /* Schnittstellenende */
+
     removePanel(panel) {
         let removePosition = this.panels.length - 1;
         this.panels.splice(removePosition, 1);
@@ -40,6 +50,10 @@ class PanelString {
         }
         master.setOrientation(this.controller, o);
     }
+    setPitch(pitch) {
+        this.masterPanel.setPitch(this.controller, pitch);
+    }
+
 
     setNewPosition(latlngs) {
         let topLeft = latlngs[0][0];

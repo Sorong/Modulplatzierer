@@ -15,6 +15,14 @@ var PanelString = (function () {
             this.panels.push(panel);
         }
     };
+    /* Funktionen die bereitgestellt werden müssen um die Schnittstelle zu nutzen */
+    PanelString.prototype.align = function (controller, width, height) {
+        this.masterPanel.align(controller, width, height);
+    };
+    PanelString.prototype.getPointsAsList = function () {
+        return this.masterPanel.getPointsAsList();
+    };
+    /* Schnittstellenende */
     PanelString.prototype.removePanel = function (panel) {
         var removePosition = this.panels.length - 1;
         this.panels.splice(removePosition, 1);
@@ -29,6 +37,9 @@ var PanelString = (function () {
             o += 360;
         }
         master.setOrientation(this.controller, o);
+    };
+    PanelString.prototype.setPitch = function (pitch) {
+        this.masterPanel.setPitch(this.controller, pitch);
     };
     PanelString.prototype.setNewPosition = function (latlngs) {
         var topLeft = latlngs[0][0];

@@ -74,6 +74,11 @@ Panel.prototype.setOrientation = function (controller, orientation) {
     this.align(controller)
 };
 
+Panel.prototype.setPitch = function (controller, pitch) {
+    this.pitch = pitch;
+    this.align(controller);
+};
+
 Panel.prototype.setTopLeft = function(controller, topLeft){
     this.topLeft = topLeft;
     this.align(controller)
