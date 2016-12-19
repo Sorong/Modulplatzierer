@@ -23,6 +23,16 @@ Map.prototype.init = function () {
         this.projection = projection;
     });
     this.d3Overlay.addTo(this.map);
+
+    // Add Clicklistener
+    var self = this;
+    $('#googleMap').on('click', function(){
+        self.showGoogle()
+    });
+
+    $('#openstreetMap').on('click', function(){
+        self.showOpenstreet()
+    });
 };
 
 Map.prototype.selectPolygon = function (selectedPolygon) {

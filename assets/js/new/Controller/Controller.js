@@ -40,6 +40,7 @@ Controller.prototype.init = function () {
         };
         //TODO: Maßstab der Solarpanels nicht hardcodieren
         var model = new Panel();
+        model.name = "Panelstring: 10123-1234"
         model.width = 10;
         model.height = 10;
         model.topLeft = panelData.LatLng;
