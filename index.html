@@ -43,17 +43,17 @@
                 <span id="address_tool_span" class="glyphicon  form-control-feedback"></span>
                 <label for="address" id="address_error"></label>
             </div>
-            <div class="box_left" id="box_button">
+            <div class="form-group" id="box_button">
                 <div class="btn-group-vertical">
                     <button type="button" class="btn btn-primary btn-block" id="add">Panel hinzuf&uuml;gen</button>
                     <button type="button" class="btn btn-primary btn-block" id="googleMap">Zeige GoogleMaps</button>
                     <button type="button" class="btn btn-primary btn-block" id="openstreetMap">Zeige OpenstreetMaps</button>
                 </div>
-                <div class="checkbox">
+                <!--<div class="checkbox">
                     <label><input id="panel_string" type="checkbox" value="">Solarzellenstring</label>
-                </div>
+                </div>-->
             </div>
-            <div class="box_left" id="box_table">
+            <div class="form-group" id="box_table">
                 <table class="table table-bordered">
                     <tr>
                         <td>Anzahl Module:</td>
@@ -81,9 +81,8 @@
         </div>
         <div class="col-sm-3 sidenav" id="tools">
                 <div id="tools_headline">
-                    <span class="headline col-sm-4">Panel ID 1000</span> <span>
-                    <div class="col-sm-5"></div>
-                    <a class="col-sm-3" href="#" id="delete_panel">löschen</a></span>
+                    <span class="headline col-sm-8">Panel ID 1000</span>
+                    <span class="col-sm-4" style="text-align:right;" ><a href="#" id="delete_panel">löschen</a></span>
                 <br>
                 </div>
                 <div id="tools_container" class="form-group">
@@ -128,7 +127,7 @@
                     <div class="col-sm-6">
 
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-12" style="text-align: center;">
                         <button type="button" class="btn btn-default" id="show_more">mehr</button>
                     </div>
                 </div>
