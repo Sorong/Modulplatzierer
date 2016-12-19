@@ -54,7 +54,6 @@ class PanelString {
         this.masterPanel.setPitch(this.controller, pitch);
     }
 
-
     setNewPosition(latlngs) {
         let topLeft = latlngs[0][0];
         let master = this.masterPanel;
@@ -67,11 +66,13 @@ class PanelString {
 
     private refreshGeometrics() {
         let orientation = this.masterPanel.orientation;
+        let pitch = this.masterPanel.pitch;
         let nextLatLng = this.getNextPoint(this.masterPanel);
 
         for (let i = 0; i < this.panels.length; i++) {
             this.panels[i].setTopLeft(this.controller, nextLatLng);
             this.panels[i].setOrientation(this.controller, orientation);
+            this.panels[i].setPitch(this.controller, pitch);
             nextLatLng = this.getNextPoint(this.panels[i]);
         }
     }

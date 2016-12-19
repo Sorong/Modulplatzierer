@@ -154,6 +154,7 @@ Controller.prototype.connectModelWithToolbar = function (polygon) {
 Controller.prototype.updateModelPosition = function (polygon, disabledServerUpdate) {
     polygon.model.align(this);
     polygon.setLatLngs(polygon.model.getPointsAsList());
+    polygon.transform.resetHandler();
     if(disabledServerUpdate !== true) {
         var out = this.convertModelToJsonString(polygon.model);
         this.serverHandler.updatePanel(out, function (data) {
