@@ -20,7 +20,7 @@ var PanelString = (function () {
         this.masterPanel.align(controller, width, height);
     };
     PanelString.prototype.getPointsAsList = function () {
-        return this.masterPanel.getPointsAsList();
+        return this.getGeoJSON();
     };
     /* Schnittstellenende */
     PanelString.prototype.removePanel = function (panel) {

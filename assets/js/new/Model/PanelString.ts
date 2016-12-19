@@ -29,7 +29,7 @@ class PanelString {
     }
 
     getPointsAsList() {
-        return this.masterPanel.getPointsAsList();
+        return this.getGeoJSON();
     }
     /* Schnittstellenende */
 
