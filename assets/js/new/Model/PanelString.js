@@ -51,10 +51,16 @@ var PanelString = (function () {
     };
     PanelString.prototype.refreshGeometrics = function () {
         var orientation = this.masterPanel.orientation;
+        var pitch = this.masterPanel.pitch;
         var nextLatLng = this.getNextPoint(this.masterPanel);
+        var height = this.masterPanel.height;
+        var width = this.masterPanel.width;
         for (var i = 0; i < this.panels.length; i++) {
             this.panels[i].setTopLeft(this.controller, nextLatLng);
             this.panels[i].setOrientation(this.controller, orientation);
+            this.panels[i].setPitch(this.controller, pitch);
+            this.panels[i].width = width;
+            this.panels[i].height = height;
             nextLatLng = this.getNextPoint(this.panels[i]);
         }
     };
@@ -69,4 +75,3 @@ var PanelString = (function () {
     };
     return PanelString;
 }());
-//# sourceMappingURL=PanelString.js.map

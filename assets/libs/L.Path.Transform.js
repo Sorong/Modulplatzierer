@@ -1082,14 +1082,7 @@ L.Handler.PathTransform = L.Handler.extend({
     },
 
     resetHandler: function () {
-        alert("ResetHandler");
-        if (this._rect == null) {
-            this._rect = this._getBoundingPolygon().addTo(this._handlersGroup);
-        } else {
-            this._handlersGroup.removeLayer(this._rect);
-            this._rect = null;
-            this._rect = this._getBoundingPolygon().addTo(this._handlersGroup);
-        }
+        this._updateHandlers()
     },
 
     /**
