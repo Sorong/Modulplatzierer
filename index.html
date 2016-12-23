@@ -1,27 +1,19 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-
     <meta charset="UTF-8">
     <title>Modulplatzierer</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css"/>
     <link rel="stylesheet" href="assets/css/style.css"/>
 
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
     <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
     <script src='https://unpkg.com/leaflet.gridlayer.googlemutant@latest/Leaflet.GoogleMutant.js'></script>
     <script src="http://www.sumbera.com/gist/js/leaflet/svg/scaled/d3-3.5.5.min.js"></script>
     <script src="https://rawgit.com/teralytics/Leaflet.D3SvgOverlay/master/L.D3SvgOverlay.js"></script>
     <script src="assets/libs/L.Path.Transform.js"></script>
-
-   <!-- <script type="text/javascript" src="assets/js/old/util.js"></script>
-    <script type="text/javascript" src="assets/js/old/map.js"></script>
-    <script type="text/javascript" src="assets/js/old/panel.js"></script>
-    <script type="text/javascript" src="assets/js/old/roof.js"></script>
-    <script type="text/javascript" src="assets/js/old/paneltools.js"></script>
-    <script type="text/javascript" src="assets/js/old/cookiemanagement.js"></script>
-    <script type="text/javascript" src="assets/js/old/Controller.js"></script>
-    <script type="text/javascript" src="assets/js/old/app.js"></script>-->
 
     <script src="assets/js/new/Utility/Matrix.js"></script>
     <script src="assets/js/new/Model/Panel.js"></script>
@@ -34,6 +26,7 @@
     <script src="assets/js/new/View/Map.js"></script>
     <script src="assets/js/new/Controller/Controller.js"></script>
     <script src="assets/js/new/main.js"></script>
+
 
 
 </head>
@@ -133,9 +126,9 @@
                             Dachorientierung
                         </div>
                         <div class="tool_input">
-                            <input id="roof_orientation" type="range" min="0" max="360">
+                            <input id="model_orientation" type="range" min="0" max="360">
                         </div>
-                        <div class="tool_output" id="roof_orientation_value">
+                        <div class="tool_output" id="model_orientation_value">
                             360°
                         </div>
                     </div>

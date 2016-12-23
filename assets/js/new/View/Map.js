@@ -1,5 +1,5 @@
-const INIT_LOCATION = [52.520645, 13.40977];
-const DEFAULT_ZOOM = 20;
+const INIT_LOCATION = [52.520645, 13.40977]; //Koordinaten in Berlin
+const DEFAULT_ZOOM = 18;
 
 function Map() {
     this.map = null;
@@ -30,7 +30,7 @@ Map.prototype.addPolygon = function (model) {
     var self = this;
     this.selectedPolygon = this.updatePolygonPosition(model);
     this.selectedPolygon.on('click', function () {
-        selectedPolygon = this;
+        self.selectedPolygon = this;
         self.controller.updateModel(this);
     });
     this.selectedPolygon.on('drag', dragmoveModel);
@@ -51,8 +51,29 @@ Map.prototype.updatePolygonPosition = function (model) {
     return polygon;
 };
 
-Map.prototype.setNonMovable = function (polygon) {
+Map.prototype.setNonMovable = function (model) {
+    if(this.nonMovablePolygon !== null) {
+        this.removeNonMoveable();
+    }
+    var polygon = model.getAsPolygon();
+    polygon.addTo(this.map);
+    polygon.parts = [];
+    var parts = model.parts;
+    for(var i = 0; i < parts.length; i++) {
+        var m = parts[i].getAsPolygon();
+        polygon.parts.push(m);
+        m.addTo(this.map);
+    }
+    this.nonMovablePolygon = polygon;
+};
 
+Map.prototype.removeNonMoveable = function () {
+    if(this.nonMovablePolygon !== null) {
+        for(var i = 0; i < this.nonMovablePolygon.parts.length; i++) {
+            this.map.removeLayer(this.nonMovablePolygon.parts[i]);
+        }
+        this.map.removeLayer(this.nonMovablePolygon);
+    }
 };
 
 
@@ -116,15 +137,13 @@ Map.prototype.changeMapProvider = function (layer) {
 
 /* Dragfunktionnen */
 function dragmoveModel(d) {
-    console.log("test " + d.target._latlngs[0][0]);
     updateModelPosition(d);
 }
 
 function dragendModel(d) {
     updateModelPosition(d);
-    d.target.model.align(controller);
+    controller.updateModelPosition(d.target);
 }
-
 
 function updateModelPosition(draggedPolygon) {
     var d = draggedPolygon;
@@ -134,6 +153,6 @@ function updateModelPosition(draggedPolygon) {
     arr.push(d.target._latlngs[0][2]);
     arr.push(d.target._latlngs[0][3]);
 
-    d.target.model.getPointsFromList(arr);
+    d.target.model.setPointsFromList(arr);
 
 }

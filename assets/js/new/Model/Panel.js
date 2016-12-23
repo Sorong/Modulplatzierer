@@ -70,34 +70,65 @@ Panel.prototype.selfAlign = function (controller) {
 };
 
 Panel.prototype.getPointsAsList = function () {
-    var list = [this.topLeft, this.topRight, this.botRight, this.botLeft];
+    var list = [this.oTopLeft, this.topRight, this.botRight, this.botLeft];
     return list;
 };
 
-Panel.prototype.getPointsFromList = function (list) {
-    if (list.length != 4) {
-        return;
-    }
-    this.topLeft = list[0];
-    this.topRight = list[1];
-    this.botRight = list[2];
-    this.botLeft = list[3];
-};
-
 Panel.prototype.getAsJson = function () {
-
     return {
-        panel_id : this.panel_id,
-        obenLinks : [this.oTopLeft.lat, this.oTopLeft.lng],
-        obenRechts : [this.oTopRight.lat, this.oTopRight.lng],
-        untenRechts : [this.oBotRight.lat, this.oBotRight.lng],
-        untenLinks : [this.oBotLeft.lat, this.oBotLeft.lng],
-        laenge : this.height,
-        breite : this.width,
-        neigung : this.pitch,
-        ausrichtung : this.orientation
+        panel_id: this.id,
+        the_geom: [
+            {
+                latitude: this.oTopLeft.lat,
+                longitude: this.oTopLeft.lng
+            },
+            {
+                latitude: this.oTopRight.lat,
+                longitude: this.oTopRight.lng
+            },
+            {
+                latitude: this.oBotRight.lat,
+                longitude: this.oBotRight.lng
+            },
+            {
+                latitude: this.oBotLeft.lat,
+                longitude: this.oBotLeft.lng
+            }],
+        laenge: this.height,
+        breite: this.width,
+        neigung: this.pitch,
+        ausrichtung: this.orientation
     }
 };
+
+Panel.prototype.setPointsFromList = function (list) {
+    if (list.length > 0) {
+        for (var i = 0; i < list.length; i++) {
+            var latLng = L.latLng(list[i].latitude, list[i].longitude);
+            if(latLng === undefined) {
+                latLng = list[i];
+            }
+            switch (i) {
+                case 0:
+                    this.oTopLeft = this.topLeft = latLng;
+                    break;
+                case 1:
+                    this.oTopRight = latLng;
+                    break;
+                case 2:
+                    this.oBotRight = latLng;
+                    break;
+                case 3:
+                    this.oBotLeft = latLng;
+                    break;
+                default:
+                    return;
+            }
+        }
+
+    }
+};
+
 function calcNextPoint(distance, point, angle) {
     earthRadius = 6371000;
     distanceNorth = Math.sin(angle * Math.PI / 180) * distance;

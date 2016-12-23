@@ -11,15 +11,17 @@ function Toolbar(model) {
     this.modelHeight = $("#model_height");
     this.modelHeightValue = $("#model_height_value");
 
-    this.modelOrientation = $("#roof_orientation");
-    this.modelOrientationValue = $("#roof_orientation_value");
+    this.modelOrientation = $("#model_orientation");
+    this.modelOrientationValue = $("#model_orientation_value");
 
     this.renderModelValues();
 }
 
 
 Toolbar.prototype.renderModelValues = function () {
-    if(this.selectedModel === undefined) { return; }
+    if (this.selectedModel === undefined) {
+        return;
+    }
     console.log("Render:" + this.selectedModel.name);
     this.toolsHeadline.html(this.selectedModel.name);
 
@@ -70,4 +72,11 @@ Toolbar.prototype.orientationSlider = function () {
         var val = $(this).val();
         degree.html(val + "°");
     });
+};
+
+Toolbar.prototype.unbindEvents = function () {
+    this.modelTilt.off();
+    this.modelHeight.off();
+    this.modelWidth.off();
+    this.modelOrientation.off();
 };
