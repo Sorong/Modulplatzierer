@@ -42,7 +42,7 @@ public class TblSolarpanel implements Serializable{
 
     @OneToMany(mappedBy = "masterpanel")
     private Collection<TblSolarpanel> tblSolarpanelCollection;
-    
+
     @Basic(optional = false)
     @Column(name = "laenge",nullable = false)
     private double laenge;

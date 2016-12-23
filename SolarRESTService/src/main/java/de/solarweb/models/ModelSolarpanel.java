@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class ModelSolarpanel implements Serializable{
 
     private int panel_id;
+    private int masterpanel_id;
     private double laenge;
     private double breite;
     private int neigung;
@@ -29,6 +30,9 @@ public class ModelSolarpanel implements Serializable{
 
     public ModelSolarpanel(TblSolarpanel tblSolarpanel){
         this.panel_id = tblSolarpanel.getPanel_id();
+        if(tblSolarpanel.getMasterpanel() != null) {
+            this.masterpanel_id = tblSolarpanel.getMasterpanel().getPanel_id();
+        }
         this.laenge = tblSolarpanel.getLaenge();
         this.breite = tblSolarpanel.getBreite();
         this.neigung = tblSolarpanel.getNeigung();
@@ -42,6 +46,14 @@ public class ModelSolarpanel implements Serializable{
 
     public int getPanel_id() {
         return panel_id;
+    }
+
+    public int getMasterpanel_id() {
+        return masterpanel_id;
+    }
+
+    public void setMasterpanel_id(int masterpanel_id) {
+        this.masterpanel_id = masterpanel_id;
     }
 
     public void setPanel_id(int panel_id) {

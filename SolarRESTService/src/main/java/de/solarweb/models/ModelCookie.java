@@ -1,12 +1,14 @@
 package de.solarweb.models;
 
 import com.sun.org.apache.xpath.internal.operations.Mod;
+import com.sun.research.ws.wadl.Link;
 import de.solarweb.datamodel.TblCookie;
 import de.solarweb.datamodel.TblDach;
 import de.solarweb.datamodel.TblSolarpanel;
 import org.geolatte.geom.M;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.sql.Timestamp;
 
@@ -16,7 +18,7 @@ import java.sql.Timestamp;
 public class ModelCookie implements Serializable{
 
     private int cookie_id;
-    private LinkedList<ModelSolarpanel> solarpanelList;
+    private LinkedList<LinkedList<ModelSolarpanel>> solarpanelList;
     private Timestamp ablaufdatum;
 
     public ModelCookie(){
@@ -30,11 +32,9 @@ public class ModelCookie implements Serializable{
 
     public ModelCookie(TblCookie tblCookie){
         this.cookie_id = tblCookie.getCookie_id();
-        solarpanelList = new LinkedList<ModelSolarpanel>();
+        solarpanelList = new LinkedList<LinkedList<ModelSolarpanel>>();
         if(tblCookie.getTblSolarpanelCollection() != null) {
-            for (TblSolarpanel tblSolarpanel : tblCookie.getTblSolarpanelCollection()) {
-                solarpanelList.add(new ModelSolarpanel(tblSolarpanel));
-            }
+            solarpanelList = buildMasterpanelString(tblCookie.getTblSolarpanelCollection());
         }
         this.ablaufdatum = tblCookie.getAblaufdatum();
     }
@@ -47,11 +47,11 @@ public class ModelCookie implements Serializable{
         this.cookie_id = cookie_id;
     }
 
-    public LinkedList<ModelSolarpanel> getSolarpanelList() {
+    public LinkedList<LinkedList<ModelSolarpanel>> getSolarpanelList() {
         return solarpanelList;
     }
 
-    public void setSolarpanelList(LinkedList<ModelSolarpanel> solarpanelList) {
+    public void setSolarpanelList(LinkedList<LinkedList<ModelSolarpanel>> solarpanelList) {
         this.solarpanelList = solarpanelList;
     }
 
@@ -61,5 +61,21 @@ public class ModelCookie implements Serializable{
 
     public void setAblaufdatum(Timestamp ablaufdatum) {
         this.ablaufdatum = ablaufdatum;
+    }
+
+    private LinkedList<LinkedList<ModelSolarpanel>> buildMasterpanelString(Collection<TblSolarpanel> panelCollection){
+        LinkedList<LinkedList<ModelSolarpanel>> solarpanelListList= new LinkedList<LinkedList<ModelSolarpanel>>();
+        for(TblSolarpanel tblSolarpanel : panelCollection){
+            if(tblSolarpanel.getMasterpanel() == null){
+                LinkedList<ModelSolarpanel> solarpanelListTemp = new LinkedList<ModelSolarpanel>();
+                solarpanelListTemp.add(new ModelSolarpanel(tblSolarpanel));
+                for(TblSolarpanel tblSolarpanelInString : tblSolarpanel.getTblSolarpanelCollection()){
+                    solarpanelListTemp.add(new ModelSolarpanel(tblSolarpanelInString));
+                }
+                solarpanelListList.add(solarpanelListTemp);
+            }
+
+        }
+        return  solarpanelListList;
     }
 }

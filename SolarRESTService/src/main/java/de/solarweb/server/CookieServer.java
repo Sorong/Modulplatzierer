@@ -48,7 +48,7 @@ public class CookieServer {
             return new ModelCookie(-1, new java.sql.Timestamp(0));
         }
         TblCookie tblCookie = (TblCookie) queryCookieById.getSingleResult();
-        logger.warning("Cookie mit ID: " + id + "abgerufen");
+        logger.warning("Cookie mit ID: " + id + " abgerufen");
         return new ModelCookie(tblCookie);
     }
 
