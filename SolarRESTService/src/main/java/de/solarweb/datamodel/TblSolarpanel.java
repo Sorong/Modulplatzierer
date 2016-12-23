@@ -36,7 +36,13 @@ public class TblSolarpanel implements Serializable{
     @ManyToOne(optional = false)
     private TblCookie cookie_id;
 
+    @JoinColumn(name = "masterpanel_id")
+    @ManyToOne
+    private TblSolarpanel masterpanel;
 
+    @OneToMany(mappedBy = "masterpanel")
+    private Collection<TblSolarpanel> tblSolarpanelCollection;
+    
     @Basic(optional = false)
     @Column(name = "laenge",nullable = false)
     private double laenge;
@@ -141,5 +147,21 @@ public class TblSolarpanel implements Serializable{
 
     public ArrayList<LatitudeLongitude> getThe_geomAsLatLng(){
         return GeometryConverter.geometryToLatLngArray(the_geom);
+    }
+
+    public TblSolarpanel getMasterpanel() {
+        return masterpanel;
+    }
+
+    public void setMasterpanel(TblSolarpanel masterpanel) {
+        this.masterpanel = masterpanel;
+    }
+
+    public Collection<TblSolarpanel> getTblSolarpanelCollection() {
+        return tblSolarpanelCollection;
+    }
+
+    public void setTblSolarpanelCollection(Collection<TblSolarpanel> tblSolarpanelCollection) {
+        this.tblSolarpanelCollection = tblSolarpanelCollection;
     }
 }

@@ -49,6 +49,7 @@ public class PanelServer {
         tblPanel.setBreite(panel.getBreite());
         tblPanel.setLaenge(panel.getLaenge());
         tblPanel.setRahmenbreite(panel.getRahmenbreite());
+        logger.warning(panel.getThe_geom().toString());
         tblPanel.setThe_geom(GeometryConverter.ArrayLatLngToGeometry(panel.getThe_geom()));
 
         tblPanel.setCookie(getCookieById(panel.getCookie_id()));
@@ -56,6 +57,7 @@ public class PanelServer {
         this.em.persist(tblPanel);
         utx.commit();
         logger.warning("Panel angelegt");
+        logger.warning(tblPanel.getThe_geom().toText());
         return new ModelSolarpanel(tblPanel);
     }
 

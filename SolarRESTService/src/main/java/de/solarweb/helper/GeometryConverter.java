@@ -38,7 +38,7 @@ public class GeometryConverter {
     }
 
     public static  Geometry ArrayLatLngToGeometry(ArrayList<LatitudeLongitude> latLngArray) throws ParseException{
-        WKTReader wtkReader = new WKTReader(new GeometryFactory(new PrecisionModel(4326)));
+        WKTReader wtkReader = new WKTReader(new GeometryFactory(new PrecisionModel(PrecisionModel.FLOATING)));
         String wtkGeometry = "LINESTRING (";
         for(LatitudeLongitude latitudeLongitude : latLngArray){
             wtkGeometry += latitudeLongitude.toString();
