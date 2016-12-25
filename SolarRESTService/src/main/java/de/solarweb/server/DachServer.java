@@ -1,15 +1,13 @@
 package de.solarweb.server;
 
+
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.PrecisionModel;
-import com.vividsolutions.jts.io.WKTReader;
+import com.vividsolutions.jts.io.ParseException;
 import de.solarweb.datamodel.TblDach;
 import de.solarweb.datamodel.TblCookie;
 import de.solarweb.datamodel.TblTetraederBuilding;
 import de.solarweb.datamodel.TblTetraederRoof;
 import de.solarweb.helper.GeometryConverter;
-import de.solarweb.helper.LatitudeLongitude;
 import de.solarweb.models.ModelDach;
 import de.solarweb.models.ModelTetraederBuilding;
 import de.solarweb.models.ModelTetraederRoof;
@@ -26,7 +24,9 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * Created by Nils on 10.12.16.
@@ -41,71 +41,93 @@ public class DachServer {
     private UserTransaction utx;
 
 
-    Logger logger = Logger.getLogger(getClass().getName());
+    Logger logger = LoggerFactory.getLogger(DachServer.class);
 
 
-    public DachServer() throws Exception {
-            Class.forName("org.postgresql.Driver");
+    public DachServer(){
     }
 
     @GET
     @Path("/getRoof/{dach_id}")
-    @Produces({"application/javascript"})
-    public ModelDach getRoof(@PathParam("dach_id") int id) throws Exception{
+    @Produces({MediaType.APPLICATION_JSON})
+    public ModelDach getRoof(@PathParam("dach_id") int id){
         TblDach tblDach = getRoofById(id);
-        if (tblDach == null){
-            new ModelDach();
-        }
-        logger.warning("Dach mit ID: " + id + "abgerufen");
-        logger.warning(tblDach.getThe_geom().toText());
+        logger.info("Dach mit ID: " + id + "abgerufen");
         return new ModelDach(tblDach);
     }
 
 
-
+    //CookieID ist im Moment immer Null, k.A. wie Dach Final realisiert werden soll
     @POST
     @Path("/postRoof")
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes(MediaType.APPLICATION_JSON)
-    public ModelDach setRoof(ModelDach dach) throws Exception{
-        logger.warning("Dach gepostet");
-        Query getCookieById = em.createNamedQuery("tblCookie.findById");
-        getCookieById.setParameter("id", 0);
-        TblCookie tblCookie = (TblCookie) getCookieById.getSingleResult();
+    public ModelDach setRoof(ModelDach dach){
+        TblCookie tblCookie = getCookieById(0);
+        Geometry the_geom = null;
+        try{
+            GeometryConverter.ArrayLatLngToGeometry(dach.getThe_geom());
+        }
+        catch (ParseException e){
+            logger.error("Dachgeometry konnte nicht geparsed werden");
+            logger.error(e.getMessage());
+            return new ModelDach();
+        }
         TblDach tblDach = new TblDach();
         tblDach.setHausnummer(dach.getHausnummer());
         tblDach.setPlz(dach.getPostleitzahl());
         tblDach.setStrasse(dach.getStrasse());
         tblDach.setDachneigung(dach.getDachneigung());
-        tblDach.setThe_geom(GeometryConverter.ArrayLatLngToGeometry(dach.getThe_geom()));
         tblDach.setCookie(tblCookie);
-        utx.begin();
-        em.persist(tblDach);
-        utx.commit();
-        logger.warning("Dach unter ID: " + tblDach.getDach_id() +"gespeichert");
+        tblDach.setThe_geom(the_geom);
+
+        try{
+            utx.begin();
+            em.persist(tblDach);
+            utx.commit();
+        }
+        catch(Exception e){
+            logger.error("Dach wurde nicht in der Datenbank gespeichert");
+            logger.error(e.getMessage());
+            return new ModelDach();
+        }
+        logger.info("Dach unter ID: " + tblDach.getDach_id() +"gespeichert");
         return new ModelDach(tblDach);
     }
+
 
     @POST
     @Path("/updateRoof")
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes(MediaType.APPLICATION_JSON)
-    public ModelDach updateRoof(ModelDach dach) throws Exception{
-        Query getRoofById = em.createNamedQuery("tblDach.findById");
-        getRoofById.setParameter("id", dach.getDach_id());
-        TblDach tblDach = (TblDach) getRoofById.getSingleResult();
-        //Query getCookieById = em.createNamedQuery("tblCookie.findById");
-        //getCookieById.setParameter("id", dach.getCookie().getCookie_id());
-        //TblCookie tblCookie = (TblCookie) getCookieById.getSingleResult();
+    public ModelDach updateRoof(ModelDach dach){
+        Geometry the_geom = null;
+        try{
+            GeometryConverter.ArrayLatLngToGeometry(dach.getThe_geom());
+        }
+        catch (ParseException e){
+            logger.error("Dachgeometry des Daches " + dach.getDach_id() + " konnte nicht geparsed werden");
+            logger.error(e.getMessage());
+            return new ModelDach();
+        }
+        TblDach tblDach = getRoofById(dach.getDach_id());
         tblDach.setHausnummer(dach.getHausnummer());
         tblDach.setPlz(dach.getPostleitzahl());
         tblDach.setStrasse(dach.getStrasse());
         tblDach.setDachneigung(dach.getDachneigung());
-        //tblDach.setCookie(tblCookie);
-        utx.begin();
-        em.merge(tblDach);
-        utx.commit();
-        logger.warning("Dach mit ID:" + dach.getDach_id() + "geupdateted");
+        tblDach.setThe_geom(the_geom);
+        try{
+            utx.begin();
+            em.merge(tblDach);
+            utx.commit();
+        }
+        catch(Exception e){
+            logger.error("Dach mit ID: " + dach.getDach_id() +" wurde nicht geupdatet");
+            logger.error(e.getMessage());
+            return new ModelDach();
+        }
+
+        logger.info("Dach mit ID:" + dach.getDach_id() + "geupdateted");
         return new ModelDach(tblDach);
     }
 
@@ -113,7 +135,7 @@ public class DachServer {
     @Path("/getPredefinedRoof/{street}/{number}/{plz}")
     @Produces(MediaType.APPLICATION_JSON)
     public ModelTetraederBuilding getPredefinedRoof(@PathParam("street") String street,
-                                                    @PathParam("number") String number, @PathParam("plz") Double plz) throws Exception{
+                                                    @PathParam("number") String number, @PathParam("plz") Double plz){
         Query queryTetraederBuilding = em.createNamedQuery("tblTetraederBuildings.findByAddress");
         queryTetraederBuilding.setParameter(0, street);
         queryTetraederBuilding.setParameter(1, number);
@@ -123,16 +145,23 @@ public class DachServer {
             return new ModelTetraederBuilding();
         }
         TblTetraederBuilding tblTetraederBuilding = (TblTetraederBuilding) resultBuildings.get(0);
-        logger.warning("Tetraeder Dach aus Datenbank gelesen");
-        logger.warning((tblTetraederBuilding.getThe_geom().toString()));
-        return new ModelTetraederBuilding(tblTetraederBuilding);
+        ModelTetraederBuilding modeltetraederBuilding = new ModelTetraederBuilding();
+        try{
+            modeltetraederBuilding = new ModelTetraederBuilding(tblTetraederBuilding);
+        }
+        catch(Exception e){
+            logger.error("TetraederBuilding konnte nicht geladen werden, ParserError");
+            logger.error(e.getMessage());
+        }
+        logger.info("Tetraeder Dach aus Datenbank gelesen");
+        return modeltetraederBuilding;
 
     }
 
     @GET
     @Path("/getRoofParts/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ArrayList<ModelTetraederRoof> getRoofParts(@PathParam("id") int id) throws Exception{
+    public ArrayList<ModelTetraederRoof> getRoofParts(@PathParam("id") int id){
         ArrayList<ModelTetraederRoof> roofPartList = new ArrayList<ModelTetraederRoof>();
         Query queryTetraederRoofParts = em.createNamedQuery("tblTetraederRoof.findById");
         queryTetraederRoofParts.setParameter("id", id);
@@ -140,21 +169,40 @@ public class DachServer {
         if(resultParts.isEmpty()){
             return null;
         }
-        for(Object o : resultParts){
-            roofPartList.add(new ModelTetraederRoof((TblTetraederRoof)o));
+        for(Object parts : resultParts){
+            try{
+                roofPartList.add(new ModelTetraederRoof((TblTetraederRoof)parts));
+            }
+            catch(Exception e){
+                logger.error("Roofpart ID: " + ((TblTetraederRoof) parts).getCid() + "konnte nicht geparsed werden");
+                logger.error(e.getMessage());
+            }
+
         }
-        logger.warning("Dacheinheiten aus Tetaeder Datenbank gelesen");
+        logger.info("Dacheinheiten aus Tetaeder Datenbank gelesen");
         return roofPartList;
     }
 
-    private TblDach getRoofById(int id){
+    public TblDach getRoofById(int id) throws NotFoundException{
         Query queryRoofById = em.createNamedQuery("tblDach.findById");
         queryRoofById.setParameter("id", id);
         List resultRoofs = queryRoofById.getResultList();
         if(resultRoofs.isEmpty()){
-            return null;
+            throw new NotFoundException();
         }
         TblDach tblDach = (TblDach) queryRoofById.getSingleResult();
         return tblDach;
     }
+
+    public TblCookie getCookieById(int id) throws NotFoundException {
+        Query queryCookieById = em.createNamedQuery("tblCookie.findById");
+        queryCookieById.setParameter("id", id);
+        List resultCookies = queryCookieById.getResultList();
+        if(resultCookies.isEmpty()){
+            throw new NotFoundException();
+        }
+        TblCookie tblCookie = (TblCookie) queryCookieById.getSingleResult();
+        return tblCookie;
+    }
+
 }

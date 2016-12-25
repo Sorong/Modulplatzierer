@@ -14,7 +14,8 @@ import javax.transaction.UserTransaction;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by Nils on 12.12.16.
@@ -30,7 +31,7 @@ public class CookieServer {
     @Resource
     private UserTransaction utx;
 
-    Logger logger = Logger.getLogger(getClass().getName());
+    Logger logger = LoggerFactory.getLogger(CookieServer.class);
 
 
     public CookieServer(){
@@ -44,11 +45,11 @@ public class CookieServer {
         queryCookieById.setParameter("id", id);
         List resultRoofs = queryCookieById.getResultList();
         if(resultRoofs.isEmpty()){
-            logger.warning("Kein Cookie gefunden");
+            logger.info("Kein Cookie gefunden");
             return new ModelCookie(-1, new java.sql.Timestamp(0));
         }
         TblCookie tblCookie = (TblCookie) queryCookieById.getSingleResult();
-        logger.warning("Cookie mit ID: " + id + " abgerufen");
+        logger.info("Cookie mit ID: " + id + " abgerufen");
         return new ModelCookie(tblCookie);
     }
 
@@ -57,14 +58,21 @@ public class CookieServer {
     @Path("/postCookie")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({"application/javascript"})
-    public ModelCookie postCookie(ModelCookie cookie) throws Exception{
+    public ModelCookie postCookie(ModelCookie cookie){
         TblCookie tblCookie = new TblCookie();
         tblCookie.setAblaufdatum(cookie.getAblaufdatum());
-        utx.begin();
-        em.persist(tblCookie);
-        utx.commit();
-        logger.warning("TEST");
-        logger.warning("Cookie angelegt");
+        try{
+            utx.begin();
+            em.persist(tblCookie);
+            utx.commit();
+        }
+        catch (Exception e){
+            logger.error("Cookie konnte nicht angelegt werden");
+            logger.error("Failed", e);
+            return new ModelCookie();
+        }
+
+        logger.info("Cookie angelegt");
         return new ModelCookie(tblCookie);
     }
 }

@@ -22,7 +22,7 @@ public class GeometryConverter {
 
 
     public static ArrayList<LatitudeLongitude> geometryToLatLngArray(int epsg, Geometry geometry)throws ParseException, FactoryException, TransformException{
-        WKTReader wktReader = new WKTReader(new GeometryFactory(new PrecisionModel(epsg)));
+        WKTReader wktReader = new WKTReader(new GeometryFactory(new PrecisionModel(PrecisionModel.FLOATING)));
         WKTWriter wktWriter = new WKTWriter(2);
 
         String geometry2dWKT = wktWriter.write(geometry);
