@@ -36,7 +36,7 @@ Toolbar.prototype.renderModelValues = function () {
 
     var pitch = this.selectedModel.pitch || 0;
     this.modelTilt.val(pitch);
-    this.modelTiltValue.html(parseFloat(pitch).toFixed(2) + "°");
+    this.modelTiltValue.html(parseFloat(pitch).toFixed(0) + "°");
 
     var width = this.selectedModel.width || 1;
     this.modelWidth.val(width);
@@ -48,7 +48,7 @@ Toolbar.prototype.renderModelValues = function () {
 
     var orientation = this.selectedModel.orientation || 0;
     this.modelOrientation.val(orientation);
-    this.modelOrientationValue.html(parseFloat(orientation).toFixed(2) + "°");
+    this.modelOrientationValue.html(parseFloat(orientation).toFixed(0) + "°");
 };
 
 Toolbar.prototype.pitchSlider = function () {
