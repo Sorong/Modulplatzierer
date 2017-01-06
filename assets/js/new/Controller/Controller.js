@@ -105,8 +105,16 @@ Controller.prototype.updateModel = function (polygon) {
 };
 
 Controller.prototype.connectModelWithToolbar = function (polygon) {
+
+    var model = polygon.model.constructor === PanelString ? polygon.model.masterPanel : polygon.model;
+    var isOtherPanelSelected = !(this.toolbar != null && model == this.toolbar.selectedModel);
+
     if (this.toolbar === null) {
-        this.toolbar = new Toolbar(polygon.model.constructor === PanelString ? polygon.model.masterPanel : polygon.model);
+        this.toolbar = new Toolbar(model);
+    } else if (isOtherPanelSelected) {
+        this.toolbar.unbindEvents();
+        this.toolbar = null;
+        this.toolbar = new Toolbar(model);
     } else {
         this.toolbar.unbindEvents();
     }
@@ -126,7 +134,7 @@ Controller.prototype.connectModelWithToolbar = function (polygon) {
         self.updateModelPosition(selectedPolygon, true);
     };
     this.toolbar.pitchSlider().on("input change", function () {
-        if(polygon.model.constructor === PanelString) {
+        if (polygon.model.constructor === PanelString) {
             selected.model.setPitch($(this).val());
         } else {
             selected.model.pitch = $(this).val();
@@ -144,7 +152,7 @@ Controller.prototype.connectModelWithToolbar = function (polygon) {
     }).focusout(changed);
 
     this.toolbar.orientationSlider().on("input change", function () {
-        if(polygon.model.constructor === PanelString) {
+        if (polygon.model.constructor === PanelString) {
             selected.model.setOrientation($(this).val());
         } else {
             selected.model.orientation = $(this).val();
@@ -158,7 +166,7 @@ Controller.prototype.updateModelPosition = function (polygon, disabledServerUpda
     polygon.model.align(this);
     polygon.setLatLngs(polygon.model.getPointsAsList());
     polygon.transform.resetHandler();
-    if(disabledServerUpdate !== true) {
+    if (disabledServerUpdate !== true) {
         var out = this.convertModelToJsonString(polygon.model);
         this.serverHandler.updatePanel(out, function (data) {
             console.log("Panel updated");
@@ -245,7 +253,7 @@ function callbackDisableServer() {
 
 function callbackCreateCookie(data) {
     if (controller !== undefined) {
-        if(navigator.cookieEnabled) {
+        if (navigator.cookieEnabled) {
             controller.createUserCookie(data.cookie_id, data.ablaufdatum);
         } else {
             alert("Bitte erlauben Sie die Nutzung von Cookie auf dieser Internetseite, um alle Funktionalitäten nutzen zu können");
