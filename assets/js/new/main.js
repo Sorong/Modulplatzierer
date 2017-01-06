@@ -7,6 +7,19 @@ function initAutocomplete() {
 
 }
 
-$(document).ready(function () {
+$(document).ready(function (){
     controller.loadFromServer();
+
+    function resizeMap() {
+        $("#map").height($(window).height() - 110);
+        setTimeout(function () {
+            controller.viewMap.map.invalidateSize();
+        }, 100);
+    }
+
+    resizeMap();
+    $(window).resize(function () {
+        resizeMap()
+    });
+
 });

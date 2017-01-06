@@ -42,7 +42,6 @@ Roof.prototype.calculateOrientation = function (controller) {
     for (var i = 0; i < this.points.length; i++) {
         var current = controller.getLatLngAsPoint(this.points[i]);
         var current_next = controller.getLatLngAsPoint(this.points[(i + 1) % this.points.length]);
-        L.circle(controller.getPointAsLatLng(current), i).addTo(controller.viewMap.map);
         if(current.y >= leftBot.y) {
             leftBot = current;
             rightBot = current_next;

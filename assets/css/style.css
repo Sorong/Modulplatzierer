@@ -3,98 +3,96 @@ body {
     font-weight: 800;
 }
 
+div {
+    margin-top: 5px;
+}
+
+
 #map {
-    height: 500px;
-    width: 100%;
-    margin: 0;
-    padding: 0;
+    height: 800px;
+    border: 1px groove #88aa55;
 }
-
-#main_container {
-    width: 1000px;
-    margin: auto;
-}
-
-.box_left {
-    margin-bottom: 20px;
-    margin-right: 20px;
-    padding: 10px;
-    border: 2px groove #95c11f;
-    border-radius: 5px;
-    font-size: 14px;
-    background: #95c11f;
-}
-
-#left_section {
-    width: 300px;
-    float: left;
-}
-
-#right_section {
-    float: left;
-    width: 600px;
-}
-
-.clear {
-    clear: both;
-}
-
-#map_container {
-    position: relative;
-}
-
 #tools {
-    position: relative;
-    top: 1px;
-    right: 1px;
-    left: 1px;
-    margin-bottom: 10px;
-    z-index: 10000000;
-    width: 596px;
-    border: 2px groove #95c11f;
+   padding-left: 1%;
+    padding-top: 10px;
+}
+.row {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.sidenav{
+    margin-top: 10px;
+    border: 5px #88aa55;
+    border-style: groove ridge ridge groove;
     border-radius: 5px;
-    background: #95c11f;
 }
 
-.tool {
-    float: left;
-    font-size: 12px;
-    width: 288px;
-    padding-left: 10px;
+.table {
+    border-top: 1px solid #000000;
 }
 
-.tool .tool_input {
-    float: left;
-    width: 150px;
+th, td {
+    padding: 15px;
+    text-align: left;
 }
 
-.tool .tool_input input {
-    width: 130px;
+.btn-group-vertical {
+    margin-left: 1%;
+    display: inline-block;
 }
 
-.tool .tool_label {
-    float: left;
-    width: 100px;
+.btn-primary {
+    border: 2px groove #88aa55;
+    background-color: #aacc66;
+    color: #000000;
+    text-align: left;
+    font-weight: 800;
 }
 
-.tool .tool_output {
-    float: left;
-    width: 30px;
-    text-align: right;
+#address_tool {
+    text-align: left;
+    padding-top: 10px;
 }
 
-#tools_showmore {
-    padding: 5px;
+#show_more {
+    background-color: #aacc66;
+    margin-bottom: 10px;
+}
+input[type=range]{
+    -webkit-appearance: none;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    width: 300px;
+    height: 5px;
+    background: #ddd;
+    border: none;
+    border-radius: 3px;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: #88aa55;
+    margin-top: -4px;
+}
+
+input[type=range]:focus {
+    outline: none;
+}
+
+input[type=range]:focus::-webkit-slider-runnable-track {
+    background: #ccc;
+}
+
+#error_container {
+    width: auto;
     text-align: center;
 }
 
-#tools_headline {
-    padding: 10px;
-    font-size: 12px;
-    font-weight: bold;
-}
 
-.adress input {
-    margin-bottom: 10px;
 
-}

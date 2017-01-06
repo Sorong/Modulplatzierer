@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <title>Modulplatzierer</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css"/>
-    <link rel="stylesheet" href="assets/css/style.css"/>
-
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 
 
@@ -28,129 +28,123 @@
     <script src="assets/js/new/main.js"></script>
 
 
-
 </head>
 <body>
+<div id="main_container" class="container-fluid">
 
-
-<div id="main_container">
-
-    <div id="left_section">
-
-        <div class="box_left adress">
-
-            Adresse<br/>
-            <input id="address" placeholder="Geben Sie Ihre Adresse ein" type="text" style="width: 100%;"/>
-
-        </div>
-
-        <div class="box_left">
-            <input type="button" value="Panel hinzuf&uuml;gen" id="add"/><br/>
-            <input type="button" value="Google Map" id="googleMap"/><br/>
-            <input type="button" value="OpenStreet Map" id="openStreetMap"/><br/>
-            Panel Strings <input id="panel_string" type="checkbox" />
-        </div>
-
-        <div class="box_left">
-            <table width="100%">
-                <tr>
-                    <td>Anzahl Module:</td>
-                    <td style="text-align: right;">5</td>
-                </tr>
-                <tr>
-                    <td>Fl&auml;che:</td>
-                    <td style="text-align: right;">20m²</td>
-                </tr>
-                <tr>
-                    <td>Nennleistung:</td>
-                    <td style="text-align: right;">10 kWh</td>
-                </tr>
-                <tr>
-                    <td>Stromertrag:</td>
-                    <td style="text-align: right;">500 kWh/Jahr</td>
-                </tr>
-            </table>
-        </div>
-
-    </div>
-
-    <div id="right_section">
-
-        <!-- Map -->
-        <div id="map_container">
-            <!-- Tools -->
-            <div id="tools">
-
-                <div id="tools_headline"><span class="headline">Panel ID 1000</span> <span style="float:right"><a
-                        href="#">löschen</a></span></div>
-                <div id="tools_container">
-
-                    <div class="tool">
-                        <div class="tool_label">
-                            Dachneigung
-                        </div>
-                        <div class="tool_input">
-                            <input id="model_tilt" type="range" min="0" max="90">
-                        </div>
-                        <div class="tool_output" id="model_tilt_value">
-                            45°
-                        </div>
-                    </div>
-
-                    <div class="tool">
-                        <div class="tool_label">
-                            Modulbreite
-                        </div>
-                        <div class="tool_input">
-                            <input id="model_width" type="range" min="1" max="10">
-                        </div>
-                        <div class="tool_output" id="model_width_value">
-                            5m
-                        </div>
-                    </div>
-
-                    <div class="tool">
-                        <div class="tool_label">
-                            Modulh&ouml;he
-                        </div>
-                        <div class="tool_input">
-                            <input id="model_height" type="range" min="1" max="10">
-                        </div>
-                        <div class="tool_output" id="model_height_value">
-                            5m
-                        </div>
-                    </div>
-
-                    <div class="tool">
-                        <div class="tool_label">
-                            Dachorientierung
-                        </div>
-                        <div class="tool_input">
-                            <input id="model_orientation" type="range" min="0" max="360">
-                        </div>
-                        <div class="tool_output" id="model_orientation_value">
-                            360°
-                        </div>
-                    </div>
-
-                    <div class="clear"></div>
-
-                </div>
-                <div id="tools_showmore">
-                    <input type="button" value="mehr"/>
-                </div>
-
+    <div class="row content">
+        <div class="col-sm-3 sidenav">
+            <div class="form-group has-feedback" id="address_tool">
+                <label for="address" id="address_label">Adresse:</label>
+                <input type="text" class="form-control" id="address" placeholder="Geben Sie Ihre Adresse ein">
+                <span id="address_tool_span" class="glyphicon  form-control-feedback"></span>
+                <label for="address" id="address_error"></label>
             </div>
+            <div class="form-group" id="box_button">
+                <div class="btn-group-vertical">
+                    <button type="button" class="btn btn-primary btn-block" id="add">Panel hinzuf&uuml;gen</button>
+                    <button type="button" class="btn btn-primary btn-block" id="googleMap">Zeige GoogleMaps</button>
+                    <button type="button" class="btn btn-primary btn-block" id="openstreetMap">Zeige OpenstreetMaps</button>
+                </div>
+                <!--<div class="checkbox">
+                    <label><input id="panel_string" type="checkbox" value="">Solarzellenstring</label>
+                </div>-->
+            </div>
+            <div class="form-group" id="box_table">
+                <table class="table table-bordered">
+                    <tr>
+                        <td>Anzahl Module:</td>
+                        <td id="panel_counter">5</td>
+                    </tr>
+                    <tr>
+                        <td>Fl&auml;che:</td>
+                        <td id="panel_area">20m²</td>
+                    </tr>
+                    <tr>
+                        <td>Nennleistung:</td>
+                        <td id="panel_nominal">10 kWh</td>
+                    </tr>
+                    <tr>
+                        <td>Stromertrag:</td>
+                        <td id="panel_per_year">500 kWh/Jahr</td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+
+        <div class="col-sm-6">
             <div id="map"></div>
         </div>
+        <div class="col-sm-3 sidenav" id="tools">
+                <div id="tools_headline">
+                    <span class="headline col-sm-8">Panel ID 1000</span>
+                    <span class="col-sm-4" style="text-align:right;" ><a href="#" id="delete_panel">löschen</a></span>
+                <br>
+                </div>
+                <div id="tools_container" class="form-group">
+                    <div class="col-sm-12">
+                        <label class="control-label" for="model_tilt">Dachneigung</label>
+                    </div>
+                    <div class="col-sm-10">
+                        <input id="model_tilt" type="range" min="0" max="90">
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="control-label" for="model_tilt" id="model_tilt_value">  45°</label>
+                    </div>
 
+                    <div class="col-sm-12">
+                        <label class="control-label" for="model_width">Modulbreite</label>
+                    </div>
+                    <div class="col-sm-10">
+                        <input id="model_width" type="range" min="1" max="10">
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="control-label" for="model_width" id="model_width_value"> 5m </label>
+                    </div>
+                    <div class="col-sm-12">
+                        <label class="control-label" for="model_height">Modulh&ouml;he</label>
+                    </div>
+                    <div class="col-sm-10">
+                        <input id="model_height" type="range" min="1" max="10">
+                    </div>
+
+                    <div class="col-sm-2">
+                        <label class="control-label" for="model_height" id="model_height_value"> 5m </label>
+                    </div>
+                    <div class="col-sm-10">
+                        <label class="control-label" for="model_orientation" >Dachorientierung</label>
+                    </div>
+                    <div class="col-sm-10">
+                        <input id="model_orientation" type="range" min="0" max="360">
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="control-label" for="model_orientation" id="model_orientation_value"> 360° </label>
+                    </div>
+                    <div class="col-sm-6">
+
+                    </div>
+                    <div class="col-sm-12" style="text-align: center;">
+                        <button type="button" class="btn btn-default" id="show_more">mehr</button>
+                    </div>
+                </div>
+        </div>
     </div>
-
-    <div class="clear"></div>
-
 </div>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJ4aYR2NFbLLzh_tkya-rE40gCl-hPpLc&libraries=places&callback=initAutocomplete" async defer></script>
+<footer class="container-fluid text-center" id="error_container">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8">
+        <div class="alert alert-warning hidden" id="error_output">
+            <strong>Warnung!</strong> Der Datenbankserver ist nicht verfügbar, Ihre Änderungen können nicht gespeichert werden.
+        </div>
+    </div>
+    <div class="col-sm-2"></div>
+
+</footer>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJ4aYR2NFbLLzh_tkya-rE40gCl-hPpLc&libraries=places&callback=initAutocomplete"
+        async defer></script>
 
 </body>
 </html>

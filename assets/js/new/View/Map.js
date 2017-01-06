@@ -1,11 +1,11 @@
 const INIT_LOCATION = [52.520645, 13.40977]; //Koordinaten in Berlin
-const DEFAULT_ZOOM = 18;
+const DEFAULT_ZOOM = 19;
 
 function Map() {
     this.map = null;
-/*   Notwendig?
-    var mapHeight = $('#map').get(0).offsetHeight;
-    var mapWidth = $('#map').get(0).offsetWidth;*/
+    /*   Notwendig?
+     var mapHeight = $('#map').get(0).offsetHeight;
+     var mapWidth = $('#map').get(0).offsetWidth;*/
     this.mapProvider = null;
     this.controller = null;
     this.moveablePolygons = [];
@@ -14,7 +14,6 @@ function Map() {
     this.d3Overlay = null;
 
     this.handlerGroup = null;
-
 }
 
 Map.prototype.init = function () {
@@ -24,6 +23,106 @@ Map.prototype.init = function () {
         this.projection = projection;
     });
     this.d3Overlay.addTo(this.map);
+
+    // Add Clicklistener
+    var self = this;
+    $('#googleMap').on('click', function(){
+        self.showGoogle()
+    });
+
+    $('#openstreetMap').on('click', function(){
+        self.showOpenstreet()
+    });
+};
+
+Map.prototype.selectPolygon = function (selectedPolygon) {
+    /*if (this.selectedPolygon != null) {
+     this.selectedPolygon.transform.disable()
+     }*/
+    this.selectedPolygon = selectedPolygon;
+    //this.controller.updateModel(selectedPolygon);
+    this.controller.connectModelWithToolbar(selectedPolygon);
+    /*this.connectModelWithToolbar(polygon);
+    self.selectedPolygon = this;
+    self.controller.updateModel(this);*/
+    /*this.selectedPolygon.transform.enable({
+     rotation: true,
+     scaling: false,
+     resize: true
+     });*/
+};
+
+Map.prototype.addMultiPolygon = function (model) {
+
+    var self = this;
+    this.handlerGroup = this.handlerGroup || new L.LayerGroup().addTo(this.map);
+
+    this.selectedPolygon =
+        L.polygon(model.getGeoJSON(), {
+            color: '#FF0',
+            draggable: true,
+            transform: true
+        }).addTo(this.handlerGroup);
+
+    this.selectedPolygon.model = model;
+    this.selectedPolygon.transform.enable({
+        rotation: true,
+        scaling: false,
+        resize: true
+    });
+
+    this.selectedPolygon.on('click', function () {
+        self.selectPolygon(this);
+    });
+
+    // Drag & Drop Events
+    this.selectedPolygon.on('dragstart', function (d) {
+        self.selectPolygon(this)
+    }).on('dragend', function (d) {
+        self.selectedPolygon.model.setNewPosition(d.target._latlngs)
+    });
+
+    // Rotation Events
+    this.selectedPolygon.on('rotatestart', function (d) {
+        self.selectPolygon(this)
+    }).on('rotateend', function (d) {
+        self.selectedPolygon.model.setOrientation(d.orientation);
+        self.selectedPolygon.model.setNewPosition(d.target._latlngs);
+    });
+
+    // Resize Events
+    var lastDistance = 0;
+    var moveDirection = 1; // left: -1, right: 1
+    this.selectedPolygon.on('resizestart', function (d) {
+        self.selectPolygon(this);
+    }).on('resize', function (d) {
+
+        var startCoord = this._latlngs[0][0];
+        var endCoord = this._latlngs[0][1];
+        var distance = startCoord.distanceTo(endCoord);
+        var currentDistance = parseInt((d.distance / distance));
+
+        moveDirection = (currentDistance < lastDistance) ? -1 : 1;
+
+        var isAddOrRemoveBorderExceeded = (
+            (currentDistance >= 2 && moveDirection == 1 || currentDistance >= 1 && moveDirection == -1)
+            && lastDistance != currentDistance
+        );
+        if (isAddOrRemoveBorderExceeded) {
+            if (currentDistance > lastDistance) {
+                var panel = new Panel();
+                self.selectedPolygon.model.appendPanel(panel);
+            } else {
+                self.selectedPolygon.model.removePanel();
+            }
+            self.selectedPolygon.setLatLngs(self.selectedPolygon.model.getGeoJSON());
+            lastDistance = currentDistance
+        }
+
+    });
+
+    this.moveablePolygons.push(model);
+    return this.selectedPolygon;
 };
 
 Map.prototype.addPolygon = function (model) {
@@ -52,14 +151,14 @@ Map.prototype.updatePolygonPosition = function (model) {
 };
 
 Map.prototype.setNonMovable = function (model) {
-    if(this.nonMovablePolygon !== null) {
+    if (this.nonMovablePolygon !== null) {
         this.removeNonMoveable();
     }
     var polygon = model.getAsPolygon();
     polygon.addTo(this.map);
     polygon.parts = [];
     var parts = model.parts;
-    for(var i = 0; i < parts.length; i++) {
+    for (var i = 0; i < parts.length; i++) {
         var m = parts[i].getAsPolygon();
         polygon.parts.push(m);
         m.addTo(this.map);
@@ -68,26 +167,13 @@ Map.prototype.setNonMovable = function (model) {
 };
 
 Map.prototype.removeNonMoveable = function () {
-    if(this.nonMovablePolygon !== null) {
-        for(var i = 0; i < this.nonMovablePolygon.parts.length; i++) {
+    if (this.nonMovablePolygon !== null) {
+        for (var i = 0; i < this.nonMovablePolygon.parts.length; i++) {
             this.map.removeLayer(this.nonMovablePolygon.parts[i]);
         }
         this.map.removeLayer(this.nonMovablePolygon);
     }
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 Map.prototype.setFocus = function (lat, lng) {
@@ -97,15 +183,15 @@ Map.prototype.setFocus = function (lat, lng) {
 
 /* Konvertierung LatLng zu Punkt und umgekehrt */
 Map.prototype.layerPointToLatLng = function (point) {
-  return this.d3Overlay.projection.layerPointToLatLng(point);
+    return this.d3Overlay.projection.layerPointToLatLng(point);
 };
 
 Map.prototype.latLngToLayerPoint = function (latLng) {
-  return this.d3Overlay.projection.latLngToLayerPoint(latLng);
+    return this.d3Overlay.projection.latLngToLayerPoint(latLng);
 };
 
 Map.prototype.containerPointToLatLng = function (point) {
-  return this.map.containerPointToLatLng(point);
+    return this.map.containerPointToLatLng(point);
 };
 
 /* Kartentypen */

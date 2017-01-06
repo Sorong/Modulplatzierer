@@ -1,4 +1,4 @@
-const HOST = "localhost";
+const HOST = "10.136.193.75";
 
 const DAYS_TILL_COOKIE_EXPIRE = 30;
 const COOKIENAME = "Modulplatzierer";
@@ -18,6 +18,7 @@ function Controller() {
 }
 
 Controller.prototype.init = function () {
+    if(navigator.cookieEnabled) { console.log("Cookies erlaubt") }
     this.viewMap.controller = this;
     this.viewMap.init();
     this.viewAddress = new google.maps.places.Autocomplete(
@@ -39,17 +40,21 @@ Controller.prototype.init = function () {
         };
         //TODO: Maßstab der Solarpanels nicht hardcodieren
         var model = new Panel();
+        model.name = "Panelstring: 10123-1234"
         model.width = 10;
         model.height = 10;
         model.topLeft = panelData.LatLng;
         model.orientation = self.roof === null ? 0 : self.roof.orientation;
         model.align(self);
-        polygonPanel = self.viewMap.addPolygon(model);
-        self.saveToServer(polygonPanel.model);
+
+        var panelstring = new PanelString(controller, model);
+        panelstring = self.viewMap.addMultiPolygon(panelstring);
+        self.saveToServer(panelstring.model);
     }
 };
 
 Controller.prototype.disableServer = function () {
+    $('#error_output').removeClass('hidden');
     this.serverIsAvailable = false;
 };
 
@@ -100,8 +105,16 @@ Controller.prototype.updateModel = function (polygon) {
 };
 
 Controller.prototype.connectModelWithToolbar = function (polygon) {
-    if(this.toolbar === null) {
-        this.toolbar = new Toolbar(polygon.model);
+
+    var model = polygon.model.constructor === PanelString ? polygon.model.masterPanel : polygon.model;
+    var isOtherPanelSelected = !(this.toolbar != null && model == this.toolbar.selectedModel);
+
+    if (this.toolbar === null) {
+        this.toolbar = new Toolbar(model);
+    } else if (isOtherPanelSelected) {
+        this.toolbar.unbindEvents();
+        this.toolbar = null;
+        this.toolbar = new Toolbar(model);
     } else {
         this.toolbar.unbindEvents();
     }
@@ -111,7 +124,7 @@ Controller.prototype.connectModelWithToolbar = function (polygon) {
     var changed = function () {
         if (self.serverIsAvailable) {
             var json = self.convertModelToJsonString(polygon.model);
-            self.serverHandler.updatePanelToServer(json);
+            self.serverHandler.updatePanel(json);
         }
     };
     var realignModel = function (selectedPolygon, width, height) {
@@ -119,7 +132,12 @@ Controller.prototype.connectModelWithToolbar = function (polygon) {
         self.updateModelPosition(selectedPolygon, true);
     };
     this.toolbar.pitchSlider().on("input change", function () {
-        selected.model.pitch = $(this).val();
+        if (polygon.model.constructor === PanelString) {
+            selected.model.setPitch($(this).val());
+        } else {
+            selected.model.pitch = $(this).val();
+
+        }
         realignModel(selected);
     }).focusout(changed);
 
@@ -132,7 +150,12 @@ Controller.prototype.connectModelWithToolbar = function (polygon) {
     }).focusout(changed);
 
     this.toolbar.orientationSlider().on("input change", function () {
-        selected.model.orientation = $(this).val();
+        if (polygon.model.constructor === PanelString) {
+            selected.model.setOrientation($(this).val());
+        } else {
+            selected.model.orientation = $(this).val();
+
+        }
         realignModel(selected);
     }).focusout(changed);
 };
@@ -140,12 +163,11 @@ Controller.prototype.connectModelWithToolbar = function (polygon) {
 Controller.prototype.updateModelPosition = function (polygon, disabledServerUpdate) {
     polygon.model.align(this);
     polygon.setLatLngs(polygon.model.getPointsAsList());
-    if(disabledServerUpdate !== true) {
+    polygon.transform.resetHandler();
+    if (disabledServerUpdate !== true) {
         var out = this.convertModelToJsonString(polygon.model);
         this.serverHandler.updatePanel(out, function (data) {
-            var blubb = data;
-            L.circle([blubb.the_geom[0].latitude, blubb.the_geom[0].longitude], 0.2, {color: "#FF0000"}).addTo(controller.viewMap.map);
-            L.circle(polygon.model.topLeft,0.2, {color: "#00FF00"}).addTo(controller.viewMap.map);
+            console.log("Panel updated");
         });
     }
 };
@@ -166,12 +188,13 @@ Controller.prototype.getRoofFromServer = function (place) {
         }
     }
     if (street !== undefined && nr !== undefined && citycode !== undefined) {
+        this.removeAddressError();
         if (self.serverIsAvailable) {
             self.serverHandler.getPredefinedRoof(street, nr, citycode, callbackGetRoof)
         }
         self.viewMap.setFocus(lat, lng);
     } else {
-        alert("Bitte die Adresse vollständig (Straße, Hausnummer, Wohnort) eingeben");
+        this.showAddressError();
     }
 };
 
@@ -198,10 +221,22 @@ Controller.prototype.getModelAsList = function (model) {
 };
 
 Controller.prototype.convertModelToJsonString = function (model) {
-    var json = model.getAsJson();
+    var json = (model.constructor == PanelString) ? model.masterPanel.getAsJson() : model.getAsJson();
     json.cookie_id = this.cookieId;
     json.rahmenbreite = 0;
     return JSON.stringify(json);
+};
+
+Controller.prototype.showAddressError = function () {
+    $('#address_tool').addClass('has-error');
+    $('#address_tool_span').addClass('glyphicon-remove');
+    $('#address_error').text("Addresse muss aus Straße, Hausnummer und Ort bestehen.");
+};
+
+Controller.prototype.removeAddressError = function () {
+    $('#address_tool').removeClass('has-error');
+    $('#address_tool_span').removeClass('glyphicon-remove');
+    $('#address_error').text("");
 };
 
 
@@ -215,7 +250,12 @@ function callbackDisableServer() {
 
 function callbackCreateCookie(data) {
     if (controller !== undefined) {
-        controller.createUserCookie(data.cookie_id, data.ablaufdatum);
+        if (navigator.cookieEnabled) {
+            controller.createUserCookie(data.cookie_id, data.ablaufdatum);
+        } else {
+            alert("Bitte erlauben Sie die Nutzung von Cookie auf dieser Internetseite, um alle Funktionalitäten nutzen zu können");
+        }
+
     }
 }
 
@@ -272,6 +312,7 @@ function callbackGetRoofParts(data) {
             function getCoords(element) {
                 arr.push(L.latLng(element.latitude, element.longitude));
             }
+
             roof.setPointsFromList(arr);
             controller.roof.addPart(roof);
 
