@@ -17,7 +17,7 @@ function Map() {
 }
 
 Map.prototype.init = function () {
-    this.map = L.map('map', {drawControl: false}).setView(INIT_LOCATION, DEFAULT_ZOOM);
+    this.map = L.map('map', {drawControl: false, editable:true}).setView(INIT_LOCATION, DEFAULT_ZOOM);
     this.showGoogle();
     this.d3Overlay = L.d3SvgOverlay(function (selection, projection) {
         this.projection = projection;
@@ -31,22 +31,18 @@ Map.prototype.init = function () {
         var polygonDrawer = new L.Draw.Polygon(self.map);
         polygonDrawer.enable();
 
+
     });
 
     this.map.on(L.Draw.Event.CREATED, function (e) {
         console.log("CREATED")
         var type = e.layerType,
             layer = e.layer;
-        layer.addTo(self.map);
-    });
 
-    this.map.on(L.Draw.Event.DRAWSTOP, function (e) {
-        console.log("DRAWSTOP")
-        $(e.target).on("click", function(){
-            alert("Dach angeclickt!")
-            e.target.editing.enable();
+        layer.addTo(self.map);
+        $(layer).on('click', function(){
+            layer.editing.enable()
         });
-        console.log(e)
     });
 
     // Add Clicklistener
