@@ -17,20 +17,44 @@ function Map() {
 }
 
 Map.prototype.init = function () {
-    this.map = L.map('map').setView(INIT_LOCATION, DEFAULT_ZOOM);
+    this.map = L.map('map', {drawControl: false}).setView(INIT_LOCATION, DEFAULT_ZOOM);
     this.showGoogle();
     this.d3Overlay = L.d3SvgOverlay(function (selection, projection) {
         this.projection = projection;
     });
     this.d3Overlay.addTo(this.map);
 
-    // Add Clicklistener
     var self = this;
-    $('#googleMap').on('click', function(){
+
+    $("#drawRoof").on('click', function () {
+
+        var polygonDrawer = new L.Draw.Polygon(self.map);
+        polygonDrawer.enable();
+
+    });
+
+    this.map.on(L.Draw.Event.CREATED, function (e) {
+        console.log("CREATED")
+        var type = e.layerType,
+            layer = e.layer;
+        layer.addTo(self.map);
+    });
+
+    this.map.on(L.Draw.Event.DRAWSTOP, function (e) {
+        console.log("DRAWSTOP")
+        $(e.target).on("click", function(){
+            alert("Dach angeclickt!")
+            e.target.editing.enable();
+        });
+        console.log(e)
+    });
+
+    // Add Clicklistener
+    $('#googleMap').on('click', function () {
         self.showGoogle()
     });
 
-    $('#openstreetMap').on('click', function(){
+    $('#openstreetMap').on('click', function () {
         self.showOpenstreet()
     });
 };
@@ -43,8 +67,8 @@ Map.prototype.selectPolygon = function (selectedPolygon) {
     //this.controller.updateModel(selectedPolygon);
     this.controller.connectModelWithToolbar(selectedPolygon);
     /*this.connectModelWithToolbar(polygon);
-    self.selectedPolygon = this;
-    self.controller.updateModel(this);*/
+     self.selectedPolygon = this;
+     self.controller.updateModel(this);*/
     /*this.selectedPolygon.transform.enable({
      rotation: true,
      scaling: false,
