@@ -40,9 +40,25 @@ Map.prototype.init = function () {
             layer = e.layer;
 
         layer.addTo(self.map);
+        //layer._latlngs hat die Koordinaten
+        // oder layer.editing.latlngs
         $(layer).on('click', function(){
-            layer.editing.enable()
+            if(layer.editing._enabled) {
+                layer.editing.disable()
+            }else{
+                layer.editing.enable()
+            }
         });
+    });
+
+
+    // Weitere Events https://github.com/Leaflet/Leaflet.draw/blob/31630a93c48279b72589cfa4ae0f305c56df979a/src/Leaflet.Draw.Event.js
+    this.map.on(L.Draw.Event.EDITSTOP  , function (e) {
+        console.log("EditTied")
+    });
+
+    this.map.on(L.Draw.Event.EDITSTART , function (e) {
+        console.log("EditTied")
     });
 
     // Add Clicklistener
