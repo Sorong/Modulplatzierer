@@ -18,7 +18,9 @@ function Controller() {
 }
 
 Controller.prototype.init = function () {
-    if(navigator.cookieEnabled) { console.log("Cookies erlaubt") }
+    if (navigator.cookieEnabled) {
+        console.log("Cookies erlaubt")
+    }
     this.viewMap.controller = this;
     this.viewMap.init();
     this.viewAddress = new google.maps.places.Autocomplete(
@@ -40,7 +42,7 @@ Controller.prototype.init = function () {
         };
         //TODO: Maßstab der Solarpanels nicht hardcodieren
         var model = new Panel();
-        model.name = "Panelstring: 10123-1234"
+        model.name = "Panelstring: 10123-1234";
         model.width = 10;
         model.height = 10;
         model.topLeft = panelData.LatLng;
@@ -59,6 +61,7 @@ Controller.prototype.disableServer = function () {
 };
 
 Controller.prototype.enableServer = function () {
+    $('#error_output').addClass('hidden');
     this.serverIsAvailable = true;
 };
 
@@ -227,6 +230,20 @@ Controller.prototype.convertModelToJsonString = function (model) {
     return JSON.stringify(json);
 };
 
+Controller.prototype.appendModel = function (model) {
+    model.appendModel(new Panel());
+};
+
+Controller.prototype.removeModel = function (model) {
+    model.removePanel();
+};
+
+Controller.prototype.getGeoJSON = function (model) {
+
+};
+
+
+/* Adress-Error */
 Controller.prototype.showAddressError = function () {
     $('#address_tool').addClass('has-error');
     $('#address_tool_span').addClass('glyphicon-remove');

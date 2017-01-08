@@ -41,7 +41,7 @@ var PanelString = (function () {
     PanelString.prototype.setPitch = function (pitch) {
         this.masterPanel.setPitch(this.controller, pitch);
     };
-    PanelString.prototype.setNewPosition = function (latlngs) {
+    PanelString.prototype.setPosition = function (latlngs) {
         var topLeft = latlngs[0][0];
         var master = this.masterPanel;
         master.setTopLeft(this.controller, topLeft);
@@ -75,3 +75,4 @@ var PanelString = (function () {
     };
     return PanelString;
 }());
+//# sourceMappingURL=PanelString.js.map

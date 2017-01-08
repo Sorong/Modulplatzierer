@@ -54,7 +54,7 @@ class PanelString {
         this.masterPanel.setPitch(this.controller, pitch);
     }
 
-    setNewPosition(latlngs) {
+    setPosition(latlngs) {
         let topLeft = latlngs[0][0];
         let master = this.masterPanel;
         master.setTopLeft(this.controller, topLeft);

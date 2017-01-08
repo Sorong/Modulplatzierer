@@ -3,9 +3,6 @@ const DEFAULT_ZOOM = 19;
 
 function Map() {
     this.map = null;
-    /*   Notwendig?
-     var mapHeight = $('#map').get(0).offsetHeight;
-     var mapWidth = $('#map').get(0).offsetWidth;*/
     this.mapProvider = null;
     this.controller = null;
     this.moveablePolygons = [];
@@ -79,7 +76,7 @@ Map.prototype.addMultiPolygon = function (model) {
     this.selectedPolygon.on('dragstart', function (d) {
         self.selectPolygon(this)
     }).on('dragend', function (d) {
-        self.selectedPolygon.model.setNewPosition(d.target._latlngs)
+        self.selectedPolygon.model.setPosition(d.target._latlngs)
     });
 
     // Rotation Events
@@ -87,7 +84,7 @@ Map.prototype.addMultiPolygon = function (model) {
         self.selectPolygon(this)
     }).on('rotateend', function (d) {
         self.selectedPolygon.model.setOrientation(d.orientation);
-        self.selectedPolygon.model.setNewPosition(d.target._latlngs);
+        self.selectedPolygon.model.setPosition(d.target._latlngs);
     });
 
     // Resize Events
@@ -110,12 +107,11 @@ Map.prototype.addMultiPolygon = function (model) {
         );
         if (isAddOrRemoveBorderExceeded) {
             if (currentDistance > lastDistance) {
-                var panel = new Panel();
-                self.selectedPolygon.model.appendPanel(panel);
+                self.controller.appendModel(self.selectedPolygon.model);
             } else {
-                self.selectedPolygon.model.removePanel();
+                self.controller.removeModel(self.selectedPolygon.model);
             }
-            self.selectedPolygon.setLatLngs(self.selectedPolygon.model.getGeoJSON());
+            self.selectedPolygon.setLatLngs(self.controller.getGeoJSON(model));
             lastDistance = currentDistance
         }
 
