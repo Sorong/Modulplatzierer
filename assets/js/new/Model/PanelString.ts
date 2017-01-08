@@ -16,7 +16,6 @@ class PanelString {
             panel.topLeft = master.topLeft;
             panel.pitch = master.pitch;
             panel.orientation = master.orientation;
-            panel.id = master.id;
             panel.align(this.controller, master.width, master.height);
 
             this.panels.push(panel);

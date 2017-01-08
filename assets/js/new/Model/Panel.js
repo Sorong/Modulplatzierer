@@ -15,7 +15,7 @@ function Panel() {
     this.height = 0;
     this.width = 0;
     this.frameWidth = 0;
-    this.id = 0;
+    this.id = -1;
 }
 
 Panel.prototype.align = function (controller, width, height) {

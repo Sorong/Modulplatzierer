@@ -228,6 +228,9 @@ Controller.prototype.convertModelToJsonString = function (model, masterId) {
 Controller.prototype.appendModel = function (model, nextModel) {
     var appendModel = nextModel !== undefined ? nextModel : new Panel();
     model.appendPanel(appendModel);
+    if(appendModel.id === -1) {
+        this.saveToServer(appendModel, model.masterPanel.id);
+    }
 };
 
 Controller.prototype.removeModel = function (model) {
@@ -294,14 +297,14 @@ function callbackEvaluateCookie(data) {
                 panel.height = listItem.laenge;
                 panel.frameWidth = listItem.rahmenbreite;
                 panel.align(controller);
-                panelstring = new PanelString(controller, panel);
                 if(i === 0) {
-                    controller.viewMap.addMultiPolygon(panelstring);
+                    panelstring = new PanelString(controller, panel);
                 } else {
                     controller.appendModel(panelstring, panel);
+
                 }
             }
-          //  controller.viewMap.addPolygon(panel);
+            controller.viewMap.addMultiPolygon(panelstring);
         }
     }
 }
