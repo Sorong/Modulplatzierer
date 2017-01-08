@@ -282,7 +282,7 @@ function callbackEvaluateCookie(data) {
         data.solarpanelList.forEach(createPanels);
 
         function createPanels(list) {
-            var mastermodel;
+            var panelstring;
             for(var i = 0; i < list.length; i++) {
                 var panel = new Panel();
                 var listItem = list[i];
@@ -294,11 +294,11 @@ function callbackEvaluateCookie(data) {
                 panel.height = listItem.laenge;
                 panel.frameWidth = listItem.rahmenbreite;
                 panel.align(controller);
+                panelstring = new PanelString(controller, panel);
                 if(i === 0) {
-                    var polygon = controller.viewMap.addMultiPolygon(panel);
-                    mastermodel = polygon.model;
+                    controller.viewMap.addMultiPolygon(panelstring);
                 } else {
-                    controller.appendModel(model, panel)
+                    controller.appendModel(panelstring, panel);
                 }
             }
           //  controller.viewMap.addPolygon(panel);
