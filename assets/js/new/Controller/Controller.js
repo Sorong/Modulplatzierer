@@ -1,4 +1,4 @@
-const HOST = "10.136.193.75";
+const HOST = "localhost";
 
 const DAYS_TILL_COOKIE_EXPIRE = 30;
 const COOKIENAME = "Modulplatzierer";
@@ -18,9 +18,6 @@ function Controller() {
 }
 
 Controller.prototype.init = function () {
-    if (navigator.cookieEnabled) {
-        console.log("Cookies erlaubt")
-    }
     this.viewMap.controller = this;
     this.viewMap.init();
     this.viewAddress = new google.maps.places.Autocomplete(
@@ -51,7 +48,7 @@ Controller.prototype.init = function () {
 
         var panelstring = new PanelString(controller, model);
         panelstring = self.viewMap.addMultiPolygon(panelstring);
-        self.saveToServer(panelstring.model);
+        self.saveToServer(panelstring.model.masterPanel, -1);
     }
 };
 
@@ -81,11 +78,9 @@ Controller.prototype.loadFromServer = function (forceNewCookie) {
 
 };
 
-Controller.prototype.saveToServer = function (panel) {
+Controller.prototype.saveToServer = function (panel, masterId) {
     if (this.serverIsAvailable) {
-        var json = this.convertModelToJsonString(panel);
-        json.rahmenbreite = 0;
-
+        var json = this.convertModelToJsonString(panel, masterId);
         this.serverHandler.postPanel(json, panel, function (data, panel) {
             panel.id = data;
         });
@@ -223,15 +218,16 @@ Controller.prototype.getModelAsList = function (model) {
     return model.getPointsAsList();
 };
 
-Controller.prototype.convertModelToJsonString = function (model) {
-    var json = (model.constructor == PanelString) ? model.masterPanel.getAsJson() : model.getAsJson();
+Controller.prototype.convertModelToJsonString = function (model, masterId) {
+    var json = model.getAsJson();
     json.cookie_id = this.cookieId;
-    json.rahmenbreite = 0;
+    json.masterpanel_id = masterId;
     return JSON.stringify(json);
 };
 
-Controller.prototype.appendModel = function (model) {
-    model.appendModel(new Panel());
+Controller.prototype.appendModel = function (model, nextModel) {
+    var appendModel = nextModel !== undefined ? nextModel : new Panel();
+    model.appendPanel(appendModel);
 };
 
 Controller.prototype.removeModel = function (model) {
@@ -239,7 +235,7 @@ Controller.prototype.removeModel = function (model) {
 };
 
 Controller.prototype.getGeoJSON = function (model) {
-
+    return model.getGeoJSON();
 };
 
 
@@ -283,18 +279,29 @@ function callbackEvaluateCookie(data) {
     if (data.cookie_id === -1) {
         controller.deleteUserCooke();
     } else {
-        data.solarpanelList.forEach(createPanel);
+        data.solarpanelList.forEach(createPanels);
 
-        function createPanel(p) {
-            var panel = new Panel();
-            panel.setPointsFromList(p.the_geom);
-            panel.pitch = p.neigung;
-            panel.orientation = p.ausrichtung;
-            panel.id = p.panel_id;
-            panel.width = p.breite;
-            panel.height = p.laenge;
-            panel.align(controller);
-            controller.viewMap.addPolygon(panel);
+        function createPanels(list) {
+            var mastermodel;
+            for(var i = 0; i < list.length; i++) {
+                var panel = new Panel();
+                var listItem = list[i];
+                panel.setPointsFromList(listItem.the_geom);
+                panel.pitch = listItem.neigung;
+                panel.orientation = listItem.ausrichtung;
+                panel.id = listItem.panel_id;
+                panel.width = listItem.breite;
+                panel.height = listItem.laenge;
+                panel.frameWidth = listItem.rahmenbreite;
+                panel.align(controller);
+                if(i === 0) {
+                    var polygon = controller.viewMap.addMultiPolygon(panel);
+                    mastermodel = polygon.model;
+                } else {
+                    controller.appendModel(model, panel)
+                }
+            }
+          //  controller.viewMap.addPolygon(panel);
         }
     }
 }

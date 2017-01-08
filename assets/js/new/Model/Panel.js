@@ -14,6 +14,7 @@ function Panel() {
     this.name = null;
     this.height = 0;
     this.width = 0;
+    this.frameWidth = 0;
     this.id = 0;
 }
 
@@ -121,7 +122,8 @@ Panel.prototype.getAsJson = function () {
         laenge: this.height,
         breite: this.width,
         neigung: this.pitch,
-        ausrichtung: this.orientation
+        ausrichtung: this.orientation,
+        rahmenbreite: this.frameWidth
     }
 };
 

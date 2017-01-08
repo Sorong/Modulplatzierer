@@ -1,6 +1,7 @@
 package de.solarweb.server;
 
 
+import com.sun.jersey.api.NotFoundException;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.ParseException;
 import de.solarweb.datamodel.TblDach;
@@ -183,7 +184,7 @@ public class DachServer {
         return roofPartList;
     }
 
-    public TblDach getRoofById(int id) throws NotFoundException{
+    public TblDach getRoofById(int id) throws NotFoundException {
         Query queryRoofById = em.createNamedQuery("tblDach.findById");
         queryRoofById.setParameter("id", id);
         List resultRoofs = queryRoofById.getResultList();

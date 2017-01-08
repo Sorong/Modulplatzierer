@@ -1,6 +1,7 @@
 package de.solarweb.server;
 
 
+import com.sun.jersey.api.NotFoundException;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.ParseException;
 import de.solarweb.datamodel.*;

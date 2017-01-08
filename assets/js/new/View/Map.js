@@ -55,7 +55,7 @@ Map.prototype.addMultiPolygon = function (model) {
     this.handlerGroup = this.handlerGroup || new L.LayerGroup().addTo(this.map);
 
     this.selectedPolygon =
-        L.polygon(model.getGeoJSON(), {
+        L.polygon(self.controller.getGeoJSON(model), {
             color: '#FF0',
             draggable: true,
             transform: true
