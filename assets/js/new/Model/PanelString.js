@@ -72,6 +72,17 @@ var PanelString = (function () {
         }
         return polygonArray;
     };
+    PanelString.prototype.get = function (index) {
+        if (index === 0) {
+            return this.masterPanel;
+        }
+        else {
+            return this.panels[index - 1];
+        }
+    };
+    PanelString.prototype.size = function () {
+        return this.panels.length + 1;
+    };
     return PanelString;
 }());
 //# sourceMappingURL=PanelString.js.map

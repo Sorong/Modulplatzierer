@@ -76,15 +76,14 @@ Map.prototype.addMultiPolygon = function (model) {
     this.selectedPolygon.on('dragstart', function (d) {
         self.selectPolygon(this)
     }).on('dragend', function (d) {
-        self.selectedPolygon.model.setPosition(d.target._latlngs)
+        self.controller.updateModel(self.selectedPolygon.model, d.target._latlngs);
     });
 
     // Rotation Events
     this.selectedPolygon.on('rotatestart', function (d) {
         self.selectPolygon(this)
     }).on('rotateend', function (d) {
-        self.selectedPolygon.model.setOrientation(d.orientation);
-        self.selectedPolygon.model.setPosition(d.target._latlngs);
+        self.controller.updateModel(self.selectedPolygon.model, d.target._latlngs, d.orientation);
     });
 
     // Resize Events
@@ -121,30 +120,32 @@ Map.prototype.addMultiPolygon = function (model) {
     return this.selectedPolygon;
 };
 
-Map.prototype.addPolygon = function (model) {
-    var self = this;
-    this.selectedPolygon = this.updatePolygonPosition(model);
-    this.selectedPolygon.on('click', function () {
-        self.selectedPolygon = this;
-        self.controller.updateModel(this);
-    });
-    this.selectedPolygon.on('drag', dragmoveModel);
-    this.selectedPolygon.on('dragend', dragendModel);
-    this.moveablePolygons.push(model);
-    return this.selectedPolygon;
-};
 
-Map.prototype.updatePolygonPosition = function (model) {
-    model.name = "Solarzelle " + this.moveablePolygons.length;
-    this.handlerGroup = this.handlerGroup || new L.LayerGroup().addTo(this.map);
+//TODO: deprecated - entfernen?
+// Map.prototype.addPolygon = function (model) {
+//     var self = this;
+//     this.selectedPolygon = this.updatePolygonPosition(model);
+//     this.selectedPolygon.on('click', function () {
+//         self.selectedPolygon = this;
+//         self.controller.updateModel(this);
+//     });
+//     this.selectedPolygon.on('drag', dragmoveModel);
+//     this.selectedPolygon.on('dragend', dragendModel);
+//     this.moveablePolygons.push(model);
+//     return this.selectedPolygon;
+// };
 
-    var polygon = L.polygon(controller.getModelAsList(model), {
-        color: '#FF0',
-        draggable: true
-    }).addTo(this.handlerGroup);
-    polygon.model = model;
-    return polygon;
-};
+// Map.prototype.updatePolygonPosition = function (model) {
+//     model.name = "Solarzelle " + this.moveablePolygons.length;
+//     this.handlerGroup = this.handlerGroup || new L.LayerGroup().addTo(this.map);
+//
+//     var polygon = L.polygon(controller.getModelAsList(model), {
+//         color: '#FF0',
+//         draggable: true
+//     }).addTo(this.handlerGroup);
+//     polygon.model = model;
+//     return polygon;
+// };
 
 Map.prototype.setNonMovable = function (model) {
     if (this.nonMovablePolygon !== null) {
@@ -218,23 +219,24 @@ Map.prototype.changeMapProvider = function (layer) {
 };
 
 /* Dragfunktionnen */
-function dragmoveModel(d) {
-    updateModelPosition(d);
-}
-
-function dragendModel(d) {
-    updateModelPosition(d);
-    controller.updateModelPosition(d.target);
-}
-
-function updateModelPosition(draggedPolygon) {
-    var d = draggedPolygon;
-    var arr = [];
-    arr.push(d.target._latlngs[0][0]);
-    arr.push(d.target._latlngs[0][1]);
-    arr.push(d.target._latlngs[0][2]);
-    arr.push(d.target._latlngs[0][3]);
-
-    d.target.model.setPointsFromList(arr);
-
-}
+//TODO: deprecated?
+// function dragmoveModel(d) {
+//     updateModelPosition(d);
+// }
+//
+// function dragendModel(d) {
+//     updateModelPosition(d);
+//     controller.updateModelPosition(d.target);
+// }
+//
+// function updateModelPosition(draggedPolygon) {
+//     var d = draggedPolygon;
+//     var arr = [];
+//     arr.push(d.target._latlngs[0][0]);
+//     arr.push(d.target._latlngs[0][1]);
+//     arr.push(d.target._latlngs[0][2]);
+//     arr.push(d.target._latlngs[0][3]);
+//
+//     d.target.model.setPointsFromList(arr);
+//
+// }

@@ -97,10 +97,20 @@ Controller.prototype.deleteUserCooke = function () {
     this.loadFromServer(true);
 };
 
-Controller.prototype.updateModel = function (polygon) {
-    this.updateModelPosition(polygon);
-    this.connectModelWithToolbar(polygon);
+Controller.prototype.updateModel = function (model, position, orientation) {
+    model.setPosition(position);
+    if(orientation !== undefined) {
+        model.setOrientation(orientation);
+    }
+
+    this.savePanelstring(model);
 };
+
+//TODO: deprecated?
+// Controller.prototype.updateModel = function (polygon) {
+//     this.updateModelPosition(polygon);
+//     this.connectModelWithToolbar(polygon);
+// };
 
 Controller.prototype.connectModelWithToolbar = function (polygon) {
 
@@ -214,9 +224,10 @@ Controller.prototype.getPointAsLatLng = function (point) {
     return this.viewMap.layerPointToLatLng(point);
 };
 
-Controller.prototype.getModelAsList = function (model) {
-    return model.getPointsAsList();
-};
+//TODO: deprecated
+// Controller.prototype.getModelAsList = function (model) {
+//     return model.getPointsAsList();
+// };
 
 Controller.prototype.convertModelToJsonString = function (model, masterId) {
     var json = model.getAsJson();
@@ -235,6 +246,18 @@ Controller.prototype.appendModel = function (model, nextModel) {
 
 Controller.prototype.removeModel = function (model) {
     model.removePanel();
+};
+
+Controller.prototype.savePanelstring = function (panelstring) {
+    if (this.serverIsAvailable) {
+        var masterpanelId = panelstring.get(0).id;
+        for(var i = 0; i < panelstring.size(); i++) {
+            var json = this.convertModelToJsonString(panelstring.get(i), i === 0 ? -1 : masterpanelId);
+            this.serverHandler.updatePanel(json, function (data) {
+
+            });
+        }
+    }
 };
 
 Controller.prototype.getGeoJSON = function (model) {
@@ -304,7 +327,9 @@ function callbackEvaluateCookie(data) {
 
                 }
             }
+            console.log(panelstring.masterPanel.orientation);
             controller.viewMap.addMultiPolygon(panelstring);
+            controller.viewMap.selectedPolygon.transform._orientation = -(panelstring.masterPanel.orientation - 360);
         }
     }
 }

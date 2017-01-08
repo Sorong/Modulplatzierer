@@ -90,4 +90,15 @@ class PanelString {
         return polygonArray
     }
 
+    get(index) {
+        if(index === 0) {
+            return this.masterPanel;
+        } else {
+            return this.panels[index-1];
+        }
+    }
+
+    size() {
+        return this.panels.length + 1;
+    }
 }
