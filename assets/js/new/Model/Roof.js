@@ -60,6 +60,41 @@ Roof.prototype.calculateOrientation = function (controller) {
     this.orientation = isNaN(angle)  ? 0 : angle;
 };
 
+Roof.prototype.panelInRoof = function (panel) {
+
+    var list = panel.getPointsAsList();
+    var inside = false;
+    var insideCounter = 0;
+    for(var li = 0; li < list.length; li++) {
+        for(var i = 0, j = this.points.length-1; i < this.points.length; j = i++){
+            var roofFirst =   controller.getLatLngAsPoint(this.points[i]);
+            var roofSecond = controller.getLatLngAsPoint(this.points[j]);
+            var testPoint = controller.getLatLngAsPoint(list[li]);
+            if( ((roofFirst.y > testPoint.y) != (roofSecond.y >testPoint.y)) &&
+                (testPoint.x <  (roofSecond.x - roofFirst.x) * (testPoint.y - roofFirst.y) / (roofSecond.y-roofFirst.y) + roofFirst.x)) {
+                inside = !inside;
+            }
+        }
+        if(inside) {
+            insideCounter++;
+        }
+        inside = false;
+    }
+
+    return insideCounter;
+};
+
+// int pnpoly(int nvert, float *vertx, float *verty, float testx, float testy)
+// {
+//     int i, j, c = 0;
+//     for (i = 0, j = nvert-1; i < nvert; j = i++) {
+//         if ( ((verty[i]>testy) != (verty[j]>testy)) &&
+//             (testx < (vertx[j]-vertx[i]) * (testy-verty[i]) / (verty[j]-verty[i]) + vertx[i]) )
+//             c = !c;
+//     }
+//     return c;
+// }
+
 /* Hilfsfunktion */
 
 function convexHull(points) {

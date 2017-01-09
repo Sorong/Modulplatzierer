@@ -1,4 +1,4 @@
-const HOST = "localhost";
+const HOST = "195.37.224.253";
 
 const DAYS_TILL_COOKIE_EXPIRE = 30;
 const COOKIENAME = "Modulplatzierer";
@@ -83,7 +83,7 @@ Controller.prototype.saveToServer = function (panel, masterId) {
         var json = this.convertModelToJsonString(panel, masterId);
         this.serverHandler.postPanel(json, panel, function (data, panel) {
             panel.id = data;
-            panel.name = "Solarpanelstring " + id;
+            panel.name = "Solarpanelstring " + data;
         });
     }
 };
@@ -105,6 +105,13 @@ Controller.prototype.updateModel = function (model, position, orientation) {
     }
 
     this.savePanelstring(model);
+    if(this.roof !== null) {
+        console.log(this.roof.panelInRoof(model.masterPanel));
+    } else {
+        console.log("kein Dach");
+    }
+
+
 };
 
 //TODO: deprecated?
