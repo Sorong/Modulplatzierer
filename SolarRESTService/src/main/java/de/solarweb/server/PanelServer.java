@@ -65,6 +65,9 @@ public class PanelServer {
             if(panel.getMasterpanel_id() != -1){
                 tblPanel.setMasterpanel(getPanelById(panel.getMasterpanel_id()));
             }
+            else{
+                tblPanel.setMasterpanel(tblPanel);
+            }
 
             em.persist(tblPanel);
             utx.commit();
