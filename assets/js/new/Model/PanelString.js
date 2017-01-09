@@ -23,8 +23,10 @@ var PanelString = (function () {
     };
     /* Schnittstellenende */
     PanelString.prototype.removePanel = function (panel) {
+        var removedPanelId = this.panels[this.panels.length - 1].id;
         var removePosition = this.panels.length - 1;
         this.panels.splice(removePosition, 1);
+        return removedPanelId;
     };
     PanelString.prototype.removePanelById = function (panelId) {
     };

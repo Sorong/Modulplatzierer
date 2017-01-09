@@ -218,6 +218,11 @@ Map.prototype.changeMapProvider = function (layer) {
     this.map.addLayer(this.mapProvider);
 };
 
+Map.prototype.removeSelected = function () {
+    this.selectedPolygon.transform.disable();
+  this.map.removeLayer(this.selectedPolygon);
+};
+
 /* Dragfunktionnen */
 //TODO: deprecated?
 // function dragmoveModel(d) {

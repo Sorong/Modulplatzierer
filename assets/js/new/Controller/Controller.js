@@ -166,6 +166,12 @@ Controller.prototype.connectModelWithToolbar = function (polygon) {
         }
         realignModel(selected);
     }).focusout(changed);
+    this.toolbar.modelDelete.on("click", function () {
+        for(var i = selected.model.size()-1; i >= 0; i--) {
+            controller.removeModelById(selected.model.get(i).id);
+            controller.viewMap.removeSelected();
+        }
+    })
 };
 
 Controller.prototype.updateModelPosition = function (polygon, disabledServerUpdate) {
@@ -245,7 +251,16 @@ Controller.prototype.appendModel = function (model, nextModel) {
 };
 
 Controller.prototype.removeModel = function (model) {
-    model.removePanel();
+    var id = model.removePanel();
+    if(id !== undefined && id !== -1) {
+        this.removeModelById(id);
+    }
+};
+
+Controller.prototype.removeModelById = function (id) {
+    this.serverHandler.removePanel(id, function () {
+        console.log(id + " wurde gelöscht");
+    })
 };
 
 Controller.prototype.savePanelstring = function (panelstring) {

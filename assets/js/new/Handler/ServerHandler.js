@@ -26,6 +26,12 @@ ServerHandler.prototype.getRoofParts = function (gid, callback) {
     });
 };
 
+ServerHandler.prototype.removePanel = function (id, callback) {
+    this._get(id, "panel/removePanel/" + id, function (data) {
+        callback(data);
+    })
+};
+
 ServerHandler.prototype.postCookie = function (json, callback) {
     this._post(json, "cookie/postCookie", function (data) {
         callback(data);
@@ -43,6 +49,8 @@ ServerHandler.prototype.updatePanel = function (json, callback) {
         callback(data);
     })
 };
+
+
 
 
 ServerHandler.prototype._get = function (serverFunction, successCallback) {

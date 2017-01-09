@@ -2,10 +2,10 @@ function Toolbar(model) {
 
     this.isPanelString = false;
 
-    if(model.constructor == PanelString){
+    if (model.constructor == PanelString) {
         this.selectedModel = model.masterPanel;
         this.isPanelString = true;
-    }else{
+    } else {
         this.selectedModel = model;
     }
 
@@ -23,6 +23,7 @@ function Toolbar(model) {
     this.modelOrientation = $("#model_orientation");
     this.modelOrientationValue = $("#model_orientation_value");
 
+    this.modelDelete = $("#delete_panel");
     this.renderModelValues();
 }
 
@@ -88,4 +89,5 @@ Toolbar.prototype.unbindEvents = function () {
     this.modelHeight.off();
     this.modelWidth.off();
     this.modelOrientation.off();
+    this.modelDelete.off();
 };
