@@ -10,6 +10,8 @@ function Toolbar(model) {
     }
 
     this.toolsContainer = $("#tools");
+    this.toolsContainer.removeClass("hidden");
+    $("#map_container").removeClass().addClass("col-sm-6");
     this.toolsHeadline = $("#tools_headline").find(".headline");
     this.modelTilt = $("#model_tilt");
     this.modelTiltValue = $("#model_tilt_value");
@@ -90,4 +92,7 @@ Toolbar.prototype.unbindEvents = function () {
     this.modelWidth.off();
     this.modelOrientation.off();
     this.modelDelete.off();
+    this.toolsContainer.addClass("hidden");
+    $("#map_container").removeClass().addClass("col-sm-9");
+
 };

@@ -170,6 +170,7 @@ Controller.prototype.connectModelWithToolbar = function (polygon) {
     this.toolbar.modelDelete.on("click", function () {
         for(var i = selected.model.size()-1; i >= 0; i--) {
             controller.removeModelById(selected.model.get(i).id);
+            controller.toolbar.unbindEvents();
             controller.viewMap.removeSelected();
         }
     })
