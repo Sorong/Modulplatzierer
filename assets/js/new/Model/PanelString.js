@@ -90,4 +90,3 @@ var PanelString = (function () {
     };
     return PanelString;
 }());
-//# sourceMappingURL=PanelString.js.map

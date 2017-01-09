@@ -55,6 +55,7 @@
     <script src="assets/js/new/Model/PanelString.js"></script>
     <script src="assets/js/new/Model/RoofPart.js"></script>
     <script src="assets/js/new/Model/Roof.js"></script>
+    <script src="assets/js/new/Handler/ColorHandler.js"></script>
     <script src="assets/js/new/Handler/ServerHandler.js"></script>
     <script src="assets/js/new/Handler/CookieHandler.js"></script>
     <script src="assets/js/new/View/Toolbar.js"></script>
@@ -66,6 +67,10 @@
 </head>
 <body>
 <div id="main_container" class="container-fluid">
+
+    <svg id="svg_colors" height="0" width="0">
+        <defs></defs>
+    </svg>
 
     <div class="row content">
         <div class="col-sm-3 sidenav">
@@ -119,9 +124,9 @@
             <div id="map"></div>
         </div>
         <div class="col-sm-3 sidenav hidden" id="tools">
-                <div id="tools_headline">
-                    <span class="headline col-sm-8">Panel ID 1000</span>
-                    <span class="col-sm-4" style="text-align:right;" ><a href="#" id="delete_panel">löschen</a></span>
+            <div id="tools_headline">
+                <span class="headline col-sm-8">Panel ID 1000</span>
+                <span class="col-sm-4" style="text-align:right;"><a href="#" id="delete_panel">löschen</a></span>
                 <br>
             </div>
             <div id="tools_container" class="form-group">

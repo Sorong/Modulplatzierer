@@ -1,8 +1,10 @@
+
 class PanelString {
 
     controller;
     masterPanel;
     panels;
+    colorHandler;
 
     constructor(controller, panel) {
         this.controller = controller;
@@ -30,10 +32,11 @@ class PanelString {
     getPointsAsList() {
         return this.getGeoJSON();
     }
+
     /* Schnittstellenende */
 
     removePanel(panel) {
-        let removedPanelId = this.panels[this.panels.length-1].id;
+        let removedPanelId = this.panels[this.panels.length - 1].id;
         let removePosition = this.panels.length - 1;
         this.panels.splice(removePosition, 1);
         return removedPanelId;
@@ -51,6 +54,7 @@ class PanelString {
         }
         master.setOrientation(this.controller, o);
     }
+
     setPitch(pitch) {
         this.masterPanel.setPitch(this.controller, pitch);
     }
@@ -93,10 +97,10 @@ class PanelString {
     }
 
     get(index) {
-        if(index === 0) {
+        if (index === 0) {
             return this.masterPanel;
         } else {
-            return this.panels[index-1];
+            return this.panels[index - 1];
         }
     }
 

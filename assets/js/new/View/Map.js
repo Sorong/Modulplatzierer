@@ -25,7 +25,9 @@ Map.prototype.init = function () {
 
     // Roof
     $("#drawRoof").on('click', function () {
-        var polygonDrawer = new L.Draw.Polygon(self.map);
+        var polygonDrawer = new L.Draw.Polygon(self.map, {
+            shapeOptions: {}
+        });
         polygonDrawer.enable();
     });
 
@@ -76,6 +78,7 @@ Map.prototype.addMultiPolygon = function (model) {
             transform: true
         }).addTo(this.handlerGroup);
 
+    this.selectedPolygon.colorHandler = new ColorHandler(model.masterPanel.name);
     this.selectedPolygon.model = model;
     this.selectedPolygon.transform.enable({
         rotation: true,
@@ -106,6 +109,7 @@ Map.prototype.addMultiPolygon = function (model) {
     var moveDirection = 1; // left: -1, right: 1
     this.selectedPolygon.on('resizestart', function (d) {
         self.selectPolygon(this);
+        self.selectedPolygon.setStyle({color: "#FF0"});
     }).on('resize', function (d) {
 
         var startCoord = this._latlngs[0][0];
@@ -129,6 +133,12 @@ Map.prototype.addMultiPolygon = function (model) {
             lastDistance = currentDistance
         }
 
+    }).on('resizeend', function (d) {
+        console.log("ResizeEnd")
+        var colorHandler = self.selectedPolygon.colorHandler;
+        colorHandler.setColor(1, '#00F');
+        colorHandler.setSize(self.selectedPolygon.model.size() - 1);
+        self.selectedPolygon.setStyle({color: "url(#" + colorHandler.getColorId() + ")"});
     });
 
     this.moveablePolygons.push(model);
