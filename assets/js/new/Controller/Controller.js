@@ -294,6 +294,27 @@ Controller.prototype.removeAddressError = function () {
 };
 
 
+Controller.prototype.createRoof = function(data){
+    console.log("CREATED")
+    var type = data.layerType,
+        layer = data.layer;
+
+    layer.addTo(this.viewMap.map);
+    //layer._latlngs hat die Koordinaten
+    // oder layer.editing.latlngs
+    $(layer).on('click', function () {
+        if (layer.editing._enabled) {
+            layer.editing.disable()
+        } else {
+            layer.editing.enable()
+        }
+    });
+};
+
+Controller.prototype.editRoof = function(data){
+    console.log(data)
+};
+
 /* Callbackfunktionen */
 
 function callbackDisableServer() {

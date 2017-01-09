@@ -14,7 +14,7 @@ function Map() {
 }
 
 Map.prototype.init = function () {
-    this.map = L.map('map', {drawControl: false, editable:true}).setView(INIT_LOCATION, DEFAULT_ZOOM);
+    this.map = L.map('map', {drawControl: false, editable: true}).setView(INIT_LOCATION, DEFAULT_ZOOM);
     this.showGoogle();
     this.d3Overlay = L.d3SvgOverlay(function (selection, projection) {
         this.projection = projection;
@@ -23,39 +23,18 @@ Map.prototype.init = function () {
 
     var self = this;
 
+    // Roof
     $("#drawRoof").on('click', function () {
-
         var polygonDrawer = new L.Draw.Polygon(self.map);
         polygonDrawer.enable();
-
-
     });
 
-    this.map.on(L.Draw.Event.CREATED, function (e) {
-        console.log("CREATED")
-        var type = e.layerType,
-            layer = e.layer;
-
-        layer.addTo(self.map);
-        //layer._latlngs hat die Koordinaten
-        // oder layer.editing.latlngs
-        $(layer).on('click', function(){
-            if(layer.editing._enabled) {
-                layer.editing.disable()
-            }else{
-                layer.editing.enable()
-            }
-        });
+    this.map.on(L.Draw.Event.CREATED, function (data) {
+        controller.createRoof(data);
     });
 
-
-    // Weitere Events https://github.com/Leaflet/Leaflet.draw/blob/31630a93c48279b72589cfa4ae0f305c56df979a/src/Leaflet.Draw.Event.js
-    this.map.on(L.Draw.Event.EDITSTOP  , function (e) {
-        console.log("EditTied")
-    });
-
-    this.map.on(L.Draw.Event.EDITSTART , function (e) {
-        console.log("EditTied")
+    this.map.on(L.Draw.Event.EDITVERTEX, function (data) {
+        controller.editRoof(data)
     });
 
     // Add Clicklistener
@@ -256,7 +235,7 @@ Map.prototype.changeMapProvider = function (layer) {
 
 Map.prototype.removeSelected = function () {
     this.selectedPolygon.transform.disable();
-  this.map.removeLayer(this.selectedPolygon);
+    this.map.removeLayer(this.selectedPolygon);
 };
 
 /* Dragfunktionnen */
