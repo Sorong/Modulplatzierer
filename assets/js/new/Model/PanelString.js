@@ -85,6 +85,9 @@ var PanelString = (function () {
     PanelString.prototype.size = function () {
         return this.panels.length + 1;
     };
+    PanelString.prototype.getId = function () {
+        return this.masterPanel.getId();
+    };
     return PanelString;
 }());
 //# sourceMappingURL=PanelString.js.map

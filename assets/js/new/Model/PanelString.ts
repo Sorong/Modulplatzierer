@@ -103,4 +103,8 @@ class PanelString {
     size() {
         return this.panels.length + 1;
     }
+
+    getId() {
+        return this.masterPanel.getId();
+    }
 }

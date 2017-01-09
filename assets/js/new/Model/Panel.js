@@ -155,6 +155,10 @@ Panel.prototype.setPointsFromList = function (list) {
     }
 };
 
+Panel.prototype.getId = function () {
+  return this.id;
+};
+
 function calcNextPoint(distance, point, angle) {
     earthRadius = 6371000;
     distanceNorth = Math.sin(angle * Math.PI / 180) * distance;

@@ -83,6 +83,7 @@ Controller.prototype.saveToServer = function (panel, masterId) {
         var json = this.convertModelToJsonString(panel, masterId);
         this.serverHandler.postPanel(json, panel, function (data, panel) {
             panel.id = data;
+            panel.name = "Solarpanelstring " + id;
         });
     }
 };
