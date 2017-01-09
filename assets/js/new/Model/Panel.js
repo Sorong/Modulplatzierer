@@ -14,7 +14,8 @@ function Panel() {
     this.name = null;
     this.height = 0;
     this.width = 0;
-    this.id = 0;
+    this.frameWidth = 0;
+    this.id = -1;
 }
 
 Panel.prototype.align = function (controller, width, height) {
@@ -69,9 +70,33 @@ Panel.prototype.selfAlign = function (controller) {
 
 };
 
+Panel.prototype.setOrientation = function (controller, orientation) {
+    this.orientation = orientation;
+    this.align(controller)
+};
+
+Panel.prototype.setPitch = function (controller, pitch) {
+    this.pitch = pitch;
+    this.align(controller);
+};
+
+Panel.prototype.setTopLeft = function(controller, topLeft){
+    this.topLeft = topLeft;
+    this.align(controller)
+};
+
 Panel.prototype.getPointsAsList = function () {
     var list = [this.oTopLeft, this.topRight, this.botRight, this.botLeft];
     return list;
+};
+
+Panel.prototype.getLatLngsAsArray = function () {
+    return [
+        [this.topLeft.lat, this.topLeft.lng],
+        [this.topRight.lat, this.topRight.lng],
+        [this.botRight.lat, this.botRight.lng],
+        [this.botLeft.lat, this.botLeft.lng]
+    ]
 };
 
 Panel.prototype.getAsJson = function () {
@@ -97,7 +122,8 @@ Panel.prototype.getAsJson = function () {
         laenge: this.height,
         breite: this.width,
         neigung: this.pitch,
-        ausrichtung: this.orientation
+        ausrichtung: this.orientation,
+        rahmenbreite: this.frameWidth
     }
 };
 
@@ -105,7 +131,7 @@ Panel.prototype.setPointsFromList = function (list) {
     if (list.length > 0) {
         for (var i = 0; i < list.length; i++) {
             var latLng = L.latLng(list[i].latitude, list[i].longitude);
-            if(latLng === undefined) {
+            if (latLng === undefined) {
                 latLng = list[i];
             }
             switch (i) {
@@ -127,6 +153,10 @@ Panel.prototype.setPointsFromList = function (list) {
         }
 
     }
+};
+
+Panel.prototype.getId = function () {
+  return this.id;
 };
 
 function calcNextPoint(distance, point, angle) {

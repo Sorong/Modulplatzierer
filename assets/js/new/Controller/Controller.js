@@ -39,21 +39,26 @@ Controller.prototype.init = function () {
         };
         //TODO: Maßstab der Solarpanels nicht hardcodieren
         var model = new Panel();
+        model.name = "Panelstring: 10123-1234";
         model.width = 10;
         model.height = 10;
         model.topLeft = panelData.LatLng;
         model.orientation = self.roof === null ? 0 : self.roof.orientation;
         model.align(self);
-        polygonPanel = self.viewMap.addPolygon(model);
-        self.saveToServer(polygonPanel.model);
+
+        var panelstring = new PanelString(controller, model);
+        panelstring = self.viewMap.addMultiPolygon(panelstring);
+        self.saveToServer(panelstring.model.masterPanel, -1);
     }
 };
 
 Controller.prototype.disableServer = function () {
+    $('#error_output').removeClass('hidden');
     this.serverIsAvailable = false;
 };
 
 Controller.prototype.enableServer = function () {
+    $('#error_output').addClass('hidden');
     this.serverIsAvailable = true;
 };
 
@@ -73,13 +78,12 @@ Controller.prototype.loadFromServer = function (forceNewCookie) {
 
 };
 
-Controller.prototype.saveToServer = function (panel) {
+Controller.prototype.saveToServer = function (panel, masterId) {
     if (this.serverIsAvailable) {
-        var json = this.convertModelToJsonString(panel);
-        json.rahmenbreite = 0;
-
+        var json = this.convertModelToJsonString(panel, masterId);
         this.serverHandler.postPanel(json, panel, function (data, panel) {
             panel.id = data;
+            panel.name = "Solarpanelstring " + id;
         });
     }
 };
@@ -94,16 +98,32 @@ Controller.prototype.deleteUserCooke = function () {
     this.loadFromServer(true);
 };
 
-Controller.prototype.updateModel = function (polygon) {
-    this.updateModelPosition(polygon);
-    this.connectModelWithToolbar(polygon);
+Controller.prototype.updateModel = function (model, position, orientation) {
+    model.setPosition(position);
+    if(orientation !== undefined) {
+        model.setOrientation(orientation);
+    }
+
+    this.savePanelstring(model);
 };
 
+//TODO: deprecated?
+// Controller.prototype.updateModel = function (polygon) {
+//     this.updateModelPosition(polygon);
+//     this.connectModelWithToolbar(polygon);
+// };
+
 Controller.prototype.connectModelWithToolbar = function (polygon) {
-    if(this.toolbar === null) {
-        this.toolbar = new Toolbar(polygon.model);
-    } else {
+
+    var model = polygon.model.constructor === PanelString ? polygon.model.masterPanel : polygon.model;
+    var isOtherPanelSelected = !(this.toolbar != null && model == this.toolbar.selectedModel);
+
+    if (this.toolbar === null) {
+        this.toolbar = new Toolbar(model);
+    } else if (isOtherPanelSelected) {
         this.toolbar.unbindEvents();
+        this.toolbar = null;
+        this.toolbar = new Toolbar(model);
     }
 
     var self = this;
@@ -111,7 +131,7 @@ Controller.prototype.connectModelWithToolbar = function (polygon) {
     var changed = function () {
         if (self.serverIsAvailable) {
             var json = self.convertModelToJsonString(polygon.model);
-            self.serverHandler.updatePanelToServer(json);
+            self.serverHandler.updatePanel(json);
         }
     };
     var realignModel = function (selectedPolygon, width, height) {
@@ -119,7 +139,12 @@ Controller.prototype.connectModelWithToolbar = function (polygon) {
         self.updateModelPosition(selectedPolygon, true);
     };
     this.toolbar.pitchSlider().on("input change", function () {
-        selected.model.pitch = $(this).val();
+        if (polygon.model.constructor === PanelString) {
+            selected.model.setPitch($(this).val());
+        } else {
+            selected.model.pitch = $(this).val();
+
+        }
         realignModel(selected);
     }).focusout(changed);
 
@@ -132,20 +157,31 @@ Controller.prototype.connectModelWithToolbar = function (polygon) {
     }).focusout(changed);
 
     this.toolbar.orientationSlider().on("input change", function () {
-        selected.model.orientation = $(this).val();
+        if (polygon.model.constructor === PanelString) {
+            selected.model.setOrientation($(this).val());
+        } else {
+            selected.model.orientation = $(this).val();
+
+        }
         realignModel(selected);
     }).focusout(changed);
+    this.toolbar.modelDelete.on("click", function () {
+        for(var i = selected.model.size()-1; i >= 0; i--) {
+            controller.removeModelById(selected.model.get(i).id);
+            controller.toolbar.unbindEvents();
+            controller.viewMap.removeSelected();
+        }
+    })
 };
 
 Controller.prototype.updateModelPosition = function (polygon, disabledServerUpdate) {
     polygon.model.align(this);
     polygon.setLatLngs(polygon.model.getPointsAsList());
-    if(disabledServerUpdate !== true) {
+    polygon.transform.resetHandler();
+    if (disabledServerUpdate !== true) {
         var out = this.convertModelToJsonString(polygon.model);
         this.serverHandler.updatePanel(out, function (data) {
-            var blubb = data;
-            L.circle([blubb.the_geom[0].latitude, blubb.the_geom[0].longitude], 0.2, {color: "#FF0000"}).addTo(controller.viewMap.map);
-            L.circle(polygon.model.topLeft,0.2, {color: "#00FF00"}).addTo(controller.viewMap.map);
+            console.log("Panel updated");
         });
     }
 };
@@ -166,12 +202,13 @@ Controller.prototype.getRoofFromServer = function (place) {
         }
     }
     if (street !== undefined && nr !== undefined && citycode !== undefined) {
+        this.removeAddressError();
         if (self.serverIsAvailable) {
             self.serverHandler.getPredefinedRoof(street, nr, citycode, callbackGetRoof)
         }
         self.viewMap.setFocus(lat, lng);
     } else {
-        alert("Bitte die Adresse vollständig (Straße, Hausnummer, Wohnort) eingeben");
+        this.showAddressError();
     }
 };
 
@@ -193,17 +230,90 @@ Controller.prototype.getPointAsLatLng = function (point) {
     return this.viewMap.layerPointToLatLng(point);
 };
 
-Controller.prototype.getModelAsList = function (model) {
-    return model.getPointsAsList();
-};
+//TODO: deprecated
+// Controller.prototype.getModelAsList = function (model) {
+//     return model.getPointsAsList();
+// };
 
-Controller.prototype.convertModelToJsonString = function (model) {
+Controller.prototype.convertModelToJsonString = function (model, masterId) {
     var json = model.getAsJson();
     json.cookie_id = this.cookieId;
-    json.rahmenbreite = 0;
+    json.masterpanel_id = masterId;
     return JSON.stringify(json);
 };
 
+Controller.prototype.appendModel = function (model, nextModel) {
+    var appendModel = nextModel !== undefined ? nextModel : new Panel();
+    model.appendPanel(appendModel);
+    if(appendModel.id === -1) {
+        this.saveToServer(appendModel, model.masterPanel.id);
+    }
+};
+
+Controller.prototype.removeModel = function (model) {
+    var id = model.removePanel();
+    if(id !== undefined && id !== -1) {
+        this.removeModelById(id);
+    }
+};
+
+Controller.prototype.removeModelById = function (id) {
+    this.serverHandler.removePanel(id, function () {
+        console.log(id + " wurde gelöscht");
+    })
+};
+
+Controller.prototype.savePanelstring = function (panelstring) {
+    if (this.serverIsAvailable) {
+        var masterpanelId = panelstring.get(0).id;
+        for(var i = 0; i < panelstring.size(); i++) {
+            var json = this.convertModelToJsonString(panelstring.get(i), i === 0 ? -1 : masterpanelId);
+            this.serverHandler.updatePanel(json, function (data) {
+
+            });
+        }
+    }
+};
+
+Controller.prototype.getGeoJSON = function (model) {
+    return model.getGeoJSON();
+};
+
+
+/* Adress-Error */
+Controller.prototype.showAddressError = function () {
+    $('#address_tool').addClass('has-error');
+    $('#address_tool_span').addClass('glyphicon-remove');
+    $('#address_error').text("Addresse muss aus Straße, Hausnummer und Ort bestehen.");
+};
+
+Controller.prototype.removeAddressError = function () {
+    $('#address_tool').removeClass('has-error');
+    $('#address_tool_span').removeClass('glyphicon-remove');
+    $('#address_error').text("");
+};
+
+
+Controller.prototype.createRoof = function(data){
+    console.log("CREATED")
+    var type = data.layerType,
+        layer = data.layer;
+
+    layer.addTo(this.viewMap.map);
+    //layer._latlngs hat die Koordinaten
+    // oder layer.editing.latlngs
+    $(layer).on('click', function () {
+        if (layer.editing._enabled) {
+            layer.editing.disable()
+        } else {
+            layer.editing.enable()
+        }
+    });
+};
+
+Controller.prototype.editRoof = function(data){
+    console.log(data)
+};
 
 /* Callbackfunktionen */
 
@@ -215,7 +325,12 @@ function callbackDisableServer() {
 
 function callbackCreateCookie(data) {
     if (controller !== undefined) {
-        controller.createUserCookie(data.cookie_id, data.ablaufdatum);
+        if (navigator.cookieEnabled) {
+            controller.createUserCookie(data.cookie_id, data.ablaufdatum);
+        } else {
+            alert("Bitte erlauben Sie die Nutzung von Cookie auf dieser Internetseite, um alle Funktionalitäten nutzen zu können");
+        }
+
     }
 }
 
@@ -226,18 +341,31 @@ function callbackEvaluateCookie(data) {
     if (data.cookie_id === -1) {
         controller.deleteUserCooke();
     } else {
-        data.solarpanelList.forEach(createPanel);
+        data.solarpanelList.forEach(createPanels);
 
-        function createPanel(p) {
-            var panel = new Panel();
-            panel.setPointsFromList(p.the_geom);
-            panel.pitch = p.neigung;
-            panel.orientation = p.ausrichtung;
-            panel.id = p.panel_id;
-            panel.width = p.breite;
-            panel.height = p.laenge;
-            panel.align(controller);
-            controller.viewMap.addPolygon(panel);
+        function createPanels(list) {
+            var panelstring;
+            for(var i = 0; i < list.length; i++) {
+                var panel = new Panel();
+                var listItem = list[i];
+                panel.setPointsFromList(listItem.the_geom);
+                panel.pitch = listItem.neigung;
+                panel.orientation = listItem.ausrichtung;
+                panel.id = listItem.panel_id;
+                panel.width = listItem.breite;
+                panel.height = listItem.laenge;
+                panel.frameWidth = listItem.rahmenbreite;
+                panel.align(controller);
+                if(i === 0) {
+                    panelstring = new PanelString(controller, panel);
+                } else {
+                    controller.appendModel(panelstring, panel);
+
+                }
+            }
+            console.log(panelstring.masterPanel.orientation);
+            controller.viewMap.addMultiPolygon(panelstring);
+            controller.viewMap.selectedPolygon.transform._orientation = -(panelstring.masterPanel.orientation - 360);
         }
     }
 }
@@ -272,6 +400,7 @@ function callbackGetRoofParts(data) {
             function getCoords(element) {
                 arr.push(L.latLng(element.latitude, element.longitude));
             }
+
             roof.setPointsFromList(arr);
             controller.roof.addPart(roof);
 
