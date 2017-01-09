@@ -124,8 +124,6 @@ Controller.prototype.connectModelWithToolbar = function (polygon) {
         this.toolbar.unbindEvents();
         this.toolbar = null;
         this.toolbar = new Toolbar(model);
-    } else {
-        this.toolbar.unbindEvents();
     }
 
     var self = this;
