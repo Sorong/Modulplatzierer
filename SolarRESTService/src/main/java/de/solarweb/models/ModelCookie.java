@@ -65,13 +65,16 @@ public class ModelCookie implements Serializable{
 
     private LinkedList<LinkedList<ModelSolarpanel>> buildMasterpanelString(Collection<TblSolarpanel> panelCollection){
         LinkedList<LinkedList<ModelSolarpanel>> solarpanelListList= new LinkedList<LinkedList<ModelSolarpanel>>();
+
         for(TblSolarpanel tblSolarpanel : panelCollection){
-            if(tblSolarpanel.getMasterpanel() == null){
+            if(tblSolarpanel.getMasterpanel().getPanel_id() == tblSolarpanel.getPanel_id()){
                 LinkedList<ModelSolarpanel> solarpanelListTemp = new LinkedList<ModelSolarpanel>();
-                solarpanelListTemp.add(new ModelSolarpanel(tblSolarpanel));
+                //solarpanelListTemp.add(new ModelSolarpanel(tblSolarpanel));
+
                 for(TblSolarpanel tblSolarpanelInString : tblSolarpanel.getTblSolarpanelCollection()){
                     solarpanelListTemp.add(new ModelSolarpanel(tblSolarpanelInString));
                 }
+
                 solarpanelListList.add(solarpanelListTemp);
             }
 

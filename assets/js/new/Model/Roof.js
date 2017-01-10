@@ -7,6 +7,9 @@ function Roof() {
     this.st = null;
     this.orientation = null;
     this.parts = null;
+    this.bestParts = [];
+    this.tilt = null;
+    this.global = 0;
 }
 
 Roof.prototype.setPointsFromList = function (coordinates) {
@@ -27,14 +30,41 @@ Roof.prototype.getAsPolygon = function () {
     while (rgb.length < 6) {
         rgb = "0" + rgb;
     }
-    return L.polygon(this.points, {color: "#" + rgb});
+    var style = {
+        color: "#" + rgb,
+        weight: 2,
+        fill: false
+    };
+    if(this.parts === null) {
+        style.weight = 1;
+        style.fill = true;
+        style.fillOpacity = 0.1;
+    }
+    return L.polygon(this.points, style);
 };
 
 Roof.prototype.addPart = function (part) {
+    var bestPV = this.bestParts.length === 0 ? 1 : this.parts[this.bestParts[0]].pv;
     if(this.parts === null) {
         this.parts = [];
     }
-    this.parts.push(part);
+    var index = this.parts.push(part);
+    if(part.pv == bestPV) {
+        this.bestParts.push(index-1);
+    } else if (part.pv > bestPV) {
+        bestPV = part.pv;
+        this.bestParts = [];
+        this.bestParts.push(index-1);
+    }
+    this.global += part.global;
+};
+
+Roof.prototype.getBestRoofParts = function () {
+    var best = [];
+    for(var i = 0; i < this.bestParts.length; i++) {
+        best.push(this.parts[this.bestParts[i]]);
+    }
+    return best;
 };
 
 Roof.prototype.calculateOrientation = function (controller) {
