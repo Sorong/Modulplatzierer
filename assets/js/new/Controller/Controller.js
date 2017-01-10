@@ -1,4 +1,4 @@
-const HOST = "195.37.224.253";
+const HOST = "localhost";
 
 const DAYS_TILL_COOKIE_EXPIRE = 30;
 const COOKIENAME = "Modulplatzierer";
