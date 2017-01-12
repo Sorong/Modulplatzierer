@@ -172,6 +172,7 @@ Map.prototype.addNonMovable = function (model) {
     //     polygon.parts.push(m);
     //     m.addTo(this.map);
     // }
+    polygon.bringToBack();
     this.nonMovablePolygon.push(polygon);
 };
 

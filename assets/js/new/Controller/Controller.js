@@ -1,8 +1,8 @@
-const HOST = "10.136.164.186";
+const HOST = "localhost";
 
 const DAYS_TILL_COOKIE_EXPIRE = 30;
 const COOKIENAME = "Modulplatzierer";
-const SERVER_URL = "http://" + HOST + ":8080/SolarRESTService_war/";
+const SERVER_URL = "http://" + HOST + ":8080/SolarRESTService_war_exploded/";
 
 
 function Controller() {
@@ -106,9 +106,25 @@ Controller.prototype.updateModel = function (model, position, orientation) {
 
     this.savePanelstring(model);
     if(this.roof !== null) {
+        var arr = [];
+        for(var i = 0; i < this.viewMap.moveablePolygons.length; i++) {
+            var current = this.viewMap.moveablePolygons[i];
+            if(current.constructor === PanelString) {
+                for(var j = 0; j < current.size(); j++) {
+                    if(this.roof.getBestRoofPart().panelInRoof(current.get(j)) === 4) {
+                        arr.push({
+                            width : current.get(j).width,
+                            height : current.get(j).height,
+                            pitch : current.get(j).pitch
+                        });
+                    }
+                }
+            }
+        }
 
         //TODO: Hier prüfen ob alle Panels im Dach sind
-        console.log(this.roof.panelInRoof(model.masterPanel));
+        this.roof.getBestRoofPart().calculateOrientation(this);
+        console.log(evaluateEfficency(arr, this.roof.getBestRoofPart().global, arr[0].pitch, this.roof.getBestRoofPart().orientation));
     } else {
         console.log("kein Dach");
     }
