@@ -7,7 +7,7 @@ function Roof() {
     this.st = null;
     this.orientation = null;
     this.parts = null;
-    this.bestParts = [];
+    this.bestPart = null;
     this.tilt = null;
     this.global = 0;
 }
@@ -44,27 +44,19 @@ Roof.prototype.getAsPolygon = function () {
 };
 
 Roof.prototype.addPart = function (part) {
-    var bestPV = this.bestParts.length === 0 ? 1 : this.parts[this.bestParts[0]].pv;
     if(this.parts === null) {
         this.parts = [];
     }
     var index = this.parts.push(part);
-    if(part.pv == bestPV) {
-        this.bestParts.push(index-1);
-    } else if (part.pv > bestPV) {
-        bestPV = part.pv;
-        this.bestParts = [];
-        this.bestParts.push(index-1);
+    var currentBest = this.parts[bestPart];
+    if(currentBest.pv < part.pv || (currentBest.pv == part.pv && currentBest.global < part.global)) {
+        bestPart = index-1;
     }
     this.global += part.global;
 };
 
-Roof.prototype.getBestRoofParts = function () {
-    var best = [];
-    for(var i = 0; i < this.bestParts.length; i++) {
-        best.push(this.parts[this.bestParts[i]]);
-    }
-    return best;
+Roof.prototype.getBestRoofPart = function () {
+    return this.parts[this.bestPart];
 };
 
 Roof.prototype.calculateOrientation = function (controller) {

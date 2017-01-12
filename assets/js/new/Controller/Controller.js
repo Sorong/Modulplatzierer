@@ -106,6 +106,8 @@ Controller.prototype.updateModel = function (model, position, orientation) {
 
     this.savePanelstring(model);
     if(this.roof !== null) {
+
+        //TODO: Hier prüfen ob alle Panels im Dach sind
         console.log(this.roof.panelInRoof(model.masterPanel));
     } else {
         console.log("kein Dach");
@@ -233,10 +235,10 @@ Controller.prototype.getRoofPartsFromServer = function () {
 Controller.prototype.drawRoof = function () {
     this.viewMap.removeAllNonMoveable();
     this.viewMap.addNonMovable(this.roof);
-    var parts = this.roof.getBestRoofParts();
-    for(var i = 0; i < parts.length; i++) {
-        this.viewMap.addNonMovable(parts[i]);
+    if(this.roof.parts.length > 0) {
+        this.viewMap.addNonMovable(this.roof.getBestRoofPart());
     }
+
 
 };
 
