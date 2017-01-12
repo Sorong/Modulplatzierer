@@ -4,7 +4,8 @@ var ColorHandler = (function () {
         this.colorId = 'color-' + name.replace(/[^A-Za-z0-9\-_]/g, '-');
         this.colors = [];
         this.defaultColor = '#FF0';
-        this.orientation = 0;
+        this.defaultOrientation = 90;
+        this.orientation = this.defaultOrientation;
         this.gradient = null;
         this.svg = document.querySelector("#svg_colors");
         this.createGradient(this.svg, this.colorId);
@@ -15,7 +16,8 @@ var ColorHandler = (function () {
     };
 
     ColorHandler.prototype.setOrientation = function (orientation) {
-        this.orientation = orientation;
+        this.orientation = 360-(parseInt(orientation) + parseInt(this.defaultOrientation));
+        console.log("ColorHandler: " + this.orientation)
         this.updateGradient();
     };
 
@@ -71,6 +73,8 @@ var ColorHandler = (function () {
             this.gradient.setAttribute('y1', angleCoords.y1);
             this.gradient.setAttribute('x2', angleCoords.x2);
             this.gradient.setAttribute('y2', angleCoords.y2);
+
+            this.gradient.innerHTML = '';
 
             var svgNS = this.svg.namespaceURI;
             var stops = this.getGeneratedColorStops();

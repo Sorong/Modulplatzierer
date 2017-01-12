@@ -100,8 +100,19 @@ Map.prototype.addMultiPolygon = function (model) {
     // Rotation Events
     this.selectedPolygon.on('rotatestart', function (d) {
         self.selectPolygon(this)
+        self.selectedPolygon.setStyle({color: "#FF0"});
+    }).on('rotate', function (d) {
+        if (self.controller.toolbar != null)
+            self.controller.toolbar.setOrientation(d.orientation);
+        self.selectedPolygon.colorHandler.setOrientation(d.orientation);
     }).on('rotateend', function (d) {
+        console.log("RotationEnd");
+        console.log(d.orientation)
         self.controller.updateModel(self.selectedPolygon.model, d.target._latlngs, d.orientation);
+
+        var colorHandler = self.selectedPolygon.colorHandler;
+        colorHandler.setColorArray(['#f0f', '#00f', '#f00']);
+        self.selectedPolygon.setStyle({color: "url(#" + colorHandler.getColorId() + ")"});
     });
 
     // Resize Events
