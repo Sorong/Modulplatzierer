@@ -136,8 +136,7 @@ Map.prototype.addMultiPolygon = function (model) {
     }).on('resizeend', function (d) {
         console.log("ResizeEnd")
         var colorHandler = self.selectedPolygon.colorHandler;
-        colorHandler.setColor(1, '#00F');
-        colorHandler.setSize(self.selectedPolygon.model.size() - 1);
+        colorHandler.setColorArray(['#f0f', '#00f', '#f00']);
         self.selectedPolygon.setStyle({color: "url(#" + colorHandler.getColorId() + ")"});
     });
 
