@@ -1,8 +1,8 @@
-const HOST = "localhost";
+const HOST = "10.136.164.186";
 
 const DAYS_TILL_COOKIE_EXPIRE = 30;
 const COOKIENAME = "Modulplatzierer";
-const SERVER_URL = "http://" + HOST + ":8080/SolarRESTService_war_exploded/";
+const SERVER_URL = "http://" + HOST + ":8080/SolarRESTService_war/";
 
 
 function Controller() {
@@ -319,6 +319,7 @@ Controller.prototype.removeAddressError = function () {
 
 
 Controller.prototype.createRoof = function(data){
+
     console.log("CREATED");
     var type = data.layerType,
         layer = data.layer;
@@ -333,6 +334,13 @@ Controller.prototype.createRoof = function(data){
             layer.editing.enable()
         }
     });
+    this.viewMap.map.removeLayer(layer);
+    var latlngs = data.layer.getLatLngs()[0];
+    var roof = new Roof();
+    roof.setPointsFromList(latlngs);
+    roof.calculateOrientation(this);
+    this.roof = roof;
+    this.drawRoof();
 };
 
 Controller.prototype.editRoof = function(data){
