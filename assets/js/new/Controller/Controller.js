@@ -32,7 +32,7 @@ Controller.prototype.init = function () {
     addBtn.onclick = function () {
         var mapHeight = document.getElementById("map").offsetHeight;
         var mapWidth = document.getElementById("map").offsetWidth;
-        var center = controller.viewMap.containerPointToLatLng(L.point(mapHeight / 2, mapWidth / 2));
+        var center = controller.viewMap.containerPointToLatLng(L.point(mapWidth / 2, mapHeight / 2));
         var panelData = {
             name: "Added Panel",
             LatLng: center
@@ -235,7 +235,7 @@ Controller.prototype.getRoofPartsFromServer = function () {
 Controller.prototype.drawRoof = function () {
     this.viewMap.removeAllNonMoveable();
     this.viewMap.addNonMovable(this.roof);
-    if(this.roof.parts.length > 0) {
+    if(this.roof.parts != null && this.roof.parts.length > 0) {
         this.viewMap.addNonMovable(this.roof.getBestRoofPart());
     }
 

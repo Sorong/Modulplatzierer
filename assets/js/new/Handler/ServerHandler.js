@@ -59,7 +59,8 @@ ServerHandler.prototype._get = function (serverFunction, successCallback) {
     $.ajax({
         type: "GET",
         dataType: "json",
-        url: this.serverURL + serverFunction
+        url: this.serverURL + serverFunction,
+        timeout: 3000
     }).done(successCallback).fail(errorFunction);
 };
 
