@@ -29,7 +29,7 @@ Panel.prototype.align = function (controller, width, height) {
     this.oBotLeft = calcNextPoint(this.height, this.oTopLeft, -90);
     // }
     //if (this.height !== h || this.width !== w || this.oBotRight === null) {
-    this.oBotRight = calcNextPoint(this.heigh, this.oTopRight, -90);
+    this.oBotRight = calcNextPoint(this.height, this.oTopRight, -90);
     //
     this.width = w;
     this.height = h;
@@ -178,6 +178,12 @@ function calcNextPoint(distance, point, angle) {
     earthRadius = 6371000;
     distanceNorth = Math.sin(angle * Math.PI / 180) * distance;
     distanceEast = Math.cos(angle * Math.PI / 180) * distance;
+    if(isNaN(distanceNorth)) {
+       distanceNorth = 0;
+    }
+    if(isNaN(distanceEast)) {
+        distanceEast = 0;
+    }
     newLat = point.lat + (distanceNorth / earthRadius) * (180 / Math.PI);
     newLon = point.lng + (distanceEast / earthRadius) * (180 / Math.PI) / Math.cos(point.lat * Math.PI / 180);
     return L.latLng(newLat, newLon);
