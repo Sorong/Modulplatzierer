@@ -9,76 +9,159 @@ import java.util.LinkedList;
 import java.util.ArrayList;
 
 /**
- * Created by Nils on 12.11.16.
+ * Model, welches vom Restservice als Dach übergeben wird
  */
 
 public class ModelDach implements Serializable {
 
+    /**
+     * ID des Daches
+     */
     private int dach_id;
-    private String strasse;
-    private String hausnummer;
-    private String postleitzahl;
-    private int dachneigung;
+
+    private int cookie_id;
+    /**
+     * Vertices des Dachumrisses als Latitude/Longitude
+     */
     private ArrayList<LatitudeLongitude> the_geom;
 
+    /**
+     * Eignung des Daches für Photovoltaik, Dummie für Frontend
+     */
+    private Integer pv;
 
+    /**
+     * Eignung des Daches für Solarthermie, Dumme für Frontend
+     */
+    private Integer st;
+
+    private Integer tilt;
+
+    private Double global;
+
+    private Integer gid;
+
+
+    /**
+     * Standartkonstruktor zur serialiserung
+     */
     public ModelDach() {
 
     }
 
+    /**
+     * Der vom Restserver genutzt Konstrukor. Wrappt das JPA Objekt TblDach in ein <br>
+     * Model, welches dann vom Restserver versendet werden kann.
+     * @param tblDach JPAObjekt
+     */
     public ModelDach(TblDach tblDach){
         this.dach_id = tblDach.getDach_id();
-        this.strasse = tblDach.getStrasse();
-        this.dachneigung = tblDach.getDachneigung();
-        this.hausnummer = tblDach.getHausnummer();
-        this.postleitzahl = tblDach.getPlz();
         this.the_geom = tblDach.getThe_geomAsLatlng();
+        this.pv = tblDach.getPv();
+        this.st = tblDach.getSt();
+        this.tilt = tblDach.getTilt();
+        this.global = tblDach.getGlobal();
+        this.cookie_id = tblDach.getCookie().getCookie_id();
+        this.gid = tblDach.getGid();
     }
 
+    /**
+     * Returned die DachID des Models
+     * @return dachID
+     */
     public int getDach_id() {
         return dach_id;
     }
 
+    /**
+     * Setzt die Dach Id des Models
+     * @param dach_id ID des Daches
+     */
     public void setDach_id(int dach_id) {
         this.dach_id = dach_id;
     }
 
-    public String getStrasse() {
-        return strasse;
+    public int getCookie_id() {
+        return cookie_id;
     }
 
-    public void setStrasse(String strasse) {
-        this.strasse = strasse;
+    public void setCookie_id(int cookie_id) {
+        this.cookie_id = cookie_id;
     }
 
-    public String getHausnummer() {
-        return hausnummer;
+    /**
+     * Returned die Strasse des Models
+     * @return strasse
+     */
+
+    /**
+     * Returnt den pv Wert des Daches, im Moment Dummie
+     * @return pv
+     */
+    public Integer getPv() {
+        return pv;
     }
 
-    public void setHausnummer(String hausnummer) {
-        this.hausnummer = hausnummer;
+    /**
+     * Setzrt den pv Wert des Daches, im Moment Dummie
+     * @param pv pv
+     */
+    public void setPv(Integer pv) {
+        this.pv = pv;
     }
 
-    public String getPostleitzahl() {
-        return postleitzahl;
+    /**
+     * Returnt den st Wert des Daches, im Moment Dummie
+     * @return st
+     */
+    public Integer getSt() {
+        return st;
     }
 
-    public void setPostleitzahl(String postleitzahl) {
-        this.postleitzahl = postleitzahl;
+    /**
+     * Setzt den st Wert des Daches, im Moment Dummie
+     * @param st st
+     */
+    public void setSt(Integer st) {
+        this.st = st;
     }
 
-    public int getDachneigung() {
-        return dachneigung;
+    public Integer getTilt() {
+        return tilt;
     }
 
-    public void setDachneigung(int dachneigung) {
-        this.dachneigung = dachneigung;
+    public void setTilt(Integer tilt) {
+        this.tilt = tilt;
     }
 
+    public Double getGlobal() {
+        return global;
+    }
+
+    public void setGlobal(Double gloabl) {
+        this.global = gloabl;
+    }
+
+    public Integer getGid() {
+        return gid;
+    }
+
+    public void setGid(Integer gid) {
+        this.gid = gid;
+    }
+
+    /**
+     * Returned die Latitiude/Longitude Vertices welche den Dachumriss bilden.
+     * @return Liste mit LatitudeLongitude Werten
+     */
     public ArrayList<LatitudeLongitude> getThe_geom() {
         return the_geom;
     }
 
+    /**
+     * Setzt die the_geom Vertice Liste für den Dachumriss
+     * @param the_geom Liste mit LatitudeLongitude Werten
+     */
     public void setThe_geom(ArrayList<LatitudeLongitude> the_geom) {
         this.the_geom = the_geom;
     }

@@ -1,7 +1,7 @@
 package de.solarweb.datamodel;
 
 /**
- * Created by Nils on 10.11.16.
+ * JPAKlasse des Cookies
  */
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -22,52 +22,102 @@ import javax.xml.bind.annotation.XmlTransient;
 
 public class TblCookie implements Serializable{
 
+    /**
+     * Id des Cookies, wird automatisch generiert
+     */
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CookieSequence")
     @Id
     @Basic(optional = false)
     @Column(nullable = false)
     private Integer cookie_id;
 
+    /**
+     * Collection von Solarpanelen, welche zum Cookie gehören
+     */
     @OneToMany(mappedBy = "cookie_id")
     private Collection<TblSolarpanel> tblSolarpanelCollection;
 
+    /**
+     * Dach welches zum Cookie gehört
+     */
+    @OneToOne(mappedBy = "cookie")
+    private TblDach tblDach;
 
-    public Timestamp getAblaufdatum() {
-        return ablaufdatum;
-    }
-
-    public void setAblaufdatum(Timestamp ablaufdatum) {
-        this.ablaufdatum = ablaufdatum;
-    }
-
+    /**
+     * Ablaufdatum des Cookie im UNIX Format
+     */
     @Basic(optional = false)
     @Column(nullable = false)
-
     private java.sql.Timestamp ablaufdatum;
 
-
+    /**
+     * Standartkonstruktor des Cookies
+     */
     public TblCookie(){
 
     }
 
-    public TblCookie(Integer id, java.sql.Timestamp date){
-        this.cookie_id = id;
-        this.ablaufdatum = date;
-    }
-
+    /**
+     * Returnt die CookieID
+     * @return cookie_id
+     */
     public Integer getCookie_id() {
         return cookie_id;
     }
 
+    /**
+     * Setzt die CookieID
+     * @param cookie_id cookieID
+     */
     public void setCookie_id(Integer cookie_id) {
         this.cookie_id = cookie_id;
     }
 
+    /**
+     * Returnt die Collection mit allen Solarpanelen die zum Cookie gehören
+     * @return Collection JPAObjekt Solarpanel
+     */
     public Collection<TblSolarpanel> getTblSolarpanelCollection() {
         return tblSolarpanelCollection;
     }
 
+    /**
+     * Setzt eine Collection mit Solarpanelen
+     * @param tblSolarpanelCollection Collection JPAObejt Solarpanel
+     */
     public void setTblSolarpanelCollection(Collection<TblSolarpanel> tblSolarpanelCollection) {
         this.tblSolarpanelCollection = tblSolarpanelCollection;
+    }
+
+    /**
+     * Returnt das Ablaufdatum des Cookies
+     * @return ablaufdatum
+     */
+    public Timestamp getAblaufdatum() {
+        return ablaufdatum;
+    }
+
+    /**
+     * Setzt das Ablaufdatm des Cookies
+     * @param ablaufdatum
+     */
+    public void setAblaufdatum(Timestamp ablaufdatum) {
+        this.ablaufdatum = ablaufdatum;
+    }
+
+    /**
+     * Returnt das zum Cookie zugehöhrige Dach
+     * @return JPAObjekt des Daches
+     */
+    public TblDach getTblDach() {
+        return tblDach;
+    }
+
+    /**
+     * Setzt das zum Cookie zugehöhrige Dach
+     * @param tblDach JPAObjekt des Daches
+     */
+    public void setTblDach(TblDach tblDach) {
+        this.tblDach = tblDach;
     }
 }

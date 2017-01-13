@@ -11,38 +11,153 @@ import java.util.ArrayList;
  */
 public class ModelTetraederRoof implements Serializable{
 
+    /**
+     * gid des Dachteils
+     */
     private int gid;
+
+    /**
+     * ID des Gebäudes zum Dachteil
+     */
     private int building_id;
+
+    /**
+     * uid des Dachteils
+     */
     private Integer uid;
+
+    /**
+     * cid des Dachteils
+     */
     private int cid;
+
+    /**
+     * Flächeninhalt des Dachteils
+     */
     private double area3d;
+
+    /**
+     * Globale Beleuchtung des Dachteils
+     */
     private double global;
+
+    /**
+     * Diffuse Beleuchtung des Dachteils
+     */
     private double diffuse;
+
+    /**
+     * Direkte Beleuchtung des Dachteils
+     */
     private double direct;
+
+    /**
+     * Ertrag des Dachteils in kiloWatt
+     */
     private double kwhpa;
+
+    /**
+     * Starker Schatten auf dem Dachteil
+     */
     private boolean strongshadow;
+
+    /**
+     * directu des Dachteils
+     */
     private Double directu;
+
+    /**
+     * nearbyLoss des Dachteils
+     */
     private Double nearbyLoss;
+
+    /**
+     * distanceLoss des Dachteils
+     */
     private Double distanceLoss;
+
+    /**
+     * Neigung des Dachteils
+     */
     private double tilt;
+
+    /**
+     * Verhältnis des Dachteils
+     */
     private double aspect;
+
+    /**
+     * nx des Dachteils
+     */
     private double nx;
+
+    /**
+     * ny des Dachteils
+     */
     private double ny;
+
+    /**
+     * nz des Dachteils
+     */
     private double nz;
+
+    /**
+     * Eignung für Photovoltaik des Dachteils
+     */
     private int pv;
+
+    /**
+     * Eignung für Solartermie des Dachteils
+     */
     private int st;
+
+    /**
+     * gd des Dachteils
+     */
     private Integer gd;
+
+    /**
+     * Ob Dachteil flach
+     */
     private boolean flat;
+
+    /**
+     * Anzahl Panele des Dachteils
+     */
     private Integer mp_panelnumber;
+
+    /**
+     * Vertices das Dachteiles in Latitude/Longitude
+     */
     private ArrayList<LatitudeLongitude> the_geom;
+
+    /**
+     * planep des Dachteils
+     */
     private LatitudeLongitude planep;
+
+    /**
+     * kwpha des Dachteils
+     */
     private Double kwpha;
+
+    /**
+     * planp des Dachteils
+     */
     private String planp;
 
+    /**
+     * Standartkonstruktor zur Serialisierung
+     */
     public ModelTetraederRoof(){
 
     }
 
+    /**
+     * Der vom Restserver genutzt Konstruktor. Wrappt das JPA Objekt TblTetraederBuilding in ein <br>
+     * Model, welches dann vom Restserver versendet werden kann.
+     * @param tblTetraederRoof JPAObjekt
+     */
     public ModelTetraederRoof(TblTetraederRoof tblTetraederRoof) throws Exception{
         this.gid = tblTetraederRoof.getGid();
         this.building_id = tblTetraederRoof.getBuilding_id();
@@ -73,218 +188,434 @@ public class ModelTetraederRoof implements Serializable{
         this.planep = null;
     }
 
+    /**
+     * Returnt die gid des Dachteils
+     * @return gid
+     */
     public int getGid() {
         return gid;
     }
 
+    /**
+     * Setzt die gid des Tachteils
+     * @param gid Zu setzende gid
+     */
     public void setGid(int gid) {
         this.gid = gid;
     }
 
+    /**
+     * Returnt die building_id des Dachteils
+     * @return building_id
+     */
     public int getBuilding_id() {
         return building_id;
     }
 
+    /**
+     * Setzt die building_id des Dachteils
+     * @param building_id building_id
+     */
     public void setBuilding_id(int building_id) {
         this.building_id = building_id;
     }
 
+    /**
+     * Returnt die uid des Dachteils
+     * @return uid
+     */
     public Integer getUid() {
         return uid;
     }
 
+    /**
+     * Setzt die uid des Dachteils
+     * @param uid uid
+     */
     public void setUid(Integer uid) {
         this.uid = uid;
     }
 
+    /**
+     * Returnt die cid des Dachteils
+     * @return cid
+     */
     public int getCid() {
         return cid;
     }
 
+    /**
+     * Setzt die cid des Dachteils
+     * @param cid cid
+     */
     public void setCid(int cid) {
         this.cid = cid;
     }
 
+    /**
+     * Returnt die area3d des Dachteils
+     * @return area3d
+     */
     public double getArea3d() {
         return area3d;
     }
 
+    /**
+     * Setzt die area3d des Dachteils
+     * @param area3d area3d
+     */
     public void setArea3d(double area3d) {
         this.area3d = area3d;
     }
 
+    /**
+     * Returnt die global des Dachteils
+     * @return global
+     */
     public double getGlobal() {
         return global;
     }
 
+    /**
+     * Setzt die global des Dachteils
+     * @param global global
+     */
     public void setGlobal(double global) {
         this.global = global;
     }
 
+    /**
+     * Returnt die diffuse des Dachteils
+     * @return diffuse
+     */
     public double getDiffuse() {
         return diffuse;
     }
 
+    /**
+     * Setzt die diffuse des Dachteils
+     * @param diffuse diffuse
+     */
     public void setDiffuse(double diffuse) {
         this.diffuse = diffuse;
     }
 
+    /**
+     * Returnt die kwhpa des Dachteils
+     * @return kwhpa
+     */
     public double getKwhpa() {
         return kwhpa;
     }
 
+    /**
+     * Setzt die kwhpa des Dachteils
+     * @param kwhpa kwhpa
+     */
     public void setKwhpa(double kwhpa) {
         this.kwhpa = kwhpa;
     }
 
+    /**
+     * Gibt an ob es einen strongshadow gibt
+     * @return strongshadow
+     */
     public boolean isStrongshadow() {
         return strongshadow;
     }
 
+    /**
+     * Setzt den strongshadow im Dachteil
+     * @param strongshadow strongshadow
+     */
     public void setStrongshadow(boolean strongshadow) {
         this.strongshadow = strongshadow;
     }
 
+    /**
+     * Returnt den direct des Dachteils
+     * @return directu
+     */
     public Double getDirectu() {
         return directu;
     }
 
+    /**
+     * Setzt den directu des Dachteils
+     * @param directu directu
+     */
     public void setDirectu(Double directu) {
         this.directu = directu;
     }
 
+    /**
+     * Returnt den nearbyLoss des Dachteils
+     * @return nearbyLoss
+     */
     public Double getNearbyLoss() {
         return nearbyLoss;
     }
 
+    /**
+     * Setzt den nearbyLoss des Dachteils
+     * @param nearbyLoss nearbyLoss
+     */
     public void setNearbyLoss(Double nearbyLoss) {
         this.nearbyLoss = nearbyLoss;
     }
 
+    /**
+     * Returnt den distanceLoss des Dachteils
+     * @return distanceLoss
+     */
     public Double getDistanceLoss() {
         return distanceLoss;
     }
 
+    /**
+     * Setzt die distanceLoss des Dachteils
+     * @param distanceLoss distanceLoss
+     */
     public void setDistanceLoss(Double distanceLoss) {
         this.distanceLoss = distanceLoss;
     }
 
+    /**
+     * Returnt den tilt des Dachteils
+     * @return tilt
+     */
     public double getTilt() {
         return tilt;
     }
 
+    /**
+     * Setzt den tilt des Dachteils
+     * @param tilt tilt
+     */
     public void setTilt(double tilt) {
         this.tilt = tilt;
     }
 
+    /**
+     * Returnt den aspect des Dachteils
+     * @return aspect
+     */
     public double getAspect() {
         return aspect;
     }
 
+    /**
+     * Setzt den aspect des Dachteils
+     * @param aspect aspect
+     */
     public void setAspect(double aspect) {
         this.aspect = aspect;
     }
 
+    /**
+     * Returnt den nx des Dachteils
+     * @return nx
+     */
     public double getNx() {
         return nx;
     }
 
+    /**
+     * Setzt den nx des Dachteils
+     * @param nx nx
+     */
     public void setNx(double nx) {
         this.nx = nx;
     }
 
+    /**
+     * Returnt den ny des Dachteils
+     * @return ny
+     */
     public double getNy() {
         return ny;
     }
 
+    /**
+     * Setzt den ny des Dachteils
+     * @param ny ny
+     */
     public void setNy(double ny) {
         this.ny = ny;
     }
 
+    /**
+     * Returnt den nz des Dachteisl
+     * @return nz
+     */
     public double getNz() {
         return nz;
     }
 
+    /**
+     * Setzt den nz des Dachteils
+     * @param nz nz
+     */
     public void setNz(double nz) {
         this.nz = nz;
     }
 
+    /**
+     * Returnt den pv des Dachteils
+     * @return pv
+     */
     public int getPv() {
         return pv;
     }
 
+    /**
+     * Setzt den pv des Dachteils
+     * @param pv pv
+     */
     public void setPv(int pv) {
         this.pv = pv;
     }
 
+    /**
+     * Returnt den st des Dachteils
+     * @return st
+     */
     public int getSt() {
         return st;
     }
 
+    /**
+     * Setzt den st des Dachteils
+     * @param st st
+     */
     public void setSt(int st) {
         this.st = st;
     }
 
+    /**
+     * Zeigt an ob das Dachteil falch ist
+     * @return flat
+     */
     public boolean isFlat() {
         return flat;
     }
 
+    /**
+     * Returnt den gd des Dachteils
+     * @return gd
+     */
     public Integer getGd() {
         return gd;
     }
 
+    /**
+     * Setzt den gd des Dachteils
+     * @param gd gd
+     */
     public void setGd(Integer gd) {
         this.gd = gd;
     }
 
+    /**
+     * Setzt den Wert ob das Dachteil flach ist
+     * @param flat flat
+     */
     public void setFlat(boolean flat) {
         this.flat = flat;
     }
 
+    /**
+     * Returnt den mp_panelnumber des Dachteils
+     * @return mp_panelnumber
+     */
     public Integer getMp_panelnumber() {
         return mp_panelnumber;
     }
 
+    /**
+     * Setzt den mp_panelnumber des Dachteils
+     * @param mp_panelnumber mp_panelnumber
+     */
     public void setMp_panelnumber(Integer mp_panelnumber) {
         this.mp_panelnumber = mp_panelnumber;
     }
 
+    /**
+     * Returnt die Latitude/Longitude Werte des Dacheteils
+     * @return the_geom Liste mit LatitudeLongitude Werten
+     */
     public ArrayList<LatitudeLongitude> getThe_geom() {
         return the_geom;
     }
 
+    /**
+     * Setzt die Latitude/Longitude Werte des Dachteils
+     * @param the_geom Liste mit LatitudeLongitude Werten
+     */
     public void setThe_geom(ArrayList<LatitudeLongitude> the_geom) {
         this.the_geom = the_geom;
     }
 
+    /**
+     * Returnt den plenep als LatitudeLongitude Objekt
+     * @return planep Objekt
+     */
     public LatitudeLongitude getPlanep() {
         return planep;
     }
 
+    /**
+     * Setzt das planet LatitudeLongitude Objekt
+     * @param planep LatitudeLongitude Objekt
+     */
     public void setPlanep(LatitudeLongitude planep) {
         this.planep = planep;
     }
 
+    /**
+     * Returnt den kwpha Werte des Dachteils
+     * @return kwpha
+     */
     public Double getKwpha() {
         return kwpha;
     }
 
+    /**
+     * Setzt den kwpha des Dachteils
+     * @param kwpha kwpha
+     */
     public void setKwpha(Double kwpha) {
         this.kwpha = kwpha;
     }
 
+    /**
+     * Returnt den planp des Dachteils
+     * @return planp
+     */
     public String getPlanp() {
         return planp;
     }
 
+    /**
+     * Setzt den planp des Dacheteils
+     * @param planp planp
+     */
     public void setPlanp(String planp) {
         this.planp = planp;
     }
 
+    /**
+     * Returnt den direct Wert des Dachteils
+     * @return direct
+     */
     public double getDirect() {
         return direct;
     }
 
+    /**
+     * Setzt den direct Wert des Dachteils
+     * @param direct direct
+     */
     public void setDirect(double direct) {
         this.direct = direct;
     }
