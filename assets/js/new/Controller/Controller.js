@@ -15,6 +15,7 @@ function Controller() {
     this.cookieHandler = new CookieHandler(COOKIENAME);
     this.roof = null;
     this.cookieId = null;
+    this.efficiencyDisplay = null;
 }
 
 Controller.prototype.init = function () {
@@ -28,6 +29,15 @@ Controller.prototype.init = function () {
         var place = self.viewAddress.getPlace();
         self.getRoofFromServer(place);
     });
+
+    this.efficiencyDisplay = new EfficiencyDisplay();
+    this.efficiencyDisplay.setPanelCounter(77);
+    this.efficiencyDisplay.setPanelArea(77);
+    this.efficiencyDisplay.setPanelNominal(77);
+    this.efficiencyDisplay.setPerYear(77);
+
+    this.efficiencyDisplay.showWarning("Letzte Warnung");
+
     var addBtn = $('#add')[0];
     addBtn.onclick = function () {
         var mapHeight = document.getElementById("map").offsetHeight;
