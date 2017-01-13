@@ -71,9 +71,12 @@ Map.prototype.addMultiPolygon = function (model) {
 
     this.selectedPolygon =
         L.polygon(self.controller.getGeoJSON(model), {
-            color: '#FF0',
+            color : "#FFF",
+            fillColor: '#FF0',
             draggable: true,
-            transform: true
+            transform: true,
+            opacity : 0.5,
+            weight : 0.2
         }).addTo(this.handlerGroup);
 
     this.selectedPolygon.model = model;
