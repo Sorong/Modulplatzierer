@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Modulplatzierer</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css"/>
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 
 
-    <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
 
     <script src="http://leaflet.github.io/Leaflet.draw/src/Leaflet.draw.js"></script>
     <script src="http://leaflet.github.io/Leaflet.draw/src/Leaflet.Draw.Event.js"></script>
@@ -53,14 +53,15 @@
     <script src="assets/js/new/Utility/Matrix.js"></script>
     <script src="assets/js/new/Model/Panel.js"></script>
     <script src="assets/js/new/Model/PanelString.js"></script>
-    <script src="assets/js/new/Model/RoofPart.js"></script>
     <script src="assets/js/new/Model/Roof.js"></script>
     <script src="assets/js/new/Handler/ServerHandler.js"></script>
     <script src="assets/js/new/Handler/CookieHandler.js"></script>
     <script src="assets/js/new/View/Toolbar.js"></script>
     <script src="assets/js/new/View/Map.js"></script>
+    <script src="assets/js/new/Utility/PanelEfficiency.js"></script>
     <script src="assets/js/new/Controller/Controller.js"></script>
     <script src="assets/js/new/main.js"></script>
+
 
 
 </head>
@@ -68,7 +69,7 @@
 <div id="main_container" class="container-fluid">
 
     <div class="row content">
-        <div class="col-sm-3 sidenav">
+        <div id="leftSidebar" class="col-sm-3 sidenav">
             <div class="form-group has-feedback" id="address_tool">
                 <label for="address" id="address_label">Adresse:</label>
                 <input type="text" class="form-control" id="address" placeholder="Geben Sie Ihre Adresse ein">
@@ -139,7 +140,7 @@
                     <label class="control-label" for="model_width">Modulbreite</label>
                 </div>
                 <div class="col-sm-10">
-                    <input id="model_width" type="range" min="1" max="10">
+                    <input id="model_width" type="range" min="0.5" max="2.0" step="0.1">
                 </div>
                 <div class="col-sm-2">
                     <label class="control-label" for="model_width" id="model_width_value"> 5m </label>
@@ -148,7 +149,7 @@
                     <label class="control-label" for="model_height">Modulh&ouml;he</label>
                 </div>
                 <div class="col-sm-10">
-                    <input id="model_height" type="range" min="1" max="10">
+                    <input id="model_height" type="range" min="0.5" max="2.0" step="0.1">
                 </div>
 
                 <div class="col-sm-2">

@@ -33,9 +33,12 @@ class PanelString {
     /* Schnittstellenende */
 
     removePanel(panel) {
-        let removedPanelId = this.panels[this.panels.length-1].id;
-        let removePosition = this.panels.length - 1;
-        this.panels.splice(removePosition, 1);
+        let removedPanelId = this.masterPanel.id;
+        if(this.panels.length !== 0) {
+            removedPanelId = this.panels[this.panels.length-1].id;
+            let removePosition = this.panels.length - 1;
+            this.panels.splice(removePosition, 1);
+        }
         return removedPanelId;
     }
 

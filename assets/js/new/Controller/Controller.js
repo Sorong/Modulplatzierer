@@ -32,7 +32,7 @@ Controller.prototype.init = function () {
     addBtn.onclick = function () {
         var mapHeight = document.getElementById("map").offsetHeight;
         var mapWidth = document.getElementById("map").offsetWidth;
-        var center = controller.viewMap.containerPointToLatLng(L.point(mapHeight / 2, mapWidth / 2));
+        var center = controller.viewMap.containerPointToLatLng(L.point(mapWidth / 2, mapHeight / 2));
         var panelData = {
             name: "Added Panel",
             LatLng: center
@@ -40,8 +40,8 @@ Controller.prototype.init = function () {
         //TODO: Maßstab der Solarpanels nicht hardcodieren
         var model = new Panel();
         model.name = "Panelstring: 10123-1234";
-        model.width = 10;
-        model.height = 10;
+        model.width = 2;
+        model.height = 2;
         model.topLeft = panelData.LatLng;
         model.orientation = self.roof === null ? 0 : self.roof.orientation;
         model.align(self);
@@ -82,8 +82,8 @@ Controller.prototype.saveToServer = function (panel, masterId) {
     if (this.serverIsAvailable) {
         var json = this.convertModelToJsonString(panel, masterId);
         this.serverHandler.postPanel(json, panel, function (data, panel) {
-            panel.id = data;
-            panel.name = "Solarpanelstring " + id;
+            panel.id = data.panel_id;
+            panel.name = "Solarpanelstring " + panel.id;
         });
     }
 };
@@ -105,6 +105,7 @@ Controller.prototype.updateModel = function (model, position, orientation) {
     }
 
     this.savePanelstring(model);
+    this.getPanelEffiency();
 };
 
 //TODO: deprecated?
@@ -130,8 +131,12 @@ Controller.prototype.connectModelWithToolbar = function (polygon) {
     var selected = self.viewMap.selectedPolygon;
     var changed = function () {
         if (self.serverIsAvailable) {
-            var json = self.convertModelToJsonString(polygon.model);
-            self.serverHandler.updatePanel(json);
+            for(var i = 0; i < polygon.model.size(); i++) {
+                var json = self.convertModelToJsonString(polygon.model.get(i), i === 0 ? -1 : polygon.model.get(0).id);
+                self.serverHandler.updatePanel(json, function (data) {
+
+                });
+            }
         }
     };
     var realignModel = function (selectedPolygon, width, height) {
@@ -168,9 +173,9 @@ Controller.prototype.connectModelWithToolbar = function (polygon) {
     this.toolbar.modelDelete.on("click", function () {
         for(var i = selected.model.size()-1; i >= 0; i--) {
             controller.removeModelById(selected.model.get(i).id);
-            controller.toolbar.unbindEvents();
-            controller.viewMap.removeSelected();
         }
+        controller.toolbar.unbindEvents();
+        controller.viewMap.removeSelected();
     })
 };
 
@@ -188,6 +193,7 @@ Controller.prototype.updateModelPosition = function (polygon, disabledServerUpda
 
 Controller.prototype.getRoofFromServer = function (place) {
     var self = this;
+    if(place.geometry === undefined) { return;}
     var lat = place.geometry.location.lat();
     var lng = place.geometry.location.lng();
     var street, nr, citycode;
@@ -219,7 +225,13 @@ Controller.prototype.getRoofPartsFromServer = function () {
 };
 
 Controller.prototype.drawRoof = function () {
-    this.viewMap.setNonMovable(this.roof);
+    this.viewMap.removeAllNonMoveable();
+    this.viewMap.addNonMovable(this.roof);
+    if(this.roof.parts != null && this.roof.parts.length > 0) {
+        this.viewMap.addNonMovable(this.roof.getBestRoofPart());
+    }
+
+
 };
 
 Controller.prototype.getLatLngAsPoint = function (latLng) {
@@ -287,6 +299,12 @@ Controller.prototype.showAddressError = function () {
     $('#address_error').text("Addresse muss aus Straße, Hausnummer und Ort bestehen.");
 };
 
+Controller.prototype.showCanNotFoundAddressError = function () {
+    $('#address_tool').addClass('has-error');
+    $('#address_tool_span').addClass('glyphicon-remove');
+    $('#address_error').text("Keine Dachdaten der gewünschten Adresse abrufbar.");
+};
+
 Controller.prototype.removeAddressError = function () {
     $('#address_tool').removeClass('has-error');
     $('#address_tool_span').removeClass('glyphicon-remove');
@@ -295,7 +313,8 @@ Controller.prototype.removeAddressError = function () {
 
 
 Controller.prototype.createRoof = function(data){
-    console.log("CREATED")
+
+    console.log("CREATED");
     var type = data.layerType,
         layer = data.layer;
 
@@ -309,12 +328,44 @@ Controller.prototype.createRoof = function(data){
             layer.editing.enable()
         }
     });
+    this.viewMap.map.removeLayer(layer);
+    var latlngs = data.layer.getLatLngs()[0];
+    var roof = new Roof();
+    roof.setPointsFromList(latlngs);
+    roof.calculateOrientation(this);
+    this.roof = roof;
+    this.drawRoof();
 };
 
 Controller.prototype.editRoof = function(data){
     console.log(data)
 };
 
+Controller.prototype.getPanelEffiency = function () {
+    if(this.roof !== null) {
+        var arr = [];
+        for(var i = 0; i < this.viewMap.moveablePolygons.length; i++) {
+            var current = this.viewMap.moveablePolygons[i];
+            if(current.constructor === PanelString) {
+                for(var j = 0; j < current.size(); j++) {
+                    if(this.roof.getBestRoofPart().panelInRoof(current.get(j)) === 4) {
+                        arr.push({
+                            width : current.get(j).width,
+                            height : current.get(j).height,
+                            pitch : current.get(j).pitch
+                        });
+                    }
+                }
+            }
+        }
+
+        //TODO: Hier prüfen ob alle Panels im Dach sind
+        this.roof.getBestRoofPart().calculateOrientation(this);
+        console.log(evaluateEfficency(arr, this.roof.getBestRoofPart().global, arr[0].pitch, this.roof.getBestRoofPart().orientation));
+    } else {
+        console.log("kein Dach");
+    }
+};
 /* Callbackfunktionen */
 
 function callbackDisableServer() {
@@ -377,6 +428,12 @@ function callbackGetRoof(data) {
         roof.pv = data.pv;
         roof.st = data.st;
         var arr = [];
+        if(data.the_geom === undefined) {
+            controller.showCanNotFoundAddressError();
+            return;
+        } else {
+            controller.removeAddressError();
+        }
         data.the_geom.forEach(getCoords);
         function getCoords(element) {
             arr.push(L.latLng(element.latitude, element.longitude));
@@ -396,6 +453,8 @@ function callbackGetRoofParts(data) {
             var roof = new Roof();
             roof.pv = data[i].pv;
             roof.st = data[i].st;
+            roof.global = data[i].global;
+            roof.tilt = data[i].tilt;
             data[i].the_geom.forEach(getCoords);
             function getCoords(element) {
                 arr.push(L.latLng(element.latitude, element.longitude));

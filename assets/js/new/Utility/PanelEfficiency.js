@@ -18,27 +18,28 @@ var efficencyTabel = [
 //rotation in wie fern die Panele nach Süden ausgerichtet sind, wobei 0 Grad voll
 //Süden und 180 Grad von Nord
 //Nennleistung der Panele ist fest 1000 Watt
-function evaluateEfficency (panellist, global, tilt, rotation){
+function evaluateEfficency (panels, global, tilt, rotation){
 	var panelsarea = 0;
-	var nennleistung = 1000;
-	var wirkungsgrad = 0.15;
-	var kiloWattProJahr = 0;
+	var nominaloutput = 1000;
+	var efficiency = 0.15;
+	var KWPerYear = 0;
 	
 	if(tilt > 90 || rotation > 180){
-		return {"nennleistung": nennleistung, "kiloWattProJahr": 0}
-	}
-	
-	tilt = Math.round(tilt/10);
-	rotation = Math.round(rotation/10);
-	
-	
-	for(var i in panels){
-		 var panelarea = panellist[i].hight * panellist[i].width;
-		 panelsarea = panelsarea + panelarea;
-	}
-	
-	kiloWattProJahr = ((nennleistung * wirkungsgrad * panelsarea * global) / 1000) * (efficencyTabel[tilt][rotation] / 100);
-	return {"nennleistung": nennleistung, "kiloWattProJahr": kiloWattProJahr};
+		return {"NominalOutput": nominaloutput, "KWPerYear": 0}
+	} else {
+
+
+        tilt = Math.round(tilt / 10);
+        rotation = Math.round(rotation / 10);
+
+
+        for (var i in panels) {
+            panelsarea += (panels[i].height * panels[i].width);
+        }
+
+        KWPerYear = ((nominaloutput * efficiency * panelsarea * global) / 1000) * (efficencyTabel[tilt][rotation] / 100);
+    }
+	return {"nennleistung": nominaloutput, "kiloWattProJahr": KWPerYear};
 }
 	
 
