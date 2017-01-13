@@ -58,10 +58,10 @@
     <script src="assets/js/new/Handler/CookieHandler.js"></script>
     <script src="assets/js/new/View/Toolbar.js"></script>
     <script src="assets/js/new/View/Map.js"></script>
+    <script src="assets/js/new/View/EfficiencyDisplay.js"></script>
     <script src="assets/js/new/Utility/PanelEfficiency.js"></script>
     <script src="assets/js/new/Controller/Controller.js"></script>
     <script src="assets/js/new/main.js"></script>
-
 
 
 </head>
@@ -94,6 +94,11 @@
                 </div>-->
             </div>
             <div class="form-group" id="box_table">
+
+                <div class="alert alert-warning hidden" id="panel_efficiency_error">
+                    <strong>Warnung!</strong> <span class="warningMessage"></span>
+                </div>
+
                 <table class="table table-bordered">
                     <tr>
                         <td>Anzahl Module:</td>
@@ -120,9 +125,9 @@
             <div id="map"></div>
         </div>
         <div class="col-sm-3 sidenav hidden" id="tools">
-                <div id="tools_headline">
-                    <span class="headline col-sm-8">Panel ID 1000</span>
-                    <span class="col-sm-4" style="text-align:right;" ><a href="#" id="delete_panel">löschen</a></span>
+            <div id="tools_headline">
+                <span class="headline col-sm-8">Panel ID 1000</span>
+                <span class="col-sm-4" style="text-align:right;"><a href="#" id="delete_panel">löschen</a></span>
                 <br>
             </div>
             <div id="tools_container" class="form-group">
