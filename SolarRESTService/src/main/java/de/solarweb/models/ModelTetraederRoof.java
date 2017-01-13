@@ -476,74 +476,146 @@ public class ModelTetraederRoof implements Serializable{
         this.pv = pv;
     }
 
+    /**
+     * Returnt den st des Dachteils
+     * @return st
+     */
     public int getSt() {
         return st;
     }
 
+    /**
+     * Setzt den st des Dachteils
+     * @param st st
+     */
     public void setSt(int st) {
         this.st = st;
     }
 
+    /**
+     * Zeigt an ob das Dachteil falch ist
+     * @return flat
+     */
     public boolean isFlat() {
         return flat;
     }
 
+    /**
+     * Returnt den gd des Dachteils
+     * @return gd
+     */
     public Integer getGd() {
         return gd;
     }
 
+    /**
+     * Setzt den gd des Dachteils
+     * @param gd gd
+     */
     public void setGd(Integer gd) {
         this.gd = gd;
     }
 
+    /**
+     * Setzt den Wert ob das Dachteil flach ist
+     * @param flat flat
+     */
     public void setFlat(boolean flat) {
         this.flat = flat;
     }
 
+    /**
+     * Returnt den mp_panelnumber des Dachteils
+     * @return mp_panelnumber
+     */
     public Integer getMp_panelnumber() {
         return mp_panelnumber;
     }
 
+    /**
+     * Setzt den mp_panelnumber des Dachteils
+     * @param mp_panelnumber mp_panelnumber
+     */
     public void setMp_panelnumber(Integer mp_panelnumber) {
         this.mp_panelnumber = mp_panelnumber;
     }
 
+    /**
+     * Returnt die Latitude/Longitude Werte des Dacheteils
+     * @return the_geom Liste mit LatitudeLongitude Werten
+     */
     public ArrayList<LatitudeLongitude> getThe_geom() {
         return the_geom;
     }
 
+    /**
+     * Setzt die Latitude/Longitude Werte des Dachteils
+     * @param the_geom Liste mit LatitudeLongitude Werten
+     */
     public void setThe_geom(ArrayList<LatitudeLongitude> the_geom) {
         this.the_geom = the_geom;
     }
 
+    /**
+     * Returnt den plenep als LatitudeLongitude Objekt
+     * @return planep Objekt
+     */
     public LatitudeLongitude getPlanep() {
         return planep;
     }
 
+    /**
+     * Setzt das planet LatitudeLongitude Objekt
+     * @param planep LatitudeLongitude Objekt
+     */
     public void setPlanep(LatitudeLongitude planep) {
         this.planep = planep;
     }
 
+    /**
+     * Returnt den kwpha Werte des Dachteils
+     * @return kwpha
+     */
     public Double getKwpha() {
         return kwpha;
     }
 
+    /**
+     * Setzt den kwpha des Dachteils
+     * @param kwpha kwpha
+     */
     public void setKwpha(Double kwpha) {
         this.kwpha = kwpha;
     }
 
+    /**
+     * Returnt den planp des Dachteils
+     * @return planp
+     */
     public String getPlanp() {
         return planp;
     }
 
+    /**
+     * Setzt den planp des Dacheteils
+     * @param planp planp
+     */
     public void setPlanp(String planp) {
         this.planp = planp;
     }
 
+    /**
+     * Returnt den direct Wert des Dachteils
+     * @return direct
+     */
     public double getDirect() {
         return direct;
     }
 
+    /**
+     * Setzt den direct Wert des Dachteils
+     * @param direct direct
+     */
     public void setDirect(double direct) {
         this.direct = direct;
     }

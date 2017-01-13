@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * Created by Nils on 26.11.16.
+ * Entitie zur Tabelle berlin_fh_bielefeld_building aus der Datenbank
  */
 @Entity
 @Table(name = "berlin_fh_bielefeld_buildings")
@@ -21,113 +21,194 @@ import java.util.ArrayList;
 })
 public class TblTetraederBuilding implements Serializable{
 
+    /**
+     * Eindeutige ID des Gebäudes
+     */
     @Id
     @Basic
     @Column(name = "gid")
     private int gid;
 
+    /**
+     * gmlid des Gebäudes
+     */
     @Basic
     @Column(name = "gmlid")
     private String gmild;
 
+    /**
+     * nr des Gebäudes
+     */
     @Basic
     @Column(name = "nr")
     private String nr;
 
+    /**
+     * Strasse des Gebäudes
+     */
     @Basic
     @Column(name = "street")
     private String street;
 
+    /**
+     * Hausnummer des Gebäudes
+     */
     @Basic
     @Column(name = "number")
     private String number;
 
+    /**
+     * Postleitzahl des Gebäudes
+     */
     @Basic
     @Column(name = "plz")
     private double plz;
 
+    /**
+     * hid des Gebäudes
+     */
     @Basic
     @Column(name = "hid")
     private Integer hid;
 
+    /**
+     * Ort des Gebäudes
+     */
     @Basic
     @Column(name = "ort")
     private String ort;
 
+    /**
+     * Geometry Objekt welcher den Umriss des Gebäudes beinhaltet
+     */
     @Basic
     @Column(name = "the_geom")
     private Geometry the_geom;
 
+    /**
+     * Zusatzinformationen zu dem Gebäude
+     */
     @Basic
     @Column(name = "zusatz")
     private String zusatz;
 
-
+    /**
+     * Ob das Gebäude ein Denkmal ist
+     */
     @Basic
     @Column(name = "denkmal")
     private boolean denkmal;
 
+    /**
+     *Zusatzinformationen zum Denkmal
+     */
     @Basic
     @Column(name = "denkmali")
     private String denkmali;
 
+    /**
+     * monument_reason des Gebäudes
+     */
     @Basic
     @Column(name = "monument_reason")
     private String monument_reason;
 
+    /**
+     * Fläche des Gebäudes
+     */
     @Basic
     @Column(name = "area2d")
     private double area2d;
 
+    /**
+     * Fläche des Gebäudes
+     */
     @Basic
     @Column(name = "area3d")
     private double area3d;
 
+    /**
+     * Eignung des Gebäudes für Photovolataik
+     */
     @Basic
     @Column(name = "pv")
     private int pv;
 
+    /**
+     * Eignung des Gebäudes für Solarthermie
+     */
     @Basic
     @Column(name = "st")
     private int st;
 
+    /**
+     * gd des Gebäudes
+     */
     @Basic
     @Column(name = "gd")
     private Integer gd;
 
+    /**
+     * Mitarbeiter, welcher für Scannen des Gebäudes verantwortlich
+     */
     @Basic
     @Column(name = "doneby")
     private int doneby;
 
+    /**
+     *Zeit zur Kalkulation des Gebäudes
+     */
     @Basic
     @Column(name= "calctime")
     private double calctime;
 
+    /**
+     * qhint des Gebäudes
+     */
     @Basic
     @Column(name = "qhint")
     private Integer qhint;
 
+    /**
+     * Haushaltsmitgliederanzahl des Gebäudes
+     */
     @Basic
     @Column(name = "household_size")
     private int household_size;
 
+    /**
+     * gd_area des Gebäudes
+     */
     @Basic
     @Column(name = "gd_area")
     private double gd_area;
 
+    /**
+     * rueckhalt des Gebäudes
+     */
     @Basic
     @Column(name = "rueckhalt")
     private int rueckhalt;
 
+    /**
+     * Geometry Objekt welcher den Umriss des Gebäudes beinhaltet
+     */
     @Basic
     @Column(name = "rt_geom")
     private Geometry rt_geom;
 
+    /**
+     * Standardkonstrultor
+     */
     public TblTetraederBuilding()
     {
 
     }
 
+    /**
+     *
+     * @return
+     */
     public int getGid() {
         return gid;
     }

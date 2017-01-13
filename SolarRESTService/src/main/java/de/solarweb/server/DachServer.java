@@ -64,9 +64,6 @@ public class DachServer {
         return new ModelDach(tblDach);
     }
 
-
-    //CookieID ist im Moment immer Null, k.A. wie Dach Final realisiert werden soll
-
     /**
      * Nimmt ein ModelDach entgegen und returned das gepostet Dach.<br>
      * ID des ModelDaches kann beliebig gewählt werden, da diese vom <br>
@@ -77,81 +74,94 @@ public class DachServer {
      */
     @POST
     @Path("/postRoof")
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public ModelDach setRoof(ModelDach dach){
-        TblCookie tblCookie = getCookieById(0);
+        TblCookie tblCookie = getCookieById(dach.getCookie_id());
         Geometry the_geom = null;
         try{
-            GeometryConverter.ArrayLatLngToGeometry(dach.getThe_geom());
+            the_geom = GeometryConverter.ArrayLatLngToGeometry(dach.getThe_geom());
         }
         catch (ParseException e){
             logger.error("Dachgeometry konnte nicht geparsed werden");
             logger.error(e.getMessage());
             return new ModelDach();
         }
-        TblDach tblDach = new TblDach();
-        tblDach.setHausnummer(dach.getHausnummer());
-        tblDach.setPlz(dach.getPostleitzahl());
-        tblDach.setStrasse(dach.getStrasse());
-        tblDach.setDachneigung(dach.getDachneigung());
-        tblDach.setCookie(tblCookie);
-        tblDach.setThe_geom(the_geom);
 
-        try{
-            utx.begin();
-            em.persist(tblDach);
-            utx.commit();
+        if(tblCookie.getTblDach() == null){
+            TblDach tblDach = new TblDach();
+            tblDach.setPv(dach.getPv());
+            tblDach.setSt(dach.getSt());
+            tblDach.setCookie(tblCookie);
+            tblDach.setThe_geom(the_geom);
+            tblDach.setTilt(dach.getTilt());
+            tblDach.setGlobal(dach.getGlobal());
+            tblDach.setGid(dach.getGid());
+
+            try{
+                utx.begin();
+                em.persist(tblDach);
+                utx.commit();
+            }
+            catch(Exception e){
+                logger.error("Dach wurde nicht in der Datenbank gespeichert");
+                logger.error(e.getMessage());
+                return new ModelDach();
+            }
+            logger.info("Dach unter ID: " + tblDach.getDach_id() +"gespeichert");
+            return new ModelDach(tblDach);
         }
-        catch(Exception e){
-            logger.error("Dach wurde nicht in der Datenbank gespeichert");
-            logger.error(e.getMessage());
-            return new ModelDach();
+        else{
+            TblDach tblDach = tblCookie.getTblDach();
+            tblDach.setPv(dach.getPv());
+            tblDach.setSt(dach.getSt());
+            tblDach.setCookie(tblCookie);
+            tblDach.setThe_geom(the_geom);
+            tblDach.setTilt(dach.getTilt());
+            tblDach.setGlobal(dach.getGlobal());
+            tblDach.setGid(dach.getGid());
+
+            try{
+                utx.begin();
+                em.merge(tblDach);
+                utx.commit();
+            }
+            catch(Exception e){
+                logger.error("Dach wurde nicht in der Datenbank gemergt");
+                logger.error(e.getMessage());
+                return new ModelDach();
+            }
+            logger.info("Dach unter ID: " + tblDach.getDach_id() +"gespeichert");
+            return new ModelDach(tblDach);
         }
-        logger.info("Dach unter ID: " + tblDach.getDach_id() +"gespeichert");
-        return new ModelDach(tblDach);
+
     }
 
-    /**
-     * Nimmt ein ModelDach entgegen und returned das geupdatete Dach.
-     *
-     * @param dach ModelDach
-     * @return ModelDach
-     */
-    @POST
-    @Path("/updateRoof")
-    @Produces(MediaType.TEXT_PLAIN)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public ModelDach updateRoof(ModelDach dach){
-        Geometry the_geom = null;
-        try{
-            GeometryConverter.ArrayLatLngToGeometry(dach.getThe_geom());
+    @GET
+    @Path("/removeDach/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String removePanel(@PathParam("id") int id){
+        TblDach tblDach = (TblDach) getRoofById(id);
+        if(tblDach == null) {
+            return "Not found";
         }
-        catch (ParseException e){
-            logger.error("Dachgeometry des Daches " + dach.getDach_id() + " konnte nicht geparsed werden");
-            logger.error(e.getMessage());
-            return new ModelDach();
-        }
-        TblDach tblDach = getRoofById(dach.getDach_id());
-        tblDach.setHausnummer(dach.getHausnummer());
-        tblDach.setPlz(dach.getPostleitzahl());
-        tblDach.setStrasse(dach.getStrasse());
-        tblDach.setDachneigung(dach.getDachneigung());
-        tblDach.setThe_geom(the_geom);
         try{
             utx.begin();
-            em.merge(tblDach);
+            TblDach pDach = em.merge(tblDach);
+            em.remove(pDach);
             utx.commit();
         }
-        catch(Exception e){
-            logger.error("Dach mit ID: " + dach.getDach_id() +" wurde nicht geupdatet");
+        catch (Exception e){
+            logger.error("Bei dem Versuch das Dach zu loeschen ist ein Fehler aufgetreten");
             logger.error(e.getMessage());
-            return new ModelDach();
+            return "error";
         }
 
-        logger.info("Dach mit ID:" + dach.getDach_id() + "geupdateted");
-        return new ModelDach(tblDach);
+        logger.info("Panel gelöscht");
+        return "Deleted";
     }
+
+
 
     /**
      * Sucht ein Dach aus der Tetraeder Datenbank anhand der Adresse und returned dieses.<br>
@@ -231,7 +241,7 @@ public class DachServer {
         queryRoofById.setParameter("id", id);
         List resultRoofs = queryRoofById.getResultList();
         if(resultRoofs.isEmpty()){
-            throw new NotFoundException();
+            new TblDach();
         }
         TblDach tblDach = (TblDach) queryRoofById.getSingleResult();
         return tblDach;

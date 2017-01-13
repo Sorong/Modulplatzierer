@@ -18,26 +18,28 @@ public class ModelDach implements Serializable {
      * ID des Daches
      */
     private int dach_id;
-    /**
-     * Strasse des Hauses
-     */
-    private String strasse;
-    /**
-     * Hausnummer des Hauses
-     */
-    private String hausnummer;
-    /**
-     * Postleitzahl des Hauses
-     */
-    private String postleitzahl;
-    /**
-     * Dachneigung des Hauses in Grad
-     */
-    private int dachneigung;
+
+    private int cookie_id;
     /**
      * Vertices des Dachumrisses als Latitude/Longitude
      */
     private ArrayList<LatitudeLongitude> the_geom;
+
+    /**
+     * Eignung des Daches für Photovoltaik, Dummie für Frontend
+     */
+    private Integer pv;
+
+    /**
+     * Eignung des Daches für Solarthermie, Dumme für Frontend
+     */
+    private Integer st;
+
+    private Integer tilt;
+
+    private Double global;
+
+    private Integer gid;
 
 
     /**
@@ -54,11 +56,13 @@ public class ModelDach implements Serializable {
      */
     public ModelDach(TblDach tblDach){
         this.dach_id = tblDach.getDach_id();
-        this.strasse = tblDach.getStrasse();
-        this.dachneigung = tblDach.getDachneigung();
-        this.hausnummer = tblDach.getHausnummer();
-        this.postleitzahl = tblDach.getPlz();
         this.the_geom = tblDach.getThe_geomAsLatlng();
+        this.pv = tblDach.getPv();
+        this.st = tblDach.getSt();
+        this.tilt = tblDach.getTilt();
+        this.global = tblDach.getGlobal();
+        this.cookie_id = tblDach.getCookie().getCookie_id();
+        this.gid = tblDach.getGid();
     }
 
     /**
@@ -77,68 +81,73 @@ public class ModelDach implements Serializable {
         this.dach_id = dach_id;
     }
 
+    public int getCookie_id() {
+        return cookie_id;
+    }
+
+    public void setCookie_id(int cookie_id) {
+        this.cookie_id = cookie_id;
+    }
+
     /**
      * Returned die Strasse des Models
      * @return strasse
      */
-    public String getStrasse() {
-        return strasse;
+
+    /**
+     * Returnt den pv Wert des Daches, im Moment Dummie
+     * @return pv
+     */
+    public Integer getPv() {
+        return pv;
     }
 
     /**
-     * Setzt die Strasse des Models
-     * @param strasse Strasse des Daches
+     * Setzrt den pv Wert des Daches, im Moment Dummie
+     * @param pv pv
      */
-    public void setStrasse(String strasse) {
-        this.strasse = strasse;
+    public void setPv(Integer pv) {
+        this.pv = pv;
     }
 
     /**
-     * Returned die Hausnummer des Models
-     * @return hausnummer
+     * Returnt den st Wert des Daches, im Moment Dummie
+     * @return st
      */
-    public String getHausnummer() {
-        return hausnummer;
+    public Integer getSt() {
+        return st;
     }
 
     /**
-     * Setzt die Hausnummer des Models
-     * @param hausnummer Hausnummer des Daches
+     * Setzt den st Wert des Daches, im Moment Dummie
+     * @param st st
      */
-    public void setHausnummer(String hausnummer) {
-        this.hausnummer = hausnummer;
+    public void setSt(Integer st) {
+        this.st = st;
     }
 
-    /**
-     * Returned die Postleitzahl des Models
-     * @return Postleitzahl
-     */
-    public String getPostleitzahl() {
-        return postleitzahl;
+    public Integer getTilt() {
+        return tilt;
     }
 
-    /**
-     * Setzt die Postleitzahl des Models
-     * @param postleitzahl Postleitzahl des Daches
-     */
-    public void setPostleitzahl(String postleitzahl) {
-        this.postleitzahl = postleitzahl;
+    public void setTilt(Integer tilt) {
+        this.tilt = tilt;
     }
 
-    /**
-     * Returned die Dachneigung des Models
-     * @return dachneigung
-     */
-    public int getDachneigung() {
-        return dachneigung;
+    public Double getGlobal() {
+        return global;
     }
 
-    /**
-     * Setzt die Dachneigung des Models
-     * @param dachneigung Neigung des Daches
-     */
-    public void setDachneigung(int dachneigung) {
-        this.dachneigung = dachneigung;
+    public void setGlobal(Double gloabl) {
+        this.global = gloabl;
+    }
+
+    public Integer getGid() {
+        return gid;
+    }
+
+    public void setGid(Integer gid) {
+        this.gid = gid;
     }
 
     /**

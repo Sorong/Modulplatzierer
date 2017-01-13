@@ -25,6 +25,11 @@ public class ModelCookie implements Serializable{
      * Liste mit Panelstrings, welche zum Cookie gehören
      */
     private LinkedList<LinkedList<ModelSolarpanel>> solarpanelList;
+
+    /**
+     * Vom Benutzer angelegtes Dach
+     */
+    private ModelDach modelDach;
     /**
      * Ablaufdatum, bevor Cookie gelöscht wird
      */
@@ -59,6 +64,10 @@ public class ModelCookie implements Serializable{
             solarpanelList = buildMasterpanelString(tblCookie.getTblSolarpanelCollection());
         }
         this.ablaufdatum = tblCookie.getAblaufdatum();
+        if(tblCookie.getTblDach() != null){
+            this.modelDach = new ModelDach(tblCookie.getTblDach());
+        }
+
     }
 
     /**
@@ -104,6 +113,22 @@ public class ModelCookie implements Serializable{
      */
     public void setAblaufdatum(Timestamp ablaufdatum) {
         this.ablaufdatum = ablaufdatum;
+    }
+
+    /**
+     * Returnt das Model des Daches
+     * @return ModelDach
+     */
+    public ModelDach getModelDach() {
+        return modelDach;
+    }
+
+    /**
+     * Setzt das Model des Daches
+     * @param modelDach ModelDach
+     */
+    public void setModelDach(ModelDach modelDach) {
+        this.modelDach = modelDach;
     }
 
     /**
