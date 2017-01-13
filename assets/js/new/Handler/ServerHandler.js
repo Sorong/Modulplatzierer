@@ -51,6 +51,12 @@ ServerHandler.prototype.updatePanel = function (json, callback) {
     })
 };
 
+ServerHandler.prototype.postRoof = function (json, callback) {
+    this._post(json, "dach/postRoof", function (data) {
+        callback(data);
+    })
+};
+
 
 
 

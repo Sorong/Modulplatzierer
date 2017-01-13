@@ -1,4 +1,4 @@
-const HOST = "localhost";
+const HOST = "195.37.224.168";
 
 const DAYS_TILL_COOKIE_EXPIRE = 30;
 const COOKIENAME = "Modulplatzierer";
@@ -118,12 +118,6 @@ Controller.prototype.updateModel = function (model, position, orientation) {
     this.getPanelEffiency();
 };
 
-//TODO: deprecated?
-// Controller.prototype.updateModel = function (polygon) {
-//     this.updateModelPosition(polygon);
-//     this.connectModelWithToolbar(polygon);
-// };
-
 Controller.prototype.connectModelWithToolbar = function (polygon) {
 
     var model = polygon.model.constructor === PanelString ? polygon.model.masterPanel : polygon.model;
@@ -224,7 +218,6 @@ Controller.prototype.getRoofFromServer = function (place) {
         if (self.serverIsAvailable) {
             self.serverHandler.getPredefinedRoof(street, nr, citycode, callbackGetRoof)
         }
-        self.viewMap.setFocus(lat, lng);
     } else {
         this.showAddressError();
     }
@@ -236,13 +229,19 @@ Controller.prototype.getRoofPartsFromServer = function () {
     }
 };
 
-Controller.prototype.drawRoof = function () {
+Controller.prototype.drawRoof = function (post) {
     this.viewMap.removeAllNonMoveable();
     this.viewMap.addNonMovable(this.roof);
     if (this.roof.parts != null && this.roof.parts.length > 0) {
-        this.viewMap.addNonMovable(this.roof.getBestRoofPart());
+        this.viewMap.addNonMovable(this.roof.getBestRoofPart(this));
+    }
+    if(post) {
+        this.serverHandler.postRoof(this.convertModelToJsonString(this.roof), function (data) {
+            console.log("Dach gespeichert");
+        });
     }
 
+    this.viewMap.setFocus(this.roof.points[0].lat, this.roof.points[0].lng);
 
 };
 
@@ -254,15 +253,12 @@ Controller.prototype.getPointAsLatLng = function (point) {
     return this.viewMap.layerPointToLatLng(point);
 };
 
-//TODO: deprecated
-// Controller.prototype.getModelAsList = function (model) {
-//     return model.getPointsAsList();
-// };
-
 Controller.prototype.convertModelToJsonString = function (model, masterId) {
     var json = model.getAsJson();
     json.cookie_id = this.cookieId;
-    json.masterpanel_id = masterId;
+    if(masterId !== undefined) {
+        json.masterpanel_id = masterId;
+    }
     return JSON.stringify(json);
 };
 
@@ -325,8 +321,6 @@ Controller.prototype.removeAddressError = function () {
 
 
 Controller.prototype.createRoof = function (data) {
-
-    console.log("CREATED");
     var type = data.layerType,
         layer = data.layer;
 
@@ -346,7 +340,7 @@ Controller.prototype.createRoof = function (data) {
     roof.setPointsFromList(latlngs);
     roof.calculateOrientation(this);
     this.roof = roof;
-    this.drawRoof();
+    this.drawRoof(true);
 };
 
 Controller.prototype.editRoof = function (data) {
@@ -361,7 +355,7 @@ Controller.prototype.getPanelEffiency = function () {
             if (current.constructor === PanelString) {
                 var panelsInRoof = 0;
                 for (var j = 0; j < current.size(); j++)
-                    if (this.roof.getBestRoofPart().panelInRoof(current.get(j)) === 4) {
+                    if (this.roof.getBestRoofPart(this).panelInRoof(current.get(j)) === 4) {
                         arr.push({
                             width: current.get(j).width,
                             height: current.get(j).height,
@@ -378,7 +372,7 @@ Controller.prototype.getPanelEffiency = function () {
 
         //TODO: Hier prüfen ob alle Panels im Dach sind
         this.roof.getBestRoofPart().calculateOrientation(this);
-        console.log(evaluateEfficency(arr, this.roof.getBestRoofPart().global, arr[0].pitch, this.roof.getBestRoofPart().orientation));
+        console.log(evaluateEfficency(arr, this.roof.getBestRoofPart(this).global, arr[0].pitch, this.roof.getBestRoofPart(this).orientation));
     } else {
         console.log("kein Dach");
     }
@@ -410,6 +404,24 @@ function callbackEvaluateCookie(data) {
         controller.deleteUserCooke();
     } else {
         data.solarpanelList.forEach(createPanels);
+        if(data.modelDach !== null) {
+            var roof = new Roof();
+            roof.roofId = data.modelDach.roofId;
+            roof.global = data.modelDach.global;
+            roof.pv = data.modelDach.pv;
+            roof.st = data.modelDach.st;
+            var arr = [];
+            data.modelDach.the_geom.forEach(getCoords);
+            function getCoords(element) {
+                arr.push(L.latLng(element.latitude, element.longitude));
+            }
+            roof.setPointsFromList(arr);
+            roof.calculateOrientation(controller);
+            controller.roof = roof;
+            controller.drawRoof();
+        }
+
+
 
         function createPanels(list) {
             var panelstring;
@@ -435,6 +447,8 @@ function callbackEvaluateCookie(data) {
             controller.viewMap.addMultiPolygon(panelstring);
             controller.viewMap.selectedPolygon.transform._orientation = -(panelstring.masterPanel.orientation - 360);
         }
+
+
     }
 }
 

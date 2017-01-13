@@ -1,14 +1,15 @@
 const BEST_PV = 2;
 
 function Roof() {
-    this.gid = null;
-    this.points = null;
+    this.gid = 0;
+    this.roofId = 0;
+    this.points = [];
     this.pv = null;
     this.st = null;
     this.orientation = null;
     this.parts = null;
     this.bestPart = 0;
-    this.tilt = null;
+    this.tilt = 0;
     this.global = 0;
 }
 
@@ -55,9 +56,9 @@ Roof.prototype.addPart = function (part) {
     this.global += part.global;
 };
 
-Roof.prototype.getBestRoofPart = function () {
+Roof.prototype.getBestRoofPart = function (controller) {
     if(this.parts[this.bestPart].orientation === null) {
-        this.parts[this.bestPart].calculateOrientation();
+        this.parts[this.bestPart].calculateOrientation(controller);
     }
     return this.parts[this.bestPart];
 };
@@ -107,6 +108,25 @@ Roof.prototype.panelInRoof = function (panel) {
     }
 
     return insideCounter;
+};
+
+Roof.prototype.getAsJson = function () {
+    var geom = [];
+    for(var i = 0; i < this.points.length; i++) {
+        geom.push({
+            latitude: this.points[i].lat,
+            longitude : this.points[i].lng
+        })
+    }
+
+    return {
+        dach_id : this.roofId,
+        st : this.st,
+        pv : this.pv,
+        tilt : this.tilt,
+        global : this.global,
+        the_geom : geom
+    }
 };
 
 // int pnpoly(int nvert, float *vertx, float *verty, float testx, float testy)
