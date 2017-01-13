@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * Created by Nils on 10.12.16.
+ * Restserverklasse, holt und speichert Dachdaten
  */
 @Stateless
 @TransactionManagement( TransactionManagementType.BEAN )
@@ -48,6 +48,13 @@ public class DachServer {
     public DachServer(){
     }
 
+
+    /**
+     * Nimmt eine DachID entgegen und returned ein ModelDach.<br>
+     *
+     * @param id DachID
+     * @return ModelDach
+     */
     @GET
     @Path("/getRoof/{dach_id}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -59,6 +66,15 @@ public class DachServer {
 
 
     //CookieID ist im Moment immer Null, k.A. wie Dach Final realisiert werden soll
+
+    /**
+     * Nimmt ein ModelDach entgegen und returned das gepostet Dach.<br>
+     * ID des ModelDaches kann beliebig gewählt werden, da diese vom <br>
+     * Server generiert wird.
+     *
+     * @param dach ModelDach
+     * @return ModelDach
+     */
     @POST
     @Path("/postRoof")
     @Produces(MediaType.TEXT_PLAIN)
@@ -96,7 +112,12 @@ public class DachServer {
         return new ModelDach(tblDach);
     }
 
-
+    /**
+     * Nimmt ein ModelDach entgegen und returned das geupdatete Dach.
+     *
+     * @param dach ModelDach
+     * @return ModelDach
+     */
     @POST
     @Path("/updateRoof")
     @Produces(MediaType.TEXT_PLAIN)
@@ -132,6 +153,14 @@ public class DachServer {
         return new ModelDach(tblDach);
     }
 
+    /**
+     * Sucht ein Dach aus der Tetraeder Datenbank anhand der Adresse und returned dieses.<br>
+     *
+     * @param street Straß des Hauses
+     * @param number Hausnummer
+     * @param plz Postleitzahl
+     * @return ModelTetraederbuilding
+     */
     @GET
     @Path("/getPredefinedRoof/{street}/{number}/{plz}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -159,6 +188,12 @@ public class DachServer {
 
     }
 
+    /**
+     * Nimmt eine TetraderdachID entgegen und sucht alle Dachabschnitte raus, welche<br>
+     * die jeweilige ID referenzieren.
+     * @param id TetraederdachID
+     * @return Liste Dachabschnitte
+     */
     @GET
     @Path("/getRoofParts/{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -184,7 +219,14 @@ public class DachServer {
         return roofPartList;
     }
 
-    public TblDach getRoofById(int id) throws NotFoundException {
+    /**
+     * Sucht in der Datenbank nach einem Dach zu der übergebenen ID und <br>
+     * und retured das JPA Objekt des gefundenen Daches.
+     * @param id DachID
+     * @return JPA Dachobjekte TblDach
+     * @throws NotFoundException Falls kein Dach gefunden
+     */
+    private TblDach getRoofById(int id) throws NotFoundException {
         Query queryRoofById = em.createNamedQuery("tblDach.findById");
         queryRoofById.setParameter("id", id);
         List resultRoofs = queryRoofById.getResultList();
@@ -195,7 +237,14 @@ public class DachServer {
         return tblDach;
     }
 
-    public TblCookie getCookieById(int id) throws NotFoundException {
+    /**
+     * Sucht in der Datenbank nach einem Cookie zu der übergebenen ID und <br>
+     * und retured das JPA Objekt des gefundenen Cookies.
+     * @param id CookieID
+     * @return JPA Cookieobjekte TblCookie
+     * @throws NotFoundException Falls kein Cookie gefunden
+     */
+    private TblCookie getCookieById(int id) throws NotFoundException {
         Query queryCookieById = em.createNamedQuery("tblCookie.findById");
         queryCookieById.setParameter("id", id);
         List resultCookies = queryCookieById.getResultList();
