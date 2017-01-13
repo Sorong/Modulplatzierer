@@ -29,7 +29,7 @@ Panel.prototype.align = function (controller, width, height) {
     this.oBotLeft = calcNextPoint(this.height, this.oTopLeft, -90);
     // }
     //if (this.height !== h || this.width !== w || this.oBotRight === null) {
-    this.oBotRight = calcNextPoint(this.height, this.oTopRight, -90);
+    this.oBotRight = calcNextPoint(this.heigh, this.oTopRight, -90);
     //
     this.width = w;
     this.height = h;
@@ -68,6 +68,16 @@ Panel.prototype.selfAlign = function (controller) {
     this.botRight = controller.getPointAsLatLng([this.topLeft.x + bottomright[0], this.topLeft.y + bottomright[1]]);
     this.topLeft = controller.getPointAsLatLng([this.topLeft.x, this.topLeft.y]);
 
+};
+Panel.prototype.getFrameWidthInPixel = function (controller) {
+    var vectorFrame = calcNextPoint(this.frameWidth/10, this.oTopLeft, 0);
+    vectorFrame = controller.getLatLngAsPoint(vectorFrame);
+    vectorWithoutFrame = controller.getLatLngAsPoint(this.oTopLeft);
+    return (vectorFrame.x - vectorWithoutFrame.x) /2;
+};
+
+Panel.prototype.getFrameWidth = function () {
+  return this.frameWidth;
 };
 
 Panel.prototype.setFrameWidth = function(controller, width){

@@ -76,7 +76,8 @@ class PanelString {
     }
 
     getFrameWidth() {
-        return this.masterPanel.frameWidth;
+        var test = this.masterPanel.getFrameWidthInPixel(this.controller);
+        return test;
     }
 
     private getNextPoint(panel) {

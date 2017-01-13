@@ -181,7 +181,8 @@ Controller.prototype.connectModelWithToolbar = function (polygon) {
         } else {
             selected.model.frameWidth = ($(this).val() / 10);
         }
-        realignModel(selected);
+        selected.setStyle({weight : selected.model.getFrameWidth()});
+        //realignModel(selected);
     }).focusout(changed);
 
     this.toolbar.modelDelete.on("click", function () {
@@ -241,7 +242,7 @@ Controller.prototype.getRoofPartsFromServer = function () {
 
 Controller.prototype.drawRoof = function () {
 
-    var removedPolygons = this.viewMap.removeAllNonMoveable();
+    this.viewMap.removeAllNonMoveable();
     if(this.serverIsAvailable && this.roof.roofId === -1) {
         this.serverHandler.postRoof(this.convertModelToJsonString(this.roof), function (data) {
             console.log("Dach gespeichert");

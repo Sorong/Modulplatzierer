@@ -59,7 +59,8 @@ var PanelString = (function () {
         master.setTopLeft(this.controller, topLeft);
     };
     PanelString.prototype.getFrameWidth = function () {
-        return this.masterPanel.frameWidth;
+        var test = this.masterPanel.getFrameWidthInPixel(this.controller);
+        return test;
     };
     PanelString.prototype.getNextPoint = function (panel) {
         return panel.getPointsAsList()[1];
