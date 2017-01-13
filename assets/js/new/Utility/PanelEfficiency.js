@@ -11,37 +11,32 @@ var efficencyTabel = [
   [69, 69, 69, 67, 65, 63, 60, 56, 53, 48, 44, 40, 35, 31, 27, 24, 21, 19, 18]  
 ];
 
-
 //panellist ist eine Liste mit Panelobjekten mit {"hight": int, "width": int}
 //global ist die Einstallung auf des Dach, beim mehreren Dachflächen der Durchschnitt alle Flächen
 //tilt gibt die Neigung der Panele in Grad an
 //rotation in wie fern die Panele nach Süden ausgerichtet sind, wobei 0 Grad voll
 //Süden und 180 Grad von Nord
 //Nennleistung der Panele ist fest 1000 Watt
-function evaluateEfficency (panels, global, tilt, rotation){
+function evaluateEfficency (panels, global){
 	var panelsarea = 0;
 	var nominaloutput = 1000;
 	var efficiency = 0.15;
 	var KWPerYear = 0;
 	
-	if(tilt > 90 || rotation > 180){
-		return {"NominalOutput": nominaloutput, "KWPerYear": 0}
-	} else {
+    for (var i in panels) {
+        if(panels[i].pitch > 90 || panels[i].orientation > 180){
+		    return {"NominalOutput": nominaloutput, "KWPerYear": 0}
 
+	    } else {
 
-        tilt = Math.round(tilt / 10);
-        rotation = Math.round(rotation / 10);
-
-
-        for (var i in panels) {
-            panelsarea += (panels[i].height * panels[i].width);
+            orientation = Math.round(panels[i].orientation / 10);
+            pitch = Math.round(panels[i].pitch / 10);
+            panelarea = (panels[i].height * panels[i].width);
+            KWPerYear += (nominaloutput * efficiency * panelarea * global) / 1000 * (efficencyTabel[pitch][orientation] / 100);
         }
-
-        KWPerYear = ((nominaloutput * efficiency * panelsarea * global) / 1000) * (efficencyTabel[tilt][rotation] / 100);
     }
 	return {"nennleistung": nominaloutput, "kiloWattProJahr": KWPerYear};
-}
-	
+}	
 
 
 	
