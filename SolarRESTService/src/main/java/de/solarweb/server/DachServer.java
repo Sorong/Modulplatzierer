@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * Created by Nils on 10.12.16.
+ * Restserverklasse, holt und speichert Dachdaten
  */
 @Stateless
 @TransactionManagement( TransactionManagementType.BEAN )
@@ -48,6 +48,13 @@ public class DachServer {
     public DachServer(){
     }
 
+
+    /**
+     * Nimmt eine DachID entgegen und returned ein ModelDach.<br>
+     *
+     * @param id DachID
+     * @return ModelDach
+     */
     @GET
     @Path("/getRoof/{dach_id}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -57,81 +64,113 @@ public class DachServer {
         return new ModelDach(tblDach);
     }
 
-
-    //CookieID ist im Moment immer Null, k.A. wie Dach Final realisiert werden soll
+    /**
+     * Nimmt ein ModelDach entgegen und returned das gepostet Dach.<br>
+     * ID des ModelDaches kann beliebig gewählt werden, da diese vom <br>
+     * Server generiert wird.
+     *
+     * @param dach ModelDach
+     * @return ModelDach
+     */
     @POST
     @Path("/postRoof")
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public ModelDach setRoof(ModelDach dach){
-        TblCookie tblCookie = getCookieById(0);
+        TblCookie tblCookie = getCookieById(dach.getCookie_id());
         Geometry the_geom = null;
         try{
-            GeometryConverter.ArrayLatLngToGeometry(dach.getThe_geom());
+            the_geom = GeometryConverter.ArrayLatLngToGeometry(dach.getThe_geom());
         }
         catch (ParseException e){
             logger.error("Dachgeometry konnte nicht geparsed werden");
             logger.error(e.getMessage());
             return new ModelDach();
         }
-        TblDach tblDach = new TblDach();
-        tblDach.setHausnummer(dach.getHausnummer());
-        tblDach.setPlz(dach.getPostleitzahl());
-        tblDach.setStrasse(dach.getStrasse());
-        tblDach.setDachneigung(dach.getDachneigung());
-        tblDach.setCookie(tblCookie);
-        tblDach.setThe_geom(the_geom);
 
+        if(tblCookie.getTblDach() == null){
+            TblDach tblDach = new TblDach();
+            tblDach.setPv(dach.getPv());
+            tblDach.setSt(dach.getSt());
+            tblDach.setCookie(tblCookie);
+            tblDach.setThe_geom(the_geom);
+            tblDach.setTilt(dach.getTilt());
+            tblDach.setGlobal(dach.getGlobal());
+            tblDach.setGid(dach.getGid());
+
+            try{
+                utx.begin();
+                em.persist(tblDach);
+                utx.commit();
+            }
+            catch(Exception e){
+                logger.error("Dach wurde nicht in der Datenbank gespeichert");
+                logger.error(e.getMessage());
+                return new ModelDach();
+            }
+            logger.info("Dach unter ID: " + tblDach.getDach_id() +"gespeichert");
+            return new ModelDach(tblDach);
+        }
+        else{
+            TblDach tblDach = tblCookie.getTblDach();
+            tblDach.setPv(dach.getPv());
+            tblDach.setSt(dach.getSt());
+            tblDach.setCookie(tblCookie);
+            tblDach.setThe_geom(the_geom);
+            tblDach.setTilt(dach.getTilt());
+            tblDach.setGlobal(dach.getGlobal());
+            tblDach.setGid(dach.getGid());
+
+            try{
+                utx.begin();
+                em.merge(tblDach);
+                utx.commit();
+            }
+            catch(Exception e){
+                logger.error("Dach wurde nicht in der Datenbank gemergt");
+                logger.error(e.getMessage());
+                return new ModelDach();
+            }
+            logger.info("Dach unter ID: " + tblDach.getDach_id() +"gespeichert");
+            return new ModelDach(tblDach);
+        }
+
+    }
+
+    @GET
+    @Path("/removeDach/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String removePanel(@PathParam("id") int id){
+        TblDach tblDach = (TblDach) getRoofById(id);
+        if(tblDach == null) {
+            return "Not found";
+        }
         try{
             utx.begin();
-            em.persist(tblDach);
+            TblDach pDach = em.merge(tblDach);
+            em.remove(pDach);
             utx.commit();
         }
-        catch(Exception e){
-            logger.error("Dach wurde nicht in der Datenbank gespeichert");
+        catch (Exception e){
+            logger.error("Bei dem Versuch das Dach zu loeschen ist ein Fehler aufgetreten");
             logger.error(e.getMessage());
-            return new ModelDach();
+            return "error";
         }
-        logger.info("Dach unter ID: " + tblDach.getDach_id() +"gespeichert");
-        return new ModelDach(tblDach);
+
+        logger.info("Panel gelöscht");
+        return "Deleted";
     }
 
 
-    @POST
-    @Path("/updateRoof")
-    @Produces(MediaType.TEXT_PLAIN)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public ModelDach updateRoof(ModelDach dach){
-        Geometry the_geom = null;
-        try{
-            GeometryConverter.ArrayLatLngToGeometry(dach.getThe_geom());
-        }
-        catch (ParseException e){
-            logger.error("Dachgeometry des Daches " + dach.getDach_id() + " konnte nicht geparsed werden");
-            logger.error(e.getMessage());
-            return new ModelDach();
-        }
-        TblDach tblDach = getRoofById(dach.getDach_id());
-        tblDach.setHausnummer(dach.getHausnummer());
-        tblDach.setPlz(dach.getPostleitzahl());
-        tblDach.setStrasse(dach.getStrasse());
-        tblDach.setDachneigung(dach.getDachneigung());
-        tblDach.setThe_geom(the_geom);
-        try{
-            utx.begin();
-            em.merge(tblDach);
-            utx.commit();
-        }
-        catch(Exception e){
-            logger.error("Dach mit ID: " + dach.getDach_id() +" wurde nicht geupdatet");
-            logger.error(e.getMessage());
-            return new ModelDach();
-        }
 
-        logger.info("Dach mit ID:" + dach.getDach_id() + "geupdateted");
-        return new ModelDach(tblDach);
-    }
-
+    /**
+     * Sucht ein Dach aus der Tetraeder Datenbank anhand der Adresse und returned dieses.<br>
+     *
+     * @param street Straß des Hauses
+     * @param number Hausnummer
+     * @param plz Postleitzahl
+     * @return ModelTetraederbuilding
+     */
     @GET
     @Path("/getPredefinedRoof/{street}/{number}/{plz}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -159,6 +198,12 @@ public class DachServer {
 
     }
 
+    /**
+     * Nimmt eine TetraderdachID entgegen und sucht alle Dachabschnitte raus, welche<br>
+     * die jeweilige ID referenzieren.
+     * @param id TetraederdachID
+     * @return Liste Dachabschnitte
+     */
     @GET
     @Path("/getRoofParts/{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -184,18 +229,32 @@ public class DachServer {
         return roofPartList;
     }
 
-    public TblDach getRoofById(int id) throws NotFoundException {
+    /**
+     * Sucht in der Datenbank nach einem Dach zu der übergebenen ID und <br>
+     * und retured das JPA Objekt des gefundenen Daches.
+     * @param id DachID
+     * @return JPA Dachobjekte TblDach
+     * @throws NotFoundException Falls kein Dach gefunden
+     */
+    private TblDach getRoofById(int id) throws NotFoundException {
         Query queryRoofById = em.createNamedQuery("tblDach.findById");
         queryRoofById.setParameter("id", id);
         List resultRoofs = queryRoofById.getResultList();
         if(resultRoofs.isEmpty()){
-            throw new NotFoundException();
+            new TblDach();
         }
         TblDach tblDach = (TblDach) queryRoofById.getSingleResult();
         return tblDach;
     }
 
-    public TblCookie getCookieById(int id) throws NotFoundException {
+    /**
+     * Sucht in der Datenbank nach einem Cookie zu der übergebenen ID und <br>
+     * und retured das JPA Objekt des gefundenen Cookies.
+     * @param id CookieID
+     * @return JPA Cookieobjekte TblCookie
+     * @throws NotFoundException Falls kein Cookie gefunden
+     */
+    private TblCookie getCookieById(int id) throws NotFoundException {
         Query queryCookieById = em.createNamedQuery("tblCookie.findById");
         queryCookieById.setParameter("id", id);
         List resultCookies = queryCookieById.getResultList();

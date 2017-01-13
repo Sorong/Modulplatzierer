@@ -11,7 +11,6 @@ var efficencyTabel = [
   [69, 69, 69, 67, 65, 63, 60, 56, 53, 48, 44, 40, 35, 31, 27, 24, 21, 19, 18]  
 ];
 
-
 //panellist ist eine Liste mit Panelobjekten mit {"hight": int, "width": int}
 //global ist die Einstallung auf des Dach, beim mehreren Dachflächen der Durchschnitt alle Flächen
 //tilt gibt die Neigung der Panele in Grad an
@@ -23,20 +22,21 @@ function evaluateEfficency (panels, global){
 	var nominaloutput = 1000;
 	var efficiency = 0.15;
 	var KWPerYear = 0;
+	
+    for (var i in panels) {
+        if(panels[i].pitch > 90 || panels[i].orientation > 180){
+		    return {"NominalOutput": nominaloutput, "KWPerYear": 0}
 
-	for(var i in panels) {
-        if (panels[i].pitch <= 90 && panels[i].orientation <= 180) {
+	    } else {
 
             orientation = Math.round(panels[i].orientation / 10);
             pitch = Math.round(panels[i].pitch / 10);
             panelarea = (panels[i].height * panels[i].width);
             KWPerYear += (nominaloutput * efficiency * panelarea * global) / 1000 * (efficencyTabel[pitch][orientation] / 100);
-
         }
     }
-    return {"NominalOutput": nominaloutput, "KWPerYear": KWPerYear}
-}
-	
+	return {"nennleistung": nominaloutput, "kiloWattProJahr": KWPerYear};
+}	
 
 
 	
