@@ -14,7 +14,7 @@ function Panel() {
     this.name = null;
     this.height = 0;
     this.width = 0;
-    this.frameWidth = 0;
+    this.frameWidth = 0.5;
     this.id = -1;
 }
 

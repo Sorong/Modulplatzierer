@@ -76,6 +76,10 @@ Toolbar.prototype.renderModelValues = function () {
     var orientation = this.selectedModel.orientation || 0;
     this.modelOrientation.val(orientation);
     this.modelOrientationValue.html(parseFloat(orientation).toFixed(0) + "°");
+
+    var framewidth = (this.selectedModel.frameWidth * 10) || 0;
+    this.modelFrame.val(framewidth);
+    this.modelFrameValue.html(framewidth + "cm");
 };
 
 Toolbar.prototype.pitchSlider = function () {

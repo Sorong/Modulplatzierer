@@ -75,6 +75,10 @@ class PanelString {
         master.setTopLeft(this.controller, topLeft);
     }
 
+    getFrameWidth() {
+        return this.masterPanel.frameWidth;
+    }
+
     private getNextPoint(panel) {
         return panel.getPointsAsList()[1];
     }

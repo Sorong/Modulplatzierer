@@ -76,7 +76,7 @@ Map.prototype.addMultiPolygon = function (model) {
             draggable: true,
             transform: true,
             opacity : 0.5,
-            weight : 0.2
+            weight : model.getFrameWidth()
         }).addTo(this.handlerGroup);
 
     this.selectedPolygon.model = model;
