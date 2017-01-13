@@ -2,7 +2,7 @@ const BEST_PV = 2;
 
 function Roof() {
     this.gid = 0;
-    this.roofId = 0;
+    this.roofId = -1;
     this.points = [];
     this.pv = null;
     this.st = null;
@@ -121,6 +121,7 @@ Roof.prototype.getAsJson = function () {
 
     return {
         dach_id : this.roofId,
+        gid : this.gid,
         st : this.st,
         pv : this.pv,
         tilt : this.tilt,

@@ -1,4 +1,4 @@
-const HOST = "195.37.224.168";
+const HOST = "195.37.224.174";
 
 const DAYS_TILL_COOKIE_EXPIRE = 30;
 const COOKIENAME = "Modulplatzierer";
@@ -229,17 +229,19 @@ Controller.prototype.getRoofPartsFromServer = function () {
     }
 };
 
-Controller.prototype.drawRoof = function (post) {
-    this.viewMap.removeAllNonMoveable();
-    this.viewMap.addNonMovable(this.roof);
-    if (this.roof.parts != null && this.roof.parts.length > 0) {
-        this.viewMap.addNonMovable(this.roof.getBestRoofPart(this));
-    }
-    if(post) {
+Controller.prototype.drawRoof = function () {
+
+    var removedPolygons = this.viewMap.removeAllNonMoveable();
+    if(this.serverIsAvailable && this.roof.roofId === -1) {
         this.serverHandler.postRoof(this.convertModelToJsonString(this.roof), function (data) {
             console.log("Dach gespeichert");
         });
     }
+    this.viewMap.addNonMovable(this.roof);
+    if (this.roof.parts != null && this.roof.parts.length > 0) {
+        this.viewMap.addNonMovable(this.roof.getBestRoofPart(this));
+    }
+
 
     this.viewMap.setFocus(this.roof.points[0].lat, this.roof.points[0].lng);
 
@@ -337,10 +339,13 @@ Controller.prototype.createRoof = function (data) {
     this.viewMap.map.removeLayer(layer);
     var latlngs = data.layer.getLatLngs()[0];
     var roof = new Roof();
+    if(this.roof != null) {
+        roof.roofId = this.roof.roofId;
+    }
     roof.setPointsFromList(latlngs);
     roof.calculateOrientation(this);
     this.roof = roof;
-    this.drawRoof(true);
+    this.drawRoof();
 };
 
 Controller.prototype.editRoof = function (data) {
@@ -406,10 +411,11 @@ function callbackEvaluateCookie(data) {
         data.solarpanelList.forEach(createPanels);
         if(data.modelDach !== null) {
             var roof = new Roof();
-            roof.roofId = data.modelDach.roofId;
+            roof.roofId = data.modelDach.dach_id;
             roof.global = data.modelDach.global;
             roof.pv = data.modelDach.pv;
             roof.st = data.modelDach.st;
+            roof.gid = data.modelDach.gid;
             var arr = [];
             data.modelDach.the_geom.forEach(getCoords);
             function getCoords(element) {
@@ -418,10 +424,13 @@ function callbackEvaluateCookie(data) {
             roof.setPointsFromList(arr);
             roof.calculateOrientation(controller);
             controller.roof = roof;
-            controller.drawRoof();
+            if(roof.gid != null) {
+                controller.getRoofPartsFromServer();
+            } else {
+                controller.drawRoof();
+            }
+
         }
-
-
 
         function createPanels(list) {
             var panelstring;
