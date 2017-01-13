@@ -33,6 +33,10 @@ var PanelString = (function () {
     };
     PanelString.prototype.removePanelById = function (panelId) {
     };
+    /**
+     *
+     * @param orientation
+     */
     PanelString.prototype.setOrientation = function (orientation) {
         var master = this.masterPanel;
         console.log(orientation);
@@ -41,6 +45,9 @@ var PanelString = (function () {
             o += 360;
         }
         master.setOrientation(this.controller, o);
+    };
+    PanelString.prototype.setFrameWidth = function (width) {
+        this.masterPanel.setFrameWidth(this.controller, width);
     };
     PanelString.prototype.setPitch = function (pitch) {
         this.masterPanel.setPitch(this.controller, pitch);
@@ -93,4 +100,3 @@ var PanelString = (function () {
     };
     return PanelString;
 }());
-//# sourceMappingURL=PanelString.js.map

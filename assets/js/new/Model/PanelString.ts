@@ -45,6 +45,10 @@ class PanelString {
     removePanelById(panelId) {
     }
 
+    /**
+     *
+     * @param orientation
+     */
     setOrientation(orientation) {
         let master = this.masterPanel;
         console.log(orientation);
@@ -54,6 +58,11 @@ class PanelString {
         }
         master.setOrientation(this.controller, o);
     }
+
+    setFrameWidth(width){
+        this.masterPanel.setFrameWidth(this.controller, width);
+    }
+
     setPitch(pitch) {
         this.masterPanel.setPitch(this.controller, pitch);
     }
