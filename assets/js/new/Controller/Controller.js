@@ -49,7 +49,7 @@ Controller.prototype.init = function () {
         };
         //TODO: Maßstab der Solarpanels nicht hardcodieren
         var model = new Panel();
-        model.name = "Panelstring: 10123-1234";
+        model.name = "";
         model.width = 2;
         model.height = 2;
         model.topLeft = panelData.LatLng;
@@ -115,7 +115,7 @@ Controller.prototype.updateModel = function (model, position, orientation) {
     }
 
     this.savePanelstring(model);
-    this.getPanelEffiency();
+    var efficiency = this.getPanelEffiency();
 };
 
 Controller.prototype.connectModelWithToolbar = function (polygon) {
@@ -356,7 +356,7 @@ Controller.prototype.getPanelEffiency = function () {
     if (this.roof !== null) {
         var arr = [];
         for (var i = 0; i < this.viewMap.moveablePolygons.length; i++) {
-            var current = this.viewMap.moveablePolygons[i];
+            var current = this.viewMap.moveablePolygons[i].model;
             if (current.constructor === PanelString) {
                 var panelsInRoof = 0;
                 for (var j = 0; j < current.size(); j++)
@@ -370,14 +370,14 @@ Controller.prototype.getPanelEffiency = function () {
                     }
             }
             if (panelsInRoof === current.size()) {
-                this.viewMap.moveablePolygons.setStyle("#3388ff")
+                this.viewMap.moveablePolygons[i].setStyle( {color: "#3388ff"});
             }
         }
 
 
         //TODO: Hier prüfen ob alle Panels im Dach sind
         this.roof.getBestRoofPart().calculateOrientation(this);
-        console.log(evaluateEfficency(arr, this.roof.getBestRoofPart(this).global, arr[0].pitch, this.roof.getBestRoofPart(this).orientation));
+        console.log(evaluateEfficency(arr, this.roof.getBestRoofPart(this).global));
     } else {
         console.log("kein Dach");
     }

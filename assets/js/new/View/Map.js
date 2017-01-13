@@ -131,7 +131,7 @@ Map.prototype.addMultiPolygon = function (model) {
 
     });
 
-    this.moveablePolygons.push(model);
+    this.moveablePolygons.push(this.selectedPolygon);
     return this.selectedPolygon;
 };
 
@@ -232,6 +232,12 @@ Map.prototype.changeMapProvider = function (layer) {
 Map.prototype.removeSelected = function () {
     this.selectedPolygon.transform.disable();
     this.map.removeLayer(this.selectedPolygon);
+    for(var i = 0; i < this.moveablePolygons.length; i++) {
+        if(this.selectedPolygon.model.equals(this.moveablePolygons[i].model)) {
+            this.moveablePolygons.splice(i, 1);
+            return;
+        }
+    }
 };
 
 /* Dragfunktionnen */

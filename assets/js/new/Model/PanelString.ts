@@ -1,5 +1,6 @@
 class PanelString {
-
+    static UNIFIER = 0;
+    unifier;
     controller;
     masterPanel;
     panels;
@@ -7,7 +8,8 @@ class PanelString {
     constructor(controller, panel) {
         this.controller = controller;
         this.masterPanel = panel;
-        this.panels = []
+        this.panels = [];
+        this.unifier = PanelString.UNIFIER++;
     }
 
     appendPanel(panel) {
@@ -32,7 +34,7 @@ class PanelString {
     }
     /* Schnittstellenende */
 
-    removePanel(panel) {
+    removePanel() {
         let removedPanelId = this.masterPanel.id;
         if(this.panels.length !== 0) {
             removedPanelId = this.panels[this.panels.length-1].id;
@@ -109,5 +111,12 @@ class PanelString {
 
     getId() {
         return this.masterPanel.getId();
+    }
+
+    equals(panelstring) {
+        if(panelstring.masterPanel === undefined) {
+            return false;
+        }
+        return this.getId() === panelstring.getId() && this.size() === panelstring.size() && this.unifier === panelstring.unifier;
     }
 }

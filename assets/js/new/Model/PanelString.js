@@ -3,6 +3,7 @@ var PanelString = (function () {
         this.controller = controller;
         this.masterPanel = panel;
         this.panels = [];
+        this.unifier = PanelString.UNIFIER++;
     }
     PanelString.prototype.appendPanel = function (panel) {
         if (panel != undefined) {
@@ -22,7 +23,7 @@ var PanelString = (function () {
         return this.getGeoJSON();
     };
     /* Schnittstellenende */
-    PanelString.prototype.removePanel = function (panel) {
+    PanelString.prototype.removePanel = function () {
         var removedPanelId = this.masterPanel.id;
         if (this.panels.length !== 0) {
             removedPanelId = this.panels[this.panels.length - 1].id;
@@ -91,6 +92,13 @@ var PanelString = (function () {
     PanelString.prototype.getId = function () {
         return this.masterPanel.getId();
     };
+    PanelString.prototype.equals = function (panelstring) {
+        if (panelstring.masterPanel === undefined) {
+            return false;
+        }
+        return this.getId() === panelstring.getId() && this.size() === panelstring.size() && this.unifier === panelstring.unifier;
+    };
+    PanelString.UNIFIER = 0;
     return PanelString;
 }());
 //# sourceMappingURL=PanelString.js.map
