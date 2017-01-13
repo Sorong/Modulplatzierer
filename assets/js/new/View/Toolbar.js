@@ -25,10 +25,34 @@ function Toolbar(model) {
     this.modelOrientation = $("#model_orientation");
     this.modelOrientationValue = $("#model_orientation_value");
 
+    this.modelFrame = $("#model_frame");
+    this.modelFrameValue = $("#model_frame_value");
+
     this.modelDelete = $("#delete_panel");
+
+    var self = this;
+    this.moreContent = $("#toolbar_more");
+    this.showMoreButton = $("#show_more");
+    this.showMoreButton.on('click', function () {
+        var isVisible = self.moreContent.is(':visible');
+        if (isVisible) {
+            self.hideMore();
+        } else {
+            self.showMore();
+        }
+    });
     this.renderModelValues();
 }
 
+Toolbar.prototype.showMore = function () {
+    this.showMoreButton.html("weniger");
+    this.moreContent.show();
+};
+
+Toolbar.prototype.hideMore = function () {
+    this.showMoreButton.html("mehr");
+    this.moreContent.hide();
+};
 
 Toolbar.prototype.renderModelValues = function () {
     if (this.selectedModel === undefined) {
@@ -86,12 +110,21 @@ Toolbar.prototype.orientationSlider = function () {
     });
 };
 
+Toolbar.prototype.frameWidthSlider = function () {
+    var frameWidth = this.modelFrameValue;
+    return this.modelFrame.on("change mousemove", function(){
+       var val = $(this).val();
+       frameWidth.html(val + "cm");
+    });
+};
+
 Toolbar.prototype.unbindEvents = function () {
     this.modelTilt.off();
     this.modelHeight.off();
     this.modelWidth.off();
     this.modelOrientation.off();
     this.modelDelete.off();
+    this.modelFrame.off();
     this.toolsContainer.addClass("hidden");
     $("#map_container").removeClass().addClass("col-sm-9");
 

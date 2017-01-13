@@ -174,6 +174,16 @@ Controller.prototype.connectModelWithToolbar = function (polygon) {
         }
         realignModel(selected);
     }).focusout(changed);
+
+    this.toolbar.frameWidthSlider().on("input change", function () {
+        if (polygon.model.constructor === PanelString) {
+            selected.model.setFrameWidth($(this).val());
+        } else {
+            selected.model.frameWidth = $(this).val();
+        }
+        realignModel(selected);
+    }).focusout(changed);
+
     this.toolbar.modelDelete.on("click", function () {
         for (var i = selected.model.size() - 1; i >= 0; i--) {
             controller.removeModelById(selected.model.get(i).id);

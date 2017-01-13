@@ -70,6 +70,11 @@ Panel.prototype.selfAlign = function (controller) {
 
 };
 
+Panel.prototype.setFrameWidth = function(controller, width){
+    this.frameWidth = width;
+    this.align(controller);
+};
+
 Panel.prototype.setOrientation = function (controller, orientation) {
     this.orientation = orientation;
     this.align(controller)
