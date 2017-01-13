@@ -56,6 +56,9 @@ Roof.prototype.addPart = function (part) {
 };
 
 Roof.prototype.getBestRoofPart = function () {
+    if(this.parts[this.bestPart].orientation === null) {
+        this.parts[this.bestPart].calculateOrientation();
+    }
     return this.parts[this.bestPart];
 };
 
