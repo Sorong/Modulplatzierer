@@ -4,14 +4,6 @@
  * @preserve
  */
 
-var HandlerDirection;
-(function (HandlerDirection) {
-    HandlerDirection[HandlerDirection["NORTH"] = 0] = "NORTH";
-    HandlerDirection[HandlerDirection["EAST"] = 1] = "EAST";
-    HandlerDirection[HandlerDirection["SOUTH"] = 2] = "SOUTH";
-    HandlerDirection[HandlerDirection["WEST"] = 3] = "WEST";
-})(HandlerDirection || (HandlerDirection = {}));
-
 /**
  * Matrix transform path for SVG/VML
  * Renderer-independent
@@ -718,6 +710,8 @@ L.Matrix.prototype = {
             ._add(1, 0, 0, 1, -origin.x, -origin.y);
     },
 
+    // TODO
+    // Vielleicht sogar entfernen, da wir es selber nicht nutzen
     resize: function (move, origin) {
 
         move = move || L.Point(1, 1);
@@ -816,6 +810,7 @@ L.Matrix.prototype = {
 L.matrix = function (a, b, c, d, e, f) {
     return new L.Matrix(a, b, c, d, e, f);
 };
+
 /**
  * @namespace
  * @type {Object}
@@ -868,6 +863,11 @@ L.PathTransform.RotateHandle = L.PathTransform.Handle.extend({
     }
 });
 
+
+/**
+ * Resizehandler für die Erweiterung des Strings
+ * @extends {L.Handler.PathTransform.Handle}
+ */
 L.PathTransform.ResizeHandle = L.PathTransform.Handle.extend({
 
     option: {
@@ -1052,7 +1052,7 @@ L.Handler.PathTransform = L.Handler.extend({
         return this.transform(angle, null, origin);
     },
 
-
+    // TODO
     orientation: function (degree, origin) {
 
         var diff = (this._orientation - degree) * -1;
@@ -1096,6 +1096,9 @@ L.Handler.PathTransform = L.Handler.extend({
         return this;
     },
 
+    /**
+     * Aktuallisiert alle Handler
+     */
     resetHandler: function () {
         this._updateHandlers()
     },
@@ -1333,17 +1336,14 @@ L.Handler.PathTransform = L.Handler.extend({
 
         this._rect = this._rect || this._getBoundingPolygon().addTo(this._handlersGroup);
 
-        /*
-         TODO bitte vorerst drin lassen^^
-         if (this.options.scaling) {
-         this._handlers = [];
-         for (var i = 0; i < this.options.edgesCount; i++) {
-         // TODO: add stretching
-         this._handlers.push(
-         this._createHandler(this._rect._latlngs[0][i], i * 2, i)
-         .addTo(this._handlersGroup));
-         }
-         }*/
+        if (this.options.scaling) {
+            this._handlers = [];
+            for (var i = 0; i < this.options.edgesCount; i++) {
+                this._handlers.push(
+                    this._createHandler(this._rect._latlngs[0][i], i * 2, i)
+                        .addTo(this._handlersGroup));
+            }
+        }
 
         var indexOfLastPath = this._path._latlngs.length - 1;
         var firstPath = this._path._latlngs[0];
@@ -1366,9 +1366,11 @@ L.Handler.PathTransform = L.Handler.extend({
 
     },
 
+    /**
+     * Erstellt den Resizehandler und die Marker für die Erweiterung des Panelstrings
+     * @private
+     */
     _createResizeHandlers: function () {
-
-
         var indexOfLastPath = this._path._latlngs.length - 1;
         var lastPath = this._path._latlngs[indexOfLastPath];
 
@@ -1449,6 +1451,13 @@ L.Handler.PathTransform = L.Handler.extend({
         );
     },
 
+    /**
+     * Bevor eine Resize ausgeführt wird, wird diese Methode ausgeführt<br/>
+     * um die originalen Daten abzuspeichern und während des resize Vorgangs zu verwenden
+     * @param {Event} evt - Gibt den aktuellen Event des Nutzers wieder
+     * @private
+     * @fires L.Path:resizestart
+     */
     _onResizeStart: function (evt) {
         var marker = evt.target;
         var map = this._map;
@@ -1477,6 +1486,13 @@ L.Handler.PathTransform = L.Handler.extend({
             .fire('resizestart', {layer: this._path});
     },
 
+    /**
+     * Methode wird während des Resize aufgerunfen.<br/>
+     * Hierbei werden gleichzeitig, die Handler und der äußere Rahmen aktualisiert.
+     * @param {Event} evt - Gibt den aktuellen Event des Nutzers wieder
+     * @private
+     * @fires L.Path:resize
+     */
     _onResize: function (evt) {
         var map = this._map;
 
@@ -1489,10 +1505,10 @@ L.Handler.PathTransform = L.Handler.extend({
         var botRight = this._path._latlngs[0][2];
         var botLeft = this._path._latlngs[0][3];
 
-
         var handlerPosition = map.layerPointToLatLng(evt.layerPoint);
         var distance = firstCorner.distanceTo(handlerPosition);
 
+        // Richtungsvektor
         var distanceCBlat = handlerPosition.lat - botLeft.lat;
         var distanceCBlng = handlerPosition.lng - botLeft.lng;
 
@@ -1519,10 +1535,13 @@ L.Handler.PathTransform = L.Handler.extend({
 
     },
 
+    /**
+     * Nachdem ein Resize abgeschlossen wurde, wird diese Methode aufgerufen.<br/>
+     * @param {Event} evt - Gibt den aktuellen Event des Nutzers wieder
+     * @private
+     * @fires L.Path:resizeend
+     */
     _onResizeEnd: function (evt) {
-
-        //this._rect.setBounds(this._path.getBounds());
-
         this._path._map
             .off('mousemove', this._onResize, this)
             .off('mouseup', this._onResizeEnd, this);
@@ -1541,8 +1560,7 @@ L.Handler.PathTransform = L.Handler.extend({
     _onRotateStart: function (evt) {
         var map = this._map;
         map.dragging.disable();
-        console.log("OnStart")
-console.log(this._orientation);
+
         this._originMarker = null;
         this._orientationStart = this._orientation;
         this._rotationOriginPt = map.latLngToLayerPoint(this._getRotationOrigin());
@@ -1579,31 +1597,36 @@ console.log(this._orientation);
             .rotate(this._angle, origin)
             .flip();
 
-        var angle = this._angle;
+        var orientation = this._recalculateOrientation(this._angle);
+
+        this._update();
+        this._path.fire('rotate', {layer: this._path, rotation: this._angle, orientation: orientation});
+    },
+
+
+    /**
+     * Mit dem neuen Winkel welcher als Radiant übergeben wird, berechnen wir die Orientierung neu
+     * @param {number} angle - Winkel als Radiant
+     * @returns {number} Orientierung
+     * @private
+     */
+    _recalculateOrientation:function (angle){
         var degrees = angle * (180 / Math.PI);
         var orientation = parseInt(this._orientationStart) + parseInt(degrees);
-        console.log("OO " + orientation)
+
         if (orientation < 0) {
             orientation += 360;
         }
-/*
-        console.log("Angle: " + angle);
-        console.log("Degree: " + degrees);
-        console.log("Orientation: " + orientation);
-        console.log("OrientationStart: " + this._orientationStart)*/
 
-        //this._orientation = parseInt((this._orientation + degrees));
+        this._orientation = parseInt((this._orientation + degrees));
 
         if (orientation > 360) {
             orientation -= 360;
         }
 
-        // Workaround
-        //orientation = (orientation - 360 ) * -1;
         this._orientation = orientation;
 
-        this._update();
-        this._path.fire('rotate', {layer: this._path, rotation: this._angle, orientation: orientation});
+        return this._orientation;
     },
 
 
