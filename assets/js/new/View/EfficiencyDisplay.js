@@ -96,7 +96,6 @@ var EfficiencyDisplay = (function () {
      * @param warning
      */
     EfficiencyDisplay.prototype.showWarning = function (warning) {
-        console.log(this.warningContainer);
         this.warningContainer.removeClass('hidden');
         this.warningMessage.html(warning);
     };

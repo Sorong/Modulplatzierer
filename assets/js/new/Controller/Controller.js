@@ -113,7 +113,7 @@ Controller.prototype.updateModel = function (polygon, position, orientation) {
     }
     this.updateModelPosition(polygon);
     this.savePanelstring(polygon.model);
-    var efficiency = this.getPanelEffiency();
+    this.getPanelEffiency();
 };
 
 Controller.prototype.connectModelWithToolbar = function (polygon) {
@@ -257,6 +257,7 @@ Controller.prototype.drawRoof = function () {
 
 
     this.viewMap.setFocus(this.roof.points[0].lat, this.roof.points[0].lng);
+    this.getPanelEffiency();
 
 };
 

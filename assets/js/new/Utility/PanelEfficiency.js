@@ -26,8 +26,16 @@ function evaluateEfficiency (panels, global){
 	var usedPanels = 0;
 	
     for (var i in panels) {
-        if(panels[i].pitch <= 90 && panels[i].orientation <= 180) {
-            orientation = Math.round(panels[i].orientation / 10);
+        if(panels[i].pitch <= 90) {
+            orientation = panels[i].orientation;
+            if(orientation < 90) {
+                orientation += 90;
+            } else if(orientation > 180 && orientation < 270) {
+                orientation-=180;
+            } else if(orientation >= 270) {
+                orientation-=270;
+            }
+            orientation = Math.round(orientation / 10);
             pitch = Math.round(panels[i].pitch / 10);
             panelarea = (panels[i].height * panels[i].width);
             totalPanelarea+=panelarea;
@@ -37,7 +45,7 @@ function evaluateEfficiency (panels, global){
     }
 	return {
         nominal: nominaloutput,
-        perYear: KWPerYear,
+        perYear: parseFloat(KWPerYear.toFixed(2)),
         counter: usedPanels,
         area: totalPanelarea
     };

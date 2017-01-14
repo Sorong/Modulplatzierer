@@ -8,7 +8,7 @@ function Roof() {
     this.st = null;
     this.orientation = null;
     this.parts = null;
-    this.bestPart = 0;
+    this.bestPart = -1;
     this.tilt = 0;
     this.global = 0;
 }
@@ -49,6 +49,7 @@ Roof.prototype.addPart = function (part) {
         this.parts = [];
     }
     var index = this.parts.push(part);
+    if(this.bestPart === -1) {this.bestPart++;}
     var currentBest = this.parts[this.bestPart];
     if(currentBest.pv < part.pv || (currentBest.pv == part.pv && currentBest.global < part.global)) {
         this.bestPart = index-1;
@@ -57,8 +58,8 @@ Roof.prototype.addPart = function (part) {
 };
 
 Roof.prototype.getBestRoofPart = function (controller) {
-    if(this.bestPart === 0) { return this; }
-    if(this.parts[this.bestPart].orientation === null) {
+    if(this.bestPart === -1) { return this; }
+    if(controller !== undefined && this.parts[this.bestPart].orientation === null) {
         this.parts[this.bestPart].calculateOrientation(controller);
     }
     return this.parts[this.bestPart];

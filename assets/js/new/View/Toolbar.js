@@ -58,7 +58,6 @@ Toolbar.prototype.renderModelValues = function () {
     if (this.selectedModel === undefined) {
         return;
     }
-    console.log("Render:" + this.selectedModel.name);
     this.toolsHeadline.html(this.selectedModel.name);
 
     var pitch = this.selectedModel.pitch || 0;
