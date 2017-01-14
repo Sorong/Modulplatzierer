@@ -965,6 +965,7 @@ L.Handler.PathTransform = L.Handler.extend({
         this._rotationStart = null;
         this._rotationOriginPt = null;
         this._orientation = this.options.orientation;
+        this._orientationStart = this._orientation;
 
         // preview and transform matrix
         this._matrix = new L.Matrix(1, 0, 0, 1, 0, 0);
@@ -1049,6 +1050,20 @@ L.Handler.PathTransform = L.Handler.extend({
      */
     rotate: function (angle, origin) {
         return this.transform(angle, null, origin);
+    },
+
+
+    orientation: function (degree, origin) {
+
+        var diff = (this._orientation - degree) * -1;
+        this._orientation = degree;
+
+
+        var angle = diff * Math.PI / 180;
+        this.rotate(angle, origin);
+        this._apply();
+        this._path.fire('orientation', {layer: this._path, orientation: this._orientation});
+
     },
 
 
@@ -1319,7 +1334,7 @@ L.Handler.PathTransform = L.Handler.extend({
         this._rect = this._rect || this._getBoundingPolygon().addTo(this._handlersGroup);
 
         /*
-        TODO bitte vorerst drin lassen^^
+         TODO bitte vorerst drin lassen^^
          if (this.options.scaling) {
          this._handlers = [];
          for (var i = 0; i < this.options.edgesCount; i++) {
@@ -1525,10 +1540,11 @@ L.Handler.PathTransform = L.Handler.extend({
      */
     _onRotateStart: function (evt) {
         var map = this._map;
-
         map.dragging.disable();
-
+        console.log("OnStart")
+console.log(this._orientation);
         this._originMarker = null;
+        this._orientationStart = this._orientation;
         this._rotationOriginPt = map.latLngToLayerPoint(this._getRotationOrigin());
         this._rotationStart = evt.layerPoint;
         this._initialMatrix = this._matrix.clone();
@@ -1563,8 +1579,31 @@ L.Handler.PathTransform = L.Handler.extend({
             .rotate(this._angle, origin)
             .flip();
 
+        var angle = this._angle;
+        var degrees = angle * (180 / Math.PI);
+        var orientation = parseInt(this._orientationStart) + parseInt(degrees);
+        console.log("OO " + orientation)
+        if (orientation < 0) {
+            orientation += 360;
+        }
+/*
+        console.log("Angle: " + angle);
+        console.log("Degree: " + degrees);
+        console.log("Orientation: " + orientation);
+        console.log("OrientationStart: " + this._orientationStart)*/
+
+        //this._orientation = parseInt((this._orientation + degrees));
+
+        if (orientation > 360) {
+            orientation -= 360;
+        }
+
+        // Workaround
+        //orientation = (orientation - 360 ) * -1;
+        this._orientation = orientation;
+
         this._update();
-        this._path.fire('rotate', {layer: this._path, rotation: this._angle});
+        this._path.fire('rotate', {layer: this._path, rotation: this._angle, orientation: orientation});
     },
 
 
@@ -1576,26 +1615,11 @@ L.Handler.PathTransform = L.Handler.extend({
             .off('mousemove', this._onRotate, this)
             .off('mouseup', this._onRotateEnd, this);
 
-        var angle = this._angle;
-        var degrees = angle * (180 / Math.PI);
-        if (angle < 0) {
-            degrees += 360;
-        }
-
-        this._orientation = this._orientation + degrees
-
-        if (this._orientation > 360) {
-            this._orientation -= 360;
-        }
-
-        // Workaround
-        var orientation = (this._orientation - 360 ) * -1
-
         this._apply();
         this._path.fire('rotateend', {
             layer: this._path,
-            rotation: angle,
-            orientation: orientation.toFixed(0)
+            rotation: this._angle,
+            orientation: this._orientation
         });
 
     },
@@ -1635,7 +1659,7 @@ L.Handler.PathTransform = L.Handler.extend({
         this._map.removeLayer(this._handleLine);
         this._map.removeLayer(this._rotationMarker);
 
-        //this._handleLine = this._rotationMarker = null;
+        this._handleLine = this._rotationMarker = null;
     },
 
 
