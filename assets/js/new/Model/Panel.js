@@ -21,16 +21,11 @@ function Panel() {
 Panel.prototype.align = function (controller, width, height) {
     var w = width !== undefined ? width : this.width;
     var h = height !== undefined ? height : this.height;
+    var frameInMeter = ((this.frameWidth/100)) ;
     this.oTopLeft = this.topLeft;
-    //if (this.width !== w || this.oTopRight === null) {
-    this.oTopRight = calcNextPoint(this.width, this.oTopLeft, 0);
-    //}
-    // if (this.height !== h || this.oBotLeft === null) {
-    this.oBotLeft = calcNextPoint(this.height, this.oTopLeft, -90);
-    // }
-    //if (this.height !== h || this.width !== w || this.oBotRight === null) {
-    this.oBotRight = calcNextPoint(this.height, this.oTopRight, -90);
-    //
+    this.oTopRight = calcNextPoint(Number(this.width) + frameInMeter, this.oTopLeft, 0);
+    this.oBotLeft = calcNextPoint(Number(this.height) + frameInMeter, this.oTopLeft, -90);
+    this.oBotRight = calcNextPoint(Number(this.height) + frameInMeter, this.oTopRight, -90);
     this.width = w;
     this.height = h;
     this.selfAlign(controller);
@@ -70,10 +65,11 @@ Panel.prototype.selfAlign = function (controller) {
 
 };
 Panel.prototype.getFrameWidthInPixel = function (controller) {
-    var vectorFrame = calcNextPoint(this.frameWidth/10, this.oTopLeft, 0);
+    var frameInMeter = this.frameWidth/100;
+    var vectorFrame = calcNextPoint(frameInMeter, this.oTopLeft, 0);
     vectorFrame = controller.getLatLngAsPoint(vectorFrame);
     vectorWithoutFrame = controller.getLatLngAsPoint(this.oTopLeft);
-    return (vectorFrame.x - vectorWithoutFrame.x) /2;
+    return (vectorFrame.x - vectorWithoutFrame.x);
 };
 
 Panel.prototype.getFrameWidth = function () {

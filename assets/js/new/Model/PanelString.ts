@@ -18,6 +18,7 @@ class PanelString {
             panel.topLeft = master.topLeft;
             panel.pitch = master.pitch;
             panel.orientation = master.orientation;
+            panel.frameWidth = master.frameWidth;
             panel.align(this.controller, master.width, master.height);
 
             this.panels.push(panel);
@@ -90,6 +91,7 @@ class PanelString {
         let nextLatLng = this.getNextPoint(this.masterPanel);
         let height = this.masterPanel.height;
         let width = this.masterPanel.width;
+        let frameWidth = this.masterPanel.frameWidth;
 
         for (let i = 0; i < this.panels.length; i++) {
             this.panels[i].setTopLeft(this.controller, nextLatLng);
@@ -97,6 +99,7 @@ class PanelString {
             this.panels[i].setPitch(this.controller, pitch);
             this.panels[i].width = width;
             this.panels[i].height = height;
+            this.panels[i].frameWidth = frameWidth;
             nextLatLng = this.getNextPoint(this.panels[i]);
         }
     }

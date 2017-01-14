@@ -108,7 +108,7 @@ Roof.prototype.panelInRoof = function (panel) {
         inside = false;
     }
 
-    return insideCounter;
+    return insideCounter === list.length;
 };
 
 Roof.prototype.getAsJson = function () {

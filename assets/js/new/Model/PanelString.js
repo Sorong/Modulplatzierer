@@ -11,6 +11,7 @@ var PanelString = (function () {
             panel.topLeft = master.topLeft;
             panel.pitch = master.pitch;
             panel.orientation = master.orientation;
+            panel.frameWidth = master.frameWidth;
             panel.align(this.controller, master.width, master.height);
             this.panels.push(panel);
         }
@@ -71,12 +72,14 @@ var PanelString = (function () {
         var nextLatLng = this.getNextPoint(this.masterPanel);
         var height = this.masterPanel.height;
         var width = this.masterPanel.width;
+        var frameWidth = this.masterPanel.frameWidth;
         for (var i = 0; i < this.panels.length; i++) {
             this.panels[i].setTopLeft(this.controller, nextLatLng);
             this.panels[i].setOrientation(this.controller, orientation);
             this.panels[i].setPitch(this.controller, pitch);
             this.panels[i].width = width;
             this.panels[i].height = height;
+            this.panels[i].frameWidth = frameWidth;
             nextLatLng = this.getNextPoint(this.panels[i]);
         }
     };

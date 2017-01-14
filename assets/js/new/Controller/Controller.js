@@ -59,6 +59,7 @@ Controller.prototype.init = function () {
         var panelstring = new PanelString(controller, model);
         panelstring = self.viewMap.addMultiPolygon(panelstring);
         self.saveToServer(panelstring.model.masterPanel, -1);
+        self.getPanelEffiency();
     }
 };
 
@@ -108,13 +109,13 @@ Controller.prototype.deleteUserCooke = function () {
     this.loadFromServer(true);
 };
 
-Controller.prototype.updateModel = function (model, position, orientation) {
-    model.setPosition(position);
+Controller.prototype.updateModel = function (polygon, position, orientation) {
+    polygon.model.setPosition(position);
     if (orientation !== undefined) {
-        model.setOrientation(orientation);
+        polygon.model.setOrientation(orientation);
     }
-
-    this.savePanelstring(model);
+    this.updateModelPosition(polygon);
+    this.savePanelstring(polygon.model);
     var efficiency = this.getPanelEffiency();
 };
 
@@ -142,10 +143,12 @@ Controller.prototype.connectModelWithToolbar = function (polygon) {
                 });
             }
         }
+        self.getPanelEffiency();
     };
     var realignModel = function (selectedPolygon, width, height) {
         selectedPolygon.model.align(self, width, height);
-        self.updateModelPosition(selectedPolygon, true);
+        self.updateModelPosition(selectedPolygon);
+
     };
     this.toolbar.pitchSlider().on("input change", function () {
         if (polygon.model.constructor === PanelString) {
@@ -155,15 +158,15 @@ Controller.prototype.connectModelWithToolbar = function (polygon) {
 
         }
         realignModel(selected);
-    }).focusout(changed);
+    }).mouseup(changed);
 
     this.toolbar.heightSlider().on("input change", function () {
         realignModel(selected, selected.model.width, $(this).val());
-    }).focusout(changed);
+    }).mouseup(changed);
 
     this.toolbar.widthSlider().on("input change", function () {
         realignModel(selected, $(this).val(), selected.model.height);
-    }).focusout(changed);
+    }).mouseup(changed);
 
     this.toolbar.orientationSlider().on("input change", function () {
         if (polygon.model.constructor === PanelString) {
@@ -173,7 +176,7 @@ Controller.prototype.connectModelWithToolbar = function (polygon) {
 
         }
         realignModel(selected);
-    }).focusout(changed);
+    }).mouseup(changed);
 
     this.toolbar.frameWidthSlider().on("input change", function () {
         if (polygon.model.constructor === PanelString) {
@@ -182,8 +185,8 @@ Controller.prototype.connectModelWithToolbar = function (polygon) {
             selected.model.frameWidth = ($(this).val() / 10);
         }
         selected.setStyle({weight : selected.model.getFrameWidth()});
-        //realignModel(selected);
-    }).focusout(changed);
+        realignModel(selected);
+    }).mouseup(changed);
 
     this.toolbar.modelDelete.on("click", function () {
         for (var i = selected.model.size() - 1; i >= 0; i--) {
@@ -194,16 +197,10 @@ Controller.prototype.connectModelWithToolbar = function (polygon) {
     })
 };
 
-Controller.prototype.updateModelPosition = function (polygon, disabledServerUpdate) {
+Controller.prototype.updateModelPosition = function (polygon) {
     polygon.model.align(this);
     polygon.setLatLngs(polygon.model.getPointsAsList());
     polygon.transform.resetHandler();
-    if (disabledServerUpdate !== true) {
-        var out = this.convertModelToJsonString(polygon.model);
-        this.serverHandler.updatePanel(out, function (data) {
-            console.log("Panel updated");
-        });
-    }
 };
 
 Controller.prototype.getRoofFromServer = function (place) {
@@ -281,6 +278,7 @@ Controller.prototype.appendModel = function (model, nextModel) {
     if (appendModel.id === -1) {
         this.saveToServer(appendModel, model.masterPanel.id);
     }
+    this.getPanelEffiency();
 };
 
 Controller.prototype.removeModel = function (model) {
@@ -288,6 +286,7 @@ Controller.prototype.removeModel = function (model) {
     if (id !== undefined && id !== -1) {
         this.removeModelById(id);
     }
+    this.getPanelEffiency();
 };
 
 Controller.prototype.removeModelById = function (id) {
@@ -367,22 +366,30 @@ Controller.prototype.getPanelEffiency = function () {
     if (this.roof !== null) {
         var arr = [];
         for (var i = 0; i < this.viewMap.moveablePolygons.length; i++) {
-            var current = this.viewMap.moveablePolygons[i].model;
-            if (current.constructor === PanelString) {
+            var currentModel = this.viewMap.moveablePolygons[i].model;
+            if (currentModel.constructor === PanelString) {
                 var panelsInRoof = 0;
-                for (var j = 0; j < current.size(); j++)
-                    if (this.roof.getBestRoofPart(this).panelInRoof(current.get(j)) === 4) {
+                for (var j = 0; j < currentModel.size(); j++) {
+
+
+                    var currentPanel = currentModel.get(j);
+                    if (this.roof.getBestRoofPart(this).panelInRoof(currentPanel)) {
                         arr.push({
-                            width: current.get(j).width,
-                            height: current.get(j).height,
-                            pitch: current.get(j).pitch
+                            width: currentPanel.width,
+                            height: currentPanel.height,
+                            pitch: currentPanel.pitch,
+                            orientation: currentPanel.orientation
                         });
                         panelsInRoof++;
                     }
+                    if (panelsInRoof === currentModel.size()) {
+                        this.viewMap.moveablePolygons[i].setStyle({fillColor: "#3388ff"});
+                    } else {
+                        this.viewMap.moveablePolygons[i].setStyle({fillColor: "#FF0000"});
+                    }
+                }
             }
-            if (panelsInRoof === current.size()) {
-                this.viewMap.moveablePolygons[i].setStyle( {color: "#3388ff"});
-            }
+
         }
 
 
