@@ -75,6 +75,9 @@ Map.prototype.addMultiPolygon = function (model) {
         resize: true
     });
 
+    var orientation = model.masterPanel.orientation.toFixed(0) || 0;
+    this.selectedPolygon.transform.setStartOrientation(orientation);
+
     this.selectedPolygon.on('click', function () {
         self.selectPolygon(this);
     });

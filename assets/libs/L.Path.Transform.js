@@ -997,6 +997,14 @@ L.Handler.PathTransform = L.Handler.extend({
         }
     },
 
+    /**
+     * Wir setzen den Startwert der Orientierung der Panels
+     * @param {number} orientation
+     */
+    setStartOrientation:function(orientation){
+        this._orientation = orientation;
+    },
+
 
     /**
      * Init interactions and handlers

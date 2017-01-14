@@ -182,7 +182,6 @@ Controller.prototype.connectModelWithToolbar = function (polygon) {
         if (polygon.model.constructor === PanelString) {
             polygon.transform.orientation(orientation);
             polygon.model.setOrientation(orientation);
-            polygon.colorHandler.setOrientation(orientation);
         } else {
             selected.model.orientation = orientation;
         }
