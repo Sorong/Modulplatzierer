@@ -75,6 +75,9 @@ Map.prototype.addMultiPolygon = function (model) {
         resize: true
     });
 
+    var orientation = model.masterPanel.orientation.toFixed(0) || 0;
+    this.selectedPolygon.transform.setStartOrientation(orientation);
+
     this.selectedPolygon.on('click', function () {
         self.selectPolygon(this);
     });
@@ -89,6 +92,9 @@ Map.prototype.addMultiPolygon = function (model) {
     // Rotation Events
     this.selectedPolygon.on('rotatestart', function (d) {
         self.selectPolygon(this)
+   }).on('rotate', function (d) {
+        if (self.controller.toolbar != null)
+            self.controller.toolbar.setOrientation(d.orientation);
     }).on('rotateend', function (d) {
         self.controller.updateModel(self.selectedPolygon, d.target._latlngs, d.orientation);
     });

@@ -52,7 +52,7 @@ Panel.prototype.selfAlign = function (controller) {
         this.topRight.y - this.topLeft.y,
         0];
 
-    var orientationMatrix = matrix.calculateOrientationMatrix(-this.orientation);
+    var orientationMatrix = matrix.calculateOrientationMatrix(this.orientation);
     var pitchMatrix = matrix.calculatePitchMatrix(this.pitch);
     var topright = matrix.matrixMultiplyVector(orientationMatrix, vTopLeftTopRight);
     var bottomleft = matrix.matrixMultiplyVector(orientationMatrix, matrix.matrixMultiplyVector(pitchMatrix, vTopBottomLeft));
