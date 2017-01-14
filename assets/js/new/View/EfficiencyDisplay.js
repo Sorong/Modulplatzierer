@@ -71,7 +71,7 @@ var EfficiencyDisplay = (function () {
      */
     EfficiencyDisplay.prototype.setPanelNominal = function (nominal) {
         this.panel.nominal = nominal;
-        this.panelNominal.html(nominal + "kWh");
+        this.panelNominal.html(nominal + " kWh");
     };
 
     /**

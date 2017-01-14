@@ -31,12 +31,7 @@ Controller.prototype.init = function () {
     });
 
     this.efficiencyDisplay = new EfficiencyDisplay();
-    this.efficiencyDisplay.setPanelCounter(77);
-    this.efficiencyDisplay.setPanelArea(77);
-    this.efficiencyDisplay.setPanelNominal(77);
-    this.efficiencyDisplay.setPerYear(77);
-
-    this.efficiencyDisplay.showWarning("Letzte Warnung");
+    this.showEfficiency(null);
 
     var addBtn = $('#add')[0];
     addBtn.onclick = function () {
@@ -365,6 +360,7 @@ Controller.prototype.editRoof = function (data) {
 Controller.prototype.getPanelEffiency = function () {
     if (this.roof !== null) {
         var arr = [];
+        var checkedPanels = 0;
         for (var i = 0; i < this.viewMap.moveablePolygons.length; i++) {
             var currentModel = this.viewMap.moveablePolygons[i].model;
             if (currentModel.constructor === PanelString) {
@@ -387,17 +383,44 @@ Controller.prototype.getPanelEffiency = function () {
                     } else {
                         this.viewMap.moveablePolygons[i].setStyle({fillColor: "#FF0000"});
                     }
+                    checkedPanels++;
                 }
             }
+        }
+        var efficiency = evaluateEfficiency(arr, this.roof.getBestRoofPart(this).global);
+        if(checkedPanels == arr.length) {
+            this.showEfficiency(efficiency);
+        } else  if(this.roof.getBestRoofPart(this).global ===0) {
+            this.showEfficiency(efficiency, "Für das von Ihnen ausgewählte Dach liegen keine Einstrahlungswerte vor.");
+        } else {
 
+            this.showEfficiency(efficiency, "Es konnten nicht alle Solarzellen berechnet werden. Bitte überprüfen Sie die Platzierung.");
         }
 
-
-        //TODO: Hier prüfen ob alle Panels im Dach sind
-        this.roof.getBestRoofPart().calculateOrientation(this);
-        console.log(evaluateEfficency(arr, this.roof.getBestRoofPart(this).global));
     } else {
-        console.log("kein Dach");
+        this.showEfficiency(null, "Bitte geben Sie Ihre Adresse ein, oder zeichnen Sie ein eigenes Dach.");
+    }
+};
+
+Controller.prototype.showEfficiency = function (efficiency, warningMessage) {
+    var nominal = 0;
+    var perYear = 0;
+    var counter = 0;
+    var area = 0;
+    if(efficiency !== null) {
+            nominal+= efficiency.nominal;
+            perYear+= efficiency.perYear;
+            counter+= efficiency.counter;
+            area += efficiency.area;
+    }
+    this.efficiencyDisplay.setPanelCounter(counter);
+    this.efficiencyDisplay.setPanelArea(area);
+    this.efficiencyDisplay.setPanelNominal(nominal);
+    this.efficiencyDisplay.setPerYear(perYear);
+    if(warningMessage === undefined) {
+        this.efficiencyDisplay.hideWarning();
+    } else {
+        this.efficiencyDisplay.showWarning(warningMessage);
     }
 };
 /* Callbackfunktionen */
