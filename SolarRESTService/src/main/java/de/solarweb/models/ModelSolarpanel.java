@@ -24,7 +24,7 @@ public class ModelSolarpanel implements Serializable{
      */
     private int masterpanel_id;
     /**
-     * Die Laenge des Panels in Meter
+     * Die Länge des Panels in Meter
      */
     private double laenge;
     /**
@@ -40,7 +40,7 @@ public class ModelSolarpanel implements Serializable{
      */
     private int ausrichtung;
     /**
-     * Gibt die breite des Rahmen an
+     * Gibt die Breite des Rahmen an
      */
     private double rahmenbreite;
     /**
@@ -54,16 +54,16 @@ public class ModelSolarpanel implements Serializable{
     private ArrayList<LatitudeLongitude> the_geom;
 
     /**
-     * Standartkonstruktor zur Serialiserung
+     * Standardkonstruktor zur Serialiserung
      */
     public ModelSolarpanel(){
 
     }
 
     /**
-     * Der vom Restserver genutzt Konstruktor. Wrappt das JPA Objekt TblSolarpanel in ein <br>
+     * Der vom Restserver genutzt Konstruktor. Wrappt das Entitie Objekt TblSolarpanel in ein <br>
      * Model, welches dann vom Restserver versendet werden kann.
-     * @param tblSolarpanel JPAObjekt
+     * @param tblSolarpanel Entite Objekt Solarpanel
      */
     public ModelSolarpanel(TblSolarpanel tblSolarpanel){
         this.panel_id = tblSolarpanel.getPanel_id();
@@ -81,7 +81,7 @@ public class ModelSolarpanel implements Serializable{
 
     /**
      * Setzt die ID des Panels
-     * @param panel_id
+     * @param panel_id ID des Solarpanels
      */
     public void setPanel_id(int panel_id) {
         this.panel_id = panel_id;
@@ -89,15 +89,15 @@ public class ModelSolarpanel implements Serializable{
 
     /**
      * Returnt die ID des Panels
-     * @return panel_id
+     * @return ID des Solarpanels
      */
     public int getPanel_id() {
         return panel_id;
     }
 
     /**
-     * Returnet tie ID des Masterpanels
-     * @return masterpanel_id
+     * Returnet die ID des Masterpanels
+     * @return Masterpanel_id des zugeordneten Masterpanels
      */
     public int getMasterpanel_id() {
         return masterpanel_id;
@@ -105,7 +105,7 @@ public class ModelSolarpanel implements Serializable{
 
     /**
      * Setzt die ID des zugeghöhrigen Masterpanels
-     * @param masterpanel_id
+     * @param masterpanel_id Masterpanel_id des zugeordneten Masterpanels
      */
     public void setMasterpanel_id(int masterpanel_id) {
         this.masterpanel_id = masterpanel_id;
@@ -113,7 +113,7 @@ public class ModelSolarpanel implements Serializable{
 
     /**
      * Returnt die Länge des Panels
-     * @return laenge
+     * @return Länge des Solarpanels
      */
     public double getLaenge() {
         return laenge;
@@ -121,7 +121,7 @@ public class ModelSolarpanel implements Serializable{
 
     /**
      * Setzt die Länge des Masterpanels
-     * @param laenge
+     * @param laenge Länge des Solarpanels
      */
     public void setLaenge(double laenge) {
         this.laenge = laenge;
@@ -129,7 +129,7 @@ public class ModelSolarpanel implements Serializable{
 
     /**
      * Retrunt die Bereite des Panels
-     * @return breite
+     * @return Breite des Solarpanels
      */
     public double getBreite() {
         return breite;
@@ -137,7 +137,7 @@ public class ModelSolarpanel implements Serializable{
 
     /**
      * Setzt die Breite des Panels
-     * @param breite
+     * @param breite Breite des Solarpanels
      */
     public void setBreite(double breite) {
         this.breite = breite;
@@ -145,7 +145,7 @@ public class ModelSolarpanel implements Serializable{
 
     /**
      * Retrunt die Neigung des Panels
-     * @return neigung
+     * @return Neigung des Solarpanels
      */
     public int getNeigung() {
         return neigung;
@@ -153,7 +153,7 @@ public class ModelSolarpanel implements Serializable{
 
     /**
      * Setzt die Neigung des Panels
-     * @param neigung
+     * @param neigung Neigung des Solarpanels
      */
     public void setNeigung(int neigung) {
         this.neigung = neigung;
@@ -161,7 +161,7 @@ public class ModelSolarpanel implements Serializable{
 
     /**
      * Returnt die Ausrichtung des Panels
-     * @return ausrichtung
+     * @return Ausrichtung des Solarpanels
      */
     public int getAusrichtung() {
         return ausrichtung;
@@ -169,7 +169,7 @@ public class ModelSolarpanel implements Serializable{
 
     /**
      * Setzt die Ausrichtung des Panels
-     * @param ausrichtung
+     * @param ausrichtung Ausrichtung des Solarpanels
      */
     public void setAusrichtung(int ausrichtung) {
         this.ausrichtung = ausrichtung;
@@ -177,7 +177,7 @@ public class ModelSolarpanel implements Serializable{
 
     /**
      * Returnt die Rahembreite des Panels
-     * @return rahmenbreite
+     * @return Rahmenbreite des Solarpanels
      */
     public double getRahmenbreite() {
         return rahmenbreite;
@@ -185,7 +185,7 @@ public class ModelSolarpanel implements Serializable{
 
     /**
      * Setzt die Rahmenbreite des Panels
-     * @param rahmenbreite
+     * @param rahmenbreite Rahmenbreite des Solarpanels
      */
     public void setRahmenbreite(double rahmenbreite) {
         this.rahmenbreite = rahmenbreite;
@@ -193,7 +193,7 @@ public class ModelSolarpanel implements Serializable{
 
     /**
      * Returnt die Cookie ID des Panels
-     * @return cookie_id
+     * @return CookieID des zugeordneten Cookies
      */
     public int getCookie_id() {
         return cookie_id;
@@ -201,23 +201,23 @@ public class ModelSolarpanel implements Serializable{
 
     /**
      * Setzt die Cookie ID des Panels
-     * @param cookie_id
+     * @param cookie_id CookieID des zugeordneten Cookies
      */
     public void setCookie_id(int cookie_id) {
         this.cookie_id = cookie_id;
     }
 
     /**
-     * Returnt die Arrayliste mit den Langitude/Longitude Werten des Panels
-     * @return the_geom
+     * Returnt die Arrayliste mit den Latitude/Longitude Werten des Panels
+     * @return Liste mit LatitudeLongitude Objekten
      */
     public ArrayList<LatitudeLongitude> getThe_geom() {
         return the_geom;
     }
 
     /**
-     * Setzt die Arrayliste mit den Langitude/Longietude Werten des Panels
-     * @param the_geom
+     * Setzt die Arrayliste mit den Latitude/Longitude Werten des Panels
+     * @param the_geom Liste mit LatitudeLongitude Objekten
      */
     public void setThe_geom(ArrayList<LatitudeLongitude> the_geom) {
         this.the_geom = the_geom;
