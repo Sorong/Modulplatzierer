@@ -710,8 +710,11 @@ L.Matrix.prototype = {
             ._add(1, 0, 0, 1, -origin.x, -origin.y);
     },
 
-    // TODO
-    // Vielleicht sogar entfernen, da wir es selber nicht nutzen
+    /**
+     * Für die manuelle Vergrößerung des Panelstrings
+     * @param {L.Point} move - Richtung
+     * @return {L.Point} origin - Original Position
+     */
     resize: function (move, origin) {
 
         move = move || L.Point(1, 1);
@@ -1052,18 +1055,20 @@ L.Handler.PathTransform = L.Handler.extend({
         return this.transform(angle, null, origin);
     },
 
-    // TODO
+    /**
+     * Zum manuellen setzen der neuen Orientierung
+     * @param {number} degree - Neuer Ausrichtung
+     * @param origin
+     * @fires L.Path:orientation
+     */
     orientation: function (degree, origin) {
-
         var diff = (this._orientation - degree) * -1;
         this._orientation = degree;
-
 
         var angle = diff * Math.PI / 180;
         this.rotate(angle, origin);
         this._apply();
         this._path.fire('orientation', {layer: this._path, orientation: this._orientation});
-
     },
 
 
