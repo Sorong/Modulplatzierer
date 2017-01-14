@@ -33,10 +33,6 @@ Map.prototype.init = function () {
         controller.createRoof(data);
     });
 
-    this.map.on(L.Draw.Event.EDITVERTEX, function (data) {
-        controller.editRoof(data)
-    });
-
     // Add Clicklistener
     $('#googleMap').on('click', function () {
         self.showGoogle()

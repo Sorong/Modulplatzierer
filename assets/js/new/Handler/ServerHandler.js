@@ -1,3 +1,8 @@
+/**
+ * @class
+ * @param url
+ * @constructor
+ */
 function ServerHandler(url) {
     this.serverURL = url;
     this.errorFunction = function () {

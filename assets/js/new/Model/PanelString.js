@@ -115,3 +115,4 @@ var PanelString = (function () {
     PanelString.UNIFIER = 0;
     return PanelString;
 }());
+//# sourceMappingURL=PanelString.js.map
