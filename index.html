@@ -68,6 +68,15 @@
 <body>
 <div id="main_container" class="container-fluid">
 
+<style>
+
+
+</style>
+
+    <svg id="svg_colors" height="0" width="0">
+        <defs></defs>
+    </svg>
+
     <div class="row content">
         <div id="leftSidebar" class="col-sm-3 sidenav">
             <div class="form-group has-feedback" id="address_tool">
@@ -164,7 +173,7 @@
                     <label class="control-label" for="model_orientation">Dachorientierung</label>
                 </div>
                 <div class="col-sm-10">
-                    <input id="model_orientation" type="range" min="0" max="360">
+                    <input id="model_orientation" type="range" min="0" max="360" step="1">
                 </div>
                 <div class="col-sm-2">
                     <label class="control-label" for="model_orientation" id="model_orientation_value"> 360° </label>

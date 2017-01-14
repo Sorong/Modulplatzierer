@@ -1,4 +1,4 @@
-const HOST = "195.37.224.174";
+const HOST = "localhost";
 
 const DAYS_TILL_COOKIE_EXPIRE = 30;
 const COOKIENAME = "Modulplatzierer";
@@ -16,6 +16,8 @@ function Controller() {
     this.roof = null;
     this.cookieId = null;
     this.efficiencyDisplay = null;
+
+    this._setOrientation = null;
 }
 
 Controller.prototype.init = function () {
@@ -135,6 +137,12 @@ Controller.prototype.connectModelWithToolbar = function (polygon) {
     var self = this;
     var selected = self.viewMap.selectedPolygon;
     var changed = function () {
+
+        if (this._setOrientation != null) {
+            polygon.model.setOrientation(this._setOrientation);
+            this._setOrientation = null;
+        }
+
         if (self.serverIsAvailable) {
             for (var i = 0; i < polygon.model.size(); i++) {
                 var json = self.convertModelToJsonString(polygon.model.get(i), i === 0 ? -1 : polygon.model.get(0).id);
@@ -169,11 +177,13 @@ Controller.prototype.connectModelWithToolbar = function (polygon) {
     }).mouseup(changed);
 
     this.toolbar.orientationSlider().on("input change", function () {
-        if (polygon.model.constructor === PanelString) {
-            selected.model.setOrientation($(this).val());
-        } else {
-            selected.model.orientation = $(this).val();
 
+        var orientation = $(this).val();
+        if (polygon.model.constructor === PanelString) {
+            polygon.transform.orientation(orientation);
+            polygon.model.setOrientation(orientation);
+        } else {
+            selected.model.orientation = orientation;
         }
         realignModel(selected);
     }).mouseup(changed);
@@ -189,7 +199,7 @@ Controller.prototype.connectModelWithToolbar = function (polygon) {
     }).mouseup(changed);
 
     this.toolbar.modelDelete.on("click", function () {
-        for (var i = selected.model.size() - 1; i >= 0; i--) {
+        for(var i = selected.model.size()-1; i >= 0; i--) {
             controller.removeModelById(selected.model.get(i).id);
         }
         controller.toolbar.unbindEvents();

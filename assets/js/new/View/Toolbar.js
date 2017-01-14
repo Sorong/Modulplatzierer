@@ -107,11 +107,17 @@ Toolbar.prototype.heightSlider = function () {
 };
 
 Toolbar.prototype.orientationSlider = function () {
-    var degree = this.modelOrientationValue;
+    var self = this;
     return this.modelOrientation.on("change mousemove", function () {
-        var val = $(this).val();
-        degree.html(val + "°");
+        self.setOrientation($(this).val(), true)
     });
+};
+
+Toolbar.prototype.setOrientation = function(orientation, isSlider){
+    var slider = isSlider || false;
+    var degree = this.modelOrientationValue;
+    degree.html(orientation + "°");
+    if(!slider) this.modelOrientation.val("" + orientation)
 };
 
 Toolbar.prototype.frameWidthSlider = function () {
