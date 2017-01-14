@@ -27,7 +27,8 @@ ServerHandler.prototype.getRoofParts = function (gid, callback) {
 };
 
 ServerHandler.prototype.removePanel = function (id, callback) {
-    this._get(id, "panel/removePanel/" + id, function (data) {
+    var serverFunction = "panel/removePanel/" + id;
+    this._get(serverFunction, function (data) {
         callback(data);
     })
 };
@@ -50,6 +51,12 @@ ServerHandler.prototype.updatePanel = function (json, callback) {
     })
 };
 
+ServerHandler.prototype.postRoof = function (json, callback) {
+    this._post(json, "dach/postRoof", function (data) {
+        callback(data);
+    })
+};
+
 
 
 
@@ -58,7 +65,8 @@ ServerHandler.prototype._get = function (serverFunction, successCallback) {
     $.ajax({
         type: "GET",
         dataType: "json",
-        url: this.serverURL + serverFunction
+        url: this.serverURL + serverFunction,
+        timeout: 3000
     }).done(successCallback).fail(errorFunction);
 };
 

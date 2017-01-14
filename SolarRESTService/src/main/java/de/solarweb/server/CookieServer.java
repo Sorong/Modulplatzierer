@@ -18,7 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Created by Nils on 12.12.16.
+ * Restserverklasse, holt und speichert Cookies
  */
 @Stateless
 @TransactionManagement( TransactionManagementType.BEAN )
@@ -37,6 +37,15 @@ public class CookieServer {
     public CookieServer(){
     }
 
+
+    /**
+     * Nimmt in der URL die CookieId entgegen und returned ein neues ModelCookie.<br>
+     * Sollte die ID nicht gefunden werden, wir ein neues ModelCookie mit der ID -1
+     * zurückgegeben.
+     *
+     * @param id CookieId
+     * @return ModelCookie
+     */
     @GET
     @Path("/getCookie/{cookie}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -53,7 +62,15 @@ public class CookieServer {
         return new ModelCookie(tblCookie);
     }
 
-
+    /**
+     * Legt einen neuen Cookie in der Datenbank an. Panellist im ModelCookie<br>
+     * kann leer gelassen werden, das Feld ID im Model Cookie kann auf einen beliebiegen<br>
+     * Wert gesetzt werden, da diese vom Server generiert wird.
+     *
+     * Returned wird der neu angelegt Cookie mit einer gültigen ID.
+     * @param cookie ModelCookie
+     * @return ModelCookie
+     */
     @POST
     @Path("/postCookie")
     @Consumes(MediaType.APPLICATION_JSON)

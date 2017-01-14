@@ -1,12 +1,12 @@
 const INIT_LOCATION = [52.520645, 13.40977]; //Koordinaten in Berlin
-const DEFAULT_ZOOM = 19;
+const DEFAULT_ZOOM = 20;
 
 function Map() {
     this.map = null;
     this.mapProvider = null;
     this.controller = null;
     this.moveablePolygons = [];
-    this.nonMovablePolygon = null;
+    this.nonMovablePolygon = [];
     this.selectedPolygon = null;
     this.d3Overlay = null;
 
@@ -25,9 +25,7 @@ Map.prototype.init = function () {
 
     // Roof
     $("#drawRoof").on('click', function () {
-        var polygonDrawer = new L.Draw.Polygon(self.map, {
-            shapeOptions: {}
-        });
+        var polygonDrawer = new L.Draw.Polygon(self.map);
         polygonDrawer.enable();
     });
 
@@ -50,20 +48,8 @@ Map.prototype.init = function () {
 };
 
 Map.prototype.selectPolygon = function (selectedPolygon) {
-    /*if (this.selectedPolygon != null) {
-     this.selectedPolygon.transform.disable()
-     }*/
     this.selectedPolygon = selectedPolygon;
-    //this.controller.updateModel(selectedPolygon);
     this.controller.connectModelWithToolbar(selectedPolygon);
-    /*this.connectModelWithToolbar(polygon);
-     self.selectedPolygon = this;
-     self.controller.updateModel(this);*/
-    /*this.selectedPolygon.transform.enable({
-     rotation: true,
-     scaling: false,
-     resize: true
-     });*/
 };
 
 Map.prototype.addMultiPolygon = function (model) {
@@ -73,12 +59,15 @@ Map.prototype.addMultiPolygon = function (model) {
 
     this.selectedPolygon =
         L.polygon(self.controller.getGeoJSON(model), {
-            color: '#FF0',
+            color : "#FFF",
+            fillColor: '#FF0',
             draggable: true,
-            transform: true
+            transform: true,
+            opacity : 0.5,
+            weight : model.getFrameWidth(),
+            lineJoin : "miter"
         }).addTo(this.handlerGroup);
 
-    this.selectedPolygon.colorHandler = new ColorHandler(model.masterPanel.name);
     this.selectedPolygon.model = model;
     this.selectedPolygon.transform.enable({
         rotation: true,
@@ -94,25 +83,17 @@ Map.prototype.addMultiPolygon = function (model) {
     this.selectedPolygon.on('dragstart', function (d) {
         self.selectPolygon(this)
     }).on('dragend', function (d) {
-        self.controller.updateModel(self.selectedPolygon.model, d.target._latlngs);
+        self.controller.updateModel(self.selectedPolygon, d.target._latlngs);
     });
 
     // Rotation Events
     this.selectedPolygon.on('rotatestart', function (d) {
         self.selectPolygon(this)
-        self.selectedPolygon.setStyle({color: "#FF0"});
-    }).on('rotate', function (d) {
+   }).on('rotate', function (d) {
         if (self.controller.toolbar != null)
             self.controller.toolbar.setOrientation(d.orientation);
-        self.selectedPolygon.colorHandler.setOrientation(d.orientation);
     }).on('rotateend', function (d) {
-        console.log("RotationEnd");
-        console.log(d.orientation)
-        self.controller.updateModel(self.selectedPolygon.model, d.target._latlngs, d.orientation);
-
-        var colorHandler = self.selectedPolygon.colorHandler;
-        colorHandler.setColorArray(['#f0f', '#00f', '#f00']);
-        self.selectedPolygon.setStyle({color: "url(#" + colorHandler.getColorId() + ")"});
+        self.controller.updateModel(self.selectedPolygon, d.target._latlngs, d.orientation);
     });
 
     // Resize Events
@@ -120,7 +101,6 @@ Map.prototype.addMultiPolygon = function (model) {
     var moveDirection = 1; // left: -1, right: 1
     this.selectedPolygon.on('resizestart', function (d) {
         self.selectPolygon(this);
-        self.selectedPolygon.setStyle({color: "#FF0"});
     }).on('resize', function (d) {
 
         var startCoord = this._latlngs[0][0];
@@ -144,68 +124,25 @@ Map.prototype.addMultiPolygon = function (model) {
             lastDistance = currentDistance
         }
 
-    }).on('resizeend', function (d) {
-        console.log("ResizeEnd")
-        var colorHandler = self.selectedPolygon.colorHandler;
-        colorHandler.setColorArray(['#f0f', '#00f', '#f00']);
-        self.selectedPolygon.setStyle({color: "url(#" + colorHandler.getColorId() + ")"});
     });
 
-    this.moveablePolygons.push(model);
+    this.moveablePolygons.push(this.selectedPolygon);
     return this.selectedPolygon;
 };
 
-
-//TODO: deprecated - entfernen?
-// Map.prototype.addPolygon = function (model) {
-//     var self = this;
-//     this.selectedPolygon = this.updatePolygonPosition(model);
-//     this.selectedPolygon.on('click', function () {
-//         self.selectedPolygon = this;
-//         self.controller.updateModel(this);
-//     });
-//     this.selectedPolygon.on('drag', dragmoveModel);
-//     this.selectedPolygon.on('dragend', dragendModel);
-//     this.moveablePolygons.push(model);
-//     return this.selectedPolygon;
-// };
-
-// Map.prototype.updatePolygonPosition = function (model) {
-//     model.name = "Solarzelle " + this.moveablePolygons.length;
-//     this.handlerGroup = this.handlerGroup || new L.LayerGroup().addTo(this.map);
-//
-//     var polygon = L.polygon(controller.getModelAsList(model), {
-//         color: '#FF0',
-//         draggable: true
-//     }).addTo(this.handlerGroup);
-//     polygon.model = model;
-//     return polygon;
-// };
-
-Map.prototype.setNonMovable = function (model) {
-    if (this.nonMovablePolygon !== null) {
-        this.removeNonMoveable();
-    }
+Map.prototype.addNonMovable = function (model) {
     var polygon = model.getAsPolygon();
     polygon.addTo(this.map);
-    polygon.parts = [];
-    var parts = model.parts;
-    for (var i = 0; i < parts.length; i++) {
-        var m = parts[i].getAsPolygon();
-        polygon.parts.push(m);
-        m.addTo(this.map);
-    }
-    this.nonMovablePolygon = polygon;
+    polygon.bringToBack();
+    this.nonMovablePolygon.push(polygon);
 };
 
-Map.prototype.removeNonMoveable = function () {
-    if (this.nonMovablePolygon !== null) {
-        for (var i = 0; i < this.nonMovablePolygon.parts.length; i++) {
-            this.map.removeLayer(this.nonMovablePolygon.parts[i]);
-        }
-        this.map.removeLayer(this.nonMovablePolygon);
+Map.prototype.removeAllNonMoveable = function () {
+    while (this.nonMovablePolygon.length !== 0) {
+            this.map.removeLayer(this.nonMovablePolygon.pop());
     }
 };
+
 
 
 Map.prototype.setFocus = function (lat, lng) {
@@ -256,27 +193,10 @@ Map.prototype.changeMapProvider = function (layer) {
 Map.prototype.removeSelected = function () {
     this.selectedPolygon.transform.disable();
     this.map.removeLayer(this.selectedPolygon);
+    for(var i = 0; i < this.moveablePolygons.length; i++) {
+        if(this.selectedPolygon.model.equals(this.moveablePolygons[i].model)) {
+            this.moveablePolygons.splice(i, 1);
+            return;
+        }
+    }
 };
-
-/* Dragfunktionnen */
-//TODO: deprecated?
-// function dragmoveModel(d) {
-//     updateModelPosition(d);
-// }
-//
-// function dragendModel(d) {
-//     updateModelPosition(d);
-//     controller.updateModelPosition(d.target);
-// }
-//
-// function updateModelPosition(draggedPolygon) {
-//     var d = draggedPolygon;
-//     var arr = [];
-//     arr.push(d.target._latlngs[0][0]);
-//     arr.push(d.target._latlngs[0][1]);
-//     arr.push(d.target._latlngs[0][2]);
-//     arr.push(d.target._latlngs[0][3]);
-//
-//     d.target.model.setPointsFromList(arr);
-//
-// }

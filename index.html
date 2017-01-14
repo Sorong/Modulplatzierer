@@ -53,13 +53,14 @@
     <script src="assets/js/new/Utility/Matrix.js"></script>
     <script src="assets/js/new/Model/Panel.js"></script>
     <script src="assets/js/new/Model/PanelString.js"></script>
-    <script src="assets/js/new/Model/RoofPart.js"></script>
     <script src="assets/js/new/Model/Roof.js"></script>
     <script src="assets/js/new/Handler/ColorHandler.js"></script>
     <script src="assets/js/new/Handler/ServerHandler.js"></script>
     <script src="assets/js/new/Handler/CookieHandler.js"></script>
     <script src="assets/js/new/View/Toolbar.js"></script>
     <script src="assets/js/new/View/Map.js"></script>
+    <script src="assets/js/new/View/EfficiencyDisplay.js"></script>
+    <script src="assets/js/new/Utility/PanelEfficiency.js"></script>
     <script src="assets/js/new/Controller/Controller.js"></script>
     <script src="assets/js/new/main.js"></script>
 
@@ -78,7 +79,7 @@
     </svg>
 
     <div class="row content">
-        <div class="col-sm-3 sidenav">
+        <div id="leftSidebar" class="col-sm-3 sidenav">
             <div class="form-group has-feedback" id="address_tool">
                 <label for="address" id="address_label">Adresse:</label>
                 <input type="text" class="form-control" id="address" placeholder="Geben Sie Ihre Adresse ein">
@@ -103,6 +104,11 @@
                 </div>-->
             </div>
             <div class="form-group" id="box_table">
+
+                <div class="alert alert-warning hidden" id="panel_efficiency_error">
+                    <strong>Warnung!</strong> <span class="warningMessage"></span>
+                </div>
+
                 <table class="table table-bordered">
                     <tr>
                         <td>Anzahl Module:</td>
@@ -149,7 +155,7 @@
                     <label class="control-label" for="model_width">Modulbreite</label>
                 </div>
                 <div class="col-sm-10">
-                    <input id="model_width" type="range" min="1" max="10">
+                    <input id="model_width" type="range" min="0.5" max="2.0" step="0.1">
                 </div>
                 <div class="col-sm-2">
                     <label class="control-label" for="model_width" id="model_width_value"> 5m </label>
@@ -158,7 +164,7 @@
                     <label class="control-label" for="model_height">Modulh&ouml;he</label>
                 </div>
                 <div class="col-sm-10">
-                    <input id="model_height" type="range" min="1" max="10">
+                    <input id="model_height" type="range" min="0.5" max="2.0" step="0.1">
                 </div>
 
                 <div class="col-sm-2">
@@ -176,6 +182,19 @@
                 <div class="col-sm-6">
 
                 </div>
+
+                <div id="toolbar_more" style="display: none;">
+                    <div class="col-sm-10">
+                        <label class="control-label" for="model_frame">Rahmenbreite</label>
+                    </div>
+                    <div class="col-sm-10">
+                        <input id="model_frame" type="range" min="5" max="2000" step="1" value="5">
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="control-label" for="model_frame" id="model_frame_value"> 0cm </label>
+                    </div>
+                </div>
+
                 <div class="col-sm-12" style="text-align: center;">
                     <button type="button" class="btn btn-default" id="show_more">mehr</button>
                 </div>

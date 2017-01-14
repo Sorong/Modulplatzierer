@@ -1,15 +1,15 @@
-
 class PanelString {
-
+    static UNIFIER = 0;
+    unifier;
     controller;
     masterPanel;
     panels;
-    colorHandler;
 
     constructor(controller, panel) {
         this.controller = controller;
         this.masterPanel = panel;
-        this.panels = []
+        this.panels = [];
+        this.unifier = PanelString.UNIFIER++;
     }
 
     appendPanel(panel) {
@@ -18,6 +18,7 @@ class PanelString {
             panel.topLeft = master.topLeft;
             panel.pitch = master.pitch;
             panel.orientation = master.orientation;
+            panel.frameWidth = master.frameWidth;
             panel.align(this.controller, master.width, master.height);
 
             this.panels.push(panel);
@@ -32,19 +33,25 @@ class PanelString {
     getPointsAsList() {
         return this.getGeoJSON();
     }
-
     /* Schnittstellenende */
 
-    removePanel(panel) {
-        let removedPanelId = this.panels[this.panels.length - 1].id;
-        let removePosition = this.panels.length - 1;
-        this.panels.splice(removePosition, 1);
+    removePanel() {
+        let removedPanelId = this.masterPanel.id;
+        if(this.panels.length !== 0) {
+            removedPanelId = this.panels[this.panels.length-1].id;
+            let removePosition = this.panels.length - 1;
+            this.panels.splice(removePosition, 1);
+        }
         return removedPanelId;
     }
 
     removePanelById(panelId) {
     }
 
+    /**
+     *
+     * @param orientation
+     */
     setOrientation(orientation) {
         let master = this.masterPanel;
         console.log(orientation);
@@ -53,6 +60,10 @@ class PanelString {
             o += 360;
         }
         master.setOrientation(this.controller, o);
+    }
+
+    setFrameWidth(width){
+        this.masterPanel.setFrameWidth(this.controller, width);
     }
 
     setPitch(pitch) {
@@ -65,6 +76,11 @@ class PanelString {
         master.setTopLeft(this.controller, topLeft);
     }
 
+    getFrameWidth() {
+        var test = this.masterPanel.getFrameWidthInPixel(this.controller);
+        return test;
+    }
+
     private getNextPoint(panel) {
         return panel.getPointsAsList()[1];
     }
@@ -75,6 +91,7 @@ class PanelString {
         let nextLatLng = this.getNextPoint(this.masterPanel);
         let height = this.masterPanel.height;
         let width = this.masterPanel.width;
+        let frameWidth = this.masterPanel.frameWidth;
 
         for (let i = 0; i < this.panels.length; i++) {
             this.panels[i].setTopLeft(this.controller, nextLatLng);
@@ -82,6 +99,7 @@ class PanelString {
             this.panels[i].setPitch(this.controller, pitch);
             this.panels[i].width = width;
             this.panels[i].height = height;
+            this.panels[i].frameWidth = frameWidth;
             nextLatLng = this.getNextPoint(this.panels[i]);
         }
     }
@@ -97,10 +115,10 @@ class PanelString {
     }
 
     get(index) {
-        if (index === 0) {
+        if(index === 0) {
             return this.masterPanel;
         } else {
-            return this.panels[index - 1];
+            return this.panels[index-1];
         }
     }
 
@@ -110,5 +128,12 @@ class PanelString {
 
     getId() {
         return this.masterPanel.getId();
+    }
+
+    equals(panelstring) {
+        if(panelstring.masterPanel === undefined) {
+            return false;
+        }
+        return this.getId() === panelstring.getId() && this.size() === panelstring.size() && this.unifier === panelstring.unifier;
     }
 }

@@ -14,23 +14,18 @@ function Panel() {
     this.name = null;
     this.height = 0;
     this.width = 0;
-    this.frameWidth = 0;
+    this.frameWidth = 0.5;
     this.id = -1;
 }
 
 Panel.prototype.align = function (controller, width, height) {
     var w = width !== undefined ? width : this.width;
     var h = height !== undefined ? height : this.height;
+    var frameInMeter = ((this.frameWidth/100)) ;
     this.oTopLeft = this.topLeft;
-    //if (this.width !== w || this.oTopRight === null) {
-    this.oTopRight = calcNextPoint(this.width, this.oTopLeft, 0);
-    //}
-    // if (this.height !== h || this.oBotLeft === null) {
-    this.oBotLeft = calcNextPoint(this.height, this.oTopLeft, -90);
-    // }
-    //if (this.height !== h || this.width !== w || this.oBotRight === null) {
-    this.oBotRight = calcNextPoint(this.height, this.oTopRight, -90);
-    //
+    this.oTopRight = calcNextPoint(Number(this.width) + frameInMeter, this.oTopLeft, 0);
+    this.oBotLeft = calcNextPoint(Number(this.height) + frameInMeter, this.oTopLeft, -90);
+    this.oBotRight = calcNextPoint(Number(this.height) + frameInMeter, this.oTopRight, -90);
     this.width = w;
     this.height = h;
     this.selfAlign(controller);
@@ -68,6 +63,22 @@ Panel.prototype.selfAlign = function (controller) {
     this.botRight = controller.getPointAsLatLng([this.topLeft.x + bottomright[0], this.topLeft.y + bottomright[1]]);
     this.topLeft = controller.getPointAsLatLng([this.topLeft.x, this.topLeft.y]);
 
+};
+Panel.prototype.getFrameWidthInPixel = function (controller) {
+    var frameInMeter = this.frameWidth/100;
+    var vectorFrame = calcNextPoint(frameInMeter, this.oTopLeft, 0);
+    vectorFrame = controller.getLatLngAsPoint(vectorFrame);
+    vectorWithoutFrame = controller.getLatLngAsPoint(this.oTopLeft);
+    return (vectorFrame.x - vectorWithoutFrame.x);
+};
+
+Panel.prototype.getFrameWidth = function () {
+  return this.frameWidth;
+};
+
+Panel.prototype.setFrameWidth = function(controller, width){
+    this.frameWidth = width;
+    this.align(controller);
 };
 
 Panel.prototype.setOrientation = function (controller, orientation) {
@@ -163,6 +174,12 @@ function calcNextPoint(distance, point, angle) {
     earthRadius = 6371000;
     distanceNorth = Math.sin(angle * Math.PI / 180) * distance;
     distanceEast = Math.cos(angle * Math.PI / 180) * distance;
+    if(isNaN(distanceNorth)) {
+       distanceNorth = 0;
+    }
+    if(isNaN(distanceEast)) {
+        distanceEast = 0;
+    }
     newLat = point.lat + (distanceNorth / earthRadius) * (180 / Math.PI);
     newLon = point.lng + (distanceEast / earthRadius) * (180 / Math.PI) / Math.cos(point.lat * Math.PI / 180);
     return L.latLng(newLat, newLon);
