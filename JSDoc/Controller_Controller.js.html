@@ -221,7 +221,7 @@ Controller.prototype.loadFromServer = function (forceNewCookie) {
  * Stößt den Speicherprozess zur Speicherung eines Panels auf dem Datenbankserver an.
  *
  * @param {Panel} panel Muss ein Panelobjekt sein, sonst wird eine ungültige Anfrage an den Server gestellt.
- * @param {id} masterId Diese ID wird dem ServerHandler übergeben, um Panels zu einem Panelstring zu verbinden.
+ * @param {number} masterId Diese ID wird dem ServerHandler übergeben, um Panels zu einem Panelstring zu verbinden.
  * -1 signalisiert, dass das Panel der Beginn eines neuen Panelstrings ist.
  */
 Controller.prototype.saveToServer = function (panel, masterId) {
