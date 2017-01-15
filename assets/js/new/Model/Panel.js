@@ -117,51 +117,53 @@ Panel.prototype.getFrameWidth = function () {
     return this.frameWidth;
 };
 /**
- *
- * @param controller
- * @param width
+ * Setter für die Rahmenbreite.
+ * @param {controller} controller Der Controller der zur Berechnung der Panelgrößen notwendig ist, interner Aufruf von align {@see align}
+ * @param {number} width Die neue Rahmenbreite in Metern.
  */
 Panel.prototype.setFrameWidth = function (controller, width) {
     this.frameWidth = width;
     this.align(controller);
 };
 /**
- *
- * @param controller
- * @param orientation
+ * Setter für die Ausrichtung des Panels.
+ * @param {controller} controller Der Controller der zur Berechnung der Panelgrößen notwendig ist, interner Aufruf von align {@see align}
+ * @param {number} orientation Die neue Ausrichtung des Panels in Grad.
  */
 Panel.prototype.setOrientation = function (controller, orientation) {
     this.orientation = orientation;
     this.align(controller)
 };
 /**
- *
- * @param controller
- * @param pitch
+ * Setter für die Neigung des Panels.
+ * @param {controller} controller Der Controller der zur Berechnung der Panelgrößen notwendig ist, interner Aufruf von align {@see align}
+ * @param {number} pitch Die neue Neigung des Panels in Grad.
  */
 Panel.prototype.setPitch = function (controller, pitch) {
     this.pitch = pitch;
     this.align(controller);
 };
 /**
- *
- * @param controller
- * @param topLeft
+ * Setter für die nordwestlichste Koordinate des Panels.
+ * @param {controller} controller Der Controller der zur Berechnung der Panelgrößen notwendig ist, interner Aufruf von align {@see align}
+ * @param {L.latLng} topLeft Geodaten der Koordinate.
  */
 Panel.prototype.setTopLeft = function (controller, topLeft) {
     this.topLeft = topLeft;
     this.align(controller)
 };
 /**
- *
- * @returns {[*,*,*,*]}
+ * Konvertiert die Punkte des Panels in ein Listenformat ([NW, NO, SO, SW]), Listenobjekte enhalten die Geodaten.
+ * @returns {L.latLng[]} Array der Länge Vier.
  */
 Panel.prototype.getPointsAsList = function () {
     return [this.oTopLeft, this.topRight, this.botRight, this.botLeft];
 };
 /**
- *
- * @returns {[*,*,*,*]}
+ * Konvertiert die Punkte des Panels in ein Listenformat
+ * ([[NW.latitude, NW.longitude], [NO.latitude, NW.longitude], [SO.latitude, SO.longitude], [SW.latitude, SW.longitude]]),
+ * Listenobjekte enhalten die Geodaten.
+ * @returns {number[][]} Array der Länge Vier. Jeder Eintrag enthält ein Array der Länge Zwei [Latitude, Longitude].
  */
 Panel.prototype.getLatLngsAsArray = function () {
     return [
@@ -172,8 +174,8 @@ Panel.prototype.getLatLngsAsArray = function () {
     ]
 };
 /**
- *
- * @returns {{panel_id: (number|*), the_geom: [*,*,*,*], laenge: (number|*), breite: (number|*), neigung: (number|*), ausrichtung: (number|*), rahmenbreite: (number|*)}}
+ * Konvertiert das Panel in ein JSON Objekt.
+ * @returns JSON-Objekt mit allen Informationen des Panels. Attribute sind panel_id, the_geom[[latitude,longitude]], laenge, breite, neigung, ausrichtung und rahmenbreite.
  */
 Panel.prototype.getAsJson = function () {
     return {
@@ -203,8 +205,8 @@ Panel.prototype.getAsJson = function () {
     }
 };
 /**
- *
- * @param list
+ * Liest die Punkte einer übergebenen Liste der Form Liste[[latitude, longitude]]. Und setzt anhand dieser die Panelkoordinaten neu.
+ * @param {number[][]}list Liste der Länge Vier. Punkte werden der Reihe nach neu gesetzt: NW, NO, SW, SO.
  */
 Panel.prototype.setPointsFromList = function (list) {
     if (list.length > 0) {
@@ -234,17 +236,20 @@ Panel.prototype.setPointsFromList = function (list) {
     }
 };
 /**
- *
- * @returns {number|*}
+ * Getter für die ID des Panels.
+ * @returns {number} ID des Panels.
  */
 Panel.prototype.getId = function () {
     return this.id;
 };
 /**
- *
- * @param distance
- * @param point
- * @param angle
+ * Hilfsfunktion zur Berechnung neuer Geodaten im Abhängigkeit zur Distanz in Metern, dem Ursprungspunkt und dem Winkel.
+ * Zur internen Rechnung wird ein Erdradius von 6.371.000 Metern angenommen, wodurch geringfügige Abweichung zur tatsächlichen Größe möglich sein können.
+ * @param {number} distance Der Abstand in Metern zum Ursprungspunkt.
+ * @param {L.latLng} point Die Geodaten des Ursprungspunkt.
+ * @param {number} angle Der Winkel, in Grad, in denen sich der Zielpunkt befinden soll.
+ * @returns {l.latLng} Die Geodaten des berechnten Punktes.
+ * @static
  */
 function calcNextPoint(distance, point, angle) {
     earthRadius = 6371000;
