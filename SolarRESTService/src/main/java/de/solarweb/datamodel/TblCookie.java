@@ -1,7 +1,7 @@
 package de.solarweb.datamodel;
 
 /**
- * JPAKlasse des Cookies
+ * Entitie zur Tabelle Dächer aus der Datenbank
  */
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -51,7 +51,7 @@ public class TblCookie implements Serializable{
     private java.sql.Timestamp ablaufdatum;
 
     /**
-     * Standartkonstruktor des Cookies
+     * Standardkonstruktor des Cookies
      */
     public TblCookie(){
 
@@ -99,7 +99,7 @@ public class TblCookie implements Serializable{
 
     /**
      * Setzt das Ablaufdatm des Cookies
-     * @param ablaufdatum
+     * @param ablaufdatum Ablaufdatum des Cookies
      */
     public void setAblaufdatum(Timestamp ablaufdatum) {
         this.ablaufdatum = ablaufdatum;

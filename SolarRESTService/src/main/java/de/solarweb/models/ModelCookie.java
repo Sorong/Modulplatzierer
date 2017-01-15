@@ -31,12 +31,12 @@ public class ModelCookie implements Serializable{
      */
     private ModelDach modelDach;
     /**
-     * Ablaufdatum, bevor Cookie gelöscht wird
+     * Ablaufdatum, zu dem Cookie gelöscht wird
      */
     private Timestamp ablaufdatum;
 
     /**
-     * Standartkonstruktor zum serializieren
+     * Standardkonstruktor zur Serialisierung
      */
     public ModelCookie(){
 
@@ -53,9 +53,9 @@ public class ModelCookie implements Serializable{
     }
 
     /**
-     * Der vom Restserver genutzt Konstrukor. Wrappt das JPA Objekt TblCookie in ein <br>
+     * Der vom Restserver genutzt Konstrukor. Wrappt das Entitie Objekt TblCookie in ein <br>
      * Model, welches dann vom Restserver versendet werden kann.
-     * @param tblCookie JPAObjekt
+     * @param tblCookie Entitie Objekt des Cookies
      */
     public ModelCookie(TblCookie tblCookie){
         this.cookie_id = tblCookie.getCookie_id();
@@ -72,7 +72,7 @@ public class ModelCookie implements Serializable{
 
     /**
      * Gibt die CookieID zurück
-     * @return CookieID
+     * @return CookieID des Cookies
      */
     public int getCookie_id() {
         return cookie_id;
@@ -80,7 +80,7 @@ public class ModelCookie implements Serializable{
 
     /**
      * Setzt die CookieID
-     * @param cookie_id CookieID
+     * @param cookie_id CookieID des Cookies
      */
     public void setCookie_id(int cookie_id) {
         this.cookie_id = cookie_id;
@@ -101,7 +101,7 @@ public class ModelCookie implements Serializable{
 
     /**
      * Gibt das Ablaufdatum im UNIX Format zurück.
-     * @return Ablaufdatum
+     * @return Ablaufdatum des Cookies
      */
     public Timestamp getAblaufdatum() {
         return ablaufdatum;
@@ -117,7 +117,7 @@ public class ModelCookie implements Serializable{
 
     /**
      * Returnt das Model des Daches
-     * @return ModelDach
+     * @return ModelDach des Cookies
      */
     public ModelDach getModelDach() {
         return modelDach;
@@ -125,7 +125,7 @@ public class ModelCookie implements Serializable{
 
     /**
      * Setzt das Model des Daches
-     * @param modelDach ModelDach
+     * @param modelDach ModelDach des Cookies
      */
     public void setModelDach(ModelDach modelDach) {
         this.modelDach = modelDach;

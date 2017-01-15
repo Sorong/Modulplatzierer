@@ -19,6 +19,9 @@ public class ModelDach implements Serializable {
      */
     private int dach_id;
 
+    /**
+     * Cookie ID, welche dem Dach zugeordnet ist
+     */
     private int cookie_id;
     /**
      * Vertices des Dachumrisses als Latitude/Longitude
@@ -31,28 +34,37 @@ public class ModelDach implements Serializable {
     private Integer pv;
 
     /**
-     * Eignung des Daches für Solarthermie, Dumme für Frontend
+     * Eignung des Daches für Solarthermie, Dummie für Frontend
      */
     private Integer st;
 
+    /**
+     * Neigung des Daches
+     */
     private Integer tilt;
 
+    /**
+     * Globale Einstrahlung des Daches, Dummie für Frontend
+     */
     private Double global;
 
+    /**
+     * gid ID, über welche Dachteile aus der Tetraeder Datenbank referenziert werden können
+     */
     private Integer gid;
 
 
     /**
-     * Standartkonstruktor zur serialiserung
+     * Standardkonstruktor zur Serialisierung
      */
     public ModelDach() {
 
     }
 
     /**
-     * Der vom Restserver genutzt Konstrukor. Wrappt das JPA Objekt TblDach in ein <br>
+     * Der vom Restserver genutzt Konstrukor. Wrappt das Entitie Objekt TblDach in ein <br>
      * Model, welches dann vom Restserver versendet werden kann.
-     * @param tblDach JPAObjekt
+     * @param tblDach Dach Entitie Objekt
      */
     public ModelDach(TblDach tblDach){
         this.dach_id = tblDach.getDach_id();
@@ -66,37 +78,40 @@ public class ModelDach implements Serializable {
     }
 
     /**
-     * Returned die DachID des Models
-     * @return dachID
+     * Returned die Dach ID des Models
+     * @return DachID des Daches
      */
     public int getDach_id() {
         return dach_id;
     }
 
     /**
-     * Setzt die Dach Id des Models
+     * Setzt die DachID des Models
      * @param dach_id ID des Daches
      */
     public void setDach_id(int dach_id) {
         this.dach_id = dach_id;
     }
 
+    /**
+     * Returnt die Cookie ID des zugehöhrigen Cookies
+     * @return CookieID des Cookies
+     */
     public int getCookie_id() {
         return cookie_id;
     }
 
+    /**
+     * Setzt die Cookie ID des zugehöhrigen Cookies
+     * @param cookie_id CookieID des Cookies
+     */
     public void setCookie_id(int cookie_id) {
         this.cookie_id = cookie_id;
     }
 
     /**
-     * Returned die Strasse des Models
-     * @return strasse
-     */
-
-    /**
      * Returnt den pv Wert des Daches, im Moment Dummie
-     * @return pv
+     * @return pv Eignung für Photovolaik
      */
     public Integer getPv() {
         return pv;
@@ -104,7 +119,7 @@ public class ModelDach implements Serializable {
 
     /**
      * Setzrt den pv Wert des Daches, im Moment Dummie
-     * @param pv pv
+     * @param pv Eignugn für Photovolaik
      */
     public void setPv(Integer pv) {
         this.pv = pv;
@@ -112,7 +127,7 @@ public class ModelDach implements Serializable {
 
     /**
      * Returnt den st Wert des Daches, im Moment Dummie
-     * @return st
+     * @return Eignung für Solarthermie
      */
     public Integer getSt() {
         return st;
@@ -120,32 +135,56 @@ public class ModelDach implements Serializable {
 
     /**
      * Setzt den st Wert des Daches, im Moment Dummie
-     * @param st st
+     * @param st Eignung für Solarthermie
      */
     public void setSt(Integer st) {
         this.st = st;
     }
 
+    /**
+     * Returnt die Neigung des Daches
+     * @return Neigung Dach
+     */
     public Integer getTilt() {
         return tilt;
     }
 
+    /**
+     * Setzt die Neigung des Daches
+     * @param tilt Neigung Dach
+     */
     public void setTilt(Integer tilt) {
         this.tilt = tilt;
     }
 
+    /**
+     * Returnt die gloable Einstrahlung des Daches
+     * @return Globale Einstahlung
+     */
     public Double getGlobal() {
         return global;
     }
 
+    /**
+     * Setzt die gloable Einstrahlung des Daches
+     * @param gloabl Globale Einstrahlung
+     */
     public void setGlobal(Double gloabl) {
         this.global = gloabl;
     }
 
+    /**
+     * Returnt die gid zur Referenzierung von Dachteilen
+     * @return Gid für Dachteile
+     */
     public Integer getGid() {
         return gid;
     }
 
+    /**
+     * Setzt die gid Referenzierung von Dachteilen
+     * @param gid Gid für Dachteile
+     */
     public void setGid(Integer gid) {
         this.gid = gid;
     }

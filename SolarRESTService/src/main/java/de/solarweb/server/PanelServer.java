@@ -20,8 +20,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+
 /**
- * Restserverklasse, holt und speichert Paneldaten
+ * Restserverklasse, zuständig für das Laden und Speichern von Panels.
  */
 @Stateless
 @TransactionManagement( TransactionManagementType.BEAN )
@@ -34,7 +35,9 @@ public class PanelServer {
 
     Logger logger = LoggerFactory.getLogger(PanelServer.class);
 
-
+    /**
+     * Standardkonstuktor
+     */
     public PanelServer(){
 
     }
@@ -45,8 +48,8 @@ public class PanelServer {
      * ID des ModelPanels kann beliebig gewählt werden, da diese vom <br>
      * Server generiert wird.
      *
-     * @param panel ModelPanel
-     * @return ModelPanel
+     * @param panel ModelPanel, welches gespeichert werden soll
+     * @return ModelPanel, wie es in der Datenbank gespeichert wurde
      */
     @POST
     @Path("/postPanel")
@@ -101,8 +104,8 @@ public class PanelServer {
     /**
      * Nimmt ein ModelPanel entgegen und returned das geupdatete Panel.<br>
      *
-     * @param panel ModelPanel
-     * @return ModelPanel
+     * @param panel ModelPanel, welches geupdatet werden soll
+     * @return ModelPanel, wie es in der Datenbank gespeichert wurde
      */
     @POST
     @Path("/updatePanel")
@@ -152,9 +155,9 @@ public class PanelServer {
     }
 
     /**
-     * Nimmt eine ID eines Panels entgegen und löscht das entsprechene Panel.
-     * @param id PanelID
-     * @return String
+     * Nimmt eine ID eines Panels entgegen und löscht das entsprechende Panel.
+     * @param id PanelID von dem zu löschenden Panel
+     * @return "Deleted", falls Panel gelöscht wurde.
      */
     @GET
     @Path("/removePanel/{id}")
@@ -185,12 +188,12 @@ public class PanelServer {
 
     /**
      * Sucht in der Datenbank nach einem Cookie zu der übergebenen ID und <br>
-     * und retured das JPA Objekt des gefundenen Cookies.
-     * @param id CookieID
-     * @return JPA Cookieobjekte TblCookie
-     * @throws NotFoundException falls kein Cookie gefunden
+     * und returnt das Entitie Obejekt des gefundenen Cookies.
+     * @param id CookieID des gesuchten Cookies
+     * @return Entitie Objekt des gesuchten Cookies
+     * @throws NotFoundException Falls kein Cookie gefunden
      */
-    public TblCookie getCookieById(int id) throws NotFoundException {
+    private TblCookie getCookieById(int id) throws NotFoundException {
         Query queryCookieById = em.createNamedQuery("tblCookie.findById");
         queryCookieById.setParameter("id", id);
         List resultCookies = queryCookieById.getResultList();
@@ -205,8 +208,8 @@ public class PanelServer {
     /**
      * Sucht in der Datenbank nach einem Panel zu der übergebenen ID und <br>
      * und retured das JPA Objekt des gefundenen Panels.
-     * @param id PanelID
-     * @return JPA Panelobjekte TblPanel
+     * @param id PanelID des gesuchten Panels
+     * @return Entitie Objekt des gesuchten Panels
      * @throws NotFoundException Falls kein Panel gefunden
      */
     public TblSolarpanel getPanelById(int id) throws NotFoundException{

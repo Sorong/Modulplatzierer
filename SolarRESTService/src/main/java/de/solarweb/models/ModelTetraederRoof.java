@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * Created by Nils on 08.12.16.
+ * Model, welches vom Restserver als TetraederRoof Model übergeben wird
  */
 public class ModelTetraederRoof implements Serializable{
 
@@ -147,16 +147,17 @@ public class ModelTetraederRoof implements Serializable{
     private String planp;
 
     /**
-     * Standartkonstruktor zur Serialisierung
+     * Standardkonstruktor zur Serialisierung
      */
     public ModelTetraederRoof(){
 
     }
 
     /**
-     * Der vom Restserver genutzt Konstruktor. Wrappt das JPA Objekt TblTetraederBuilding in ein <br>
+     * Der vom Restserver genutzt Konstruktor. Wrappt das Entitie Objekt TblTetraederBuilding in ein <br>
      * Model, welches dann vom Restserver versendet werden kann.
-     * @param tblTetraederRoof JPAObjekt
+     * @param tblTetraederRoof Entitie Objekt
+     * @throws Exception Falls Geometry Objekt nicht geparset werden konnte
      */
     public ModelTetraederRoof(TblTetraederRoof tblTetraederRoof) throws Exception{
         this.gid = tblTetraederRoof.getGid();
@@ -190,7 +191,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Returnt die gid des Dachteils
-     * @return gid
+     * @return Gid des Dachteils
      */
     public int getGid() {
         return gid;
@@ -206,7 +207,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Returnt die building_id des Dachteils
-     * @return building_id
+     * @return Building_id des Dachteils
      */
     public int getBuilding_id() {
         return building_id;
@@ -214,7 +215,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Setzt die building_id des Dachteils
-     * @param building_id building_id
+     * @param building_id Building_id des Dachteils
      */
     public void setBuilding_id(int building_id) {
         this.building_id = building_id;
@@ -222,7 +223,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Returnt die uid des Dachteils
-     * @return uid
+     * @return Uid des Dachteils
      */
     public Integer getUid() {
         return uid;
@@ -230,7 +231,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Setzt die uid des Dachteils
-     * @param uid uid
+     * @param uid Uid des Dachteils
      */
     public void setUid(Integer uid) {
         this.uid = uid;
@@ -238,7 +239,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Returnt die cid des Dachteils
-     * @return cid
+     * @return Cid des Dachteils
      */
     public int getCid() {
         return cid;
@@ -246,7 +247,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Setzt die cid des Dachteils
-     * @param cid cid
+     * @param cid Cid des Dachteils
      */
     public void setCid(int cid) {
         this.cid = cid;
@@ -254,7 +255,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Returnt die area3d des Dachteils
-     * @return area3d
+     * @return Area3d des Dachteils
      */
     public double getArea3d() {
         return area3d;
@@ -262,7 +263,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Setzt die area3d des Dachteils
-     * @param area3d area3d
+     * @param area3d Area3d des Dachteils
      */
     public void setArea3d(double area3d) {
         this.area3d = area3d;
@@ -270,7 +271,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Returnt die global des Dachteils
-     * @return global
+     * @return Global des Dachteils
      */
     public double getGlobal() {
         return global;
@@ -278,7 +279,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Setzt die global des Dachteils
-     * @param global global
+     * @param global Global des Dachteils
      */
     public void setGlobal(double global) {
         this.global = global;
@@ -286,7 +287,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Returnt die diffuse des Dachteils
-     * @return diffuse
+     * @return Diffuse des Dachteils
      */
     public double getDiffuse() {
         return diffuse;
@@ -294,7 +295,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Setzt die diffuse des Dachteils
-     * @param diffuse diffuse
+     * @param diffuse Diffuse des Dachteils
      */
     public void setDiffuse(double diffuse) {
         this.diffuse = diffuse;
@@ -302,7 +303,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Returnt die kwhpa des Dachteils
-     * @return kwhpa
+     * @return Kwhpa des Dachteils
      */
     public double getKwhpa() {
         return kwhpa;
@@ -310,7 +311,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Setzt die kwhpa des Dachteils
-     * @param kwhpa kwhpa
+     * @param kwhpa Kwhpa des Dachteils
      */
     public void setKwhpa(double kwhpa) {
         this.kwhpa = kwhpa;
@@ -318,7 +319,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Gibt an ob es einen strongshadow gibt
-     * @return strongshadow
+     * @return Strongshadow des Dachteils
      */
     public boolean isStrongshadow() {
         return strongshadow;
@@ -326,7 +327,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Setzt den strongshadow im Dachteil
-     * @param strongshadow strongshadow
+     * @param strongshadow Strongshadow des Dachteils
      */
     public void setStrongshadow(boolean strongshadow) {
         this.strongshadow = strongshadow;
@@ -334,7 +335,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Returnt den direct des Dachteils
-     * @return directu
+     * @return Directu des Dachteils
      */
     public Double getDirectu() {
         return directu;
@@ -342,7 +343,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Setzt den directu des Dachteils
-     * @param directu directu
+     * @param directu Directu des Dachteils
      */
     public void setDirectu(Double directu) {
         this.directu = directu;
@@ -350,7 +351,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Returnt den nearbyLoss des Dachteils
-     * @return nearbyLoss
+     * @return NearbyLoss des Dachteils
      */
     public Double getNearbyLoss() {
         return nearbyLoss;
@@ -358,7 +359,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Setzt den nearbyLoss des Dachteils
-     * @param nearbyLoss nearbyLoss
+     * @param nearbyLoss NearbyLoss des Dachteils
      */
     public void setNearbyLoss(Double nearbyLoss) {
         this.nearbyLoss = nearbyLoss;
@@ -366,7 +367,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Returnt den distanceLoss des Dachteils
-     * @return distanceLoss
+     * @return DistanceLoss des Dachteils
      */
     public Double getDistanceLoss() {
         return distanceLoss;
@@ -374,7 +375,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Setzt die distanceLoss des Dachteils
-     * @param distanceLoss distanceLoss
+     * @param distanceLoss DistanceLoss des Dachteils
      */
     public void setDistanceLoss(Double distanceLoss) {
         this.distanceLoss = distanceLoss;
@@ -382,7 +383,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Returnt den tilt des Dachteils
-     * @return tilt
+     * @return Tilt des Dachteils
      */
     public double getTilt() {
         return tilt;
@@ -390,7 +391,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Setzt den tilt des Dachteils
-     * @param tilt tilt
+     * @param tilt Tilt des Dachteils
      */
     public void setTilt(double tilt) {
         this.tilt = tilt;
@@ -398,7 +399,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Returnt den aspect des Dachteils
-     * @return aspect
+     * @return Aspect des Dachteils
      */
     public double getAspect() {
         return aspect;
@@ -406,7 +407,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Setzt den aspect des Dachteils
-     * @param aspect aspect
+     * @param aspect Aspect des Dachteils
      */
     public void setAspect(double aspect) {
         this.aspect = aspect;
@@ -414,7 +415,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Returnt den nx des Dachteils
-     * @return nx
+     * @return Nx des Dachteils
      */
     public double getNx() {
         return nx;
@@ -422,7 +423,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Setzt den nx des Dachteils
-     * @param nx nx
+     * @param nx Nx des Dachteils
      */
     public void setNx(double nx) {
         this.nx = nx;
@@ -430,7 +431,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Returnt den ny des Dachteils
-     * @return ny
+     * @return Ny des Dachteils
      */
     public double getNy() {
         return ny;
@@ -438,7 +439,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Setzt den ny des Dachteils
-     * @param ny ny
+     * @param ny Ny des Dachteils
      */
     public void setNy(double ny) {
         this.ny = ny;
@@ -446,7 +447,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Returnt den nz des Dachteisl
-     * @return nz
+     * @return Nz des Dachteils
      */
     public double getNz() {
         return nz;
@@ -454,7 +455,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Setzt den nz des Dachteils
-     * @param nz nz
+     * @param nz Nz des Dachteils
      */
     public void setNz(double nz) {
         this.nz = nz;
@@ -462,7 +463,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Returnt den pv des Dachteils
-     * @return pv
+     * @return Pv des Dachteils
      */
     public int getPv() {
         return pv;
@@ -470,7 +471,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Setzt den pv des Dachteils
-     * @param pv pv
+     * @param pv Pv des Dachteils
      */
     public void setPv(int pv) {
         this.pv = pv;
@@ -478,7 +479,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Returnt den st des Dachteils
-     * @return st
+     * @return St des Dachteils
      */
     public int getSt() {
         return st;
@@ -486,7 +487,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Setzt den st des Dachteils
-     * @param st st
+     * @param st St des Dachteils
      */
     public void setSt(int st) {
         this.st = st;
@@ -494,7 +495,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Zeigt an ob das Dachteil falch ist
-     * @return flat
+     * @return Flat des Dachteils
      */
     public boolean isFlat() {
         return flat;
@@ -502,7 +503,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Returnt den gd des Dachteils
-     * @return gd
+     * @return Gd des Dachteils
      */
     public Integer getGd() {
         return gd;
@@ -510,7 +511,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Setzt den gd des Dachteils
-     * @param gd gd
+     * @param gd Gd des Dachteils
      */
     public void setGd(Integer gd) {
         this.gd = gd;
@@ -518,7 +519,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Setzt den Wert ob das Dachteil flach ist
-     * @param flat flat
+     * @param flat Flat des Dachteils
      */
     public void setFlat(boolean flat) {
         this.flat = flat;
@@ -526,7 +527,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Returnt den mp_panelnumber des Dachteils
-     * @return mp_panelnumber
+     * @return Mp_panelnumber des Dachteils
      */
     public Integer getMp_panelnumber() {
         return mp_panelnumber;
@@ -534,7 +535,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Setzt den mp_panelnumber des Dachteils
-     * @param mp_panelnumber mp_panelnumber
+     * @param mp_panelnumber Mp_panelnumber des Dachteils
      */
     public void setMp_panelnumber(Integer mp_panelnumber) {
         this.mp_panelnumber = mp_panelnumber;
@@ -542,7 +543,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Returnt die Latitude/Longitude Werte des Dacheteils
-     * @return the_geom Liste mit LatitudeLongitude Werten
+     * @return Liste mit LatitudeLongitude Werten
      */
     public ArrayList<LatitudeLongitude> getThe_geom() {
         return the_geom;
@@ -558,7 +559,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Returnt den plenep als LatitudeLongitude Objekt
-     * @return planep Objekt
+     * @return Planep Objekt des Dachteils
      */
     public LatitudeLongitude getPlanep() {
         return planep;
@@ -574,7 +575,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Returnt den kwpha Werte des Dachteils
-     * @return kwpha
+     * @return Kwpha des Dachteils
      */
     public Double getKwpha() {
         return kwpha;
@@ -582,7 +583,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Setzt den kwpha des Dachteils
-     * @param kwpha kwpha
+     * @param kwpha Kwpha des Dachteils
      */
     public void setKwpha(Double kwpha) {
         this.kwpha = kwpha;
@@ -590,7 +591,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Returnt den planp des Dachteils
-     * @return planp
+     * @return Planp des Dachteils
      */
     public String getPlanp() {
         return planp;
@@ -598,7 +599,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Setzt den planp des Dacheteils
-     * @param planp planp
+     * @param planp Planp des Dachteils
      */
     public void setPlanp(String planp) {
         this.planp = planp;
@@ -606,7 +607,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Returnt den direct Wert des Dachteils
-     * @return direct
+     * @return Direct des Dachteils
      */
     public double getDirect() {
         return direct;
@@ -614,7 +615,7 @@ public class ModelTetraederRoof implements Serializable{
 
     /**
      * Setzt den direct Wert des Dachteils
-     * @param direct direct
+     * @param direct Direct des Dachteils
      */
     public void setDirect(double direct) {
         this.direct = direct;
