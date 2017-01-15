@@ -1,20 +1,21 @@
 /**
  * @class PanelString
  *
- * @property {number} UNIFIER - Hauptzähler der einmaligen Zahl
- * @property {number} unifier - Hält die einmalige Zahl, die während einer Session zugeordnet wird.
- * @property {Controller} controller - Hauptcontroller um die richtige Darstellung auf der Karte zu garantieren
- * @property {Panel} masterPanel - Hauptpanel an dem sich die Childs ausrichten
- * @property {Panel[]} panels - Panels, die an den Hauptpanel angehängt werden
+ * @static {number} UNIFIER - Statischer Zähler zur eindeutigen Identifizierung eines PanelString-Objektes während einer Session.
+ * @property {number} unifier - Dem PanelString zugeordneter Zähler zur eindeutigen Identifizierung
+ * @property {Controller} controller - Hauptcontroller um die richtige Darstellung auf der Karte zu gewährleisten.
+ * @property {Panel} masterPanel - Hauptpanel an dem sich die Panels des PanelStrings ausrichten.
+ * @property {Panel[]} panels - Panels, die an den Hauptpanel angehängt wurden.
  */
 var PanelString = (function () {
     /**
-     * Erstellt ein PanelString Object. Das PanelString Object verwaltet die korrekte Aneinanderreihung der Panels.<br/>
-     * Die Haupteinstellgungen werden am übergeben MaserPanel getätigt und anschließend an die Kinder vererbt.
+     * Erstellt ein PanelString Object. Das PanelString Object verwaltet die korrekte Aneinanderreihung der Panels.
+     * Die Haupteinstellungen werden am übergeben MasterPanel getätigt und anschließend an die angehängten Panels weitergegeben.
+     * Beim Anlegen eines neuen PanelStrings wird die statische UNIFIER-Variable inkrementiert.
      * @memberOf PanelString
      *
-     * @param {Controller} controller - Der Hauptcontroller um den PanelString richtig darzustellen
-     * @param {Panel} masterPanel - MasterPanel, an dem sich die Kinder anschließend orientieren werden.
+     * @param {Controller} controller - Der Hauptcontroller um den PanelString korrekt darzustellen.
+     * @param {Panel} masterPanel - MasterPanel, an dem sich angehängte Panels ausrichten.
      */
     function PanelString(controller, masterPanel) {
         this.controller = controller;
@@ -23,11 +24,11 @@ var PanelString = (function () {
         this.unifier = PanelString.UNIFIER++;
     }
     /**
-     * Es wird ein erstelltes Panel übergeben, welches anschließend die Eigentschaften des MasterPanels übernimmt.
-     * Und an den PanelString angehängt wird.
+     * Es wird ein erstelltes Panel übergeben, welches anschließend die Eigenschaften des MasterPanels übernimmt.
+     * Das angehängte Panel wird zusätzlich der Panelliste des PanelString hinzugefügt.
      *
      * @memberOf PanelString
-     * @param {Panel} panel - Erstelltes Panel
+     * @param {Panel} panel - Anzuhängendes Panel.
      */
     PanelString.prototype.appendPanel = function (panel) {
         if (panel != undefined) {
@@ -41,18 +42,18 @@ var PanelString = (function () {
         }
     };
     /**
-     * Wir delegieren die Funktion von 'align' an {@link Panel#align} um ein Neujustierung des Panels vorzunehmen.
+     * Der Aufruf der Funktion wird an die Ausrichtungfunktion {@link Panel#align} des Hauptpanels weitergeleitet.
      *
      * @memberOf PanelString
-     * @param {Controller} controller - Hauptcontroller, damit die Anpassung Fehlerfrei verläuft
-     * @param {number} width - Breite des Panels
-     * @param {number} height - Höhe des Panels
+     * @param {Controller} controller - Hauptcontroller, zur Berechnung der Ausrichtung.
+     * @param {number} width - Breite des Panels.
+     * @param {number} height - Höhe/Länge des Panels.
      */
     PanelString.prototype.align = function (controller, width, height) {
         this.masterPanel.align(controller, width, height);
     };
     /**
-     * Gibt die Liste aller Längen- und Breitendegraden eines PanelStrings wieder
+     * Gibt die Liste aller Längen- und Breitengrade eines PanelStrings wieder.
      * @memberOf PanelString
      *
      * @returns {Array} Liste aller Längen- und Breitengrade
@@ -61,10 +62,11 @@ var PanelString = (function () {
         return this.getGeoJSON();
     };
     /**
-     * Entfernt den zuletzt eingefügten Panel, bis auf den MasterPanel.
+     * Entfernt das zuletzt eingefügten Panel. Das MasterPanel kann so nicht entfernt werden.
      * @memberOf PanelString
      *
      * @returns {string|number} Gibt die Id des entfernten Panel zurück.
+     * Wenn kein Panel gelöscht werden kann, wird die ID des MasterPanels zurückgegeben.
      */
     PanelString.prototype.removePanel = function () {
         var removedPanelId = this.masterPanel.id;
@@ -76,12 +78,12 @@ var PanelString = (function () {
         return removedPanelId;
     };
     /**
-     * Hier wird die Orientierung des PanelString gesetzt, hierbei setzten wir die Orientierung nur des MasterPanel,
-     * anschließend werden die Kinder diese Einstellung bei {@link PanelString#refreshGeometrics} übernehmen und in
-     * die gewünschte Richtung ausgerichtet.
+     * Hier wird die Orientierung des PanelString gesetzt, hierbei wird die Orientierung nur beim MasterPanel gesetzt,
+     * um die Orientierung auf die angehängten Panele zu übertragen ist der Funktionsaufruf zur Aktualisierung der Geometrischen Eigenschaften
+     * {@link PanelString#refreshGeometrics} notwendig.
      * @memberOf PanelString
      *
-     * @param {number} orientation Orientierung von 0-360
+     * @param {number} orientation Orientierung von 0-360 Grad.
      */
     PanelString.prototype.setOrientation = function (orientation) {
         var master = this.masterPanel;
@@ -92,28 +94,27 @@ var PanelString = (function () {
         master.setOrientation(this.controller, o);
     };
     /**
-     * Die Panelbreite wird an {@link Panel#setFrameWidth} delegiert.
-     *
+     * Der Aufruf der Funktion wird an die Setter-Funktion für die Rahmenbreite {@link Panel#setFrameWidth} des Hauptpanels weitergeleitet.
      * @memberOf PanelString
-     * @param {number} width - Rahmenbreite des Panels
+     * @param {number} width - Rahmenbreite des Panels.
      */
     PanelString.prototype.setFrameWidth = function (width) {
         this.masterPanel.setFrameWidth(this.controller, width);
     };
     /**
-     * Die Panelneigung wird an {@link Panel#setPitch} delegiert.
+     * Der Aufruf der Funktion wird an die Setter-Funktion für die Neigung{@link Panel#setPitch} des Hauptpanels weitergeleitet.
      *
      * @memberOf PanelString
-     * @param {number} pitch - Neigung des Panels
+     * @param {number} pitch - Neigung des Panels.
      */
     PanelString.prototype.setPitch = function (pitch) {
         this.masterPanel.setPitch(this.controller, pitch);
     };
     /**
-     * Wir ändern die Position der oberen linken Ecke des MasterPanels.
+     * Die Position des MasterPanels wird neu gesetzt.
      *
      * @memberOf PanelString
-     * @param {L.latLngs} latlngs - Längen- und Breitengrad der neuen Position
+     * @param {L.latLng[][]} latlngs - Längen- und Breitengrade der neuen Koordinaten.
      */
     PanelString.prototype.setPosition = function (latlngs) {
         var topLeft = latlngs[0][0];
@@ -121,7 +122,7 @@ var PanelString = (function () {
         master.setTopLeft(this.controller, topLeft);
     };
     /**
-     * Gibt die Rahmenbreite in Pixel wieder
+     * Gibt die Rahmenbreite in Pixel wieder.
      *
      * @memberOf PanelString
      * @returns {number} Gibt die Rahmenbreite in Pixel wieder
@@ -131,20 +132,19 @@ var PanelString = (function () {
     };
     /**
      * Ermittelt die Position, wo das anliegende Panel als nächstes angesetzt wird.
-     * Wir erhalten die Position der oben-rechten Ecke, welches die obere-linke Ecke des Nachfolgers ist.
+     * Die Position des nordöstlichsten Punktes, wirddem nordwestlichsten Punktes des Nachfolgerpanels gleichgesetzt.
      *
      * @memberOf PanelString
      * @private
-     * @param {Panel} panel - Aktuelles Panel
-     * @returns {L.latLngs} Die obere-rechte Ecke des Panels
+     * @param {Panel} panel - Das Panel, dessen Punkt den Anhängepunkt darstellt.
+     * @returns {L.latLng} Die nordöstlichste Ecke des Quellpanels.
      */
     PanelString.prototype.getNextPoint = function (panel) {
         return panel.getPointsAsList()[1];
     };
     /**
-     * Aktuallisiert die Position der einzelnen Panels, hierbei orientieren wir uns am MasterPanel.
-     * Die Einstellungen des MasterPanels werden an die Kinder weitergegeben, dabei dient die obere-rechte Ecke
-     * des Vorgängers, als Ausgangspunkt (oben-links) für den Nachfolger
+     * Aktualisiert die Position der einzelnen Panels, die Orientierung erfolgt anhand der Attribute des MasterPanels.
+     * Die Einstellungen des MasterPanels werden an die angehängten Panels weitergegeben.
      *
      * @memberOf PanelString
      * @private
@@ -182,13 +182,17 @@ var PanelString = (function () {
         return polygonArray;
     };
     /**
-     * Gibt ein Panel zurück mit Hilfe des Index
+     * Gibt das Panel entsprechenden Stelle aus.
+     * Wobei 0 das erste Panel ist.
      *
      * @memberOf PanelString
-     * @param {number} index - Index des gewünschten Panels
-     * @returns {Panel} Gibt gewähltes Panel zurück
+     * @param {number} index - Index des gewünschten Panels.
+     * @returns {Panel|null} Panel an der übergebenen Position. Bei ungültigen Indices wird null zurückgegeben.
      */
     PanelString.prototype.get = function (index) {
+        if (index < 0 || index > this.size()) {
+            return null;
+        }
         if (index === 0) {
             return this.masterPanel;
         }
@@ -197,19 +201,19 @@ var PanelString = (function () {
         }
     };
     /**
-     * Gibt die Anzahl der Panels im PanelString zurück
+     * Gibt die Anzahl der Panels im PanelString zurück.
      *
      * @memberOf PanelString
-     * @returns {number} Anzahl der Panels
+     * @returns {number} Anzahl der Panels.
      */
     PanelString.prototype.size = function () {
         return this.panels.length + 1;
     };
     /**
-     * Gibt die Id des MasterPanels zurück
+     * Gibt die ID des MasterPanels zurück.
      *
      * @memberOf PanelString
-     * @returns {number} Id des MasterPanels
+     * @returns {number} ID des MasterPanels
      */
     PanelString.prototype.getId = function () {
         return this.masterPanel.getId();
@@ -218,8 +222,8 @@ var PanelString = (function () {
      * Vergleicht aktuelles PanelString mit dem übergeben PanelString.
      *
      * @memberOf PanelString
-     * @param {PanelString} panelstring - Anderer PanelString
-     * @returns {boolean} Gibt an ob die Panels gleich sind.
+     * @param {PanelString} panelstring - Ein PanelString.
+     * @returns {boolean} Gibt an ob der übergebene PanelString der selbe PanelString ist wie dieser.
      */
     PanelString.prototype.equals = function (panelstring) {
         if (panelstring.masterPanel === undefined) {
@@ -230,3 +234,4 @@ var PanelString = (function () {
     PanelString.UNIFIER = 0;
     return PanelString;
 }());
+//# sourceMappingURL=PanelString.js.map

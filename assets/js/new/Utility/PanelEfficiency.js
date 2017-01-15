@@ -1,8 +1,9 @@
 /**
- * EfficencyTabel //TODO weiß nicht genau was es macht
- * @type {[number]}
+ * LookUp-Tabelle mit Effektivitätsgrad mit entsprechender Neigung und Nord-Süd-Ausrichtung.
+ * @see {@link https://www.photovoltaik-web.de/photovoltaik/dacheignung/dachneigung}
+ * @type {number[][]} Matrix 10x19, Neigung von 0-90 Grad in Zehnerschritten und der Nord-Süd-Ausrichtung 0-180 Grad in Zehnerschritten.
  */
-var efficencyTabel = [
+var efficiencyTable = [
   [87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87],
   [93, 93, 93, 92, 92, 91, 90, 89, 88, 86, 85, 84, 83, 81, 81, 80, 79, 79, 79],
   [97, 97, 97, 96, 95, 93, 91, 89, 87, 85, 82, 80, 77, 75, 73, 71, 70, 70, 70],
@@ -15,14 +16,6 @@ var efficencyTabel = [
   [69, 69, 69, 67, 65, 63, 60, 56, 53, 48, 44, 40, 35, 31, 27, 24, 21, 19, 18]  
 ];
 
-// TODO entfernen?
-//panellist ist eine Liste mit Panelobjekten mit {"height": int, "width": int}
-//global ist die Einstallung auf des Dach, beim mehreren Dachflächen der Durchschnitt alle Flächen
-//tilt gibt die Neigung der Panele in Grad an
-//rotation in wie fern die Panele nach Süden ausgerichtet sind, wobei 0 Grad voll
-//Süden und 180 Grad von Nord
-//Nennleistung der Panele ist fest 1000 Watt
-
 /**
  * @typedef {Object} Effizienz
  * @property {number} nominal - Nennleistung
@@ -32,12 +25,13 @@ var efficencyTabel = [
  */
 
 /**
- * TODO ausführlicher?
- * Wir berechnen die Effizienz der Panels anhand der eingebenen Einstellungen.
+ * Die Effizienz eines Panels wird unter Berücksichtigung der Einstrahlwerte berechnet.
+ * Zur Berechnung wird eine Nennleistung von 1000 kWh und eine Effektivität von 15 % genutzt.
+ * Hierbei wird eine Südausrichtung mit 0 Grad angegeben und eine Nordausrichtung mit 180 Grad, während Westen und Osten jeweils zueinander identisch sind.
  *
- * @param {Panel[]} panels - Liste mit Panelobjekten mit {"height": int, "width": int}
- * @param {number} global - Einstrahlung auf des Dach, beim mehreren Dachflächen der Durchschnitt aller Flächen
- * @return {Effizienz} Gibt die Effizienz im Json Format zurück
+ * @param {object[]} panels - Liste mit modifizierten Panelobjekten der Form: {"height": number, "width": number, "pitch" : number, "orientation" : number}
+ * @param {number} global - Einstrahlungswerte der Panels an der entsprechenden Position.
+ * @return {Effizienz} Gibt die Effizienz im JSON Format zurück.
  */
 function evaluateEfficiency (panels, global){
 	var panelarea = 0;
@@ -61,7 +55,7 @@ function evaluateEfficiency (panels, global){
             pitch = Math.round(panels[i].pitch / 10);
             panelarea = (panels[i].height * panels[i].width);
             totalPanelarea+=panelarea;
-            KWPerYear += (nominaloutput * efficiency * panelarea * global) / 1000 * (efficencyTabel[pitch][orientation] / 100);
+            KWPerYear += (nominaloutput * efficiency * panelarea * global) / 1000 * (efficiencyTable[pitch][orientation] / 100);
             usedPanels++;
         }
     }

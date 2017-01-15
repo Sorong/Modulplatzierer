@@ -60,7 +60,7 @@ var EfficiencyDisplay = (function () {
     };
 
     /**
-     * Setzt die Quatratmeter der Panelstring Fläche und zeigt diese an
+     * Setzt die Quadratmeter der Panelstring Fläche und zeigt diese an
      * @memberOf EfficiencyDisplay
      * @param {number} squareMeter - Quadratmeter
      */

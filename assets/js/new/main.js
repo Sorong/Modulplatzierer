@@ -1,10 +1,20 @@
+/**
+ * Controller der aktuellen Sitzung.
+ * @type {Controller}
+ */
 var controller = new Controller();
-var DEBUG = 0;
 
+/**
+ * Callback für das von Google genutzte Autocomplete Objekt zur Auflösung der Adressinformationen.
+ * Der Controller der Sitzung wird initialisiert.
+ */
 function initAutocomplete() {
     controller.init();
 }
-
+/**
+ * Sobald die Internetseite erfolgreich geladen wurde,
+ * wird der dargestellten Karte die korrekten Pixelmaße des HTML-Elements übermittelt.
+ */
 $(document).ready(function (){
     controller.loadFromServer();
 

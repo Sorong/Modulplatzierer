@@ -1,5 +1,5 @@
 /**
- * Gibt die Lokation an, die beim Laden der Seite als erstes angezeigt wird.
+ * Gibt die Lokation an, die beim Laden der Seite initial angezeigt wird.
  *
  * @constant
  * @type {number[]} Koordinaten in Längen- und Breitengrad
@@ -7,24 +7,27 @@
 const INIT_LOCATION = [52.520645, 13.40977]; //Koordinaten in Berlin
 
 /**
- * Gibt an mit welchem Zoom die Karte bei der Initialisierung geladen werden soll.
+ * Gibt an mit welcher Zoomstufe die Karte bei der Initialisierung geladen werden soll.
  *
  * @constant
- * @type {number}
+ * @type {number} Standardzoomstufe
  */
 const DEFAULT_ZOOM = 20;
 
 /**
- * // TODO beschreibung
+ * Konstruktor des Map-Objektes.
+ * Das Map-Objekt ist eine Containerklasse zur Darstellung von Karten der Kartenprovider GoogleMaps und Openstreetmap.
+ * Darüberhinaus das Objekt der Visualisierung von beweglichen und unbeweglichen Polygonen.
+ * @class
  * @constructor
- * @property {L.map} map
- * @property {L.tileLayer|L.gridLayer.googleMutant} mapProvider
- * @property {Controller} controller
- * @property {L.polygon[]} moveablePolygons
- * @property {L.polygon[]} nonMoveablePolygon
- * @property {L.polygon} selectedPolygon
- * @property {L.d3SvgOverlay} d3Overlay
- * @property {L.LayerGroup} handlerGroup
+ * @property {L.map} map Karte die dargestellt wird.
+ * @property {L.tileLayer|L.gridLayer.googleMutant} mapProvider Layer der Karte die dargestellt wird.
+ * @property {Controller} controller Der mit der Karte assoziierte Controller.
+ * @property {L.polygon[]} moveablePolygons Liste aller beweglichen Polygonen.
+ * @property {L.polygon[]} nonMoveablePolygon Liste aller unbeweglicher Polygone.
+ * @property {L.polygon} selectedPolygon Aktuell ausgewähltes Polygon.
+ * @property {L.d3SvgOverlay} d3Overlay Layer zur Berechnung von Koordinaten.
+ * @property {L.LayerGroup} handlerGroup Layer mit beweglichen Polygonen.
  */
 function Map() {
     this.map = null;
@@ -39,7 +42,7 @@ function Map() {
 }
 
 /**
- *
+ * Initialisierung der Karte, hier werden die Buttons mit Funktionen der Karte verknüpft und die Karte vom Kartenprovider geladen.
  */
 Map.prototype.init = function () {
     this.map = L.map('map', {drawControl: false, editable: true}).setView(INIT_LOCATION, DEFAULT_ZOOM);
@@ -73,10 +76,10 @@ Map.prototype.init = function () {
 
 /**
  * Es wird angegeben, welches Polygon Objekt ausgewählt wurde.
- * Hierzu wird noch zusätzlich die {@link Toolbar#connectModelWithToolbar} aktiviert,
- * um Einstellungen für die Panels vorzunehmen.
+ * Hierzu wird noch zusätzlich die {@link Controller#connectModelWithToolbar} aktiviert,
+ * um Einstellungen für die das selektiere Polygon durchzuführen.
  *
- * @param {L.polygon} selectedPolygon - Ausgewähltes Polygon-Objekt
+ * @param {L.polygon} selectedPolygon - Ausgewähltes Polygon-Objekt.
  */
 Map.prototype.selectPolygon = function (selectedPolygon) {
     this.selectedPolygon = selectedPolygon;
@@ -84,10 +87,12 @@ Map.prototype.selectPolygon = function (selectedPolygon) {
 };
 
 /**
- * TODO
+ * Hier wird ein bewegliches Polygon als Multipolygon angelegt.
+ * Dies wird mit einem Clicklistener verknüpft, außerdem werden Handler für die Rotation, Skalierung und Drag-Funktionalität eingerichtet.
+ * Das Polygon wird auf der Karte dargestellt und in die Liste der beweglichen Polygone eingefügt.
  *
- * @param {Panel} model
- * @return {L.polygon}
+ * @param {Panel|PanelString} model Das Model, dass mit dem Polygon assoziert wird. Die Geodaten werden vom Controller ermittelt {link Controller#getGeoJSON}.
+ * @return {L.polygon} Das angelegte Polygon.
  */
 Map.prototype.addMultiPolygon = function (model) {
 
@@ -171,9 +176,9 @@ Map.prototype.addMultiPolygon = function (model) {
 };
 
 /**
- *
- *
- * @param {Panel} model - Einzufügendes Panel
+ * Hier wird ein nicht bewegliches Polygon angelegt. Das Polygon wird in den Hintergrund verschoben, um bewegliche Polygone nicht einzuschränken.
+ * Das Polygon wird in die Liste der unbeweglichen Polygone eingefügt.
+ * @param {Roof} model - Darzustellendes unbewegliches Model, welches mit dem Polygon verknüpft wird.
  */
 Map.prototype.addNonMovable = function (model) {
     var polygon = model.getAsPolygon();
@@ -183,7 +188,7 @@ Map.prototype.addNonMovable = function (model) {
 };
 
 /**
- * Entfernt alle nicht bewegbaren Polygon Objekte
+ * Entfernt alle nicht beweglichen Polygone von der Karte und aus der Liste der nicht beweglichen Polygone.
  */
 Map.prototype.removeAllNonMoveable = function () {
     while (this.nonMovablePolygon.length !== 0) {
@@ -192,10 +197,10 @@ Map.prototype.removeAllNonMoveable = function () {
 };
 
 /**
- * Der Fokus wird auf die angegebene Position gesetzt.
+ * Die Karte wird auf die übergebenen Koordinaten, mit der Standardzoomstufe, zentriert.
  *
- * @param {number} lat - Längengrad
- * @param {number} lng - Breitengrad
+ * @param {number} lat - Längengrad (latitude)
+ * @param {number} lng - Breitengrad (longitude)
  */
 Map.prototype.setFocus = function (lat, lng) {
     this.map.setView(new L.LatLng(lat, lng), DEFAULT_ZOOM);
@@ -203,20 +208,21 @@ Map.prototype.setFocus = function (lat, lng) {
 
 
 /* Konvertierung LatLng zu Punkt und umgekehrt */
+
 /**
  * Konvertiert einen Punkt auf der Karte zu einem Längen- und Breitengrad.
  *
- * @param {L.point} point - Punkt auf der Karte
- * @returns {L.latLngs} Längen-, Breitengrad
+ * @param {L.point} point - Punkt auf der Karte.
+ * @returns {L.latLng} Längen-, Breitengrad.
  */
 Map.prototype.layerPointToLatLng = function (point) {
     return this.d3Overlay.projection.layerPointToLatLng(point);
 };
 
 /**
- * Konvertiert Längen- und Breitengrad auf der Karte zu Punkt Objekt.
+ * Konvertiert Längen- und Breitengrad zu dem entsprechendem Punkt (X/Y-Koordinaten).
  *
- * @param {L.latLngs} latlng - Koordinaten als Längen-, Breitengrad
+ * @param {L.latLng} latLng - Koordinaten als Längen-, Breitengrad
  * @returns {L.point} Punkt auf der Karte
  */
 Map.prototype.latLngToLayerPoint = function (latLng) {
@@ -225,10 +231,11 @@ Map.prototype.latLngToLayerPoint = function (latLng) {
 
 
 /**
- * // TODO
+ * Konvertiert Längen- und Breitengrad zu dem entsprechendem Punkt (X/Y-Koordinaten).
+ * Unter Berücksichtigung der Größe des entsprechenden HTML-Elementes.
  *
  * @param {L.point} point - Punkt auf der Karte
- * @returns {L.latLngs} Längen-, Breitengrad
+ * @returns {L.latLng} Längen-, Breitengrad
  */
 Map.prototype.containerPointToLatLng = function (point) {
     return this.map.containerPointToLatLng(point);
@@ -272,10 +279,8 @@ Map.prototype.changeMapProvider = function (layer) {
 };
 
 /**
- * TODO ist das richtig?
- * Es wird das ausgewählte Panel von der Karte entfernt.
+ * Es wird das ausgewählte Panel von der Karte und aus der Liste der beweglichen Polygone entfernt.
  *
- * @param {L.tileLayer|L.gridLayer.googleMutant} layer - Kartenlayer
  */
 Map.prototype.removeSelected = function () {
     this.selectedPolygon.transform.disable();

@@ -1,26 +1,26 @@
 /**
- * Die Toolbar dient dazu Einstellungen an einem {@link PanelString} oder {@link Panel} vorzunehmen,
- * hierbei können wir zum Beispiel die Breite, Höhe, Orientierung und weiteres einstellen.
+ * Die Toolbar dient dazu Einstellungen an einem {@link PanelString} oder {@link Panel} vorzunehmen.
+ * Modifizierbar sind Breite, Länge, Ausrichtung, Neigung und Rahmenbreite.
  *
  * @param {Panel|PanelString} model - Model, welches bearbeitet werden soll.
  * @constructor
  *
  * @property {boolean} isPanelString - Hält die Information ob es sich hierbei um einem {@link PanelString} oder {@link Panel} handelt.
- * @property {Panel} selectedModel - Ausgewähltes Panel
- * @property {jQuery} toolsContainer - Der Hauptkontainer für die Tools
- * @property {jQuery} toolsHeadline - Html Element für die Überschrift
+ * @property {Panel|PanelString} selectedModel - Ausgewähltes Modell.
+ * @property {jQuery} toolsContainer - Das HTML-Element für die Werkzeugleiste.
+ * @property {jQuery} toolsHeadline - HTML Element für die Überschrift
  * @property {jQuery} modelTilt - Slider für die Einstellung der Neigung
- * @property {jQuery} modelTiltValue - Html Element für den Wert der Neigung
+ * @property {jQuery} modelTiltValue - HTML Element für den Wert der Neigung
  * @property {jQuery} modelWidth - Slider für die Einstellung der Breite
- * @property {jQuery} modelWidthValue - Html Element für die Anzeige der Breite
+ * @property {jQuery} modelWidthValue - HTML Element für die Anzeige der Breite
  * @property {jQuery} modelHeight - Slider für die EInstellung der Höhe
- * @property {jQuery} modelHeightValue - Html Element für die Anzeige der Höhe
+ * @property {jQuery} modelHeightValue - HTML Element für die Anzeige der Höhe
  * @property {jQuery} modelOrientation - Slider für die Einstellung der Orientierung
- * @property {jQuery} modelOrientationValue - Html Element für die Anzeige der Orientierung
+ * @property {jQuery} modelOrientationValue - HTML Element für die Anzeige der Orientierung
  * @property {jQuery} modelFrame - Slider für die Einstellung der Rahmenbreite
- * @property {jQuery} modelFrameValue - Html Element für die Anzeige der Rahmenbreite
+ * @property {jQuery} modelFrameValue - HTML Element für die Anzeige der Rahmenbreite
  * @property {jQuery} modelDelete - Button für die Löschung des Panels
- * @property {jQuery} moreContent - Html Kontainer der weitere Einstellungsmöglichkeiten versteckt
+ * @property {jQuery} moreContent - HTML Kontainer der weitere Einstellungsmöglichkeiten versteckt
  * @property {jQuery} showMoreButton - Button für die Klickevents von moreContent
  */
 function Toolbar(model) {
@@ -71,7 +71,7 @@ function Toolbar(model) {
 
 
 /**
- * Zeigt die weiteren Einstellungen und passt die entsprechenden Elemente an
+ * Zeigt die weiteren Einstellungen und passt die entsprechenden Elemente an.
  */
 Toolbar.prototype.showMore = function () {
     this.showMoreButton.html("weniger");
@@ -79,7 +79,7 @@ Toolbar.prototype.showMore = function () {
 };
 
 /**
- * Versteckt die weiteren Einstellungen und passt die entsprechenden Elemente an
+ * Versteckt die weiteren Einstellungen und passt die entsprechenden Elemente an.
  */
 Toolbar.prototype.hideMore = function () {
     this.showMoreButton.html("mehr");
@@ -87,7 +87,7 @@ Toolbar.prototype.hideMore = function () {
 };
 
 /**
- * Aktuallisiert die Slider und Werte in der Toolbar anhand des übergeben PanelStrings oder Panels.
+ * Aktualisiert die Slider und Werte in der Toolbar anhand des verknüpften Modells.
  */
 Toolbar.prototype.renderModelValues = function () {
     if (this.selectedModel === undefined) {
@@ -117,7 +117,7 @@ Toolbar.prototype.renderModelValues = function () {
 };
 
 /**
- * Gewährt uns den Zugriff auf das Slider Element für die Neigung und gleichzeitig werden
+ * Gewährt den Zugriff auf das Slider Element für die Neigung und gleichzeitig werden
  * die Werte bei einer Änderung in der Ansicht aktualisiert.
  *
  * @return {jQuery} Slider für die Neigung
@@ -132,7 +132,7 @@ Toolbar.prototype.pitchSlider = function () {
 
 
 /**
- * Gewährt uns den Zugriff auf das Slider Element für die Breite und gleichzeitig werden
+ * Gewährt den Zugriff auf das Slider Element für die Breite und gleichzeitig werden
  * die Werte bei einer Änderung in der Ansicht aktualisiert.
  *
  * @return {jQuery} Slider für die Breite
@@ -146,7 +146,7 @@ Toolbar.prototype.widthSlider = function () {
 };
 
 /**
- * Gewährt uns den Zugriff auf das Slider Element für die Höhe und gleichzeitig werden
+ * Gewährt den Zugriff auf das Slider Element für die Höhe und gleichzeitig werden
  * die Werte bei einer Änderung in der Ansicht aktualisiert.
  *
  * @return {jQuery} Slider für die Höhe
@@ -160,7 +160,7 @@ Toolbar.prototype.heightSlider = function () {
 };
 
 /**
- * Gewährt uns den Zugriff auf das Slider Element für die Orientierung und gleichzeitig werden
+ * Gewährt den Zugriff auf das Slider Element für die Orientierung und gleichzeitig werden
  * die Werte bei einer Änderung in der Ansicht aktualisiert.
  *
  * @return {jQuery} Slider für die Orientierung
@@ -173,13 +173,10 @@ Toolbar.prototype.orientationSlider = function () {
 };
 
 /**
- * Setzen der Orientierung.
- * Sollten wir die Orientierung innerhalb des Sliders setzen, muss dies angegeben werden, damit der Slider bei der
- * Aktuallisierung nicht doppelt aktuallisiert wird.
- *
+ * Setzen der Orientierung. Außerdem wird der Slider an die korrekte Position verschoben.
  * @public
- * @param {number} orientation - Orientierung die eingestellt werden soll
- * @param {boolean} isSlider - Ob die Eingabe über einen Slider erfolgt oder nicht
+ * @param {number} orientation - Wert für den Slider.
+ * @param {boolean} isSlider - Gibt an ob der Aufruf der Funktion durch einen Slider durchgeführt wird.
  */
 Toolbar.prototype.setOrientation = function (orientation, isSlider) {
     var slider = isSlider || false;
@@ -188,7 +185,7 @@ Toolbar.prototype.setOrientation = function (orientation, isSlider) {
 };
 
 /**
- * Gewährt uns den Zugriff auf das Slider Element für die Rahmenbreite und gleichzeitig werden
+ * Gewährt den Zugriff auf das Slider Element für die Rahmenbreite und gleichzeitig werden
  * die Werte bei einer Änderung in der Ansicht aktualisiert.
  *
  * @return {jQuery} Slider für die Rahmenbreite
@@ -202,7 +199,7 @@ Toolbar.prototype.frameWidthSlider = function () {
 };
 
 /**
- * Wir entkoppeln alle Eventlistener und die Ansicht wird auf ihren Ursprungswert gesetzt.
+ *  Alle Eventlistener werden entkoppelt und die Toolbar wird für den Nutzer versteckt.
  */
 Toolbar.prototype.unbindEvents = function () {
     this.modelTilt.off();

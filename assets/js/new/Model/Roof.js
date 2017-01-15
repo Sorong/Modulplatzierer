@@ -1,5 +1,5 @@
 /**
- * Bester Wert für die Effizienz anhand der Einstrahlungswerte
+ * Bester Wert für die Effizienz anhand der Einstrahlungswerte.
  *
  * @constant
  * @type {number}
@@ -7,23 +7,22 @@
 const BEST_PV = 2;
 
 /**
- * Das Roof-Objekt repräsentiert die Dachfläche eines Gebäudes.
+ * Das Roof-Objekt repräsentiert ein Dach eines Gebäudes.
  *
  * @class
  * @constructor
  *
- * @property {number} gid - // TODO gebäude?
- * @property {number} roofId - Dach Id
- * // TODO points richtig?
- * @property {L.latLngs[]} points - Koordinaten der Dachfläche
- * @property {number} pv - // TODO
- * @property {number} st - // TODO
- * @property {number} orientation - Dachorientierung
- * // TODO richtig parts und bestPart?
- * @property {Roof[]} parts - Dachteile
- * @property {Roof} bestPart - // TODO
- * @property {number} tilt - Dachneigung
- * @property {number} global - // TODO
+ * @property {number} gid - Die GebäudeID.
+ * @property {number} roofId - Die ID der Dachfläche.
+ * @property {L.latLng[]} points - Koordinaten der Dachfläche.
+ * @property {number} pv - Eignung der Dachfläche für Photovoltaik-Module.
+ * @property {number} st - Eignung der Dachfläche für die Solarthermie.
+ * @property {number} orientation - Ausrichtung der Dachfläche in Richtung Süden in Grad.
+ * @property {Roof[]} parts - Liste der Dachteilflächen.
+ * @property {number} bestPart - Index der besten Dachteilfläche aus der Liste der Dachteilflächen.
+ * Die Qualität wird anhand der besten PV-Eignung und den besten Einstrahlungswerten ermittelt.
+ * @property {number} tilt - Der Winkel der Dachneigung in Grad.
+ * @property {number} global - Die globalen Einstrahungswerte der Dachfläche.
  */
 function Roof() {
     this.gid = 0;
@@ -39,25 +38,22 @@ function Roof() {
 }
 
 /**
- * Die Dachfläche wird mithilfe der übergebene Kooridinaten erstellt.
- *
- * // TODO richtger typ?
- * @param {L.latLngs[]} coordinates - Koordinaten der Dachfläche
+ * Die Dachfläche wird anhand der übergebene Koordinaten, als konvexe Fläche ermittelt.
+ * @see {convexHull}
+ * @param {L.latLng[]} coordinates - Geo-Koordinaten der Dachfläche
  */
 Roof.prototype.setPointsFromList = function (coordinates) {
-
     this.points = convexHull(coordinates);
-    //this.points = coordinates;
-
 };
 
 
 /**
- * // TODO
- * @return {L.polygon} Dachpolygon
+ * Konvertiert ein Dach in ein Polygon, je nach Eignung wird die Farbe in Farbabstufung Rot (niedrige Eignung) bis Grün(hohe Eignung) gesetzt.
+ * Außerdem wird die Polygonfläche einer Teilfläche mit dem jeweiligen Farbton gefüllt, während vom eigentlich Dach lediglich die Umrisse dargestellt werden.
+ * @return {L.polygon} Dach als Polygon.
  */
 Roof.prototype.getAsPolygon = function () {
-
+    if(this.pv > BEST_PV) {this.pv = 0;}
     var color_border = Math.floor(255 / BEST_PV);
     var red = (255 - (color_border * this.pv)) << 16;
     var green = (color_border * this.pv) << 8;
@@ -81,8 +77,8 @@ Roof.prototype.getAsPolygon = function () {
 };
 
 /**
- * TODO beschreibung, type
- * @param {} part - // TODO
+ * Hier wird einem Dach eine Dachfläche hinzugefügt. Ein Dach ist eine Sammlung mehrerer Dachflächen, die für sich jeweils Dächer sind.
+ * @param {Roof} part - Dach, welches dem Dach hinzugefügt wird.
  */
 Roof.prototype.addPart = function (part) {
     if(this.parts === null) {
@@ -98,9 +94,9 @@ Roof.prototype.addPart = function (part) {
 };
 
 /**
- * TODO
- * @param {Controller} controller
- * @return {Roof}
+ * Getter für den zur Photovoltaik am besten geeigneten Dachteil.
+ * @param {Controller} controller Wird benötigt, um ggf. die Ausrichtung der Dachteilfläche zu berechnen.
+ * @return {Roof} Beste Teilfläche für die Photovoltaik.
  */
 Roof.prototype.getBestRoofPart = function (controller) {
     if(this.bestPart === -1) { return this; }
@@ -112,8 +108,8 @@ Roof.prototype.getBestRoofPart = function (controller) {
 
 
 /**
- * // TODO
- * @param {Controller} controller
+ * Berechnung der Ausrichtung des Daches.
+ * @param {Controller} controller Wird benötigt um die Geodaten in X/Y-Koordinaten zu transformieren um anhand dieser die Ausrichtung zu berechnen.
  */
 Roof.prototype.calculateOrientation = function (controller) {
     var leftBot = rightBot = controller.getLatLngAsPoint(this.points[0]);
@@ -172,13 +168,13 @@ Roof.prototype.panelInRoof = function (panel) {
 
 /**
  * @typedef {Object} DachJson
- * @property {number} dach_id - Dach Id
- * @property {number} gid - // TODO
- * @property {number} st - //
- * @property {number} pv - //
- * @property {number} tilt - Dachneigung
- * @property {number} global -
- * @property {Array} the_geom -
+ * @property {number} dach_id - DachID
+ * @property {number} gid - GebäudeID
+ * @property {number} st - Eignung für die Solarthermie.
+ * @property {number} pv - Eignung für die Photovoltaik.
+ * @property {number} tilt - Dachneigung in Grad.
+ * @property {number} global - Einstrahlungswerte der Dachfläche.
+ * @property {number[][]} the_geom - Array der Form [...[latitude, longitude],[latitude, longitude]...].
  */
 
 /**
@@ -206,23 +202,13 @@ Roof.prototype.getAsJson = function () {
     }
 };
 
-// int pnpoly(int nvert, float *vertx, float *verty, float testx, float testy)
-// {
-//     int i, j, c = 0;
-//     for (i = 0, j = nvert-1; i < nvert; j = i++) {
-//         if ( ((verty[i]>testy) != (verty[j]>testy)) &&
-//             (testx < (vertx[j]-vertx[i]) * (testy-verty[i]) / (verty[j]-verty[i]) + vertx[i]) )
-//             c = !c;
-//     }
-//     return c;
-// }
 
 /* Hilfsfunktion */
 /**
- * Es wird aus den Übergeben Punkten die konvexe Hülle erstellt.
- *
- * @param {Array.<Array.<number, number>>} points - Alle Koordinaten vom Dach
- * @return {Array.<Array.<number, number>>} Koordinaten der konvexen Hülle
+ * Es wird aus den übergeben Punkten die konvexe Hülle erstellt.
+ * @see {@link https://de.wikipedia.org/wiki/Graham_Scan}
+ * @param {Array.<Array.<number, number>>} points - Alle Koordinaten der Dachfläche.
+ * @return {Array.<Array.<number, number>>} Koordinaten der konvexen Hülle.
  */
 function convexHull(points) {
     function cross(o, a, b) {
