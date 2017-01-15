@@ -27,6 +27,7 @@ Bei dem verwendeten Server handelt es sich um Payarafish 4.1. Dieser kann auf de
 Nach dem Start des Server ist das Administratorinterface unter http://localhost:4848 erreichbar.
 
 Nun muss die Verbindung zur Datenbank hergestellt werden. Unter dem Reiter **JDBC** kann die Verbindung zur Datenbank konfiguriert werden.
+
 1. Klick auf JDBC Connection Pool
 2. Klick auf New
 3. Pool Name: SolarDB
