@@ -25,11 +25,19 @@ var efficiencyTable = [
  */
 
 /**
+ * @typedef panels
+ * @property {number} height - Höhe
+ * @property {number} width - Breite
+ * @property {number} pitch - Neigung
+ * @property {number} orientation - Orientierung
+ */
+
+/**
  * Die Effizienz eines Panels wird unter Berücksichtigung der Einstrahlwerte berechnet.
  * Zur Berechnung wird eine Nennleistung von 1000 kWh und eine Effektivität von 15 % genutzt.
  * Hierbei wird eine Südausrichtung mit 0 Grad angegeben und eine Nordausrichtung mit 180 Grad, während Westen und Osten jeweils zueinander identisch sind.
  *
- * @param {object[]} panels - Liste mit modifizierten Panelobjekten der Form: {"height": number, "width": number, "pitch" : number, "orientation" : number}
+ * @param {panels[]} panels - Liste mit modifizierten Panelobjekten der Form: {@link panels}
  * @param {number} global - Einstrahlungswerte der Panels an der entsprechenden Position.
  * @return {Effizienz} Gibt die Effizienz im JSON Format zurück.
  */
