@@ -64,7 +64,7 @@ var PanelString = (function () {
      * Entfernt den zuletzt eingefügten Panel, bis auf den MasterPanel.
      * @memberOf PanelString
      *
-     * @returns {string|number} Gibt die Id des MasterPanels zurück.
+     * @returns {string|number} Gibt die Id des entfernten Panel zurück.
      */
     PanelString.prototype.removePanel = function () {
         var removedPanelId = this.masterPanel.id;
@@ -91,23 +91,64 @@ var PanelString = (function () {
         }
         master.setOrientation(this.controller, o);
     };
+    /**
+     * Die Panelbreite wird an {@link Panel#setFrameWidth} delegiert.
+     *
+     * @memberOf PanelString
+     * @param {number} width - Rahmenbreite des Panels
+     */
     PanelString.prototype.setFrameWidth = function (width) {
         this.masterPanel.setFrameWidth(this.controller, width);
     };
+    /**
+     * Die Panelneigung wird an {@link Panel#setPitch} delegiert.
+     *
+     * @memberOf PanelString
+     * @param {number} pitch - Neigung des Panels
+     */
     PanelString.prototype.setPitch = function (pitch) {
         this.masterPanel.setPitch(this.controller, pitch);
     };
+    /**
+     * Wir ändern die Position der oberen linken Ecke des MasterPanels.
+     *
+     * @memberOf PanelString
+     * @param {L.latLngs} latlngs - Längen- und Breitengrad der neuen Position
+     */
     PanelString.prototype.setPosition = function (latlngs) {
         var topLeft = latlngs[0][0];
         var master = this.masterPanel;
         master.setTopLeft(this.controller, topLeft);
     };
+    /**
+     * Gibt die Rahmenbreite in Pixel wieder
+     *
+     * @memberOf PanelString
+     * @returns {number} Gibt die Rahmenbreite in Pixel wieder
+     */
     PanelString.prototype.getFrameWidth = function () {
         return this.masterPanel.getFrameWidthInPixel(this.controller);
     };
+    /**
+     * Ermittelt die Position, wo das anliegende Panel als nächstes angesetzt wird.
+     * Wir erhalten die Position der oben-rechten Ecke, welches die obere-linke Ecke des Nachfolgers ist.
+     *
+     * @memberOf PanelString
+     * @private
+     * @param {Panel} panel - Aktuelles Panel
+     * @returns {L.latLngs} Die obere-rechte Ecke des Panels
+     */
     PanelString.prototype.getNextPoint = function (panel) {
         return panel.getPointsAsList()[1];
     };
+    /**
+     * Aktuallisiert die Position der einzelnen Panels, hierbei orientieren wir uns am MasterPanel.
+     * Die Einstellungen des MasterPanels werden an die Kinder weitergegeben, dabei dient die obere-rechte Ecke
+     * des Vorgängers, als Ausgangspunkt (oben-links) für den Nachfolger
+     *
+     * @memberOf PanelString
+     * @private
+     */
     PanelString.prototype.refreshGeometrics = function () {
         var orientation = this.masterPanel.orientation;
         var pitch = this.masterPanel.pitch;
@@ -126,7 +167,7 @@ var PanelString = (function () {
         }
     };
     /**
-     * Gibt Array aller Panels mit entsprechen Längen- und Breitengraden ({@link Panel#getLatLngsAsArray) wieder
+     * Gibt einen Array aller Panels mit entsprechen Längen- und Breitengraden ({@link Panel#getLatLngsAsArray) wieder
      * @memberOf PanelString
      *
      * @returns {Array} Array der Längen- und Breitengraden aller Panels
@@ -140,6 +181,13 @@ var PanelString = (function () {
         }
         return polygonArray;
     };
+    /**
+     * Gibt ein Panel zurück mit Hilfe des Index
+     *
+     * @memberOf PanelString
+     * @param {number} index - Index des gewünschten Panels
+     * @returns {Panel} Gibt gewähltes Panel zurück
+     */
     PanelString.prototype.get = function (index) {
         if (index === 0) {
             return this.masterPanel;
@@ -148,12 +196,31 @@ var PanelString = (function () {
             return this.panels[index - 1];
         }
     };
+    /**
+     * Gibt die Anzahl der Panels im PanelString zurück
+     *
+     * @memberOf PanelString
+     * @returns {number} Anzahl der Panels
+     */
     PanelString.prototype.size = function () {
         return this.panels.length + 1;
     };
+    /**
+     * Gibt die Id des MasterPanels zurück
+     *
+     * @memberOf PanelString
+     * @returns {number} Id des MasterPanels
+     */
     PanelString.prototype.getId = function () {
         return this.masterPanel.getId();
     };
+    /**
+     * Vergleicht aktuelles PanelString mit dem übergeben PanelString.
+     *
+     * @memberOf PanelString
+     * @param {PanelString} panelstring - Anderer PanelString
+     * @returns {boolean} Gibt an ob die Panels gleich sind.
+     */
     PanelString.prototype.equals = function (panelstring) {
         if (panelstring.masterPanel === undefined) {
             return false;

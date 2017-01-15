@@ -76,7 +76,7 @@ class PanelString {
      * Entfernt den zuletzt eingefügten Panel, bis auf den MasterPanel.
      * @memberOf PanelString
      *
-     * @returns {string|number} Gibt die Id des MasterPanels zurück.
+     * @returns {string|number} Gibt die Id des entfernten Panel zurück.
      */
     removePanel() {
         let removedPanelId = this.masterPanel.id;
@@ -105,28 +105,69 @@ class PanelString {
         master.setOrientation(this.controller, o);
     }
 
+    /**
+     * Die Panelbreite wird an {@link Panel#setFrameWidth} delegiert.
+     *
+     * @memberOf PanelString
+     * @param {number} width - Rahmenbreite des Panels
+     */
     setFrameWidth(width){
         this.masterPanel.setFrameWidth(this.controller, width);
     }
 
+    /**
+     * Die Panelneigung wird an {@link Panel#setPitch} delegiert.
+     *
+     * @memberOf PanelString
+     * @param {number} pitch - Neigung des Panels
+     */
     setPitch(pitch) {
         this.masterPanel.setPitch(this.controller, pitch);
     }
 
+    /**
+     * Wir ändern die Position der oberen linken Ecke des MasterPanels.
+     *
+     * @memberOf PanelString
+     * @param {L.latLngs} latlngs - Längen- und Breitengrad der neuen Position
+     */
     setPosition(latlngs) {
         let topLeft = latlngs[0][0];
         let master = this.masterPanel;
         master.setTopLeft(this.controller, topLeft);
     }
 
+    /**
+     * Gibt die Rahmenbreite in Pixel wieder
+     *
+     * @memberOf PanelString
+     * @returns {number} Gibt die Rahmenbreite in Pixel wieder
+     */
     getFrameWidth() {
         return this.masterPanel.getFrameWidthInPixel(this.controller);
     }
 
+    /**
+     * Ermittelt die Position, wo das anliegende Panel als nächstes angesetzt wird.
+     * Wir erhalten die Position der oben-rechten Ecke, welches die obere-linke Ecke des Nachfolgers ist.
+     *
+     * @memberOf PanelString
+     * @private
+     * @param {Panel} panel - Aktuelles Panel
+     * @returns {L.latLngs} Die obere-rechte Ecke des Panels
+     */
     private getNextPoint(panel) {
         return panel.getPointsAsList()[1];
     }
 
+    /**
+     * Aktuallisiert die Position der einzelnen Panels, hierbei orientieren wir uns am MasterPanel.
+     * Die Einstellungen des MasterPanels werden an die Kinder weitergegeben, dabei dient die obere-rechte Ecke
+     * des Vorgängers, als Ausgangspunkt (oben-links) für den Nachfolger
+     *
+     * @memberOf PanelString
+     * @private
+     */
     private refreshGeometrics() {
         let orientation = this.masterPanel.orientation;
         let pitch = this.masterPanel.pitch;
@@ -148,7 +189,7 @@ class PanelString {
 
 
     /**
-     * Gibt Array aller Panels mit entsprechen Längen- und Breitengraden ({@link Panel#getLatLngsAsArray) wieder
+     * Gibt einen Array aller Panels mit entsprechen Längen- und Breitengraden ({@link Panel#getLatLngsAsArray) wieder
      * @memberOf PanelString
      *
      * @returns {Array} Array der Längen- und Breitengraden aller Panels
@@ -163,6 +204,13 @@ class PanelString {
         return polygonArray
     }
 
+    /**
+     * Gibt ein Panel zurück mit Hilfe des Index
+     *
+     * @memberOf PanelString
+     * @param {number} index - Index des gewünschten Panels
+     * @returns {Panel} Gibt gewähltes Panel zurück
+     */
     get(index) {
         if(index === 0) {
             return this.masterPanel;
@@ -171,14 +219,33 @@ class PanelString {
         }
     }
 
+    /**
+     * Gibt die Anzahl der Panels im PanelString zurück
+     *
+     * @memberOf PanelString
+     * @returns {number} Anzahl der Panels
+     */
     size() {
         return this.panels.length + 1;
     }
 
+    /**
+     * Gibt die Id des MasterPanels zurück
+     *
+     * @memberOf PanelString
+     * @returns {number} Id des MasterPanels
+     */
     getId() {
         return this.masterPanel.getId();
     }
 
+    /**
+     * Vergleicht aktuelles PanelString mit dem übergeben PanelString.
+     *
+     * @memberOf PanelString
+     * @param {PanelString} panelstring - Anderer PanelString
+     * @returns {boolean} Gibt an ob die Panels gleich sind.
+     */
     equals(panelstring) {
         if(panelstring.masterPanel === undefined) {
             return false;
