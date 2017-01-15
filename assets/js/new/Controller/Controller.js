@@ -41,7 +41,7 @@ const SERVER_URL = "http://" + HOST + ":8080/SolarRESTService_war_exploded/";
  * @property {CookieHandler} cookieHandler Handler zum Lesen und Schreiben von Cookies.
  * @property {Roof} roof Das aktuell dargestellte Dachmodell.
  * @property {number} cookieId Die vom Nutzer ausgelesene CookieID.
- * @property {EfficienyDisplay} Anzeige zur Darstellung der Effektivität.
+ * @property {EfficiencyDisplay} Anzeige zur Darstellung der Effektivität.
  *
  */
 function Controller() {
