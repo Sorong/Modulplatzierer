@@ -1,8 +1,9 @@
 /**
- * Gibt die Lokation an, die beim Laden der Seite initial angezeigt wird.
+ * Gibt die Ort an, der beim Laden der Seite initial angezeigt wird.
+ * Gibt die Lokation, in Längen-, Breitengrad, an, die beim Laden der Seite als erstes angezeigt wird.
  *
  * @constant
- * @type {number[]} Koordinaten in Längen- und Breitengrad
+ * @type {number[]}
  */
 const INIT_LOCATION = [52.520645, 13.40977]; //Koordinaten in Berlin
 
@@ -77,7 +78,11 @@ Map.prototype.init = function () {
 /**
  * Es wird angegeben, welches Polygon Objekt ausgewählt wurde.
  * Hierzu wird noch zusätzlich die {@link Controller#connectModelWithToolbar} aktiviert,
+<<<<<<< HEAD
  * um Einstellungen für die das selektiere Polygon durchzuführen.
+=======
+ * um Einstellungen für die Panels vorzunehmen.
+>>>>>>> 217180dd2d807bf347dc9f3f1d17bd23add5b3f2
  *
  * @param {L.polygon} selectedPolygon - Ausgewähltes Polygon-Objekt.
  */

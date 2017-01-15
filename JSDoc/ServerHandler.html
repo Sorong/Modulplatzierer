@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>DocStrap Class: Roof</title>
+	<title>DocStrap Class: ServerHandler</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -72,13 +72,13 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Class: Roof</h1>
+	<h1 class="page-title">Class: ServerHandler</h1>
 <section>
 
 <header>
     
         <h2>
-        Roof
+        ServerHandler
         </h2>
         
     
@@ -91,7 +91,7 @@
         
 <hr>
 <dt>
-    <h4 class="name" id="Roof"><span class="type-signature"></span>new Roof()</h4>
+    <h4 class="name" id="ServerHandler"><span class="type-signature"></span>new ServerHandler(url)</h4>
     
     
 </dt>
@@ -99,7 +99,7 @@
 
     
     <div class="description">
-        <p>Das Roof-Objekt repräsentiert ein Dach eines Gebäudes.</p>
+        <p>Konstruiert ein ServerHandler-Objekt, dass die Kommunikation<br>mit der REST-Schnittstelle des als Parameter angegebenen Servers übernimmt.</p>
     </div>
     
 
@@ -108,6 +108,56 @@
     
 
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>url</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Die URL des Servers mit dem kommuniziert werden soll.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
     
 
     
@@ -140,13 +190,13 @@
 
         <tr>
             
-                <td class="name"><code>gid</code></td>
+                <td class="name"><code>serverUrl</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">string</span>
 
 
 
@@ -157,20 +207,20 @@
 
             
 
-            <td class="description last"><p>Die GebäudeID.</p></td>
+            <td class="description last"><p>Die URL des Servers.</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>roofId</code></td>
+                <td class="name"><code>errorFunction</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">function</span>
 
 
 
@@ -181,199 +231,7 @@
 
             
 
-            <td class="description last"><p>Die ID der Dachfläche.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>points</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;L.latLng></span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Koordinaten der Dachfläche.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>pv</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Eignung der Dachfläche für Photovoltaik-Module.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>st</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Eignung der Dachfläche für die Solarthermie.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>orientation</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Ausrichtung der Dachfläche in Richtung Süden in Grad.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>parts</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;<a href="Roof.html">Roof</a>></span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Liste der Dachteilflächen.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>bestPart</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Index der besten Dachteilfläche aus der Liste der Dachteilflächen.<br>Die Qualität wird anhand der besten PV-Eignung und den besten Einstrahlungswerten ermittelt.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>tilt</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Der Winkel der Dachneigung in Grad.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>global</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Die globalen Einstrahungswerte der Dachfläche.</p></td>
+            <td class="description last"><p>Eine Standardfunktion, die im Fehlerfall ausgeführt wird.</p></td>
         </tr>
 
     
@@ -414,8 +272,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="new_Model_Roof.js.html">new/Model/Roof.js</a>,
-				 <a href="new_Model_Roof.js.html#sunlight-1-line-27">line 27</a>
+				<a href="Handler_ServerHandler.js.html">Handler/ServerHandler.js</a>,
+				 <a href="Handler_ServerHandler.js.html#sunlight-1-line-10">line 10</a>
 			</li>
 		</ul>
 	</dd>
@@ -466,7 +324,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="addPart"><span class="type-signature"></span>addPart(part)</h4>
+    <h4 class="name" id="getCookie"><span class="type-signature"></span>getCookie(id, callback)</h4>
     
     
 </dt>
@@ -474,7 +332,7 @@
 
     
     <div class="description">
-        <p>Hier wird einem Dach eine Dachfläche hinzugefügt. Ein Dach ist eine Sammlung mehrerer Dachflächen, die für sich jeweils Dächer sind.</p>
+        <p>Löst den GET-Request cookie/getCookie/, des in der URL des ServerHandlers gespeicherten Servers, aus.<br>Die Anfrage hat die Form &quot;URL/cookie/getCookie/id&quot;</p>
     </div>
     
 
@@ -509,13 +367,13 @@
 
         <tr>
             
-                <td class="name"><code>part</code></td>
+                <td class="name"><code>id</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="Roof.html">Roof</a></span>
+<span class="param-type">number</span>
 
 
 
@@ -526,7 +384,31 @@
 
             
 
-            <td class="description last"><p>Dach, welches dem Dach hinzugefügt wird.</p></td>
+            <td class="description last"><p>Die ID, die der Serverfunktion übergeben wird.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Die Funktion, die im Erfolgfall aufgerufen werden soll. Die Funktion erhält den vom Server enhaltende Response.</p></td>
         </tr>
 
     
@@ -570,8 +452,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="new_Model_Roof.js.html">new/Model/Roof.js</a>,
-				 <a href="new_Model_Roof.js.html#sunlight-1-line-83">line 83</a>
+				<a href="Handler_ServerHandler.js.html">Handler/ServerHandler.js</a>,
+				 <a href="Handler_ServerHandler.js.html#sunlight-1-line-22">line 22</a>
 			</li>
 		</ul>
 	</dd>
@@ -604,7 +486,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="calculateOrientation"><span class="type-signature"></span>calculateOrientation(controller)</h4>
+    <h4 class="name" id="getPredefinedRoof"><span class="type-signature"></span>getPredefinedRoof(street, nr, citycode, callback)</h4>
     
     
 </dt>
@@ -612,7 +494,7 @@
 
     
     <div class="description">
-        <p>Berechnung der Ausrichtung des Daches.</p>
+        <p>Löst den GET-Request dach/getPredefinedRoof/ des in der URL des ServerHandlers gespeicherten Servers aus.<br>Die Anfrage hat die Form &quot;URL/dach/getPredefinedRoof/street/nr/citycode&quot;</p>
     </div>
     
 
@@ -647,13 +529,13 @@
 
         <tr>
             
-                <td class="name"><code>controller</code></td>
+                <td class="name"><code>street</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="Controller.html">Controller</a></span>
+<span class="param-type">string</span>
 
 
 
@@ -664,7 +546,79 @@
 
             
 
-            <td class="description last"><p>Wird benötigt um die Geodaten in X/Y-Koordinaten zu transformieren um anhand dieser die Ausrichtung zu berechnen.</p></td>
+            <td class="description last"><p>Der Straßenname, der dem Server übergeben wird.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>nr</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Die Hausnummer, die dem Server übergeben wird.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>citycode</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Die Postleitzahl, die dem Server übergeben wird.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Die Funktion, die im Erfolgfall aufgerufen werden soll. Die Funktion erhält den vom Server enhaltenen Response.</p></td>
         </tr>
 
     
@@ -708,8 +662,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="new_Model_Roof.js.html">new/Model/Roof.js</a>,
-				 <a href="new_Model_Roof.js.html#sunlight-1-line-114">line 114</a>
+				<a href="Handler_ServerHandler.js.html">Handler/ServerHandler.js</a>,
+				 <a href="Handler_ServerHandler.js.html#sunlight-1-line-36">line 36</a>
 			</li>
 		</ul>
 	</dd>
@@ -742,7 +696,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="getAsJson"><span class="type-signature"></span>getAsJson()</h4>
+    <h4 class="name" id="getRoofParts"><span class="type-signature"></span>getRoofParts(gid, callback)</h4>
     
     
 </dt>
@@ -750,231 +704,7 @@
 
     
     <div class="description">
-        <p>Gibt uns das Dachobjekt als Json zurück</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="new_Model_Roof.js.html">new/Model/Roof.js</a>,
-				 <a href="new_Model_Roof.js.html#sunlight-1-line-185">line 185</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>Dach als Json</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="global.html#DachJson">DachJson</a></span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="getAsPolygon"><span class="type-signature"></span>getAsPolygon()</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Konvertiert ein Dach in ein Polygon, je nach Eignung wird die Farbe in Farbabstufung Rot (niedrige Eignung) bis Grün(hohe Eignung) gesetzt.<br>Außerdem wird die Polygonfläche einer Teilfläche mit dem jeweiligen Farbton gefüllt, während vom eigentlich Dach lediglich die Umrisse dargestellt werden.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="new_Model_Roof.js.html">new/Model/Roof.js</a>,
-				 <a href="new_Model_Roof.js.html#sunlight-1-line-55">line 55</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>Dach als Polygon.</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">L.polygon</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="getBestRoofPart"><span class="type-signature"></span>getBestRoofPart(controller)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Getter für den zur Photovoltaik am besten geeigneten Dachteil.</p>
+        <p>Löst den GET-Request dach/getRoofParts/ ,des in der URL des ServerHandlers gespeicherten Servers, aus.<br>Die Anfrage hat die Form &quot;URL/dach/getRoofParts/gid&quot;</p>
     </div>
     
 
@@ -1009,13 +739,13 @@
 
         <tr>
             
-                <td class="name"><code>controller</code></td>
+                <td class="name"><code>gid</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="Controller.html">Controller</a></span>
+<span class="param-type">number</span>
 
 
 
@@ -1026,7 +756,31 @@
 
             
 
-            <td class="description last"><p>Wird benötigt, um ggf. die Ausrichtung der Dachteilfläche zu berechnen.</p></td>
+            <td class="description last"><p>Die GebäudeID, die dem Server übergeben wird.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Die Funktion, die im Erfolgfall aufgerufen werden soll. Die Funktion erhält den vom Server erhaltende Response.</p></td>
         </tr>
 
     
@@ -1070,8 +824,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="new_Model_Roof.js.html">new/Model/Roof.js</a>,
-				 <a href="new_Model_Roof.js.html#sunlight-1-line-101">line 101</a>
+				<a href="Handler_ServerHandler.js.html">Handler/ServerHandler.js</a>,
+				 <a href="Handler_ServerHandler.js.html#sunlight-1-line-48">line 48</a>
 			</li>
 		</ul>
 	</dd>
@@ -1096,30 +850,6 @@
     
 
     
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>Beste Teilfläche für die Photovoltaik.</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="Roof.html">Roof</a></span>
-
-
-
-    </dd>
-</dl>
-
-
-        
 
     
 </dd>
@@ -1128,7 +858,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="panelInRoof"><span class="type-signature"></span>panelInRoof(panel)</h4>
+    <h4 class="name" id="postCookie"><span class="type-signature"></span>postCookie(json, callback)</h4>
     
     
 </dt>
@@ -1136,7 +866,7 @@
 
     
     <div class="description">
-        <p>Die Funktion überprüft ob sich ein Panel innerhalb eines Dachs befindet.<br>Sollte sich das Panel ausserhalb des Dachs befinden, wird false zurückgegeben, sonst true.</p>
+        <p>Löst den POST-Request, des in der URL des ServerHandlers gespeichtern Servers, aus.<br>Die Server-Funktion &quot;cookie/postCookie&quot; wird genutzt.</p>
     </div>
     
 
@@ -1171,16 +901,199 @@
 
         <tr>
             
-                <td class="name"><code>panel</code></td>
+                <td class="name"><code>json</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Das JSON-Objekt, als String, welches dem Server übermittelt wird.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Die Funktion, die im Erfolgfall aufgerufen werden soll. Die Funktion erhält den vom Server erhaltende Response.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="Handler_ServerHandler.js.html">Handler/ServerHandler.js</a>,
+				 <a href="Handler_ServerHandler.js.html#sunlight-1-line-72">line 72</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="postPanel"><span class="type-signature"></span>postPanel(json, model, callback)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Löst den POST-Request, des in der URL des ServerHandlers gespeichtern Servers, aus.<br>Die Server-Funktion &quot;panel/postPanel&quot; wird genutzt.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>json</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Das JSON-Objekt, als String, welches dem Server übermittelt wird.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>model</code></td>
             
 
             <td class="type">
             
                 
 <span class="param-type"><a href="Panel.html">Panel</a></span>
-|
-
-<span class="param-type"><a href="PanelString.html">PanelString</a></span>
 
 
 
@@ -1191,7 +1104,31 @@
 
             
 
-            <td class="description last"><p>Panel- oder PanelString-Objekt</p></td>
+            <td class="description last"><p>Das Panel, welches im Erfolgsfall der Callbackfunktion übergeben wird.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Die Funktion, die im Erfolgfall aufgerufen werden soll.<br>Die Funktion erhält den vom Server enhaltenen Response und das Model welches postPanel-Funktion übergeben wurde.</p></td>
         </tr>
 
     
@@ -1235,8 +1172,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="new_Model_Roof.js.html">new/Model/Roof.js</a>,
-				 <a href="new_Model_Roof.js.html#sunlight-1-line-145">line 145</a>
+				<a href="Handler_ServerHandler.js.html">Handler/ServerHandler.js</a>,
+				 <a href="Handler_ServerHandler.js.html#sunlight-1-line-86">line 86</a>
 			</li>
 		</ul>
 	</dd>
@@ -1261,30 +1198,6 @@
     
 
     
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>Gibt an ob sich die Panels auf dem Dach befinden</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">boolean</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
 
     
 </dd>
@@ -1293,7 +1206,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="setPointsFromList"><span class="type-signature"></span>setPointsFromList(coordinates)</h4>
+    <h4 class="name" id="postRoof"><span class="type-signature"></span>postRoof(json, callback)</h4>
     
     
 </dt>
@@ -1301,7 +1214,7 @@
 
     
     <div class="description">
-        <p>Die Dachfläche wird anhand der übergebene Koordinaten, als konvexe Fläche ermittelt.</p>
+        <p>Löst den POST-Request, des in der URL des ServerHandlers gespeicherten Servers, aus.<br>Die Server-Funktion &quot;dach/postRoof&quot; wird genutzt.</p>
     </div>
     
 
@@ -1336,13 +1249,13 @@
 
         <tr>
             
-                <td class="name"><code>coordinates</code></td>
+                <td class="name"><code>json</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;L.latLng></span>
+<span class="param-type">string</span>
 
 
 
@@ -1353,7 +1266,31 @@
 
             
 
-            <td class="description last"><p>Geo-Koordinaten der Dachfläche</p></td>
+            <td class="description last"><p>Das JSON-Objekt, als String, welches dem Server übermittelt wird.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Die Funktion, die im Erfolgfall aufgerufen werden soll. Die Funktion erhält den vom Server enhaltenen Response.</p></td>
         </tr>
 
     
@@ -1397,8 +1334,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="new_Model_Roof.js.html">new/Model/Roof.js</a>,
-				 <a href="new_Model_Roof.js.html#sunlight-1-line-45">line 45</a>
+				<a href="Handler_ServerHandler.js.html">Handler/ServerHandler.js</a>,
+				 <a href="Handler_ServerHandler.js.html#sunlight-1-line-109">line 109</a>
 			</li>
 		</ul>
 	</dd>
@@ -1407,12 +1344,329 @@
 	
 
 	
-	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
-	<dd class="tag-see">
-		<ul>
-			<li>{<a href="global.html#convexHull">convexHull</a>}</li>
-			</ul>
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="removePanel"><span class="type-signature"></span>removePanel(id, callback)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Löst den GET-Request panel/removePanel/, des in der URL des ServerHandlers gespeicherten Servers, aus.<br>Die Anfrage hat die Form &quot;URL/panel/removePanel/id&quot;</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Die PanelID, die dem Server übergeben wird.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Die Funktion, die im Erfolgfall aufgerufen werden soll. Die Funktion erhält den vom Server erhaltende Response.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="Handler_ServerHandler.js.html">Handler/ServerHandler.js</a>,
+				 <a href="Handler_ServerHandler.js.html#sunlight-1-line-60">line 60</a>
+			</li>
+		</ul>
 	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="updatePanel"><span class="type-signature"></span>updatePanel(json, callback)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Löst den POST-Request, des in der URL des ServerHandlers gespeicherten Servers, aus.<br> Die Server-Funktion &quot;panel/updatePanel&quot; wird genutzt.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>json</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Das JSON-Objekt, als String, welches dem Server übermittelt wird.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Die Funktion, die im Erfolgfall aufgerufen werden soll. Die Funktion erhält den vom Server enhaltenen Response.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="Handler_ServerHandler.js.html">Handler/ServerHandler.js</a>,
+				 <a href="Handler_ServerHandler.js.html#sunlight-1-line-98">line 98</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
 	
 
 	
