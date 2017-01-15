@@ -25,7 +25,7 @@ CookieHandler.prototype.createCookie = function (value, dueDate) {
 };
 /**
  * Liest einen Cookie vom Benutzer, der Cookie wird anhand des im CookieHandler gespeicherten Namen identifiziert.
- * @returns {string} Wenn ein Cookie mit dem gespeicherten Namen vorhanden ist wird der gespeicherte Wert zurückgegeben.
+ * @returns {string|null} Wenn ein Cookie mit dem gespeicherten Namen vorhanden ist wird der gespeicherte Wert zurückgegeben.
  * Wenn kein Cookie mit dem Namen gefunden wird, wird "null" zurückgegebeben.
  */
 CookieHandler.prototype.readCookie = function () {
