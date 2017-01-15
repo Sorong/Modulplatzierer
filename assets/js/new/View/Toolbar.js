@@ -1,4 +1,5 @@
 /**
+
  * Die Toolbar dient dazu Einstellungen an einem {@link PanelString} oder {@link Panel} vorzunehmen.
  * Modifizierbar sind Breite, Länge, Ausrichtung, Neigung und Rahmenbreite.
  *

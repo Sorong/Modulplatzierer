@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>DocStrap Class: Map</title>
+	<title>DocStrap Class: EfficiencyDisplay</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -72,13 +72,13 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Class: Map</h1>
+	<h1 class="page-title">Class: EfficiencyDisplay</h1>
 <section>
 
 <header>
     
         <h2>
-        Map
+        EfficiencyDisplay
         </h2>
         
     
@@ -91,7 +91,7 @@
         
 <hr>
 <dt>
-    <h4 class="name" id="Map"><span class="type-signature"></span>new Map()</h4>
+    <h4 class="name" id="EfficiencyDisplay"><span class="type-signature"></span>new EfficiencyDisplay()</h4>
     
     
 </dt>
@@ -99,7 +99,7 @@
 
     
     <div class="description">
-        <p>Konstruktor des Map-Objektes.<br>Das Map-Objekt ist eine Containerklasse zur Darstellung von Karten der Kartenprovider GoogleMaps und Openstreetmap.<br>Darüberhinaus das Objekt der Visualisierung von beweglichen und unbeweglichen Polygonen.</p>
+        <p>Repräsentiert die Anzeige für die Effizienz</p>
     </div>
     
 
@@ -140,13 +140,13 @@
 
         <tr>
             
-                <td class="name"><code>map</code></td>
+                <td class="name"><code>panelCounter</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">L.map</span>
+<span class="param-type">jQuery</span>
 
 
 
@@ -157,23 +157,20 @@
 
             
 
-            <td class="description last"><p>Karte die dargestellt wird.</p></td>
+            <td class="description last"><p>Html Element für die Anzeige der Panelanzahl</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>mapProvider</code></td>
+                <td class="name"><code>panelArea</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">L.tileLayer</span>
-|
-
-<span class="param-type">L.gridLayer.googleMutant</span>
+<span class="param-type">jQuery</span>
 
 
 
@@ -184,20 +181,20 @@
 
             
 
-            <td class="description last"><p>Layer der Karte die dargestellt wird.</p></td>
+            <td class="description last"><p>Html Element für die Anzeige der Quatratmeter</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>controller</code></td>
+                <td class="name"><code>panelNominal</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="Controller.html">Controller</a></span>
+<span class="param-type">jQuery</span>
 
 
 
@@ -208,20 +205,20 @@
 
             
 
-            <td class="description last"><p>Der mit der Karte assoziierte Controller.</p></td>
+            <td class="description last"><p>Html Element für die Anzeige der Nennleistung</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>moveablePolygons</code></td>
+                <td class="name"><code>panelPerYear</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;L.polygon></span>
+<span class="param-type">jQuery</span>
 
 
 
@@ -232,20 +229,20 @@
 
             
 
-            <td class="description last"><p>Liste aller beweglichen Polygonen.</p></td>
+            <td class="description last"><p>Html Element für die Anzeige den Stromertrag pro Jahr</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>nonMoveablePolygon</code></td>
+                <td class="name"><code>warningContainer</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;L.polygon></span>
+<span class="param-type">jQuery</span>
 
 
 
@@ -256,20 +253,20 @@
 
             
 
-            <td class="description last"><p>Liste aller unbeweglicher Polygone.</p></td>
+            <td class="description last"><p>Html Element für die Warnung</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>selectedPolygon</code></td>
+                <td class="name"><code>warningMessage</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">L.polygon</span>
+<span class="param-type">jQuery</span>
 
 
 
@@ -280,20 +277,20 @@
 
             
 
-            <td class="description last"><p>Aktuell ausgewähltes Polygon.</p></td>
+            <td class="description last"><p>Html Element für die Anzeige der Warnung</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>d3Overlay</code></td>
+                <td class="name"><code>panel</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">L.d3SvgOverlay</span>
+<span class="param-type">object</span>
 
 
 
@@ -304,20 +301,62 @@
 
             
 
-            <td class="description last"><p>Layer zur Berechnung von Koordinaten.</p></td>
+            <td class="description last"><p>Panel hält die Daten für die Anzeige</p>
+                <h6>Properties</h6>
+
+<table class="props table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>counter</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Hält die Anzahl der Panels</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>handlerGroup</code></td>
+                <td class="name"><code>area</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">L.LayerGroup</span>
+<span class="param-type">number</span>
 
 
 
@@ -328,7 +367,62 @@
 
             
 
-            <td class="description last"><p>Layer mit beweglichen Polygonen.</p></td>
+            <td class="description last"><p>Hält die Anzahl der Panels</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>nominal</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Hält die Anzahl der Panels</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>perYear</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Hält die Anzahl der Panels</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -369,8 +463,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="new_View_Map.js.html">new/View/Map.js</a>,
-				 <a href="new_View_Map.js.html#sunlight-1-line-32">line 32</a>
+				<a href="View_EfficiencyDisplay.js.html">View/EfficiencyDisplay.js</a>,
+				 <a href="View_EfficiencyDisplay.js.html#sunlight-1-line-3">line 3</a>
 			</li>
 		</ul>
 	</dd>
@@ -421,7 +515,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="addMultiPolygon"><span class="type-signature"></span>addMultiPolygon(model)</h4>
+    <h4 class="name" id="getPanelArea"><span class="type-signature"></span>getPanelArea()</h4>
     
     
 </dt>
@@ -429,7 +523,7 @@
 
     
     <div class="description">
-        <p>Hier wird ein bewegliches Polygon als Multipolygon angelegt.<br>Dies wird mit einem Clicklistener verknüpft, außerdem werden Handler für die Rotation, Skalierung und Drag-Funktionalität eingerichtet.<br>Das Polygon wird auf der Karte dargestellt und in die Liste der beweglichen Polygone eingefügt.</p>
+        <p>Gibt die gesetzten Quadratmeter des Panelstrings wieder</p>
     </div>
     
 
@@ -438,59 +532,6 @@
     
 
     
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>model</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Panel.html">Panel</a></span>
-|
-
-<span class="param-type"><a href="PanelString.html">PanelString</a></span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Das Model, dass mit dem Polygon assoziert wird. Die Geodaten werden vom Controller ermittelt {link Controller#getGeoJSON}.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
     
 
     
@@ -528,8 +569,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="new_View_Map.js.html">new/View/Map.js</a>,
-				 <a href="new_View_Map.js.html#sunlight-1-line-97">line 97</a>
+				<a href="View_EfficiencyDisplay.js.html">View/EfficiencyDisplay.js</a>,
+				 <a href="View_EfficiencyDisplay.js.html#sunlight-1-line-58">line 58</a>
 			</li>
 		</ul>
 	</dd>
@@ -558,7 +599,7 @@
     
             
 <div class="param-desc">
-    <p>Das angelegte Polygon.</p>
+    <p>Quadratmeter</p>
 </div>
 
 
@@ -569,7 +610,7 @@
     </dt>
     <dd>
         
-<span class="param-type">L.polygon</span>
+<span class="param-type">number</span>
 
 
 
@@ -586,7 +627,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="addNonMovable"><span class="type-signature"></span>addNonMovable(model)</h4>
+    <h4 class="name" id="getPanelCounter"><span class="type-signature"></span>getPanelCounter()</h4>
     
     
 </dt>
@@ -594,7 +635,7 @@
 
     
     <div class="description">
-        <p>Hier wird ein nicht bewegliches Polygon angelegt. Das Polygon wird in den Hintergrund verschoben, um bewegliche Polygone nicht einzuschränken.<br>Das Polygon wird in die Liste der unbeweglichen Polygone eingefügt.</p>
+        <p>Gibt die Anzahl der Panels zurück</p>
     </div>
     
 
@@ -603,56 +644,6 @@
     
 
     
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>model</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Roof.html">Roof</a></span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Darzustellendes unbewegliches Model, welches mit dem Polygon verknüpft wird.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
     
 
     
@@ -690,287 +681,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="new_View_Map.js.html">new/View/Map.js</a>,
-				 <a href="new_View_Map.js.html#sunlight-1-line-183">line 183</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="changeMapProvider"><span class="type-signature"></span>changeMapProvider(layer)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Es wird der übergebe Layer als Kartenlayer angezeigt und der vorher ausgewählte wird entfernt.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>layer</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">L.tileLayer</span>
-|
-
-<span class="param-type">L.gridLayer.googleMutant</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Kartenlayer</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="new_View_Map.js.html">new/View/Map.js</a>,
-				 <a href="new_View_Map.js.html#sunlight-1-line-273">line 273</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="containerPointToLatLng"><span class="type-signature"></span>containerPointToLatLng(point)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Konvertiert Längen- und Breitengrad zu dem entsprechendem Punkt (X/Y-Koordinaten).<br>Unter Berücksichtigung der Größe des entsprechenden HTML-Elementes.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>point</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">L.point</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Punkt auf der Karte</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="new_View_Map.js.html">new/View/Map.js</a>,
-				 <a href="new_View_Map.js.html#sunlight-1-line-240">line 240</a>
+				<a href="View_EfficiencyDisplay.js.html">View/EfficiencyDisplay.js</a>,
+				 <a href="View_EfficiencyDisplay.js.html#sunlight-1-line-39">line 39</a>
 			</li>
 		</ul>
 	</dd>
@@ -999,7 +711,7 @@
     
             
 <div class="param-desc">
-    <p>Längen-, Breitengrad</p>
+    <p>Anzahl der Panels</p>
 </div>
 
 
@@ -1010,7 +722,7 @@
     </dt>
     <dd>
         
-<span class="param-type">L.latLng</span>
+<span class="param-type">number</span>
 
 
 
@@ -1027,7 +739,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="init"><span class="type-signature"></span>init()</h4>
+    <h4 class="name" id="getPanelNominal"><span class="type-signature"></span>getPanelNominal()</h4>
     
     
 </dt>
@@ -1035,7 +747,7 @@
 
     
     <div class="description">
-        <p>Initialisierung der Karte, hier werden die Buttons mit Funktionen der Karte verknüpft und die Karte vom Kartenprovider geladen.</p>
+        <p>Gibt die gesetzte Nennleistung zurück</p>
     </div>
     
 
@@ -1081,146 +793,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="new_View_Map.js.html">new/View/Map.js</a>,
-				 <a href="new_View_Map.js.html#sunlight-1-line-47">line 47</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="latLngToLayerPoint"><span class="type-signature"></span>latLngToLayerPoint(latLng)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Konvertiert Längen- und Breitengrad zu dem entsprechendem Punkt (X/Y-Koordinaten).</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>latLng</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">L.latLng</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Koordinaten als Längen-, Breitengrad</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="new_View_Map.js.html">new/View/Map.js</a>,
-				 <a href="new_View_Map.js.html#sunlight-1-line-228">line 228</a>
+				<a href="View_EfficiencyDisplay.js.html">View/EfficiencyDisplay.js</a>,
+				 <a href="View_EfficiencyDisplay.js.html#sunlight-1-line-77">line 77</a>
 			</li>
 		</ul>
 	</dd>
@@ -1249,7 +823,7 @@
     
             
 <div class="param-desc">
-    <p>Punkt auf der Karte</p>
+    <p>Nennleistung</p>
 </div>
 
 
@@ -1260,7 +834,7 @@
     </dt>
     <dd>
         
-<span class="param-type">L.point</span>
+<span class="param-type">number</span>
 
 
 
@@ -1277,7 +851,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="layerPointToLatLng"><span class="type-signature"></span>layerPointToLatLng(point)</h4>
+    <h4 class="name" id="getPerYear"><span class="type-signature"></span>getPerYear()</h4>
     
     
 </dt>
@@ -1285,7 +859,7 @@
 
     
     <div class="description">
-        <p>Konvertiert einen Punkt auf der Karte zu einem Längen- und Breitengrad.</p>
+        <p>Gibt den gesetzten Stromertrag zurück</p>
     </div>
     
 
@@ -1294,56 +868,6 @@
     
 
     
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>point</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">L.point</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Punkt auf der Karte.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
     
 
     
@@ -1381,8 +905,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="new_View_Map.js.html">new/View/Map.js</a>,
-				 <a href="new_View_Map.js.html#sunlight-1-line-218">line 218</a>
+				<a href="View_EfficiencyDisplay.js.html">View/EfficiencyDisplay.js</a>,
+				 <a href="View_EfficiencyDisplay.js.html#sunlight-1-line-96">line 96</a>
 			</li>
 		</ul>
 	</dd>
@@ -1411,7 +935,7 @@
     
             
 <div class="param-desc">
-    <p>Längen-, Breitengrad.</p>
+    <p>Stromertrag</p>
 </div>
 
 
@@ -1422,7 +946,7 @@
     </dt>
     <dd>
         
-<span class="param-type">L.latLng</span>
+<span class="param-type">number</span>
 
 
 
@@ -1439,7 +963,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="removeAllNonMoveable"><span class="type-signature"></span>removeAllNonMoveable()</h4>
+    <h4 class="name" id="hideWarning"><span class="type-signature"></span>hideWarning()</h4>
     
     
 </dt>
@@ -1447,7 +971,7 @@
 
     
     <div class="description">
-        <p>Entfernt alle nicht beweglichen Polygone von der Karte und aus der Liste der nicht beweglichen Polygone.</p>
+        <p>Verbirgt den Warnhinweis</p>
     </div>
     
 
@@ -1493,8 +1017,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="new_View_Map.js.html">new/View/Map.js</a>,
-				 <a href="new_View_Map.js.html#sunlight-1-line-193">line 193</a>
+				<a href="View_EfficiencyDisplay.js.html">View/EfficiencyDisplay.js</a>,
+				 <a href="View_EfficiencyDisplay.js.html#sunlight-1-line-124">line 124</a>
 			</li>
 		</ul>
 	</dd>
@@ -1527,7 +1051,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="removeSelected"><span class="type-signature"></span>removeSelected()</h4>
+    <h4 class="name" id="setPanelArea"><span class="type-signature"></span>setPanelArea(squareMeter)</h4>
     
     
 </dt>
@@ -1535,95 +1059,7 @@
 
     
     <div class="description">
-        <p>Es wird das ausgewählte Panel von der Karte und aus der Liste der beweglichen Polygone entfernt.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="new_View_Map.js.html">new/View/Map.js</a>,
-				 <a href="new_View_Map.js.html#sunlight-1-line-285">line 285</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="selectPolygon"><span class="type-signature"></span>selectPolygon(selectedPolygon)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Es wird angegeben, welches Polygon Objekt ausgewählt wurde.<br>Hierzu wird noch zusätzlich die <a href="Controller.html#connectModelWithToolbar">Controller#connectModelWithToolbar</a> aktiviert,<br>um Einstellungen für die das selektiere Polygon durchzuführen.</p>
+        <p>Setzt die Quadratmeter der Panelstring Fläche und zeigt diese an</p>
     </div>
     
 
@@ -1658,145 +1094,7 @@
 
         <tr>
             
-                <td class="name"><code>selectedPolygon</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">L.polygon</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Ausgewähltes Polygon-Objekt.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="new_View_Map.js.html">new/View/Map.js</a>,
-				 <a href="new_View_Map.js.html#sunlight-1-line-84">line 84</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="setFocus"><span class="type-signature"></span>setFocus(lat, lng)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Die Karte wird auf die übergebenen Koordinaten, mit der Standardzoomstufe, zentriert.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>lat</code></td>
+                <td class="name"><code>squareMeter</code></td>
             
 
             <td class="type">
@@ -1813,31 +1111,7 @@
 
             
 
-            <td class="description last"><p>Längengrad (latitude)</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>lng</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Breitengrad (longitude)</p></td>
+            <td class="description last"><p>Quadratmeter</p></td>
         </tr>
 
     
@@ -1881,8 +1155,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="new_View_Map.js.html">new/View/Map.js</a>,
-				 <a href="new_View_Map.js.html#sunlight-1-line-205">line 205</a>
+				<a href="View_EfficiencyDisplay.js.html">View/EfficiencyDisplay.js</a>,
+				 <a href="View_EfficiencyDisplay.js.html#sunlight-1-line-67">line 67</a>
 			</li>
 		</ul>
 	</dd>
@@ -1915,7 +1189,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="showGoogle"><span class="type-signature"></span>showGoogle()</h4>
+    <h4 class="name" id="setPanelCounter"><span class="type-signature"></span>setPanelCounter(counter)</h4>
     
     
 </dt>
@@ -1923,7 +1197,7 @@
 
     
     <div class="description">
-        <p>Zeigt als Kartenlayer Google Maps an</p>
+        <p>Setzt die Anzahl der Panels und zeigt die an.</p>
     </div>
     
 
@@ -1932,6 +1206,56 @@
     
 
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>counter</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Anzahl der Panels</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
     
 
     
@@ -1969,8 +1293,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="new_View_Map.js.html">new/View/Map.js</a>,
-				 <a href="new_View_Map.js.html#sunlight-1-line-247">line 247</a>
+				<a href="View_EfficiencyDisplay.js.html">View/EfficiencyDisplay.js</a>,
+				 <a href="View_EfficiencyDisplay.js.html#sunlight-1-line-48">line 48</a>
 			</li>
 		</ul>
 	</dd>
@@ -2003,7 +1327,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="showOpenstreet"><span class="type-signature"></span>showOpenstreet()</h4>
+    <h4 class="name" id="setPanelNominal"><span class="type-signature"></span>setPanelNominal(nominal)</h4>
     
     
 </dt>
@@ -2011,7 +1335,7 @@
 
     
     <div class="description">
-        <p>Zeigt als Kartenlayer Openstreetmap an</p>
+        <p>Setzt die Nennleistung und zeigt diese an</p>
     </div>
     
 
@@ -2020,6 +1344,56 @@
     
 
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>nominal</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Nennleistung</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
     
 
     
@@ -2057,8 +1431,284 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="new_View_Map.js.html">new/View/Map.js</a>,
-				 <a href="new_View_Map.js.html#sunlight-1-line-258">line 258</a>
+				<a href="View_EfficiencyDisplay.js.html">View/EfficiencyDisplay.js</a>,
+				 <a href="View_EfficiencyDisplay.js.html#sunlight-1-line-86">line 86</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="setPerYear"><span class="type-signature"></span>setPerYear(perYear)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Setzt den Stromertrag pro Jahr und zeigt diesen an</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>perYear</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Stromertrag</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="View_EfficiencyDisplay.js.html">View/EfficiencyDisplay.js</a>,
+				 <a href="View_EfficiencyDisplay.js.html#sunlight-1-line-105">line 105</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="showWarning"><span class="type-signature"></span>showWarning(warning)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Zeigt den Warnhinweis, mit der übergeben Warnung, an.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>warning</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Warnung</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="View_EfficiencyDisplay.js.html">View/EfficiencyDisplay.js</a>,
+				 <a href="View_EfficiencyDisplay.js.html#sunlight-1-line-115">line 115</a>
 			</li>
 		</ul>
 	</dd>

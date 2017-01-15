@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>DocStrap Class: ServerHandler</title>
+	<title>DocStrap Class: Map</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -72,13 +72,13 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Class: ServerHandler</h1>
+	<h1 class="page-title">Class: Map</h1>
 <section>
 
 <header>
     
         <h2>
-        ServerHandler
+        Map
         </h2>
         
     
@@ -91,7 +91,7 @@
         
 <hr>
 <dt>
-    <h4 class="name" id="ServerHandler"><span class="type-signature"></span>new ServerHandler(url)</h4>
+    <h4 class="name" id="Map"><span class="type-signature"></span>new Map()</h4>
     
     
 </dt>
@@ -99,7 +99,7 @@
 
     
     <div class="description">
-        <p>Konstruiert ein ServerHandler-Objekt, dass die Kommunikation<br>mit der REST-Schnittstelle des als Parameter angegebenen Servers übernimmt.</p>
+        <p>Konstruktor des Map-Objektes.<br>Das Map-Objekt ist eine Containerklasse zur Darstellung von Karten der Kartenprovider GoogleMaps und Openstreetmap.<br>Darüberhinaus das Objekt der Visualisierung von beweglichen und unbeweglichen Polygonen.</p>
     </div>
     
 
@@ -108,56 +108,6 @@
     
 
     
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>url</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Die URL des Servers mit dem kommuniziert werden soll.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
     
 
     
@@ -190,13 +140,13 @@
 
         <tr>
             
-                <td class="name"><code>serverUrl</code></td>
+                <td class="name"><code>map</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">L.map</span>
 
 
 
@@ -207,20 +157,23 @@
 
             
 
-            <td class="description last"><p>Die URL des Servers.</p></td>
+            <td class="description last"><p>Karte die dargestellt wird.</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>errorFunction</code></td>
+                <td class="name"><code>mapProvider</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type">L.tileLayer</span>
+|
+
+<span class="param-type">L.gridLayer.googleMutant</span>
 
 
 
@@ -231,7 +184,151 @@
 
             
 
-            <td class="description last"><p>Eine Standardfunktion, die im Fehlerfall ausgeführt wird.</p></td>
+            <td class="description last"><p>Layer der Karte die dargestellt wird.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>controller</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Controller.html">Controller</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Der mit der Karte assoziierte Controller.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>moveablePolygons</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;L.polygon></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Liste aller beweglichen Polygonen.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>nonMoveablePolygon</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;L.polygon></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Liste aller unbeweglicher Polygone.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>selectedPolygon</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">L.polygon</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Aktuell ausgewähltes Polygon.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>d3Overlay</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">L.d3SvgOverlay</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Layer zur Berechnung von Koordinaten.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>handlerGroup</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">L.LayerGroup</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Layer mit beweglichen Polygonen.</p></td>
         </tr>
 
     
@@ -272,8 +369,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="new_Handler_ServerHandler.js.html">new/Handler/ServerHandler.js</a>,
-				 <a href="new_Handler_ServerHandler.js.html#sunlight-1-line-10">line 10</a>
+				<a href="View_Map.js.html">View/Map.js</a>,
+				 <a href="View_Map.js.html#sunlight-1-line-33">line 33</a>
 			</li>
 		</ul>
 	</dd>
@@ -324,7 +421,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="getCookie"><span class="type-signature"></span>getCookie(id, callback)</h4>
+    <h4 class="name" id="addMultiPolygon"><span class="type-signature"></span>addMultiPolygon(model)</h4>
     
     
 </dt>
@@ -332,7 +429,7 @@
 
     
     <div class="description">
-        <p>Löst den GET-Request cookie/getCookie/, des in der URL des ServerHandlers gespeicherten Servers, aus.<br>Die Anfrage hat die Form &quot;URL/cookie/getCookie/id&quot;</p>
+        <p>Hier wird ein bewegliches Polygon als Multipolygon angelegt.<br>Dies wird mit einem Clicklistener verknüpft, außerdem werden Handler für die Rotation, Skalierung und Drag-Funktionalität eingerichtet.<br>Das Polygon wird auf der Karte dargestellt und in die Liste der beweglichen Polygone eingefügt.</p>
     </div>
     
 
@@ -363,726 +460,6 @@
     </thead>
 
     <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>id</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Die ID, die der Serverfunktion übergeben wird.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>callback</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Die Funktion, die im Erfolgfall aufgerufen werden soll. Die Funktion erhält den vom Server enhaltende Response.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="new_Handler_ServerHandler.js.html">new/Handler/ServerHandler.js</a>,
-				 <a href="new_Handler_ServerHandler.js.html#sunlight-1-line-22">line 22</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="getPredefinedRoof"><span class="type-signature"></span>getPredefinedRoof(street, nr, citycode, callback)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Löst den GET-Request dach/getPredefinedRoof/ des in der URL des ServerHandlers gespeicherten Servers aus.<br>Die Anfrage hat die Form &quot;URL/dach/getPredefinedRoof/street/nr/citycode&quot;</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>street</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Der Straßenname, der dem Server übergeben wird.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>nr</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Die Hausnummer, die dem Server übergeben wird.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>citycode</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Die Postleitzahl, die dem Server übergeben wird.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>callback</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Die Funktion, die im Erfolgfall aufgerufen werden soll. Die Funktion erhält den vom Server enhaltenen Response.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="new_Handler_ServerHandler.js.html">new/Handler/ServerHandler.js</a>,
-				 <a href="new_Handler_ServerHandler.js.html#sunlight-1-line-36">line 36</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="getRoofParts"><span class="type-signature"></span>getRoofParts(gid, callback)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Löst den GET-Request dach/getRoofParts/ ,des in der URL des ServerHandlers gespeicherten Servers, aus.<br>Die Anfrage hat die Form &quot;URL/dach/getRoofParts/gid&quot;</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>gid</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Die GebäudeID, die dem Server übergeben wird.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>callback</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Die Funktion, die im Erfolgfall aufgerufen werden soll. Die Funktion erhält den vom Server erhaltende Response.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="new_Handler_ServerHandler.js.html">new/Handler/ServerHandler.js</a>,
-				 <a href="new_Handler_ServerHandler.js.html#sunlight-1-line-48">line 48</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="postCookie"><span class="type-signature"></span>postCookie(json, callback)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Löst den POST-Request, des in der URL des ServerHandlers gespeichtern Servers, aus.<br>Die Server-Funktion &quot;cookie/postCookie&quot; wird genutzt.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>json</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Das JSON-Objekt, als String, welches dem Server übermittelt wird.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>callback</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Die Funktion, die im Erfolgfall aufgerufen werden soll. Die Funktion erhält den vom Server erhaltende Response.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="new_Handler_ServerHandler.js.html">new/Handler/ServerHandler.js</a>,
-				 <a href="new_Handler_ServerHandler.js.html#sunlight-1-line-72">line 72</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="postPanel"><span class="type-signature"></span>postPanel(json, model, callback)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Löst den POST-Request, des in der URL des ServerHandlers gespeichtern Servers, aus.<br>Die Server-Funktion &quot;panel/postPanel&quot; wird genutzt.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>json</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Das JSON-Objekt, als String, welches dem Server übermittelt wird.</p></td>
-        </tr>
-
     
 
         <tr>
@@ -1094,6 +471,9 @@
             
                 
 <span class="param-type"><a href="Panel.html">Panel</a></span>
+|
+
+<span class="param-type"><a href="PanelString.html">PanelString</a></span>
 
 
 
@@ -1104,31 +484,7 @@
 
             
 
-            <td class="description last"><p>Das Panel, welches im Erfolgsfall der Callbackfunktion übergeben wird.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>callback</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Die Funktion, die im Erfolgfall aufgerufen werden soll.<br>Die Funktion erhält den vom Server enhaltenen Response und das Model welches postPanel-Funktion übergeben wurde.</p></td>
+            <td class="description last"><p>Das Model, dass mit dem Polygon assoziert wird. Die Geodaten werden vom Controller ermittelt {link Controller#getGeoJSON}.</p></td>
         </tr>
 
     
@@ -1172,8 +528,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="new_Handler_ServerHandler.js.html">new/Handler/ServerHandler.js</a>,
-				 <a href="new_Handler_ServerHandler.js.html#sunlight-1-line-86">line 86</a>
+				<a href="View_Map.js.html">View/Map.js</a>,
+				 <a href="View_Map.js.html#sunlight-1-line-102">line 102</a>
 			</li>
 		</ul>
 	</dd>
@@ -1198,6 +554,30 @@
     
 
     
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Das angelegte Polygon.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">L.polygon</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
 
     
 </dd>
@@ -1206,7 +586,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="postRoof"><span class="type-signature"></span>postRoof(json, callback)</h4>
+    <h4 class="name" id="addNonMovable"><span class="type-signature"></span>addNonMovable(model)</h4>
     
     
 </dt>
@@ -1214,7 +594,7 @@
 
     
     <div class="description">
-        <p>Löst den POST-Request, des in der URL des ServerHandlers gespeicherten Servers, aus.<br>Die Server-Funktion &quot;dach/postRoof&quot; wird genutzt.</p>
+        <p>Hier wird ein nicht bewegliches Polygon angelegt. Das Polygon wird in den Hintergrund verschoben, um bewegliche Polygone nicht einzuschränken.<br>Das Polygon wird in die Liste der unbeweglichen Polygone eingefügt.</p>
     </div>
     
 
@@ -1249,13 +629,13 @@
 
         <tr>
             
-                <td class="name"><code>json</code></td>
+                <td class="name"><code>model</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type"><a href="Roof.html">Roof</a></span>
 
 
 
@@ -1266,31 +646,7 @@
 
             
 
-            <td class="description last"><p>Das JSON-Objekt, als String, welches dem Server übermittelt wird.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>callback</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Die Funktion, die im Erfolgfall aufgerufen werden soll. Die Funktion erhält den vom Server enhaltenen Response.</p></td>
+            <td class="description last"><p>Darzustellendes unbewegliches Model, welches mit dem Polygon verknüpft wird.</p></td>
         </tr>
 
     
@@ -1334,8 +690,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="new_Handler_ServerHandler.js.html">new/Handler/ServerHandler.js</a>,
-				 <a href="new_Handler_ServerHandler.js.html#sunlight-1-line-109">line 109</a>
+				<a href="View_Map.js.html">View/Map.js</a>,
+				 <a href="View_Map.js.html#sunlight-1-line-188">line 188</a>
 			</li>
 		</ul>
 	</dd>
@@ -1368,7 +724,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="removePanel"><span class="type-signature"></span>removePanel(id, callback)</h4>
+    <h4 class="name" id="changeMapProvider"><span class="type-signature"></span>changeMapProvider(layer)</h4>
     
     
 </dt>
@@ -1376,7 +732,7 @@
 
     
     <div class="description">
-        <p>Löst den GET-Request panel/removePanel/, des in der URL des ServerHandlers gespeicherten Servers, aus.<br>Die Anfrage hat die Form &quot;URL/panel/removePanel/id&quot;</p>
+        <p>Es wird der übergebe Layer als Kartenlayer angezeigt und der vorher ausgewählte wird entfernt.</p>
     </div>
     
 
@@ -1411,7 +767,1052 @@
 
         <tr>
             
-                <td class="name"><code>id</code></td>
+                <td class="name"><code>layer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">L.tileLayer</span>
+|
+
+<span class="param-type">L.gridLayer.googleMutant</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Kartenlayer</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="View_Map.js.html">View/Map.js</a>,
+				 <a href="View_Map.js.html#sunlight-1-line-278">line 278</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="containerPointToLatLng"><span class="type-signature"></span>containerPointToLatLng(point)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Konvertiert Längen- und Breitengrad zu dem entsprechendem Punkt (X/Y-Koordinaten).<br>Unter Berücksichtigung der Größe des entsprechenden HTML-Elementes.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>point</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">L.point</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Punkt auf der Karte</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="View_Map.js.html">View/Map.js</a>,
+				 <a href="View_Map.js.html#sunlight-1-line-245">line 245</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Längen-, Breitengrad</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">L.latLng</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="init"><span class="type-signature"></span>init()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Initialisierung der Karte, hier werden die Buttons mit Funktionen der Karte verknüpft und die Karte vom Kartenprovider geladen.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="View_Map.js.html">View/Map.js</a>,
+				 <a href="View_Map.js.html#sunlight-1-line-48">line 48</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="latLngToLayerPoint"><span class="type-signature"></span>latLngToLayerPoint(latLng)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Konvertiert Längen- und Breitengrad zu dem entsprechendem Punkt (X/Y-Koordinaten).</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>latLng</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">L.latLng</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Koordinaten als Längen-, Breitengrad</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="View_Map.js.html">View/Map.js</a>,
+				 <a href="View_Map.js.html#sunlight-1-line-233">line 233</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Punkt auf der Karte</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">L.point</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="layerPointToLatLng"><span class="type-signature"></span>layerPointToLatLng(point)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Konvertiert einen Punkt auf der Karte zu einem Längen- und Breitengrad.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>point</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">L.point</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Punkt auf der Karte.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="View_Map.js.html">View/Map.js</a>,
+				 <a href="View_Map.js.html#sunlight-1-line-223">line 223</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Längen-, Breitengrad.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">L.latLng</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="removeAllNonMoveable"><span class="type-signature"></span>removeAllNonMoveable()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Entfernt alle nicht beweglichen Polygone von der Karte und aus der Liste der nicht beweglichen Polygone.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="View_Map.js.html">View/Map.js</a>,
+				 <a href="View_Map.js.html#sunlight-1-line-198">line 198</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="removeSelected"><span class="type-signature"></span>removeSelected()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Es wird das ausgewählte Panel von der Karte und aus der Liste der beweglichen Polygone entfernt.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="View_Map.js.html">View/Map.js</a>,
+				 <a href="View_Map.js.html#sunlight-1-line-290">line 290</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="selectPolygon"><span class="type-signature"></span>selectPolygon(selectedPolygon)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Es wird angegeben, welches Polygon Objekt ausgewählt wurde.<br>Hierzu wird noch zusätzlich die <a href="Controller.html#connectModelWithToolbar">Controller#connectModelWithToolbar</a> aktiviert,<br>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
+<h1>um Einstellungen für die das selektiere Polygon durchzuführen.</h1><p>um Einstellungen für die Panels vorzunehmen.</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>217180dd2d807bf347dc9f3f1d17bd23add5b3f2</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>selectedPolygon</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">L.polygon</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Ausgewähltes Polygon-Objekt.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="View_Map.js.html">View/Map.js</a>,
+				 <a href="View_Map.js.html#sunlight-1-line-89">line 89</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="setFocus"><span class="type-signature"></span>setFocus(lat, lng)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Die Karte wird auf die übergebenen Koordinaten, mit der Standardzoomstufe, zentriert.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>lat</code></td>
             
 
             <td class="type">
@@ -1428,20 +1829,20 @@
 
             
 
-            <td class="description last"><p>Die PanelID, die dem Server übergeben wird.</p></td>
+            <td class="description last"><p>Längengrad (latitude)</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>callback</code></td>
+                <td class="name"><code>lng</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type">number</span>
 
 
 
@@ -1452,7 +1853,7 @@
 
             
 
-            <td class="description last"><p>Die Funktion, die im Erfolgfall aufgerufen werden soll. Die Funktion erhält den vom Server erhaltende Response.</p></td>
+            <td class="description last"><p>Breitengrad (longitude)</p></td>
         </tr>
 
     
@@ -1496,8 +1897,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="new_Handler_ServerHandler.js.html">new/Handler/ServerHandler.js</a>,
-				 <a href="new_Handler_ServerHandler.js.html#sunlight-1-line-60">line 60</a>
+				<a href="View_Map.js.html">View/Map.js</a>,
+				 <a href="View_Map.js.html#sunlight-1-line-210">line 210</a>
 			</li>
 		</ul>
 	</dd>
@@ -1530,7 +1931,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="updatePanel"><span class="type-signature"></span>updatePanel(json, callback)</h4>
+    <h4 class="name" id="showGoogle"><span class="type-signature"></span>showGoogle()</h4>
     
     
 </dt>
@@ -1538,7 +1939,7 @@
 
     
     <div class="description">
-        <p>Löst den POST-Request, des in der URL des ServerHandlers gespeicherten Servers, aus.<br> Die Server-Funktion &quot;panel/updatePanel&quot; wird genutzt.</p>
+        <p>Zeigt als Kartenlayer Google Maps an</p>
     </div>
     
 
@@ -1547,80 +1948,6 @@
     
 
     
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>json</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Das JSON-Objekt, als String, welches dem Server übermittelt wird.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>callback</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Die Funktion, die im Erfolgfall aufgerufen werden soll. Die Funktion erhält den vom Server enhaltenen Response.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
     
 
     
@@ -1658,8 +1985,96 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="new_Handler_ServerHandler.js.html">new/Handler/ServerHandler.js</a>,
-				 <a href="new_Handler_ServerHandler.js.html#sunlight-1-line-98">line 98</a>
+				<a href="View_Map.js.html">View/Map.js</a>,
+				 <a href="View_Map.js.html#sunlight-1-line-252">line 252</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="showOpenstreet"><span class="type-signature"></span>showOpenstreet()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Zeigt als Kartenlayer Openstreetmap an</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="View_Map.js.html">View/Map.js</a>,
+				 <a href="View_Map.js.html#sunlight-1-line-263">line 263</a>
 			</li>
 		</ul>
 	</dd>

@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>DocStrap Class: EfficiencyDisplay</title>
+	<title>DocStrap Class: Toolbar</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -72,13 +72,13 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Class: EfficiencyDisplay</h1>
+	<h1 class="page-title">Class: Toolbar</h1>
 <section>
 
 <header>
     
         <h2>
-        EfficiencyDisplay
+        Toolbar
         </h2>
         
     
@@ -91,7 +91,7 @@
         
 <hr>
 <dt>
-    <h4 class="name" id="EfficiencyDisplay"><span class="type-signature"></span>new EfficiencyDisplay()</h4>
+    <h4 class="name" id="Toolbar"><span class="type-signature"></span>new Toolbar(model)</h4>
     
     
 </dt>
@@ -99,7 +99,7 @@
 
     
     <div class="description">
-        <p>Repräsentiert die Anzeige für die Effizienz</p>
+        <p>Die Toolbar dient dazu Einstellungen an einem <a href="PanelString.html">PanelString</a> oder <a href="Panel.html">Panel</a> vorzunehmen.<br>Modifizierbar sind Breite, Länge, Ausrichtung, Neigung und Rahmenbreite.</p>
     </div>
     
 
@@ -108,6 +108,59 @@
     
 
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>model</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Panel.html">Panel</a></span>
+|
+
+<span class="param-type"><a href="PanelString.html">PanelString</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Model, welches bearbeitet werden soll.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
     
 
     
@@ -140,7 +193,58 @@
 
         <tr>
             
-                <td class="name"><code>panelCounter</code></td>
+                <td class="name"><code>isPanelString</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Hält die Information ob es sich hierbei um einem <a href="PanelString.html">PanelString</a> oder <a href="Panel.html">Panel</a> handelt.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>selectedModel</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Panel.html">Panel</a></span>
+|
+
+<span class="param-type"><a href="PanelString.html">PanelString</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Ausgewähltes Modell.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>toolsContainer</code></td>
             
 
             <td class="type">
@@ -157,14 +261,14 @@
 
             
 
-            <td class="description last"><p>Html Element für die Anzeige der Panelanzahl</p></td>
+            <td class="description last"><p>Das HTML-Element für die Werkzeugleiste.</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>panelArea</code></td>
+                <td class="name"><code>toolsHeadline</code></td>
             
 
             <td class="type">
@@ -181,14 +285,14 @@
 
             
 
-            <td class="description last"><p>Html Element für die Anzeige der Quatratmeter</p></td>
+            <td class="description last"><p>HTML Element für die Überschrift</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>panelNominal</code></td>
+                <td class="name"><code>modelTilt</code></td>
             
 
             <td class="type">
@@ -205,14 +309,14 @@
 
             
 
-            <td class="description last"><p>Html Element für die Anzeige der Nennleistung</p></td>
+            <td class="description last"><p>Slider für die Einstellung der Neigung</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>panelPerYear</code></td>
+                <td class="name"><code>modelTiltValue</code></td>
             
 
             <td class="type">
@@ -229,14 +333,14 @@
 
             
 
-            <td class="description last"><p>Html Element für die Anzeige den Stromertrag pro Jahr</p></td>
+            <td class="description last"><p>HTML Element für den Wert der Neigung</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>warningContainer</code></td>
+                <td class="name"><code>modelWidth</code></td>
             
 
             <td class="type">
@@ -253,14 +357,14 @@
 
             
 
-            <td class="description last"><p>Html Element für die Warnung</p></td>
+            <td class="description last"><p>Slider für die Einstellung der Breite</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>warningMessage</code></td>
+                <td class="name"><code>modelWidthValue</code></td>
             
 
             <td class="type">
@@ -277,20 +381,20 @@
 
             
 
-            <td class="description last"><p>Html Element für die Anzeige der Warnung</p></td>
+            <td class="description last"><p>HTML Element für die Anzeige der Breite</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>panel</code></td>
+                <td class="name"><code>modelHeight</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">object</span>
+<span class="param-type">jQuery</span>
 
 
 
@@ -301,62 +405,20 @@
 
             
 
-            <td class="description last"><p>Panel hält die Daten für die Anzeige</p>
-                <h6>Properties</h6>
-
-<table class="props table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>counter</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Hält die Anzahl der Panels</p></td>
+            <td class="description last"><p>Slider für die EInstellung der Höhe</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>area</code></td>
+                <td class="name"><code>modelHeightValue</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">jQuery</span>
 
 
 
@@ -367,20 +429,20 @@
 
             
 
-            <td class="description last"><p>Hält die Anzahl der Panels</p></td>
+            <td class="description last"><p>HTML Element für die Anzeige der Höhe</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>nominal</code></td>
+                <td class="name"><code>modelOrientation</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">jQuery</span>
 
 
 
@@ -391,20 +453,20 @@
 
             
 
-            <td class="description last"><p>Hält die Anzahl der Panels</p></td>
+            <td class="description last"><p>Slider für die Einstellung der Orientierung</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>perYear</code></td>
+                <td class="name"><code>modelOrientationValue</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">jQuery</span>
 
 
 
@@ -415,14 +477,127 @@
 
             
 
-            <td class="description last"><p>Hält die Anzahl der Panels</p></td>
+            <td class="description last"><p>HTML Element für die Anzeige der Orientierung</p></td>
         </tr>
 
     
-    </tbody>
-</table>
 
+        <tr>
+            
+                <td class="name"><code>modelFrame</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">jQuery</span>
+
+
+
+            
             </td>
+
+            
+
+            
+
+            <td class="description last"><p>Slider für die Einstellung der Rahmenbreite</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>modelFrameValue</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">jQuery</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>HTML Element für die Anzeige der Rahmenbreite</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>modelDelete</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">jQuery</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Button für die Löschung des Panels</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>moreContent</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">jQuery</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>HTML Kontainer der weitere Einstellungsmöglichkeiten versteckt</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>showMoreButton</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">jQuery</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Button für die Klickevents von moreContent</p></td>
         </tr>
 
     
@@ -463,8 +638,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="new_View_EfficiencyDisplay.js.html">new/View/EfficiencyDisplay.js</a>,
-				 <a href="new_View_EfficiencyDisplay.js.html#sunlight-1-line-3">line 3</a>
+				<a href="View_Toolbar.js.html">View/Toolbar.js</a>,
+				 <a href="View_Toolbar.js.html#sunlight-1-line-27">line 27</a>
 			</li>
 		</ul>
 	</dd>
@@ -515,7 +690,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="getPanelArea"><span class="type-signature"></span>getPanelArea()</h4>
+    <h4 class="name" id="frameWidthSlider"><span class="type-signature"></span>frameWidthSlider()</h4>
     
     
 </dt>
@@ -523,7 +698,7 @@
 
     
     <div class="description">
-        <p>Gibt die gesetzten Quadratmeter des Panelstrings wieder</p>
+        <p>Gewährt den Zugriff auf das Slider Element für die Rahmenbreite und gleichzeitig werden<br>die Werte bei einer Änderung in der Ansicht aktualisiert.</p>
     </div>
     
 
@@ -569,8 +744,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="new_View_EfficiencyDisplay.js.html">new/View/EfficiencyDisplay.js</a>,
-				 <a href="new_View_EfficiencyDisplay.js.html#sunlight-1-line-58">line 58</a>
+				<a href="View_Toolbar.js.html">View/Toolbar.js</a>,
+				 <a href="View_Toolbar.js.html#sunlight-1-line-194">line 194</a>
 			</li>
 		</ul>
 	</dd>
@@ -599,7 +774,7 @@
     
             
 <div class="param-desc">
-    <p>Quadratmeter</p>
+    <p>Slider für die Rahmenbreite</p>
 </div>
 
 
@@ -610,7 +785,7 @@
     </dt>
     <dd>
         
-<span class="param-type">number</span>
+<span class="param-type">jQuery</span>
 
 
 
@@ -627,7 +802,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="getPanelCounter"><span class="type-signature"></span>getPanelCounter()</h4>
+    <h4 class="name" id="heightSlider"><span class="type-signature"></span>heightSlider()</h4>
     
     
 </dt>
@@ -635,7 +810,7 @@
 
     
     <div class="description">
-        <p>Gibt die Anzahl der Panels zurück</p>
+        <p>Gewährt den Zugriff auf das Slider Element für die Höhe und gleichzeitig werden<br>die Werte bei einer Änderung in der Ansicht aktualisiert.</p>
     </div>
     
 
@@ -681,8 +856,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="new_View_EfficiencyDisplay.js.html">new/View/EfficiencyDisplay.js</a>,
-				 <a href="new_View_EfficiencyDisplay.js.html#sunlight-1-line-39">line 39</a>
+				<a href="View_Toolbar.js.html">View/Toolbar.js</a>,
+				 <a href="View_Toolbar.js.html#sunlight-1-line-155">line 155</a>
 			</li>
 		</ul>
 	</dd>
@@ -711,7 +886,7 @@
     
             
 <div class="param-desc">
-    <p>Anzahl der Panels</p>
+    <p>Slider für die Höhe</p>
 </div>
 
 
@@ -722,7 +897,7 @@
     </dt>
     <dd>
         
-<span class="param-type">number</span>
+<span class="param-type">jQuery</span>
 
 
 
@@ -739,7 +914,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="getPanelNominal"><span class="type-signature"></span>getPanelNominal()</h4>
+    <h4 class="name" id="hideMore"><span class="type-signature"></span>hideMore()</h4>
     
     
 </dt>
@@ -747,7 +922,7 @@
 
     
     <div class="description">
-        <p>Gibt die gesetzte Nennleistung zurück</p>
+        <p>Versteckt die weiteren Einstellungen und passt die entsprechenden Elemente an.</p>
     </div>
     
 
@@ -793,8 +968,96 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="new_View_EfficiencyDisplay.js.html">new/View/EfficiencyDisplay.js</a>,
-				 <a href="new_View_EfficiencyDisplay.js.html#sunlight-1-line-77">line 77</a>
+				<a href="View_Toolbar.js.html">View/Toolbar.js</a>,
+				 <a href="View_Toolbar.js.html#sunlight-1-line-85">line 85</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="orientationSlider"><span class="type-signature"></span>orientationSlider()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Gewährt den Zugriff auf das Slider Element für die Orientierung und gleichzeitig werden<br>die Werte bei einer Änderung in der Ansicht aktualisiert.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="View_Toolbar.js.html">View/Toolbar.js</a>,
+				 <a href="View_Toolbar.js.html#sunlight-1-line-169">line 169</a>
 			</li>
 		</ul>
 	</dd>
@@ -823,7 +1086,7 @@
     
             
 <div class="param-desc">
-    <p>Nennleistung</p>
+    <p>Slider für die Orientierung</p>
 </div>
 
 
@@ -834,7 +1097,7 @@
     </dt>
     <dd>
         
-<span class="param-type">number</span>
+<span class="param-type">jQuery</span>
 
 
 
@@ -851,7 +1114,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="getPerYear"><span class="type-signature"></span>getPerYear()</h4>
+    <h4 class="name" id="pitchSlider"><span class="type-signature"></span>pitchSlider()</h4>
     
     
 </dt>
@@ -859,7 +1122,7 @@
 
     
     <div class="description">
-        <p>Gibt den gesetzten Stromertrag zurück</p>
+        <p>Gewährt den Zugriff auf das Slider Element für die Neigung und gleichzeitig werden<br>die Werte bei einer Änderung in der Ansicht aktualisiert.</p>
     </div>
     
 
@@ -905,8 +1168,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="new_View_EfficiencyDisplay.js.html">new/View/EfficiencyDisplay.js</a>,
-				 <a href="new_View_EfficiencyDisplay.js.html#sunlight-1-line-96">line 96</a>
+				<a href="View_Toolbar.js.html">View/Toolbar.js</a>,
+				 <a href="View_Toolbar.js.html#sunlight-1-line-126">line 126</a>
 			</li>
 		</ul>
 	</dd>
@@ -935,7 +1198,7 @@
     
             
 <div class="param-desc">
-    <p>Stromertrag</p>
+    <p>Slider für die Neigung</p>
 </div>
 
 
@@ -946,7 +1209,7 @@
     </dt>
     <dd>
         
-<span class="param-type">number</span>
+<span class="param-type">jQuery</span>
 
 
 
@@ -963,7 +1226,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="hideWarning"><span class="type-signature"></span>hideWarning()</h4>
+    <h4 class="name" id="renderModelValues"><span class="type-signature"></span>renderModelValues()</h4>
     
     
 </dt>
@@ -971,7 +1234,7 @@
 
     
     <div class="description">
-        <p>Verbirgt den Warnhinweis</p>
+        <p>Aktualisiert die Slider und Werte in der Toolbar anhand des verknüpften Modells.</p>
     </div>
     
 
@@ -1017,8 +1280,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="new_View_EfficiencyDisplay.js.html">new/View/EfficiencyDisplay.js</a>,
-				 <a href="new_View_EfficiencyDisplay.js.html#sunlight-1-line-124">line 124</a>
+				<a href="View_Toolbar.js.html">View/Toolbar.js</a>,
+				 <a href="View_Toolbar.js.html#sunlight-1-line-93">line 93</a>
 			</li>
 		</ul>
 	</dd>
@@ -1051,7 +1314,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="setPanelArea"><span class="type-signature"></span>setPanelArea(squareMeter)</h4>
+    <h4 class="name" id="setOrientation"><span class="type-signature"></span>setOrientation(orientation, isSlider)</h4>
     
     
 </dt>
@@ -1059,7 +1322,7 @@
 
     
     <div class="description">
-        <p>Setzt die Quadratmeter der Panelstring Fläche und zeigt diese an</p>
+        <p>Setzen der Orientierung. Außerdem wird der Slider an die korrekte Position verschoben.</p>
     </div>
     
 
@@ -1094,7 +1357,7 @@
 
         <tr>
             
-                <td class="name"><code>squareMeter</code></td>
+                <td class="name"><code>orientation</code></td>
             
 
             <td class="type">
@@ -1111,7 +1374,31 @@
 
             
 
-            <td class="description last"><p>Quadratmeter</p></td>
+            <td class="description last"><p>Wert für den Slider.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>isSlider</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Gibt an ob der Aufruf der Funktion durch einen Slider durchgeführt wird.</p></td>
         </tr>
 
     
@@ -1155,8 +1442,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="new_View_EfficiencyDisplay.js.html">new/View/EfficiencyDisplay.js</a>,
-				 <a href="new_View_EfficiencyDisplay.js.html#sunlight-1-line-67">line 67</a>
+				<a href="View_Toolbar.js.html">View/Toolbar.js</a>,
+				 <a href="View_Toolbar.js.html#sunlight-1-line-182">line 182</a>
 			</li>
 		</ul>
 	</dd>
@@ -1189,7 +1476,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="setPanelCounter"><span class="type-signature"></span>setPanelCounter(counter)</h4>
+    <h4 class="name" id="showMore"><span class="type-signature"></span>showMore()</h4>
     
     
 </dt>
@@ -1197,7 +1484,7 @@
 
     
     <div class="description">
-        <p>Setzt die Anzahl der Panels und zeigt die an.</p>
+        <p>Zeigt die weiteren Einstellungen und passt die entsprechenden Elemente an.</p>
     </div>
     
 
@@ -1206,56 +1493,6 @@
     
 
     
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>counter</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Anzahl der Panels</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
     
 
     
@@ -1293,8 +1530,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="new_View_EfficiencyDisplay.js.html">new/View/EfficiencyDisplay.js</a>,
-				 <a href="new_View_EfficiencyDisplay.js.html#sunlight-1-line-48">line 48</a>
+				<a href="View_Toolbar.js.html">View/Toolbar.js</a>,
+				 <a href="View_Toolbar.js.html#sunlight-1-line-77">line 77</a>
 			</li>
 		</ul>
 	</dd>
@@ -1327,7 +1564,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="setPanelNominal"><span class="type-signature"></span>setPanelNominal(nominal)</h4>
+    <h4 class="name" id="unbindEvents"><span class="type-signature"></span>unbindEvents()</h4>
     
     
 </dt>
@@ -1335,7 +1572,7 @@
 
     
     <div class="description">
-        <p>Setzt die Nennleistung und zeigt diese an</p>
+        <p>Alle Eventlistener werden entkoppelt und die Toolbar wird für den Nutzer versteckt.</p>
     </div>
     
 
@@ -1344,56 +1581,6 @@
     
 
     
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>nominal</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Nennleistung</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
     
 
     
@@ -1431,8 +1618,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="new_View_EfficiencyDisplay.js.html">new/View/EfficiencyDisplay.js</a>,
-				 <a href="new_View_EfficiencyDisplay.js.html#sunlight-1-line-86">line 86</a>
+				<a href="View_Toolbar.js.html">View/Toolbar.js</a>,
+				 <a href="View_Toolbar.js.html#sunlight-1-line-205">line 205</a>
 			</li>
 		</ul>
 	</dd>
@@ -1465,7 +1652,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="setPerYear"><span class="type-signature"></span>setPerYear(perYear)</h4>
+    <h4 class="name" id="widthSlider"><span class="type-signature"></span>widthSlider()</h4>
     
     
 </dt>
@@ -1473,7 +1660,7 @@
 
     
     <div class="description">
-        <p>Setzt den Stromertrag pro Jahr und zeigt diesen an</p>
+        <p>Gewährt den Zugriff auf das Slider Element für die Breite und gleichzeitig werden<br>die Werte bei einer Änderung in der Ansicht aktualisiert.</p>
     </div>
     
 
@@ -1482,56 +1669,6 @@
     
 
     
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>perYear</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Stromertrag</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
     
 
     
@@ -1569,8 +1706,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="new_View_EfficiencyDisplay.js.html">new/View/EfficiencyDisplay.js</a>,
-				 <a href="new_View_EfficiencyDisplay.js.html#sunlight-1-line-105">line 105</a>
+				<a href="View_Toolbar.js.html">View/Toolbar.js</a>,
+				 <a href="View_Toolbar.js.html#sunlight-1-line-141">line 141</a>
 			</li>
 		</ul>
 	</dd>
@@ -1595,144 +1732,30 @@
     
 
     
-
+    <h5>Returns:</h5>
     
-</dd>
+            
+<div class="param-desc">
+    <p>Slider für die Breite</p>
+</div>
 
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
         
-            
-<hr>
-<dt>
-    <h4 class="name" id="showWarning"><span class="type-signature"></span>showWarning(warning)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Zeigt den Warnhinweis, mit der übergeben Warnung, an.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>warning</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
+<span class="param-type">jQuery</span>
 
 
 
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Warnung</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="new_View_EfficiencyDisplay.js.html">new/View/EfficiencyDisplay.js</a>,
-				 <a href="new_View_EfficiencyDisplay.js.html#sunlight-1-line-115">line 115</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
+    </dd>
 </dl>
 
 
-    
-
-    
-
-    
-
-    
-
-    
-
-    
+        
 
     
 </dd>
