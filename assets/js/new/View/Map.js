@@ -1,6 +1,10 @@
 const INIT_LOCATION = [52.520645, 13.40977]; //Koordinaten in Berlin
 const DEFAULT_ZOOM = 20;
 
+/**
+ * Map
+ * @constructor
+ */
 function Map() {
     this.map = null;
     this.mapProvider = null;

@@ -1,10 +1,34 @@
+/**
+ * @class PanelString
+ *
+ * @property {number} UNIFIER - unnniiinnn TODO
+ * @property {number} unifier - unnniiinnn TODO
+ * @property {Controller} controller - Hauptcontroller um die richtige Darstellung auf der Karte zu garantieren
+ * @property {Panel} masterPanel - Hauptpanel an dem sich die Childs ausrichten
+ * @property {Panel[]} panels - Panels, die an den Hauptpanel angehängt werden
+ */
 var PanelString = (function () {
-    function PanelString(controller, panel) {
+    /**
+     * Erstellt ein PanelString Object. Das PanelString Object verwaltet die korrekte Aneinanderreihung der Panels.<br/>
+     * Die Haupteinstellgungen werden am übergeben MaserPanel getätigt und anschließend an die Kinder vererbt.
+     * @memberOf PanelString
+     *
+     * @param {Controller} controller - Der Hauptcontroller um den PanelString richtig darzustellen
+     * @param {Panel} masterPanel - MasterPanel, an dem sich die Kinder anschließend orientieren werden.
+     */
+    function PanelString(controller, masterPanel) {
         this.controller = controller;
-        this.masterPanel = panel;
+        this.masterPanel = masterPanel;
         this.panels = [];
         this.unifier = PanelString.UNIFIER++;
     }
+    /**
+     * Es wird ein erstelltes Panel übergeben, welches anschließend die Eigentschaften des MasterPanels übernimmt.
+     * Und an den PanelString angehängt wird.
+     *
+     * @memberOf PanelString
+     * @param {Panel} panel - Erstelltes Panel
+     */
     PanelString.prototype.appendPanel = function (panel) {
         if (panel != undefined) {
             var master = this.masterPanel;
@@ -16,14 +40,32 @@ var PanelString = (function () {
             this.panels.push(panel);
         }
     };
-    /* Funktionen die bereitgestellt werden müssen um die Schnittstelle zu nutzen */
+    /**
+     * Wir delegieren die Funktion von 'align' an {@link Panel#align} um ein Neujustierung des Panels vorzunehmen.
+     *
+     * @memberOf PanelString
+     * @param {Controller} controller - Hauptcontroller, damit die Anpassung Fehlerfrei verläuft
+     * @param {number} width - Breite des Panels
+     * @param {number} height - Höhe des Panels
+     */
     PanelString.prototype.align = function (controller, width, height) {
         this.masterPanel.align(controller, width, height);
     };
+    /**
+     * Gibt die Liste aller Längen- und Breitendegraden eines PanelStrings wieder
+     * @memberOf PanelString
+     *
+     * @returns {Array} Liste aller Längen- und Breitengrade
+     */
     PanelString.prototype.getPointsAsList = function () {
         return this.getGeoJSON();
     };
-    /* Schnittstellenende */
+    /**
+     * Entfernt den zuletzt eingefügten Panel, bis auf den MasterPanel.
+     * @memberOf PanelString
+     *
+     * @returns {string|number} Gibt die Id des MasterPanels zurück.
+     */
     PanelString.prototype.removePanel = function () {
         var removedPanelId = this.masterPanel.id;
         if (this.panels.length !== 0) {
@@ -34,12 +76,15 @@ var PanelString = (function () {
         return removedPanelId;
     };
     /**
+     * Hier wird die Orientierung des PanelString gesetzt, hierbei setzten wir die Orientierung nur des MasterPanel,
+     * anschließend werden die Kinder diese Einstellung bei {@link PanelString#refreshGeometrics} übernehmen und in
+     * die gewünschte Richtung ausgerichtet.
+     * @memberOf PanelString
      *
-     * @param orientation
+     * @param {number} orientation Orientierung von 0-360
      */
     PanelString.prototype.setOrientation = function (orientation) {
         var master = this.masterPanel;
-        console.log(orientation);
         var o = orientation;
         if (o < 0) {
             o += 360;
@@ -80,6 +125,12 @@ var PanelString = (function () {
             nextLatLng = this.getNextPoint(this.panels[i]);
         }
     };
+    /**
+     * Gibt Array aller Panels mit entsprechen Längen- und Breitengraden ({@link Panel#getLatLngsAsArray) wieder
+     * @memberOf PanelString
+     *
+     * @returns {Array} Array der Längen- und Breitengraden aller Panels
+     */
     PanelString.prototype.getGeoJSON = function () {
         this.refreshGeometrics();
         var polygonArray = [];
@@ -112,4 +163,3 @@ var PanelString = (function () {
     PanelString.UNIFIER = 0;
     return PanelString;
 }());
-//# sourceMappingURL=PanelString.js.map

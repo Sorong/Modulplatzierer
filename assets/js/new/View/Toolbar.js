@@ -1,3 +1,8 @@
+/**
+ *
+ * @param model
+ * @constructor
+ */
 function Toolbar(model) {
 
     this.isPanelString = false;

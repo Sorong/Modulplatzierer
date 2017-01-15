@@ -1,5 +1,9 @@
 const BEST_PV = 2;
 
+/**
+ * @class
+ * @constructor
+ */
 function Roof() {
     this.gid = 0;
     this.roofId = -1;

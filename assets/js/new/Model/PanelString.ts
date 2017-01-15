@@ -1,17 +1,42 @@
+/**
+ * @class PanelString
+ *
+ * @property {number} UNIFIER - unnniiinnn TODO
+ * @property {number} unifier - unnniiinnn TODO
+ * @property {Controller} controller - Hauptcontroller um die richtige Darstellung auf der Karte zu garantieren
+ * @property {Panel} masterPanel - Hauptpanel an dem sich die Childs ausrichten
+ * @property {Panel[]} panels - Panels, die an den Hauptpanel angehängt werden
+ */
 class PanelString {
+
     static UNIFIER = 0;
     unifier;
     controller;
     masterPanel;
     panels;
 
-    constructor(controller, panel) {
+    /**
+     * Erstellt ein PanelString Object. Das PanelString Object verwaltet die korrekte Aneinanderreihung der Panels.<br/>
+     * Die Haupteinstellgungen werden am übergeben MaserPanel getätigt und anschließend an die Kinder vererbt.
+     * @memberOf PanelString
+     *
+     * @param {Controller} controller - Der Hauptcontroller um den PanelString richtig darzustellen
+     * @param {Panel} masterPanel - MasterPanel, an dem sich die Kinder anschließend orientieren werden.
+     */
+    constructor(controller, masterPanel) {
         this.controller = controller;
-        this.masterPanel = panel;
+        this.masterPanel = masterPanel;
         this.panels = [];
         this.unifier = PanelString.UNIFIER++;
     }
 
+    /**
+     * Es wird ein erstelltes Panel übergeben, welches anschließend die Eigentschaften des MasterPanels übernimmt.
+     * Und an den PanelString angehängt wird.
+     *
+     * @memberOf PanelString
+     * @param {Panel} panel - Erstelltes Panel
+     */
     appendPanel(panel) {
         if (panel != undefined) {
             let master = this.masterPanel;
@@ -25,16 +50,34 @@ class PanelString {
         }
     }
 
-    /* Funktionen die bereitgestellt werden müssen um die Schnittstelle zu nutzen */
+    /**
+     * Wir delegieren die Funktion von 'align' an {@link Panel#align} um ein Neujustierung des Panels vorzunehmen.
+     *
+     * @memberOf PanelString
+     * @param {Controller} controller - Hauptcontroller, damit die Anpassung Fehlerfrei verläuft
+     * @param {number} width - Breite des Panels
+     * @param {number} height - Höhe des Panels
+     */
     align(controller, width, height) {
         this.masterPanel.align(controller, width, height);
     }
 
+    /**
+     * Gibt die Liste aller Längen- und Breitendegraden eines PanelStrings wieder
+     * @memberOf PanelString
+     *
+     * @returns {Array} Liste aller Längen- und Breitengrade
+     */
     getPointsAsList() {
         return this.getGeoJSON();
     }
-    /* Schnittstellenende */
 
+    /**
+     * Entfernt den zuletzt eingefügten Panel, bis auf den MasterPanel.
+     * @memberOf PanelString
+     *
+     * @returns {string|number} Gibt die Id des MasterPanels zurück.
+     */
     removePanel() {
         let removedPanelId = this.masterPanel.id;
         if(this.panels.length !== 0) {
@@ -46,12 +89,15 @@ class PanelString {
     }
 
     /**
+     * Hier wird die Orientierung des PanelString gesetzt, hierbei setzten wir die Orientierung nur des MasterPanel,
+     * anschließend werden die Kinder diese Einstellung bei {@link PanelString#refreshGeometrics} übernehmen und in
+     * die gewünschte Richtung ausgerichtet.
+     * @memberOf PanelString
      *
-     * @param orientation
+     * @param {number} orientation Orientierung von 0-360
      */
     setOrientation(orientation) {
         let master = this.masterPanel;
-        console.log(orientation);
         let o = orientation;
         if (o < 0) {
             o += 360;
@@ -100,6 +146,13 @@ class PanelString {
         }
     }
 
+
+    /**
+     * Gibt Array aller Panels mit entsprechen Längen- und Breitengraden ({@link Panel#getLatLngsAsArray) wieder
+     * @memberOf PanelString
+     *
+     * @returns {Array} Array der Längen- und Breitengraden aller Panels
+     */
     getGeoJSON() {
         this.refreshGeometrics();
         let polygonArray = [];
