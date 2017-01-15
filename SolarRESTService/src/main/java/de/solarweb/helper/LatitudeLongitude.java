@@ -18,7 +18,7 @@ public class LatitudeLongitude implements Serializable{
     private double longitude;
 
     /**
-     * Standartkonstruktor zu Serialisierung
+     * Standardkonstruktor zu Serialisierung
      */
     public LatitudeLongitude(){
 

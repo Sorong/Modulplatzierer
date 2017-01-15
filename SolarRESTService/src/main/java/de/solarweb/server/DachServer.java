@@ -30,7 +30,10 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * Restserverklasse, holt und speichert Dachdaten
+ * Restserverklasse, zuständig für das Laden und Speichern von Dachdaten.
+ * Dachdaten aus der Tetraeder Datebank werden nur geladen, es können vom Benutzer keine
+ * neuen Tetraderdachdaten eingetragen werden. Vom Benutzer erstelle Dächer werden in
+ * unserer eigenen Datenbank gespeichert.
  */
 @Stateless
 @TransactionManagement( TransactionManagementType.BEAN )
@@ -44,33 +47,22 @@ public class DachServer {
 
     Logger logger = LoggerFactory.getLogger(DachServer.class);
 
-
+    /**
+     * Standardkonstruktor
+     */
     public DachServer(){
     }
 
 
-    /**
-     * Nimmt eine DachID entgegen und returned ein ModelDach.<br>
-     *
-     * @param id DachID
-     * @return ModelDach
-     */
-    @GET
-    @Path("/getRoof/{dach_id}")
-    @Produces({MediaType.APPLICATION_JSON})
-    public ModelDach getRoof(@PathParam("dach_id") int id){
-        TblDach tblDach = getRoofById(id);
-        logger.info("Dach mit ID: " + id + "abgerufen");
-        return new ModelDach(tblDach);
-    }
 
     /**
-     * Nimmt ein ModelDach entgegen und returned das gepostet Dach.<br>
-     * ID des ModelDaches kann beliebig gewählt werden, da diese vom <br>
-     * Server generiert wird.
+     * Nimmt ein ModelPanel entgegen und returned das gepostet Panel.<br>
+     * ID des ModelPanels kann beliebig gewählt werden, da diese vom <br>
+     * Server generiert wird. Kann auch zum updaten von Dachdaten genutzt<br>
+     * werden.
      *
-     * @param dach ModelDach
-     * @return ModelDach
+     * @param dach ModelDach, welches gespeichert werden soll
+     * @return ModelPanel, wie es in der Datenbank gespeichert wurde
      */
     @POST
     @Path("/postRoof")
@@ -137,6 +129,12 @@ public class DachServer {
 
     }
 
+    /**
+     * Löscht ein Dach aus der Datenbank. Das zu löschende Dach<br>
+     * wird über die ID identifiziert.
+     * @param id ID des zu löschenden Dach
+     * @return "Deleted", falls Dach gelöscht wurde.
+     */
     @GET
     @Path("/removeDach/{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -164,12 +162,12 @@ public class DachServer {
 
 
     /**
-     * Sucht ein Dach aus der Tetraeder Datenbank anhand der Adresse und returned dieses.<br>
-     *
-     * @param street Straß des Hauses
+     * Sucht ein Dach aus der Tetraeder Datenbank anhand der Adresse und returnt dieses.<br>
+     *Falls nichts gefunden wurde wird ein leeres ModelTetraederBuilding Objekt returnt.
+     * @param street Straße des Hauses
      * @param number Hausnummer
      * @param plz Postleitzahl
-     * @return ModelTetraederbuilding
+     * @return ModelTetraederBuilding Objekt des gesuchten Daches
      */
     @GET
     @Path("/getPredefinedRoof/{street}/{number}/{plz}")
@@ -199,10 +197,10 @@ public class DachServer {
     }
 
     /**
-     * Nimmt eine TetraderdachID entgegen und sucht alle Dachabschnitte raus, welche<br>
+     * Nimmt eine TetraderGebäudeID entgegen und sucht alle Dachabschnitte raus, welche<br>
      * die jeweilige ID referenzieren.
-     * @param id TetraederdachID
-     * @return Liste Dachabschnitte
+     * @param id Gebäude ID, welche in Dachabschnitten referenziert ist
+     * @return Liste mit ModelTetraederRoof Objekten
      */
     @GET
     @Path("/getRoofParts/{id}")
@@ -231,12 +229,11 @@ public class DachServer {
 
     /**
      * Sucht in der Datenbank nach einem Dach zu der übergebenen ID und <br>
-     * und retured das JPA Objekt des gefundenen Daches.
-     * @param id DachID
-     * @return JPA Dachobjekte TblDach
-     * @throws NotFoundException Falls kein Dach gefunden
+     * und returnt das Entitie Objekt des gefundenen Daches.
+     * @param id DachID des gesuchten Daches
+     * @return Entitie des gesuchten Daches
      */
-    private TblDach getRoofById(int id) throws NotFoundException {
+    private TblDach getRoofById(int id) {
         Query queryRoofById = em.createNamedQuery("tblDach.findById");
         queryRoofById.setParameter("id", id);
         List resultRoofs = queryRoofById.getResultList();
@@ -249,9 +246,9 @@ public class DachServer {
 
     /**
      * Sucht in der Datenbank nach einem Cookie zu der übergebenen ID und <br>
-     * und retured das JPA Objekt des gefundenen Cookies.
-     * @param id CookieID
-     * @return JPA Cookieobjekte TblCookie
+     * und returnt das Entitie Obejekt des gefundenen Cookies.
+     * @param id CookieID des gesuchten Cookies
+     * @return Entitie Objekt des gesuchten Cookies
      * @throws NotFoundException Falls kein Cookie gefunden
      */
     private TblCookie getCookieById(int id) throws NotFoundException {

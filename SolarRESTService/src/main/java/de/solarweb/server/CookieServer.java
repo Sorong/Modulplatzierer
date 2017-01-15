@@ -18,7 +18,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Restserverklasse, holt und speichert Cookies
+ * Restserverklasse, holt und speichert Cookiedaten.
+ *
  */
 @Stateless
 @TransactionManagement( TransactionManagementType.BEAN )
@@ -43,8 +44,8 @@ public class CookieServer {
      * Sollte die ID nicht gefunden werden, wir ein neues ModelCookie mit der ID -1
      * zurückgegeben.
      *
-     * @param id CookieId
-     * @return ModelCookie
+     * @param id CookieID des gesuchten Cookies
+     * @return ModelCookie Objekt des gesuchten Cookies
      */
     @GET
     @Path("/getCookie/{cookie}")
@@ -63,13 +64,13 @@ public class CookieServer {
     }
 
     /**
-     * Legt einen neuen Cookie in der Datenbank an. Panellist im ModelCookie<br>
-     * kann leer gelassen werden, das Feld ID im Model Cookie kann auf einen beliebiegen<br>
-     * Wert gesetzt werden, da diese vom Server generiert wird.
-     *
+     * Legt einen neuen Cookie in der Datenbank an. Solarpanellist<br>
+     * und ModelDAach im ModelCookie kann leer gelassen werden,<br>
+     * das Feld ID im Model Cookie kann auf einen beliebiegen<br>
+     * Wert gesetzt werden, da diese vom Server generiert wird.<br>
      * Returned wird der neu angelegt Cookie mit einer gültigen ID.
-     * @param cookie ModelCookie
-     * @return ModelCookie
+     * @param cookie ModelCookie, welches gespeichert werden soll
+     * @return ModelCookie, wie es in der Datenbank gespeichert wurde
      */
     @POST
     @Path("/postCookie")
