@@ -83,7 +83,7 @@
  * @constant
  * @type {string}
  */
-const HOST = "localhost";
+const HOST = location.hostname;
 /**
  * Bestimmt die Dauer von neu erstellten Cookies in Tagen.
  *
@@ -120,7 +120,7 @@ const SERVER_URL = "http://" + HOST + ":8080/SolarRESTService_war_exploded/";
  * @property {CookieHandler} cookieHandler Handler zum Lesen und Schreiben von Cookies.
  * @property {Roof} roof Das aktuell dargestellte Dachmodell.
  * @property {number} cookieId Die vom Nutzer ausgelesene CookieID.
- * @property {EfficiencyDisplay} Anzeige zur Darstellung der Effektivität.
+ * @property {EfficiencyDisplay} efficiencyDisplay Anzeige zur Darstellung der Effektivität.
  *
  */
 function Controller() {
