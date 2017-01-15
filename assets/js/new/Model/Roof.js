@@ -1,8 +1,29 @@
+/**
+ * Bester Wert für die Effizienz anhand der Einstrahlungswerte
+ *
+ * @constant
+ * @type {number}
+ */
 const BEST_PV = 2;
 
 /**
+ * Das Roof-Objekt repräsentiert die Dachfläche eines Gebäudes.
+ *
  * @class
  * @constructor
+ *
+ * @property {number} gid - // TODO gebäude?
+ * @property {number} roofId - Dach Id
+ * // TODO points richtig?
+ * @property {L.latLngs[]} points - Koordinaten der Dachfläche
+ * @property {number} pv - // TODO
+ * @property {number} st - // TODO
+ * @property {number} orientation - Dachorientierung
+ * // TODO richtig parts und bestPart?
+ * @property {Roof[]} parts - Dachteile
+ * @property {Roof} bestPart - // TODO
+ * @property {number} tilt - Dachneigung
+ * @property {number} global - // TODO
  */
 function Roof() {
     this.gid = 0;
@@ -17,6 +38,12 @@ function Roof() {
     this.global = 0;
 }
 
+/**
+ * Die Dachfläche wird mithilfe der übergebene Kooridinaten erstellt.
+ *
+ * // TODO richtger typ?
+ * @param {L.latLngs[]} coordinates - Koordinaten der Dachfläche
+ */
 Roof.prototype.setPointsFromList = function (coordinates) {
 
     this.points = convexHull(coordinates);
@@ -24,6 +51,11 @@ Roof.prototype.setPointsFromList = function (coordinates) {
 
 };
 
+
+/**
+ * // TODO
+ * @return {L.polygon} Dachpolygon
+ */
 Roof.prototype.getAsPolygon = function () {
 
     var color_border = Math.floor(255 / BEST_PV);
@@ -48,6 +80,10 @@ Roof.prototype.getAsPolygon = function () {
     return L.polygon(this.points, style);
 };
 
+/**
+ * TODO beschreibung, type
+ * @param {} part - // TODO
+ */
 Roof.prototype.addPart = function (part) {
     if(this.parts === null) {
         this.parts = [];
@@ -61,6 +97,11 @@ Roof.prototype.addPart = function (part) {
     this.global += part.global;
 };
 
+/**
+ * TODO
+ * @param {Controller} controller
+ * @return {Roof}
+ */
 Roof.prototype.getBestRoofPart = function (controller) {
     if(this.bestPart === -1) { return this; }
     if(controller !== undefined && this.parts[this.bestPart].orientation === null) {
@@ -69,6 +110,11 @@ Roof.prototype.getBestRoofPart = function (controller) {
     return this.parts[this.bestPart];
 };
 
+
+/**
+ * // TODO
+ * @param {Controller} controller
+ */
 Roof.prototype.calculateOrientation = function (controller) {
     var leftBot = rightBot = controller.getLatLngAsPoint(this.points[0]);
     for (var i = 0; i < this.points.length; i++) {
@@ -92,6 +138,14 @@ Roof.prototype.calculateOrientation = function (controller) {
     this.orientation = isNaN(angle)  ? 0 : angle;
 };
 
+
+/**
+ * Die Funktion überprüft ob sich ein Panel innerhalb eines Dachs befindet.
+ * Sollte sich das Panel ausserhalb des Dachs befinden, wird false zurückgegeben, sonst true.
+ *
+ * @param {Panel|PanelString} panel - Panel- oder PanelString-Objekt
+ * @return {boolean} Gibt an ob sich die Panels auf dem Dach befinden
+ */
 Roof.prototype.panelInRoof = function (panel) {
 
     var list = panel.getPointsAsList();
@@ -116,6 +170,22 @@ Roof.prototype.panelInRoof = function (panel) {
     return insideCounter === list.length;
 };
 
+/**
+ * @typedef {Object} DachJson
+ * @property {number} dach_id - Dach Id
+ * @property {number} gid - // TODO
+ * @property {number} st - //
+ * @property {number} pv - //
+ * @property {number} tilt - Dachneigung
+ * @property {number} global -
+ * @property {Array} the_geom -
+ */
+
+/**
+ * Gibt uns das Dachobjekt als Json zurück
+ *
+ * @return {DachJson} Dach als Json
+ */
 Roof.prototype.getAsJson = function () {
     var geom = [];
     for(var i = 0; i < this.points.length; i++) {
@@ -148,7 +218,12 @@ Roof.prototype.getAsJson = function () {
 // }
 
 /* Hilfsfunktion */
-
+/**
+ * Es wird aus den Übergeben Punkten die konvexe Hülle erstellt.
+ *
+ * @param {Array.<Array.<number, number>>} points - Alle Koordinaten vom Dach
+ * @return {Array.<Array.<number, number>>} Koordinaten der konvexen Hülle
+ */
 function convexHull(points) {
     function cross(o, a, b) {
         return (a.lng - o.lng) * (b.lat - o.lat) - (a.lat - o.lat) * (b.lng - o.lng);

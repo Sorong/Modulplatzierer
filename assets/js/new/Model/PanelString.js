@@ -1,8 +1,8 @@
 /**
  * @class PanelString
  *
- * @property {number} UNIFIER - unnniiinnn TODO
- * @property {number} unifier - unnniiinnn TODO
+ * @property {number} UNIFIER - Hauptzähler der einmaligen Zahl
+ * @property {number} unifier - Hält die einmalige Zahl, die während einer Session zugeordnet wird.
  * @property {Controller} controller - Hauptcontroller um die richtige Darstellung auf der Karte zu garantieren
  * @property {Panel} masterPanel - Hauptpanel an dem sich die Childs ausrichten
  * @property {Panel[]} panels - Panels, die an den Hauptpanel angehängt werden

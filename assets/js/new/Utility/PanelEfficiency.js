@@ -1,3 +1,7 @@
+/**
+ * EfficencyTabel //TODO weiß nicht genau was es macht
+ * @type {[number]}
+ */
 var efficencyTabel = [
   [87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87],
   [93, 93, 93, 92, 92, 91, 90, 89, 88, 86, 85, 84, 83, 81, 81, 80, 79, 79, 79],
@@ -11,12 +15,30 @@ var efficencyTabel = [
   [69, 69, 69, 67, 65, 63, 60, 56, 53, 48, 44, 40, 35, 31, 27, 24, 21, 19, 18]  
 ];
 
-//panellist ist eine Liste mit Panelobjekten mit {"hight": int, "width": int}
+// TODO entfernen?
+//panellist ist eine Liste mit Panelobjekten mit {"height": int, "width": int}
 //global ist die Einstallung auf des Dach, beim mehreren Dachflächen der Durchschnitt alle Flächen
 //tilt gibt die Neigung der Panele in Grad an
 //rotation in wie fern die Panele nach Süden ausgerichtet sind, wobei 0 Grad voll
 //Süden und 180 Grad von Nord
 //Nennleistung der Panele ist fest 1000 Watt
+
+/**
+ * @typedef {Object} Effizienz
+ * @property {number} nominal - Nennleistung
+ * @property {number} perYear - Leistung pro Jahr
+ * @property {number} counter - Anzahl der Panels
+ * @property {number} area - Fläche
+ */
+
+/**
+ * TODO ausführlicher?
+ * Wir berechnen die Effizienz der Panels anhand der eingebenen Einstellungen.
+ *
+ * @param {Panel[]} panels - Liste mit Panelobjekten mit {"height": int, "width": int}
+ * @param {number} global - Einstrahlung auf des Dach, beim mehreren Dachflächen der Durchschnitt aller Flächen
+ * @return {Effizienz} Gibt die Effizienz im Json Format zurück
+ */
 function evaluateEfficiency (panels, global){
 	var panelarea = 0;
 	var nominaloutput = 1000;
