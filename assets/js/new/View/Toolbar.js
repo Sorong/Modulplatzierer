@@ -76,7 +76,7 @@ Toolbar.prototype.renderModelValues = function () {
     this.modelOrientation.val(orientation);
     this.modelOrientationValue.html(parseFloat(orientation).toFixed(0) + "°");
 
-    var framewidth = (this.selectedModel.frameWidth * 10) || 0;
+    var framewidth = (this.selectedModel.frameWidth * 100) || 0;
     this.modelFrame.val(framewidth);
     this.modelFrameValue.html(framewidth + "cm");
 };
@@ -112,18 +112,18 @@ Toolbar.prototype.orientationSlider = function () {
     });
 };
 
-Toolbar.prototype.setOrientation = function(orientation, isSlider){
+Toolbar.prototype.setOrientation = function (orientation, isSlider) {
     var slider = isSlider || false;
     var degree = this.modelOrientationValue;
     degree.html(orientation + "°");
-    if(!slider) this.modelOrientation.val("" + orientation)
+    if (!slider) this.modelOrientation.val("" + orientation)
 };
 
 Toolbar.prototype.frameWidthSlider = function () {
     var frameWidth = this.modelFrameValue;
-    return this.modelFrame.on("change mousemove", function(){
-       var val = $(this).val();
-       frameWidth.html(val + "cm");
+    return this.modelFrame.on("change mousemove", function () {
+        var val = $(this).val();
+        frameWidth.html(val + "cm");
     });
 };
 

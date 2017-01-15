@@ -261,9 +261,9 @@ Controller.prototype.connectModelWithToolbar = function (polygon) {
 
     this.toolbar.frameWidthSlider().on("input change", function () {
         if (polygon.model.constructor === PanelString) {
-            selected.model.setFrameWidth(($(this).val() / 10));
+            selected.model.setFrameWidth(($(this).val()/100));
         } else {
-            selected.model.frameWidth = ($(this).val() / 10);
+            selected.model.frameWidth = ($(this).val()/100);
         }
         selected.setStyle({weight: selected.model.getFrameWidth()});
         realignModel(selected);

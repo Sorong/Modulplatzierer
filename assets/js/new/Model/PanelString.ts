@@ -45,9 +45,6 @@ class PanelString {
         return removedPanelId;
     }
 
-    removePanelById(panelId) {
-    }
-
     /**
      *
      * @param orientation
@@ -77,8 +74,7 @@ class PanelString {
     }
 
     getFrameWidth() {
-        var test = this.masterPanel.getFrameWidthInPixel(this.controller);
-        return test;
+        return this.masterPanel.getFrameWidthInPixel(this.controller);
     }
 
     private getNextPoint(panel) {

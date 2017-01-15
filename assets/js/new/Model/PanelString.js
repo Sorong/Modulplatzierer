@@ -33,8 +33,6 @@ var PanelString = (function () {
         }
         return removedPanelId;
     };
-    PanelString.prototype.removePanelById = function (panelId) {
-    };
     /**
      *
      * @param orientation
@@ -60,8 +58,7 @@ var PanelString = (function () {
         master.setTopLeft(this.controller, topLeft);
     };
     PanelString.prototype.getFrameWidth = function () {
-        var test = this.masterPanel.getFrameWidthInPixel(this.controller);
-        return test;
+        return this.masterPanel.getFrameWidthInPixel(this.controller);
     };
     PanelString.prototype.getNextPoint = function (panel) {
         return panel.getPointsAsList()[1];
