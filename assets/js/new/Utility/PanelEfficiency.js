@@ -1,6 +1,6 @@
 /**
  * EfficencyTabel //TODO weiß nicht genau was es macht
- * @type {[number]}
+ * @type {Array.<Array<number>>}
  */
 var efficencyTabel = [
   [87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87],

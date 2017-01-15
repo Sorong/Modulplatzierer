@@ -1,6 +1,7 @@
 /**
- * Die Toolbar dient dazu Einstellungen an einem {@link PanelString} oder {@link Panel} vorzunehmen,
- * hierbei können wir zum Beispiel die Breite, Höhe, Orientierung und weiteres einstellen.
+ * Die Toolbar dient dazu Modifizierungen an einem {@link PanelString} oder {@link Panel} vorzunehmen,
+ * hierbei können wir zum Beispiel die Breite, Höhe, Orientierung einstellen.
+ * Die Toolbar liefert desweiteren Callbacks, damit andere Elemente über Änderungen informiert werden.
  *
  * @param {Panel|PanelString} model - Model, welches bearbeitet werden soll.
  * @constructor
