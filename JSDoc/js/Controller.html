@@ -1,0 +1,4099 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>DocStrap Class: Controller</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.cosmo.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">DocStrap</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="Controller.html">Controller</a></li><li><a href="CookieHandler.html">CookieHandler</a></li><li><a href="EfficiencyDisplay.html">EfficiencyDisplay</a></li><li><a href="Map.html">Map</a></li><li><a href="Matrix.html">Matrix</a></li><li><a href="Panel.html">Panel</a></li><li><a href="PanelString.html">PanelString</a></li><li><a href="Roof.html">Roof</a></li><li><a href="ServerHandler.html">ServerHandler</a></li><li><a href="Toolbar.html">Toolbar</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#BEST_PV">BEST_PV</a></li><li><a href="global.html#calcNextPoint">calcNextPoint</a></li><li><a href="global.html#controller">controller</a></li><li><a href="global.html#convexHull">convexHull</a></li><li><a href="global.html#COOKIENAME">COOKIENAME</a></li><li><a href="global.html#DAYS_TILL_COOKIE_EXPIRE">DAYS_TILL_COOKIE_EXPIRE</a></li><li><a href="global.html#DEFAULT_ZOOM">DEFAULT_ZOOM</a></li><li><a href="global.html#efficiencyTable">efficiencyTable</a></li><li><a href="global.html#evaluateEfficiency">evaluateEfficiency</a></li><li><a href="global.html#HOST">HOST</a></li><li><a href="global.html#INIT_LOCATION">INIT_LOCATION</a></li><li><a href="global.html#initAutocomplete">initAutocomplete</a></li><li><a href="global.html#matrix">matrix</a></li><li><a href="global.html#SERVER_URL">SERVER_URL</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-8">
+	
+		<div id="main">
+			
+
+	<h1 class="page-title">Class: Controller</h1>
+<section>
+
+<header>
+    
+        <h2>
+        Controller
+        </h2>
+        
+    
+</header>
+
+
+<article>
+    <div class="container-overview">
+    
+        
+<hr>
+<dt>
+    <h4 class="name" id="Controller"><span class="type-signature"></span>new Controller()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Konstruiert ein Controller-Objekt.<br>Das Kontrollerobjekt wird bereits mit einem ServerHandler zur Kommunikation mit dem Datenbankserver,<br>einem CookieHandler zur Verwaltung und Interaktion des Benutzercookies<br>und einer Map, die die dargestellte Karte repräsentiert ausgestattet.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    <dl>
+
+<table class="props table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>serverIsAvailable</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Gibt an, ob der Datenbankserver zur Verfügung steht.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>viewMap</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Map.html">Map</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Hauptansicht der Karte</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>viewAdress</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">google.maps.places.Autocomplete</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Das Objekt, dass die Adresseingabe ermöglicht.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>toolbar</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Toolbar.html">Toolbar</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Werkzeugleiste zur Modifikation des Modells.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>serverHandler</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ServerHandler.html">ServerHandler</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Handler zur Nutzung der REST-Schnittstelle.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cookieHandler</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="CookieHandler.html">CookieHandler</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Handler zum Lesen und Schreiben von Cookies.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>roof</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Roof.html">Roof</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Das aktuell dargestellte Dachmodell.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cookieId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Die vom Nutzer ausgelesene CookieID.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>Anzeige</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="EfficiencyDisplay.html">EfficiencyDisplay</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>zur Darstellung der Effektivität.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+</dl>
+
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="new_Controller_Controller.js.html">new/Controller/Controller.js</a>,
+				 <a href="new_Controller_Controller.js.html#sunlight-1-line-47">line 47</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+            
+<hr>
+<dt>
+    <h4 class="name" id="appendModel"><span class="type-signature"></span>appendModel(model, nextModel)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Fügt einem Panelstring ein neues Panel hinzu. Stößt Speichervorgang für das hinzugefügte Panel an.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>model</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="PanelString.html">PanelString</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>PanelString welcher erweitert werden soll.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>nextModel</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Panel.html">Panel</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Panel, der hinzugefügt werden soll, wenn kein Panel übergeben wird, wird stattdessen ein neues Panel erstellt.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="new_Controller_Controller.js.html">new/Controller/Controller.js</a>,
+				 <a href="new_Controller_Controller.js.html#sunlight-1-line-391">line 391</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="connectModelWithToolbar"><span class="type-signature"></span>connectModelWithToolbar(polygon)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Verbindet ein Polygon mit der Toolbar um dessen Modifikation zu ermöglichen.<br>Hier werden die Listener für die HTML Elemente gesetzt, bzw. zuvorgesetzte Listener gelöscht,<br>damit auch nur das ausgewählte Polygon modifiziert wird.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>polygon</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">L.Polygon</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Das Polygon mit dem die Toolbar verknüpft wird. Das Polygon muss mit einem Modell verknüpft sein.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="new_Controller_Controller.js.html">new/Controller/Controller.js</a>,
+				 <a href="new_Controller_Controller.js.html#sunlight-1-line-195">line 195</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="convertModelToJsonString"><span class="type-signature"></span>convertModelToJsonString(model, masterId)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Konvertiert ein Modell in einen JSON-String, zusätzlich werden dem JSON-String die aktuelle CookieID und ggf. die MasterpanelID hinzugefügt.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>model</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Panel.html">Panel</a></span>
+|
+
+<span class="param-type"><a href="PanelString.html">PanelString</a></span>
+|
+
+<span class="param-type"><a href="Roof.html">Roof</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Das Modell, das als JSON-String abgebildet werden soll.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>masterId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>ID des Masterpanels welche dem JSON-String hinzugefügt werden soll.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="new_Controller_Controller.js.html">new/Controller/Controller.js</a>,
+				 <a href="new_Controller_Controller.js.html#sunlight-1-line-378">line 378</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>JSON-String JSON-Objekt als String.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="createRoof"><span class="type-signature"></span>createRoof(data)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Erstellt ein Roof-Objekt aus den Koordinaten, die übergeben wurden.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Datensatz der eingezeichnten Koordinaten.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="new_Controller_Controller.js.html">new/Controller/Controller.js</a>,
+				 <a href="new_Controller_Controller.js.html#sunlight-1-line-477">line 477</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="createUserCookie"><span class="type-signature"></span>createUserCookie(cid, duedate)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Erstellt einen Cookie beim Benutzer</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>cid</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Die CookieID die dem Nutzer zugeteilt werden soll.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>duedate</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Das Ablaufdatum als UNIX-Zeitstempel.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="new_Controller_Controller.js.html">new/Controller/Controller.js</a>,
+				 <a href="new_Controller_Controller.js.html#sunlight-1-line-162">line 162</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="deleteUserCooke"><span class="type-signature"></span>deleteUserCooke()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Löscht den Cookie des Benutzers.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="new_Controller_Controller.js.html">new/Controller/Controller.js</a>,
+				 <a href="new_Controller_Controller.js.html#sunlight-1-line-169">line 169</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="disableServer"><span class="type-signature"></span>disableServer()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Deaktiviert den Datenbankserver, wodurch weitere AJAX-Anfragen unterbunden werden.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="new_Controller_Controller.js.html">new/Controller/Controller.js</a>,
+				 <a href="new_Controller_Controller.js.html#sunlight-1-line-108">line 108</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="drawRoof"><span class="type-signature"></span>drawRoof()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Zeichnet ein Polygon auf die Karte, welche mit dem aktuellen Dachmodell verknüpft ist.<br>Außerdem wird der Speichervorgang angestoßen, mit dem beim erneuten Besuchen der Internetseite das selbe Dach automatisch abgerufen wird.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="new_Controller_Controller.js.html">new/Controller/Controller.js</a>,
+				 <a href="new_Controller_Controller.js.html#sunlight-1-line-336">line 336</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="enableServer"><span class="type-signature"></span>enableServer()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Aktiviert den Datenbankserver, wodurch AJAX-Anfragen wieder ermöglicht werden.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="new_Controller_Controller.js.html">new/Controller/Controller.js</a>,
+				 <a href="new_Controller_Controller.js.html#sunlight-1-line-115">line 115</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="getGeoJSON"><span class="type-signature"></span>getGeoJSON(model)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Liefert alle Geodaten eines Modells.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>model</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="PanelString.html">PanelString</a></span>
+|
+
+<span class="param-type"><a href="Panel.html">Panel</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Panel oder Panelstring, dessen Geodaten geliefert werden sollen.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="new_Controller_Controller.js.html">new/Controller/Controller.js</a>,
+				 <a href="new_Controller_Controller.js.html#sunlight-1-line-442">line 442</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Alle Geodaten des entsprechenden Modells als Liste.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="getLatLngAsPoint"><span class="type-signature"></span>getLatLngAsPoint(latLng)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Konvertiert ein L.latLng-Objekt in das entsprechende L.point-Objekt, relativ zur dargestellten Karte.<br>Somit lassen sich Geodaten in Pixelkoordinaten konvertieren.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>latLng</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">L.latLng</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Objekt mit den Geodaten.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="new_Controller_Controller.js.html">new/Controller/Controller.js</a>,
+				 <a href="new_Controller_Controller.js.html#sunlight-1-line-360">line 360</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Den konvertierten Punkt.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">L.point</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="getPanelEffiency"><span class="type-signature"></span>getPanelEffiency()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Berechnet die Effizienz aller dargestellten Panels. Zunächst werden alle Panels, die im aktuellen Dach liegen ermittelt.<br>Sollten Sich nicht alle Panels im Dach befinden wir der Benutzer darauf aufmerksam gemacht.<br>Außerdem wird dem Benutzer signalisiert, falls keine Einstrahlungswerte vorliegen, bspw. beim selbst eingezeichnten Dach.<br>Wenn der Nutzer aktuell gar kein Dach abgebildet hat, wenn zum Beispiel keine Adresse eingegeben wurde,<br>oder kein Dach gezeichnet wurde, wird dem Benutzer dies ebenfalls mitgeteilt.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="new_Controller_Controller.js.html">new/Controller/Controller.js</a>,
+				 <a href="new_Controller_Controller.js.html#sunlight-1-line-510">line 510</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="getPointAsLatLng"><span class="type-signature"></span>getPointAsLatLng(point)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Konvertiert ein L.point-Objekt in das entsprechende L.latLng-Objekt.<br>Somit lassen sich Pixelkoordinaten in Geodaten konvertierten.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>point</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">L.point</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="new_Controller_Controller.js.html">new/Controller/Controller.js</a>,
+				 <a href="new_Controller_Controller.js.html#sunlight-1-line-369">line 369</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Die konvertierten Geodaten.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">L.latLng</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="getRoofFromServer"><span class="type-signature"></span>getRoofFromServer(place)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Verarbeitet, die vom Nutzer eingebene Adresse. Stößt Anfrage an den Datenbankserver an.<br>Die Adresse sollte die Straße, Hausnummer und den Ort enthalten,<br>ansonsten wird dem Benutzer ein Fehler angezeigt und es findet keine Anfrage an den Datenbankserver statt.<br>Bei gültiger Adresse wird vom Datenbankserver das Roof-Objekt erfragt.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>place</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Place</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Placeobjekt,  welches verarbeitet werden soll.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="new_Controller_Controller.js.html">new/Controller/Controller.js</a>,
+				 <a href="new_Controller_Controller.js.html#sunlight-1-line-297">line 297</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
+	<dd class="tag-see">
+		<ul>
+			<li><a href="https://developers.google.com/maps/documentation/javascript/places?hl=de">https://developers.google.com/maps/documentation/javascript/places?hl=de</a> für weitere Informationen.</li>
+			</ul>
+	</dd>
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="getRoofPartsFromServer"><span class="type-signature"></span>getRoofPartsFromServer()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Frag den Datenbankserver nach Teildächern des Daches.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="new_Controller_Controller.js.html">new/Controller/Controller.js</a>,
+				 <a href="new_Controller_Controller.js.html#sunlight-1-line-327">line 327</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="init"><span class="type-signature"></span>init()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Initialisiert den Controller, hier werden grundsätzliche Funktionen des Frontends, der View, verknüpft.<br>Hier wird der Knopf zum Hinzufügen weitere Modelle mit einem Clicklistener verknüpft.<br>Auch wird hier das Adresseingabefeld mit einem Listener zur Auswertung der eigebenen Adresse verbunden.<br>Außerdem werden die entsprechenden Viewkomponenten, wie die Karte, die Werkzeugleiste und die Darstellung der Effizienz initialisiert.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="new_Controller_Controller.js.html">new/Controller/Controller.js</a>,
+				 <a href="new_Controller_Controller.js.html#sunlight-1-line-67">line 67</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="loadFromServer"><span class="type-signature"></span>loadFromServer(forceNewCookie)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Liest den Cookie des Nutzers aus. Wenn kein Cookie vorhanden ist wird stattdessen ein neuer Cookie angelegt.<br> Sollte ein Cookie vorhanden sein wird der Cookie an den ServerHandler übergeben,<br> um die Informationen die mit dem Cookie verknüpft sind abzurufen.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>forceNewCookie</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Erzwingt das Erstellen eines neuen Cookies.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="new_Controller_Controller.js.html">new/Controller/Controller.js</a>,
+				 <a href="new_Controller_Controller.js.html#sunlight-1-line-126">line 126</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="removeAddressError"><span class="type-signature"></span>removeAddressError()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Entfernt einen zuvor angezeigten AdressError.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="new_Controller_Controller.js.html">new/Controller/Controller.js</a>,
+				 <a href="new_Controller_Controller.js.html#sunlight-1-line-467">line 467</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="removeModel"><span class="type-signature"></span>removeModel(model)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Entfernt einem Panelstring ein Panel.<br>Stößt Löschvorgang auf dem Datenbankserver an um zu löschendes Panel aus der Datenbank zu entfernen.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>model</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="PanelString.html">PanelString</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Der Panelstring, dem ein Panel entfernt werden soll.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="new_Controller_Controller.js.html">new/Controller/Controller.js</a>,
+				 <a href="new_Controller_Controller.js.html#sunlight-1-line-404">line 404</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="removeModelById"><span class="type-signature"></span>removeModelById(id)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Löst Löschvorgang auf dem Datenbankserver aus.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Die ID, des Panels welches gelöscht werden soll.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="new_Controller_Controller.js.html">new/Controller/Controller.js</a>,
+				 <a href="new_Controller_Controller.js.html#sunlight-1-line-415">line 415</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="savePanelstring"><span class="type-signature"></span>savePanelstring(panelstring)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Stößt Aktualisierungsvorgang für einen kompletten Panelstring auf dem Datenbankserver an.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>panelstring</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="PanelString.html">PanelString</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Panelstring, dessen Panels auf dem Datenbankserver aktualisiert werden sollen.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="new_Controller_Controller.js.html">new/Controller/Controller.js</a>,
+				 <a href="new_Controller_Controller.js.html#sunlight-1-line-426">line 426</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="saveToServer"><span class="type-signature"></span>saveToServer(panel, masterId)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Stößt den Speicherprozess zur Speicherung eines Panels auf dem Datenbankserver an.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>panel</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Panel.html">Panel</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Muss ein Panelobjekt sein, sonst wird eine ungültige Anfrage an den Server gestellt.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>masterId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">id</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Diese ID wird dem ServerHandler übergeben, um Panels zu einem Panelstring zu verbinden.<br>-1 signalisiert, dass das Panel der Beginn eines neuen Panelstrings ist.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="new_Controller_Controller.js.html">new/Controller/Controller.js</a>,
+				 <a href="new_Controller_Controller.js.html#sunlight-1-line-148">line 148</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="showAddressError"><span class="type-signature"></span>showAddressError()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Signalisiert dem Benutzer, dass die Adresseingabe ungültig ist.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="new_Controller_Controller.js.html">new/Controller/Controller.js</a>,
+				 <a href="new_Controller_Controller.js.html#sunlight-1-line-451">line 451</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="showCanNotFoundAddressError"><span class="type-signature"></span>showCanNotFoundAddressError()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Signalisiert dem Benutzer, dass keine Dachdaten für die Adresse vorhanden sind.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="new_Controller_Controller.js.html">new/Controller/Controller.js</a>,
+				 <a href="new_Controller_Controller.js.html#sunlight-1-line-459">line 459</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="showEfficiency"><span class="type-signature"></span>showEfficiency(efficiency, warningMessage)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Verarbeitet die in getPanelEfficiency ermittelten Daten</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>efficiency</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Containerobjekt mit den Daten, die dargestellt werden sollen. Objekt muss Nennleistung, KW pro Jahr, Anzahl und Fläche enthalten.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>warningMessage</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Warnung, die ausgeben werden soll.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="new_Controller_Controller.js.html">new/Controller/Controller.js</a>,
+				 <a href="new_Controller_Controller.js.html#sunlight-1-line-560">line 560</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
+	<dd class="tag-see">
+		<ul>
+			<li>getPanelEfficiency</li>
+			</ul>
+	</dd>
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="updateModel"><span class="type-signature"></span>updateModel(polygon, position, orientation)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Übermittelt dem mit dem Polygon verknüpftem Modell Positions und/oder Ausrichtungsänderungen.<br>Stößt den Speichervorgang zur Speicherung auf dem Datenbankserver an.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>polygon</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">L.Polygon</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Das Leafletpolygon, dass mit dem Modell verknüpft ist.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>position</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Array.&lt;L.latLng>></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Matrix mit den aktualisierten Koordinaten des Polygons.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>orientation</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Orientierung in Grad, in die das Polygon gedreht wurde.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="new_Controller_Controller.js.html">new/Controller/Controller.js</a>,
+				 <a href="new_Controller_Controller.js.html#sunlight-1-line-180">line 180</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="updatePolygonPosition"><span class="type-signature"></span>updatePolygonPosition(polygon)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Richtet ein Polygon anhand dessen Modell neu aus.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>polygon</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">L.polygon</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Das Polygon, das neu ausgerichtet werden soll.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="new_Controller_Controller.js.html">new/Controller/Controller.js</a>,
+				 <a href="new_Controller_Controller.js.html#sunlight-1-line-284">line 284</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        </dl>
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+		<div class="col-md-3">
+			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
+		</div>
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	DocStrap Copyright © 2012-2015 The contributors to the JSDoc3 and DocStrap projects.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
+	
+		on Sun Jan 15th 2017
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>

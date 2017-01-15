@@ -149,9 +149,7 @@ class PanelString {
     }
 
     /**
-     * Ermittelt die Position, wo das anliegende Panel als nächstes angesetzt wird.
-     * Die Position des nordöstlichsten Punktes, wirddem nordwestlichsten Punktes des Nachfolgerpanels gleichgesetzt.
-     *
+     *Ermittelt die Position, wo das anliegende Panel als nächstes angesetzt wird.
      * @memberOf PanelString
      * @private
      * @param {Panel} panel - Das Panel, dessen Punkt den Anhängepunkt darstellt.
@@ -189,7 +187,7 @@ class PanelString {
 
 
     /**
-     * Gibt einen Array aller Panels mit entsprechen Längen- und Breitengraden ({@link Panel#getLatLngsAsArray) wieder
+     * Gibt einen Array aller Panels mit entsprechen Längen- und Breitengraden ({@link Panel#getLatLngsAsArray}) wieder
      * @memberOf PanelString
      *
      * @returns {Array} Array der Längen- und Breitengraden aller Panels

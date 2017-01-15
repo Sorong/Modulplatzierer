@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>DocStrap Source: new/Model/Panel.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.cosmo.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">DocStrap</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="Controller.html">Controller</a></li><li><a href="CookieHandler.html">CookieHandler</a></li><li><a href="EfficiencyDisplay.html">EfficiencyDisplay</a></li><li><a href="Map.html">Map</a></li><li><a href="Matrix.html">Matrix</a></li><li><a href="Panel.html">Panel</a></li><li><a href="PanelString.html">PanelString</a></li><li><a href="Roof.html">Roof</a></li><li><a href="ServerHandler.html">ServerHandler</a></li><li><a href="Toolbar.html">Toolbar</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#BEST_PV">BEST_PV</a></li><li><a href="global.html#calcNextPoint">calcNextPoint</a></li><li><a href="global.html#controller">controller</a></li><li><a href="global.html#convexHull">convexHull</a></li><li><a href="global.html#COOKIENAME">COOKIENAME</a></li><li><a href="global.html#DAYS_TILL_COOKIE_EXPIRE">DAYS_TILL_COOKIE_EXPIRE</a></li><li><a href="global.html#DEFAULT_ZOOM">DEFAULT_ZOOM</a></li><li><a href="global.html#efficiencyTable">efficiencyTable</a></li><li><a href="global.html#evaluateEfficiency">evaluateEfficiency</a></li><li><a href="global.html#HOST">HOST</a></li><li><a href="global.html#INIT_LOCATION">INIT_LOCATION</a></li><li><a href="global.html#initAutocomplete">initAutocomplete</a></li><li><a href="global.html#matrix">matrix</a></li><li><a href="global.html#SERVER_URL">SERVER_URL</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: new/Model/Panel.js</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">/**
+ * Matrix-Objekt, dass zur Berechnung der Drehungen genutzt wird.
+ * @type {Matrix}
+ */
+var matrix = new Matrix();
+
+/**
+ * Konstruiert ein Solarpanel (Panel-Objekt).
+ * @constructor
+ * @property {L.latLng} oTopLeft Stellt die Ursprungskoordinaten für den Punkt im Nordwesten dar.
+ * @property {L.latLng} oTopRight Stellt die Ursprungskoordinaten für den Punkt im Nordosten dar.
+ * @property {L.latLng} oBotLeft Stellt die Ursprungskoordinaten für den Punkt im Südwesten dar.
+ * @property {L.latLng} oBotLeft Stellt die Ursprungskoordinaten für den Punkt im Südosten dar.
+ * @property {L.latLng} topLeft Stellt die Koordinaten für den Punkt im Nordwesten, unter Berücksichtigung der Rotation, dar.
+ * @property {L.latLng} topRight Stellt die Koordinaten für den Punkt im Nordosten, unter Berücksichtigung der Rotation, dar.
+ * @property {L.latLng} botLeft Stellt die Koordinaten für den Punkt im Südwesten, unter Berücksichtigung der Rotation, dar.
+ * @property {L.latLng} botRight Stellt die Koordinaten für den Punkt im Südosten, unter Berücksichtigung der Rotation, dar.
+ * @property {number} orientation Die Rotation entlang der Paneleigenen Z-Achse.
+ * @property {string} pitch Die Rotation entlang der Paneleigenen X-Achse.
+ * @property {number} height Die Höhe/Länge des Panels in Meter.
+ * @property {number} width Die Breite des Panels in Meter.
+ * @property {number} frameWidth Die Rahmenbreite des Panels in Meter.
+ * @property {number} id Die ID des Panels.
+ *
+ */
+function Panel() {
+    this.oTopLeft = null;
+    this.oTopRight = null;
+    this.oBotLeft = null;
+    this.oBotRight = null;
+    this.topLeft = null;
+    this.topRight = null;
+    this.botLeft = null;
+    this.botRight = null;
+    this.orientation = 0;
+    this.pitch = 0;
+    this.name = null;
+    this.height = 0;
+    this.width = 0;
+    this.frameWidth = 0.05;
+    this.id = -1;
+}
+/**
+ * Justiert das Panel neu aufgrund von veränderten Koordinaten oder veränderte Breite/Länge.
+ * @param {controller} controller Der Controller der benötigt wird um Koordinaten von Geodaten in X/Y-Koordinaten umzurechnen.
+ * @param {number|undefined} width Neue Breite des Panels, wenn nicht definiert, wird die bereits vorhandene Breite genutzt.
+ * @param {number|undefined} height Neue Länge/Höhe des Panels, wenn nicht definiert, wird die bereits vorhande Länge genutzt.
+ */
+Panel.prototype.align = function (controller, width, height) {
+    var w = width !== undefined ? width : this.width;
+    var h = height !== undefined ? height : this.height;
+    var frameInMeter = this.frameWidth;
+    this.oTopLeft = this.topLeft;
+    this.oTopRight = calcNextPoint(Number(this.width) + frameInMeter, this.oTopLeft, 0);
+    this.oBotLeft = calcNextPoint(Number(this.height) + frameInMeter, this.oTopLeft, -90);
+    this.oBotRight = calcNextPoint(Number(this.height) + frameInMeter, this.oTopRight, -90);
+    this.width = w;
+    this.height = h;
+    this._selfAlign(controller);
+};
+/**
+ * Verarbeitet die definierten Rotationswinkel (pitch/orientation) um die transformierten Koordinaten zu berechnen.
+ * @param {controller} controller Der Controller der benötigt wird um Koordinaten von Geodaten in X/Y-Koordinaten umzurechnen.
+ * @private
+ */
+Panel.prototype._selfAlign = function (controller) {
+    this.topLeft = controller.getLatLngAsPoint(this.oTopLeft);
+    this.topRight = controller.getLatLngAsPoint(this.oTopRight);
+    this.botLeft = controller.getLatLngAsPoint(this.oBotLeft);
+    this.botRight = controller.getLatLngAsPoint(this.oBotRight);
+
+    var vTopBottomLeft = [
+        this.botLeft.x - this.topLeft.x,
+        this.botLeft.y - this.topLeft.y,
+        0
+    ];
+    var vTopBottomRight = [
+        this.botRight.x - this.topLeft.x,
+        this.botRight.y - this.topLeft.y,
+        0
+    ];
+    var vTopLeftTopRight = [
+        this.topRight.x - this.topLeft.x,
+        this.topRight.y - this.topLeft.y,
+        0];
+
+    var orientationMatrix = matrix.calculateOrientationMatrix(this.orientation);
+    var pitchMatrix = matrix.calculatePitchMatrix(this.pitch);
+    var topright = matrix.matrixMultiplyVector(orientationMatrix, vTopLeftTopRight);
+    var bottomleft = matrix.matrixMultiplyVector(orientationMatrix, matrix.matrixMultiplyVector(pitchMatrix, vTopBottomLeft));
+    var bottomright = matrix.matrixMultiplyVector(orientationMatrix, matrix.matrixMultiplyVector(pitchMatrix, vTopBottomRight));
+
+    this.botLeft = controller.getPointAsLatLng([this.topLeft.x + bottomleft[0], this.topLeft.y + bottomleft[1]]);
+    this.topRight = controller.getPointAsLatLng([this.topLeft.x + topright[0], this.topLeft.y + topright[1]]);
+    this.botRight = controller.getPointAsLatLng([this.topLeft.x + bottomright[0], this.topLeft.y + bottomright[1]]);
+    this.topLeft = controller.getPointAsLatLng([this.topLeft.x, this.topLeft.y]);
+
+};
+/**
+ * Berechnet die Rahmenbreite in Pixel.
+ * @param {controller} controller Der Controller der benötigt wird um Koordinaten von Geodaten in X/Y-Koordinaten umzurechnen.
+ * @returns {number} Die Rahmenbreite in Pixel.
+ */
+Panel.prototype.getFrameWidthInPixel = function (controller) {
+    var frameInMeter = this.frameWidth;
+    console.log("Zentimeter" + frameInMeter);
+    var vectorFrame = calcNextPoint(frameInMeter, this.oTopLeft, 0);
+    vectorFrame = controller.getLatLngAsPoint(vectorFrame);
+    vectorWithoutFrame = controller.getLatLngAsPoint(this.oTopLeft);
+    return (vectorFrame.x - vectorWithoutFrame.x);
+};
+/**
+ * Getter für die Rahmenbreite.
+ * @returns {number} Rahmenbreite in Metern.
+ */
+Panel.prototype.getFrameWidth = function () {
+    return this.frameWidth;
+};
+/**
+ * Setter für die Rahmenbreite.
+ * @param {controller} controller Der Controller der zur Berechnung der Panelgrößen notwendig ist, interner Aufruf von align {@see align}
+ * @param {number} width Die neue Rahmenbreite in Metern.
+ */
+Panel.prototype.setFrameWidth = function (controller, width) {
+    this.frameWidth = width;
+    this.align(controller);
+};
+/**
+ * Setter für die Ausrichtung des Panels.
+ * @param {controller} controller Der Controller der zur Berechnung der Panelgrößen notwendig ist, interner Aufruf von align {@see align}
+ * @param {number} orientation Die neue Ausrichtung des Panels in Grad.
+ */
+Panel.prototype.setOrientation = function (controller, orientation) {
+    this.orientation = orientation;
+    this.align(controller)
+};
+/**
+ * Setter für die Neigung des Panels.
+ * @param {controller} controller Der Controller der zur Berechnung der Panelgrößen notwendig ist, interner Aufruf von align {@see align}
+ * @param {number} pitch Die neue Neigung des Panels in Grad.
+ */
+Panel.prototype.setPitch = function (controller, pitch) {
+    this.pitch = pitch;
+    this.align(controller);
+};
+/**
+ * Setter für die nordwestlichste Koordinate des Panels.
+ * @param {controller} controller Der Controller der zur Berechnung der Panelgrößen notwendig ist, interner Aufruf von align {@see align}
+ * @param {L.latLng} topLeft Geodaten der Koordinate.
+ */
+Panel.prototype.setTopLeft = function (controller, topLeft) {
+    this.topLeft = topLeft;
+    this.align(controller)
+};
+/**
+ * Konvertiert die Punkte des Panels in ein Listenformat ([NW, NO, SO, SW]), Listenobjekte enhalten die Geodaten.
+ * @returns {L.latLng[]} Array der Länge Vier.
+ */
+Panel.prototype.getPointsAsList = function () {
+    return [this.oTopLeft, this.topRight, this.botRight, this.botLeft];
+};
+/**
+ * Konvertiert die Punkte des Panels in ein Listenformat
+ * ([[NW.latitude, NW.longitude], [NO.latitude, NW.longitude], [SO.latitude, SO.longitude], [SW.latitude, SW.longitude]]),
+ * Listenobjekte enhalten die Geodaten.
+ * @returns {number[][]} Array der Länge Vier. Jeder Eintrag enthält ein Array der Länge Zwei [Latitude, Longitude].
+ */
+Panel.prototype.getLatLngsAsArray = function () {
+    return [
+        [this.topLeft.lat, this.topLeft.lng],
+        [this.topRight.lat, this.topRight.lng],
+        [this.botRight.lat, this.botRight.lng],
+        [this.botLeft.lat, this.botLeft.lng]
+    ]
+};
+/**
+ * Konvertiert das Panel in ein JSON Objekt.
+ * @returns JSON-Objekt mit allen Informationen des Panels. Attribute sind panel_id, the_geom[[latitude,longitude]], laenge, breite, neigung, ausrichtung und rahmenbreite.
+ */
+Panel.prototype.getAsJson = function () {
+    return {
+        panel_id: this.id,
+        the_geom: [
+            {
+                latitude: this.oTopLeft.lat,
+                longitude: this.oTopLeft.lng
+            },
+            {
+                latitude: this.oTopRight.lat,
+                longitude: this.oTopRight.lng
+            },
+            {
+                latitude: this.oBotRight.lat,
+                longitude: this.oBotRight.lng
+            },
+            {
+                latitude: this.oBotLeft.lat,
+                longitude: this.oBotLeft.lng
+            }],
+        laenge: this.height,
+        breite: this.width,
+        neigung: this.pitch,
+        ausrichtung: this.orientation,
+        rahmenbreite: this.frameWidth
+    }
+};
+/**
+ * Liest die Punkte einer übergebenen Liste der Form Liste[[latitude, longitude]]. Und setzt anhand dieser die Panelkoordinaten neu.
+ * @param {number[][]}list Liste der Länge Vier. Punkte werden der Reihe nach neu gesetzt: NW, NO, SW, SO.
+ */
+Panel.prototype.setPointsFromList = function (list) {
+    if (list.length > 0) {
+        for (var i = 0; i &lt; list.length; i++) {
+            var latLng = L.latLng(list[i].latitude, list[i].longitude);
+            if (latLng === undefined) {
+                latLng = list[i];
+            }
+            switch (i) {
+                case 0:
+                    this.oTopLeft = this.topLeft = latLng;
+                    break;
+                case 1:
+                    this.oTopRight = latLng;
+                    break;
+                case 2:
+                    this.oBotRight = latLng;
+                    break;
+                case 3:
+                    this.oBotLeft = latLng;
+                    break;
+                default:
+                    return;
+            }
+        }
+
+    }
+};
+/**
+ * Getter für die ID des Panels.
+ * @returns {number} ID des Panels.
+ */
+Panel.prototype.getId = function () {
+    return this.id;
+};
+/**
+ * Hilfsfunktion zur Berechnung neuer Geodaten im Abhängigkeit zur Distanz in Metern, dem Ursprungspunkt und dem Winkel.
+ * Zur internen Rechnung wird ein Erdradius von 6.371.000 Metern angenommen, wodurch geringfügige Abweichung zur tatsächlichen Größe möglich sein können.
+ * @param {number} distance Der Abstand in Metern zum Ursprungspunkt.
+ * @param {L.latLng} point Die Geodaten des Ursprungspunkt.
+ * @param {number} angle Der Winkel, in Grad, in denen sich der Zielpunkt befinden soll.
+ * @returns {l.latLng} Die Geodaten des berechnten Punktes.
+ * @static
+ */
+function calcNextPoint(distance, point, angle) {
+    earthRadius = 6371000;
+    distanceNorth = Math.sin(angle * Math.PI / 180) * distance;
+    distanceEast = Math.cos(angle * Math.PI / 180) * distance;
+    if (isNaN(distanceNorth)) {
+        distanceNorth = 0;
+    }
+    if (isNaN(distanceEast)) {
+        distanceEast = 0;
+    }
+    newLat = point.lat + (distanceNorth / earthRadius) * (180 / Math.PI);
+    newLon = point.lng + (distanceEast / earthRadius) * (180 / Math.PI) / Math.cos(point.lat * Math.PI / 180);
+    return L.latLng(newLat, newLon);
+}</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	DocStrap Copyright © 2012-2015 The contributors to the JSDoc3 and DocStrap projects.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
+	
+		on Sun Jan 15th 2017
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>
