@@ -42,7 +42,7 @@ function Panel() {
 }
 /**
  * Justiert das Panel neu aufgrund von veränderten Koordinaten oder veränderte Breite/Länge.
- * @param {controller} controller Der Controller der benötigt wird um Koordinaten von Geodaten in X/Y-Koordinaten umzurechnen.
+ * @param {Controller} controller Der Controller der benötigt wird um Koordinaten von Geodaten in X/Y-Koordinaten umzurechnen.
  * @param {number|undefined} width Neue Breite des Panels, wenn nicht definiert, wird die bereits vorhandene Breite genutzt.
  * @param {number|undefined} height Neue Länge/Höhe des Panels, wenn nicht definiert, wird die bereits vorhande Länge genutzt.
  */
@@ -60,7 +60,7 @@ Panel.prototype.align = function (controller, width, height) {
 };
 /**
  * Verarbeitet die definierten Rotationswinkel (pitch/orientation) um die transformierten Koordinaten zu berechnen.
- * @param {controller} controller Der Controller der benötigt wird um Koordinaten von Geodaten in X/Y-Koordinaten umzurechnen.
+ * @param {Controller} controller Der Controller der benötigt wird um Koordinaten von Geodaten in X/Y-Koordinaten umzurechnen.
  * @private
  */
 Panel.prototype._selfAlign = function (controller) {
@@ -98,7 +98,7 @@ Panel.prototype._selfAlign = function (controller) {
 };
 /**
  * Berechnet die Rahmenbreite in Pixel.
- * @param {controller} controller Der Controller der benötigt wird um Koordinaten von Geodaten in X/Y-Koordinaten umzurechnen.
+ * @param {Controller} controller Der Controller der benötigt wird um Koordinaten von Geodaten in X/Y-Koordinaten umzurechnen.
  * @returns {number} Die Rahmenbreite in Pixel.
  */
 Panel.prototype.getFrameWidthInPixel = function (controller) {
@@ -118,7 +118,7 @@ Panel.prototype.getFrameWidth = function () {
 };
 /**
  * Setter für die Rahmenbreite.
- * @param {controller} controller Der Controller der zur Berechnung der Panelgrößen notwendig ist, interner Aufruf von align {@see align}
+ * @param {Controller} controller Der Controller der zur Berechnung der Panelgrößen notwendig ist, interner Aufruf von align {@see align}
  * @param {number} width Die neue Rahmenbreite in Metern.
  */
 Panel.prototype.setFrameWidth = function (controller, width) {
@@ -127,7 +127,7 @@ Panel.prototype.setFrameWidth = function (controller, width) {
 };
 /**
  * Setter für die Ausrichtung des Panels.
- * @param {controller} controller Der Controller der zur Berechnung der Panelgrößen notwendig ist, interner Aufruf von align {@see align}
+ * @param {Controller} controller Der Controller der zur Berechnung der Panelgrößen notwendig ist, interner Aufruf von align {@see align}
  * @param {number} orientation Die neue Ausrichtung des Panels in Grad.
  */
 Panel.prototype.setOrientation = function (controller, orientation) {
@@ -136,7 +136,7 @@ Panel.prototype.setOrientation = function (controller, orientation) {
 };
 /**
  * Setter für die Neigung des Panels.
- * @param {controller} controller Der Controller der zur Berechnung der Panelgrößen notwendig ist, interner Aufruf von align {@see align}
+ * @param {Controller} controller Der Controller der zur Berechnung der Panelgrößen notwendig ist, interner Aufruf von align {@see align}
  * @param {number} pitch Die neue Neigung des Panels in Grad.
  */
 Panel.prototype.setPitch = function (controller, pitch) {
@@ -145,7 +145,7 @@ Panel.prototype.setPitch = function (controller, pitch) {
 };
 /**
  * Setter für die nordwestlichste Koordinate des Panels.
- * @param {controller} controller Der Controller der zur Berechnung der Panelgrößen notwendig ist, interner Aufruf von align {@see align}
+ * @param {Controller} controller Der Controller der zur Berechnung der Panelgrößen notwendig ist, interner Aufruf von align {@see align}
  * @param {L.latLng} topLeft Geodaten der Koordinate.
  */
 Panel.prototype.setTopLeft = function (controller, topLeft) {
