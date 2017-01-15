@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>DocStrap Index</title>
+	<title>DocStrap Source: new/Utility/Matrix.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -67,66 +67,90 @@
 <div class="row">
 
 	
-	<div class="col-md-8">
+	<div class="col-md-12">
 	
 		<div id="main">
 			
 
-	
-	
-
-
-
-
-
-
-
-
-
-
-
-	
-	
-
-
-
-
-
-    <section class="readme-section">
-        <article><h1>Installationsanleitung Modulplazierer auf einem Luftbild für Kleinanlagen</h1><h3>Einrichtung der Datenbank</h3><p>Zunächst muss dafür die Postgresql Datenbank installiert werden. Unter Linux gibt es dazu dafür den Befehl<br><code>sudo apt-get install postgresql-9.4</code>.<br>Als nächstes wird die Postgis Erweiterung benötig, welche mit<br><code>sudo apt-get install postgis</code><br>installiert werden kann. Mit dem Befehl <code>psql</code> kann der Postgresserver erstmalig konfiguriert werden.</p>
-<p>Nun erstellt man mit dem Befehl <code>CREATE DATABASE name</code> eine neue Datenbank mit dem Namen <strong>scltest_sg_we2016_gr2a</strong>. Der Name kann natürlich frei gewählt werden, nur muss er dann in den folgenden Schritten angepasst werden. Um die Tabellen zu generieren wird ebenfalls <code>psql</code> benutzt.<br>Mit <code>psql -f create_db.sql -d scltest_sg_we2016_gr2a</code> werden die Tabellen in der Datenbank erzeugt.<br>Als nächsten muss ein Benutzer erzeugt werden, welcher die Datenbank verwalten soll.</p>
-<p>Dazu den Befehl <code>CREATE USER -p scltest_sg_we2016_gr2a</code> ausführen und anschließend ein neues Passwort vergeben. In diesem Fall wurde ein Nutzer mit dem Namen <strong>scltest_sg_we2016_gr2a</strong> erstellt. Zuletzt muss der neue User der Datenbank zugeordnet werden.</p>
-<p>Dazu den Befehl <code>GRANT ALL PRIVILEGES ON DATABASE scltest_sg_we2016_gr2a to scltest_sg_we2016_gr2a</code>.<br>Die Datenbank ist nun eingerichtet und kann verwendet werden.</p>
-<h3>Erstellung des RESTApi Web Archives</h3><p>In dem Ordner <strong>SolarRESTService</strong> befindet sich ein Maven Projekt, welches mit der IntelliJ IDEA Entwicklungsumgebung erstellt worden ist. Dieser Ordner kann mit IntelliJ geöffnet werden. Anschließend muss unter File -&gt; Project Structure ein neues Artefakt vom Type <strong>Web Application: Archive</strong> erstellt werden. Der Name kann frei gewählt werden. Nun muss der Haken bei <strong>Build on make</strong> gesetzt werden. Danach mit einem Rechtsklick auf <strong>SolarRESTService</strong> und <strong>Put into Output Root</strong> auswählen. Mit einem Klick auf <strong>Apply</strong> werden die Einstellungen übernommen. Als letzten Schritt muss noch Build -&gt; Make Project ausgewählt werden und das Web Archive wird erstellt. Diese kann nur auf einem Server deployed werden.</p>
-<h3>Einrichtung des Servers</h3><p>Bei dem verwendeten Server handelt es sich um Payarafish 4.1. Dieser kann auf der Internetseite http://www.payara.fish/ kostenlos heruntergeladen werden. Nach dem Download muss die Zip-Datei entpackt werden und in den /bin Ordner navigiert werden. Dort befindet sich die asadmin Datei, mit welcher der Server gestartet werden kann.<br><code>./asadmin start-domain payaradomain</code><br>Nach dem Start des Server ist das Administratorinterface unter http://localhost:4848 erreichbar.</p>
-<p>Nun muss die Verbindung zur Datenbank hergestellt werden. Unter dem Reiter <strong>JDBC</strong> kann die Verbindung zur Datenbank konfiguriert werden.</p>
-<ol>
-<li>Klick auf JDBC Connection Pool</li>
-<li>Klick auf New</li>
-<li>Pool Name: SolarDB</li>
-<li>Resoruce Type: Javax.sql.ConnectionPoolDataSource</li>
-<li>Database Driver Vendor: Postgres</li>
-<li>Klick auf Next</li>
-<li>Nach Additional Properties scrollen</li>
-<li>Username: Der eingerichtete Username welcher die Datenbank verwaltet</li>
-<li>Port: Port auf dem die Datenbank erreichbar ist</li>
-<li>Password: Passwort des Users</li>
-<li>Databasename: Name der eingerichteten Datenbank</li>
-<li>Servername: Hostname der Datenbank</li>
-<li>Klick auf Finish</li>
-</ol>
-<p>Der Connection Pool für die Datenbank ist nun eingerichtet. Nun muss nur noch eine JDBC Resource eingerichtet werden. Dazu wieder auf den Reiter <strong>JDBC</strong>.</p>
-<ol>
-<li>Klick auf JDBC Resources</li>
-<li>Klick auf New</li>
-<li>JNDI Name: SolarDBWeb</li>
-<li>Pool Name: SolarDB auswählen</li>
-<li>Klick auf Finish</li>
-</ol>
-<p>Nun kann das SolarRESTService Archiv auf dem Server deplyed werden. Dazu einfach auf den Reiter <strong>Commen Task</strong> klicken und dann auf <strong>Deploy an Application</strong>. Nun eianfach die gewünscht .war Datei auswählen und sie wie auf dem Server deployen. Sie ist nun unter http://localhost:8080/Name_War/Pfad/ erreichbar.</p></article>
-    </section>
-
-
+		<h1 class="page-title">Source: new/Utility/Matrix.js</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">/**
+ * Konstruiert ein Matrix-Objekt.
+ * Das Matrix-Objekt ist eine Hilfsklasse, die Rotationsmatrizen zur Rotation entlang der X-/Z-Achse liefert.
+ * Bei den Matrizen handelt es sich um 3x3-Matrizen.
+ * Außerdem stellt das Objekt die Funktionalität zur Verfügung eine 3x3 Matrix mit einem Vektor (x,y,z) zu multiplizieren.
+ * @class
+ * @constructor
+ * @property {number} lastOrientation Der zuletzt berechnte Rotationswinkel der Z-Rotationsmatrix.
+ * @property {number[][]} lastOrientationMatrix Die der zuletzt berechneten Z-Rotationsmatrix in Relation zum zuletzt berechnten Rotationswinkel.
+ * @property {number} lastPitch Der zuletzt berechnte Rotationswinkel der X-Rotationsmatrix.
+ * @property {number[][]} lastPitchMatrix Die der zuletzt berechneten X-Rotationsmatrix in Relation zum zuletzt berechneten Rotationswinkel.
+ */
+function Matrix() {
+    this.lastOrientation = null;
+    this.lastOrientationMatrix = null;
+    this.lastPitch = null;
+    this.lastPitchMatrix = null;
+}
+/**
+ * Berechnet die Rotationsmatrix zur Rotation entlang der Z-Achse.
+ * Berechnungen werden gespeichert um ggf. identische Berechnungen, die nacheinander durchgeführt werden, zu verhindern.
+ * @param {number} orientation Der Drehwinkel der zur Berechnung der Matrix genutzt wird.
+ * @returns {number[][]|null} Die Rotationsmatrix 3x3 die berechnet oder aus dem Speicher gelesen wird.
+ * Gibt die zuletzt gespeicherte Matrix zurück wenn "null" übergeben wird.
+ */
+Matrix.prototype.calculateOrientationMatrix = function (orientation) {
+    if (this.lastOrientation === orientation) {
+        return this.lastOrientationMatrix;
+    }
+    this.lastOrientation = orientation;
+    this.lastOrientationMatrix = [
+        [Math.cos(orientation * Math.PI / 180), -Math.sin(orientation * Math.PI / 180), 0],
+        [Math.sin(orientation * Math.PI / 180), Math.cos(orientation * Math.PI / 180), 0],
+        [0, 0, 1]
+    ];
+    return this.lastOrientationMatrix;
+};
+/**
+ * Berechnet die Rotationsmatrix zur Rotation entlang der X-Achse.
+ * Berechnungen werden gespeichert um ggf. identische Berechnungen, die nacheinander durchgeführt werden, zu verhindern.
+ * @param {number} pitch Der Drehwinkel der zur Berechnung der Matrix genutzt wird.
+ * @returns {number[][]|null} Die Rotationsmatrix 3x3 die berechnet oder aus dem Speicher gelesen wird.
+ * Gibt die zuletzt gespeicherte Matrix zurück wenn "null" übergeben wird.
+ */
+Matrix.prototype.calculatePitchMatrix = function (pitch) {
+    if (this.lastPitch === pitch) {
+        return this.lastPitchMatrix;
+    }
+    this.lastPitch = pitch;
+    this.lastPitchMatrix = [
+        [1, 0, 0],
+        [0, Math.cos(pitch * Math.PI / 180), -Math.sin(pitch * Math.PI / 180)],
+        [0, Math.sin(pitch * Math.PI / 180), Math.cos(pitch * Math.PI / 180)]
+    ];
+    return this.lastPitchMatrix;
+};
+/**
+ * Multipliziert eine 3x3 Matrix mit einem Vektor (x,y,z).
+ * @param {number[][]} matrix Matrix der Form 3x3.
+ * @param {number[]} vector Vektor aus drei Komponenten.
+ * Bei Vektoren, die aus mehr Komponenten bestehen werden die weiteren Komponenten ignoriert und es wird so verfahren,
+ * als ob der Vektor nur drei Komponenten hätte.
+ * @returns {number[]} Das Ergebnis der Multiplikation, ein Vektor aus drei Komponenten.
+ */
+Matrix.prototype.matrixMultiplyVector = function (matrix, vector) {
+    var newVector = [
+        matrix[0][0] * vector[0] + matrix[0][1] * vector[1] + matrix[0][2] * vector[2],
+        matrix[1][0] * vector[0] + matrix[1][1] * vector[1] + matrix[1][2] * vector[2],
+        matrix[2][0] * vector[0] + matrix[2][1] * vector[1] + matrix[2][2] * vector[2]
+    ];
+    return newVector;
+};</pre>
+    </article>
+</section>
 
 
 
@@ -137,10 +161,6 @@
 
 	<div class="clearfix"></div>
 
-	
-		<div class="col-md-3">
-			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
-		</div>
 	
 
 </div>

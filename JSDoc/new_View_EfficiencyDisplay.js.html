@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>DocStrap Index</title>
+	<title>DocStrap Source: new/View/EfficiencyDisplay.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -67,66 +67,148 @@
 <div class="row">
 
 	
-	<div class="col-md-8">
+	<div class="col-md-12">
 	
 		<div id="main">
 			
 
-	
-	
+		<h1 class="page-title">Source: new/View/EfficiencyDisplay.js</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">var EfficiencyDisplay = (function () {
 
+    /**
+     * Repräsentiert die Anzeige für die Effizienz
+     * @class
+     * @constructor EfficiencyDisplay
+     * @property {jQuery} panelCounter Html Element für die Anzeige der Panelanzahl
+     * @property {jQuery} panelArea Html Element für die Anzeige der Quatratmeter
+     * @property {jQuery} panelNominal Html Element für die Anzeige der Nennleistung
+     * @property {jQuery} panelPerYear Html Element für die Anzeige den Stromertrag pro Jahr
+     * @property {jQuery} warningContainer Html Element für die Warnung
+     * @property {jQuery} warningMessage Html Element für die Anzeige der Warnung
+     * @property {object} panel Panel hält die Daten für die Anzeige
+     * @property {number} panel.counter Hält die Anzahl der Panels
+     * @property {number} panel.area Hält die Anzahl der Panels
+     * @property {number} panel.nominal Hält die Anzahl der Panels
+     * @property {number} panel.perYear Hält die Anzahl der Panels
+     */
+    function EfficiencyDisplay() {
+        this.panelCounter   = $('#panel_counter');
+        this.panelArea      = $('#panel_area');
+        this.panelNominal   = $('#panel_nominal');
+        this.panelPerYear   = $('#panel_per_year');
+        this.warningContainer = $('#panel_efficiency_error');
+        this.warningMessage = $('#panel_efficiency_error').find('.warningMessage');
+        this.panel = {
+            counter: 0,
+            area: 0,
+            nominal: 0,
+            perYear: 0
+        }
+    }
 
+    /**
+     * Gibt die Anzahl der Panels zurück
+     * @memberOf EfficiencyDisplay
+     * @return {number} Anzahl der Panels
+     */
+    EfficiencyDisplay.prototype.getPanelCounter = function () {
+        return this.panel.counter;
+    };
 
+    /**
+     * Setzt die Anzahl der Panels und zeigt die an.
+     * @memberOf EfficiencyDisplay
+     * @param {number} counter - Anzahl der Panels
+     */
+    EfficiencyDisplay.prototype.setPanelCounter = function (counter) {
+        this.panel.counter = counter;
+        this.panelCounter.html(counter);
+    };
 
+    /**
+     * Gibt die gesetzten Quadratmeter des Panelstrings wieder
+     * @memberOf EfficiencyDisplay
+     * @returns {number} Quadratmeter
+     */
+    EfficiencyDisplay.prototype.getPanelArea = function () {
+        return this.panel.area;
+    };
 
+    /**
+     * Setzt die Quadratmeter der Panelstring Fläche und zeigt diese an
+     * @memberOf EfficiencyDisplay
+     * @param {number} squareMeter - Quadratmeter
+     */
+    EfficiencyDisplay.prototype.setPanelArea = function (squareMeter) {
+        this.panel.area = squareMeter;
+        this.panelArea.html(squareMeter + " m²");
+    };
 
+    /**
+     * Gibt die gesetzte Nennleistung zurück
+     * @memberOf EfficiencyDisplay
+     * @returns {number} Nennleistung
+     */
+    EfficiencyDisplay.prototype.getPanelNominal = function () {
+        return this.panel.nominal;
+    };
 
+    /**
+     * Setzt die Nennleistung und zeigt diese an
+     * @memberOf EfficiencyDisplay
+     * @param {number} nominal - Nennleistung
+     */
+    EfficiencyDisplay.prototype.setPanelNominal = function (nominal) {
+        this.panel.nominal = nominal;
+        this.panelNominal.html(nominal + " kWh");
+    };
 
+    /**
+     * Gibt den gesetzten Stromertrag zurück
+     * @memberOf EfficiencyDisplay
+     * @returns {number} Stromertrag
+     */
+    EfficiencyDisplay.prototype.getPerYear = function () {
+        return this.panel.perYear
+    };
 
+    /**
+     * Setzt den Stromertrag pro Jahr und zeigt diesen an
+     * @memberOf EfficiencyDisplay
+     * @param {number} perYear - Stromertrag
+     */
+    EfficiencyDisplay.prototype.setPerYear = function (perYear) {
+        this.panel.perYear = perYear;
+        this.panelPerYear.html(perYear + " kWH/Jahr")
+    };
 
+    /**
+     * Zeigt den Warnhinweis, mit der übergeben Warnung, an.
+     * @memberOf EfficiencyDisplay
+     * @param {string} warning - Warnung
+     */
+    EfficiencyDisplay.prototype.showWarning = function (warning) {
+        this.warningContainer.removeClass('hidden');
+        this.warningMessage.html(warning);
+    };
 
-	
-	
+    /**
+     * Verbirgt den Warnhinweis
+     * @memberOf EfficiencyDisplay
+     */
+    EfficiencyDisplay.prototype.hideWarning = function () {
+        this.warningContainer.addClass('hidden');
+    };
 
-
-
-
-
-    <section class="readme-section">
-        <article><h1>Installationsanleitung Modulplazierer auf einem Luftbild für Kleinanlagen</h1><h3>Einrichtung der Datenbank</h3><p>Zunächst muss dafür die Postgresql Datenbank installiert werden. Unter Linux gibt es dazu dafür den Befehl<br><code>sudo apt-get install postgresql-9.4</code>.<br>Als nächstes wird die Postgis Erweiterung benötig, welche mit<br><code>sudo apt-get install postgis</code><br>installiert werden kann. Mit dem Befehl <code>psql</code> kann der Postgresserver erstmalig konfiguriert werden.</p>
-<p>Nun erstellt man mit dem Befehl <code>CREATE DATABASE name</code> eine neue Datenbank mit dem Namen <strong>scltest_sg_we2016_gr2a</strong>. Der Name kann natürlich frei gewählt werden, nur muss er dann in den folgenden Schritten angepasst werden. Um die Tabellen zu generieren wird ebenfalls <code>psql</code> benutzt.<br>Mit <code>psql -f create_db.sql -d scltest_sg_we2016_gr2a</code> werden die Tabellen in der Datenbank erzeugt.<br>Als nächsten muss ein Benutzer erzeugt werden, welcher die Datenbank verwalten soll.</p>
-<p>Dazu den Befehl <code>CREATE USER -p scltest_sg_we2016_gr2a</code> ausführen und anschließend ein neues Passwort vergeben. In diesem Fall wurde ein Nutzer mit dem Namen <strong>scltest_sg_we2016_gr2a</strong> erstellt. Zuletzt muss der neue User der Datenbank zugeordnet werden.</p>
-<p>Dazu den Befehl <code>GRANT ALL PRIVILEGES ON DATABASE scltest_sg_we2016_gr2a to scltest_sg_we2016_gr2a</code>.<br>Die Datenbank ist nun eingerichtet und kann verwendet werden.</p>
-<h3>Erstellung des RESTApi Web Archives</h3><p>In dem Ordner <strong>SolarRESTService</strong> befindet sich ein Maven Projekt, welches mit der IntelliJ IDEA Entwicklungsumgebung erstellt worden ist. Dieser Ordner kann mit IntelliJ geöffnet werden. Anschließend muss unter File -&gt; Project Structure ein neues Artefakt vom Type <strong>Web Application: Archive</strong> erstellt werden. Der Name kann frei gewählt werden. Nun muss der Haken bei <strong>Build on make</strong> gesetzt werden. Danach mit einem Rechtsklick auf <strong>SolarRESTService</strong> und <strong>Put into Output Root</strong> auswählen. Mit einem Klick auf <strong>Apply</strong> werden die Einstellungen übernommen. Als letzten Schritt muss noch Build -&gt; Make Project ausgewählt werden und das Web Archive wird erstellt. Diese kann nur auf einem Server deployed werden.</p>
-<h3>Einrichtung des Servers</h3><p>Bei dem verwendeten Server handelt es sich um Payarafish 4.1. Dieser kann auf der Internetseite http://www.payara.fish/ kostenlos heruntergeladen werden. Nach dem Download muss die Zip-Datei entpackt werden und in den /bin Ordner navigiert werden. Dort befindet sich die asadmin Datei, mit welcher der Server gestartet werden kann.<br><code>./asadmin start-domain payaradomain</code><br>Nach dem Start des Server ist das Administratorinterface unter http://localhost:4848 erreichbar.</p>
-<p>Nun muss die Verbindung zur Datenbank hergestellt werden. Unter dem Reiter <strong>JDBC</strong> kann die Verbindung zur Datenbank konfiguriert werden.</p>
-<ol>
-<li>Klick auf JDBC Connection Pool</li>
-<li>Klick auf New</li>
-<li>Pool Name: SolarDB</li>
-<li>Resoruce Type: Javax.sql.ConnectionPoolDataSource</li>
-<li>Database Driver Vendor: Postgres</li>
-<li>Klick auf Next</li>
-<li>Nach Additional Properties scrollen</li>
-<li>Username: Der eingerichtete Username welcher die Datenbank verwaltet</li>
-<li>Port: Port auf dem die Datenbank erreichbar ist</li>
-<li>Password: Passwort des Users</li>
-<li>Databasename: Name der eingerichteten Datenbank</li>
-<li>Servername: Hostname der Datenbank</li>
-<li>Klick auf Finish</li>
-</ol>
-<p>Der Connection Pool für die Datenbank ist nun eingerichtet. Nun muss nur noch eine JDBC Resource eingerichtet werden. Dazu wieder auf den Reiter <strong>JDBC</strong>.</p>
-<ol>
-<li>Klick auf JDBC Resources</li>
-<li>Klick auf New</li>
-<li>JNDI Name: SolarDBWeb</li>
-<li>Pool Name: SolarDB auswählen</li>
-<li>Klick auf Finish</li>
-</ol>
-<p>Nun kann das SolarRESTService Archiv auf dem Server deplyed werden. Dazu einfach auf den Reiter <strong>Commen Task</strong> klicken und dann auf <strong>Deploy an Application</strong>. Nun eianfach die gewünscht .war Datei auswählen und sie wie auf dem Server deployen. Sie ist nun unter http://localhost:8080/Name_War/Pfad/ erreichbar.</p></article>
-    </section>
-
-
+    return EfficiencyDisplay;
+}());
+</pre>
+    </article>
+</section>
 
 
 
@@ -137,10 +219,6 @@
 
 	<div class="clearfix"></div>
 
-	
-		<div class="col-md-3">
-			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
-		</div>
 	
 
 </div>

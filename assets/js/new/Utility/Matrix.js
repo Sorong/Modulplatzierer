@@ -19,7 +19,7 @@ function Matrix() {
 /**
  * Berechnet die Rotationsmatrix zur Rotation entlang der Z-Achse.
  * Berechnungen werden gespeichert um ggf. identische Berechnungen, die nacheinander durchgeführt werden, zu verhindern.
- * @param orientation Der Drehwinkel der zur Berechnung der Matrix genutzt wird.
+ * @param {number} orientation Der Drehwinkel der zur Berechnung der Matrix genutzt wird.
  * @returns {number[][]|null} Die Rotationsmatrix 3x3 die berechnet oder aus dem Speicher gelesen wird.
  * Gibt die zuletzt gespeicherte Matrix zurück wenn "null" übergeben wird.
  */
@@ -38,7 +38,7 @@ Matrix.prototype.calculateOrientationMatrix = function (orientation) {
 /**
  * Berechnet die Rotationsmatrix zur Rotation entlang der X-Achse.
  * Berechnungen werden gespeichert um ggf. identische Berechnungen, die nacheinander durchgeführt werden, zu verhindern.
- * @param pitch Der Drehwinkel der zur Berechnung der Matrix genutzt wird.
+ * @param {number} pitch Der Drehwinkel der zur Berechnung der Matrix genutzt wird.
  * @returns {number[][]|null} Die Rotationsmatrix 3x3 die berechnet oder aus dem Speicher gelesen wird.
  * Gibt die zuletzt gespeicherte Matrix zurück wenn "null" übergeben wird.
  */
