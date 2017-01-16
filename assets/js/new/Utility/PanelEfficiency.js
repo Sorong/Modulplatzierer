@@ -26,10 +26,10 @@ var efficiencyTable = [
 
 /**
  * @typedef panels
- * @property {number} height - Höhe
- * @property {number} width - Breite
- * @property {number} pitch - Neigung
- * @property {number} orientation - Orientierung
+ * @property {number} height - Höhe des Panels.
+ * @property {number} width - Breite des Panels.
+ * @property {number} pitch - Neigung des Panels.
+ * @property {number} orientation - Orientierung des Panels.
  */
 
 /**

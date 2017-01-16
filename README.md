@@ -1,12 +1,12 @@
-# Installationsanleitung Modulplazierer auf einem Luftbild für Kleinanlagen
+# Installationsanleitung Modulplatzierer auf einem Luftbild für Kleinanlagen
 
 
 ### Einrichtung der Datenbank
-Zunächst muss dafür die Postgresql Datenbank installiert werden. Unter Linux gibt es dazu dafür den Befehl
+Zunächst muss dafür die Postgresql Datenbank installiert werden. Unter existiert der Befehl
 ```sudo apt-get install postgresql-9.4```.
-Als nächstes wird die Postgis Erweiterung benötig, welche mit
+Als nächstes wird die Postgis Erweiterung benötigt, welche mit
 ```sudo apt-get install postgis```
-installiert werden kann. Mit dem Befehl ```psql``` kann der Postgresserver erstmalig konfiguriert werden.
+installiert werden kann. Mit dem Befehl ```psql``` kann der Postgres-Server erstmalig konfiguriert werden.
 
 Nun erstellt man mit dem Befehl ```CREATE DATABASE name ``` eine neue Datenbank mit dem Namen **scltest_sg_we2016_gr2a**. Der Name kann natürlich frei gewählt werden, nur muss er dann in den folgenden Schritten angepasst werden. Um die Tabellen zu generieren wird ebenfalls ```psql``` benutzt.
 Mit ```psql -f create_db.sql -d scltest_sg_we2016_gr2a``` werden die Tabellen in der Datenbank erzeugt.
@@ -19,7 +19,7 @@ Die Datenbank ist nun eingerichtet und kann verwendet werden.
 
 
 ### Erstellung des RESTApi Web Archives
-In dem Ordner **SolarRESTService** befindet sich ein Maven Projekt, welches mit der IntelliJ IDEA Entwicklungsumgebung erstellt worden ist. Dieser Ordner kann mit IntelliJ geöffnet werden. Anschließend muss unter File -> Project Structure ein neues Artefakt vom Type **Web Application: Archive** erstellt werden. Der Name kann frei gewählt werden. Nun muss der Haken bei **Build on make** gesetzt werden. Danach mit einem Rechtsklick auf **SolarRESTService** und **Put into Output Root** auswählen. Mit einem Klick auf **Apply** werden die Einstellungen übernommen. Als letzten Schritt muss noch Build -> Make Project ausgewählt werden und das Web Archive wird erstellt. Diese kann nur auf einem Server deployed werden.
+In dem Ordner **SolarRESTService** befindet sich ein Maven Projekt, welches mit der IntelliJ IDEA Entwicklungsumgebung erstellt worden ist. Dieser Ordner kann mit IntelliJ geöffnet werden. Anschließend muss unter File -> Project Structure ein neues Artefakt vom Type **Web Application: Archive** erstellt werden. Der Name kann frei gewählt werden. Nun muss der Haken bei **Build on make** gesetzt werden. Danach mit einem Rechtsklick auf **SolarRESTService** und **Put into Output Root** auswählen. Mit einem Klick auf **Apply** werden die Einstellungen übernommen. Als letzten Schritt muss noch Build -> Make Project ausgewählt werden und das Web Archive wird erstellt. Dieses Archiv kann nur auf einem Server deployed werden.
 
 ### Einrichtung des Servers
 Bei dem verwendeten Server handelt es sich um Payarafish 4.1. Dieser kann auf der Internetseite http://www.payara.fish/ kostenlos heruntergeladen werden. Nach dem Download muss die Zip-Datei entpackt werden und in den /bin Ordner navigiert werden. Dort befindet sich die asadmin Datei, mit welcher der Server gestartet werden kann.

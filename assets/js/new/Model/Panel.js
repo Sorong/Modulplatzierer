@@ -118,7 +118,7 @@ Panel.prototype.getFrameWidth = function () {
 };
 /**
  * Setter für die Rahmenbreite.
- * @param {Controller} controller Der Controller der zur Berechnung der Panelgrößen notwendig ist, interner Aufruf von align {@see align}
+ * @param {Controller} controller Der Controller der zur Berechnung der Panelgrößen notwendig ist, interner Aufruf von {@link Panel#align}
  * @param {number} width Die neue Rahmenbreite in Metern.
  */
 Panel.prototype.setFrameWidth = function (controller, width) {
@@ -127,7 +127,7 @@ Panel.prototype.setFrameWidth = function (controller, width) {
 };
 /**
  * Setter für die Ausrichtung des Panels.
- * @param {Controller} controller Der Controller der zur Berechnung der Panelgrößen notwendig ist, interner Aufruf von align {@see align}
+ * @param {Controller} controller Der Controller der zur Berechnung der Panelgrößen notwendig ist, interner Aufruf von {@link Panel#align}
  * @param {number} orientation Die neue Ausrichtung des Panels in Grad.
  */
 Panel.prototype.setOrientation = function (controller, orientation) {
@@ -136,7 +136,7 @@ Panel.prototype.setOrientation = function (controller, orientation) {
 };
 /**
  * Setter für die Neigung des Panels.
- * @param {Controller} controller Der Controller der zur Berechnung der Panelgrößen notwendig ist, interner Aufruf von align {@see align}
+ * @param {Controller} controller Der Controller der zur Berechnung der Panelgrößen notwendig ist, interner Aufruf von {@link Panel#align}
  * @param {number} pitch Die neue Neigung des Panels in Grad.
  */
 Panel.prototype.setPitch = function (controller, pitch) {
@@ -145,25 +145,29 @@ Panel.prototype.setPitch = function (controller, pitch) {
 };
 /**
  * Setter für die nordwestlichste Koordinate des Panels.
- * @param {Controller} controller Der Controller der zur Berechnung der Panelgrößen notwendig ist, interner Aufruf von align {@see align}
- * @param {L.latLng} topLeft Geodaten der Koordinate.
+ * @param {Controller} controller Der Controller der zur Berechnung der Panelgrößen notwendig ist, interner Aufruf von {@link Panel#align}
+ * @param {L.latLng} topLeft Geodaten der Koordinaten, Liste beinhaltet vier Objekte.
  */
 Panel.prototype.setTopLeft = function (controller, topLeft) {
     this.topLeft = topLeft;
     this.align(controller)
 };
+
 /**
- * Konvertiert die Punkte des Panels in ein Listenformat ([NW, NO, SO, SW]), Listenobjekte enhalten die Geodaten.
+ * Konvertiert die Punkte des Panels in ein Listenformat ([NW, NO, SO, SW]), Listenobjekte enthalten die Geodaten.
  * @returns {L.latLng[]} Array der Länge Vier.
  */
 Panel.prototype.getPointsAsList = function () {
     return [this.oTopLeft, this.topRight, this.botRight, this.botLeft];
 };
 /**
- * Konvertiert die Punkte des Panels in ein Listenformat
- * ([[NW.latitude, NW.longitude], [NO.latitude, NW.longitude], [SO.latitude, SO.longitude], [SW.latitude, SW.longitude]]),
- * Listenobjekte enhalten die Geodaten.
- * @returns {number[][]} Array der Länge Vier. Jeder Eintrag enthält ein Array der Länge Zwei [Latitude, Longitude].
+ * @typedef {Object} LatLngList
+ * @property {number[]} Zweistelliges Array, erster Eintrag beinhaltet die latitude, der zweite Eintrag die longitude.
+ */
+/**
+ * Konvertiert die Punkte des Panels in ein Listenformat, mit der sortierung NW, NO, SO, SW.
+ * Das Listenobjekte enhält die Geodaten.
+ * @returns {LatLngList[]} Array der Länge Vier. Jeder Eintrag enthält ein Array der Länge Zwei [Latitude, Longitude].
  */
 Panel.prototype.getLatLngsAsArray = function () {
     return [
@@ -174,8 +178,22 @@ Panel.prototype.getLatLngsAsArray = function () {
     ]
 };
 /**
+ * @typedef {Object} the_geom
+ * @property {number} latitude Längengrad
+ * @property {number} longitude Breitengrad
+ */
+/**
+ * @typedef {Object} PanelJson
+ * @property {number} panel_id - ID des Panels.
+ * @property {number} laenge - Länge des Panels.
+ * @property {number} breite - Breite des Panels.
+ * @property {number} neigung - Neigung des Panels.
+ * @property {number} ausrichtung - Ausrichtung des Panels.
+ * @property {number} rahmenbreite - Rahmenbreite des Panels.
+ */
+/**
  * Konvertiert das Panel in ein JSON Objekt.
- * @returns JSON-Objekt mit allen Informationen des Panels. Attribute sind panel_id, the_geom[[latitude,longitude]], laenge, breite, neigung, ausrichtung und rahmenbreite.
+ * @returns {PanelJson} JSON-Objekt mit allen Informationen des Panels.
  */
 Panel.prototype.getAsJson = function () {
     return {
@@ -205,8 +223,8 @@ Panel.prototype.getAsJson = function () {
     }
 };
 /**
- * Liest die Punkte einer übergebenen Liste der Form Liste[[latitude, longitude]]. Und setzt anhand dieser die Panelkoordinaten neu.
- * @param {number[][]}list Liste der Länge Vier. Punkte werden der Reihe nach neu gesetzt: NW, NO, SW, SO.
+ * Liest die Punkte einer übergebenen Liste. Und setzt anhand dieser die Panelkoordinaten neu.
+ * @param {the_geom}list Liste der Länge Vier. Punkte werden der Reihe nach neu gesetzt: NW, NO, SW, SO.
  */
 Panel.prototype.setPointsFromList = function (list) {
     if (list.length > 0) {
