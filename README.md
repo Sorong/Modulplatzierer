@@ -59,3 +59,4 @@ Nun kann das SolarRESTService Archiv auf dem Server deplyed werden. Dazu einfach
 
 
 
+
